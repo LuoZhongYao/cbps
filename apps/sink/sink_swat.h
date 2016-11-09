@@ -52,7 +52,7 @@ NOTES
 */
 typedef struct
 {
-    int16              new_volume;   /* subwoofer volume change level */
+    i16              new_volume;   /* subwoofer volume change level */
 } SWAT_VOLUME_CHANGE_MSG_T;
 
 
@@ -231,8 +231,8 @@ DESCRIPTION
     Function to update the SWAT system volume that is also sent to the 
     subwoofer device to keep volume sync'd
 */
-void updateSwatVolume(int16 new_volume);
-void updateSwatVolumeNow(int16 new_volume);
+void updateSwatVolume(i16 new_volume);
+void updateSwatVolumeNow(i16 new_volume);
 
 
 /*************************************************************************
@@ -256,7 +256,7 @@ NAME
 DESCRIPTION
     Function to send the sample rate (in use) to the subwoofer
 */
-void sendSampleRateToSub(uint16 sample_rate);
+void sendSampleRateToSub(u16 sample_rate);
 
 /*************************************************************************
 NAME    

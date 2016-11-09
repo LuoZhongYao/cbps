@@ -45,7 +45,7 @@ DESCRIPTION
 RETURNS
 	void
 */
-void PioSetPio(uint16 pio , pio_common_dir drive, bool dir);
+void PioSetPio(u16 pio , pio_common_dir drive, bool dir);
 
 
 /****************************************************************************
@@ -58,7 +58,7 @@ DESCRIPTION
 RETURNS
 	TRUE if set, FALSE if not
 */
-bool PioGetPio(uint16 pio);
+bool PioGetPio(u16 pio);
 
 /****************************************************************************
 NAME	
@@ -72,7 +72,7 @@ RETURNS
 	void
     
 */
-void PioDrivePio(uint16 pio, bool state);
+void PioDrivePio(u16 pio, bool state);
 
 /****************************************************************************
 NAME	

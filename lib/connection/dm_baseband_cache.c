@@ -41,7 +41,7 @@ void ConnectionWriteCachedPageMode(const bdaddr *addr, page_scan_mode ps_mode, p
 
 
 /*****************************************************************************/
-void ConnectionWriteCachedClockOffset(const bdaddr *addr, uint16 clk_offset)
+void ConnectionWriteCachedClockOffset(const bdaddr *addr, u16 clk_offset)
 {
     /* Send an internal message requesting this action */
     MAKE_CL_MESSAGE(CL_INTERNAL_DM_WRITE_CACHED_CLK_OFFSET_REQ);

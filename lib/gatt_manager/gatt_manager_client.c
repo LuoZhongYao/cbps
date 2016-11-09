@@ -44,7 +44,7 @@ static bool serverParamsValid(Task task,
 }
 
 static bool gattClientDataValid(const gatt_manager_client_lookup_data_t * client_data,
-                                uint16 handle)
+                                u16 handle)
 {
     if(NULL == client_data ||
        handle < client_data->start_handle ||
@@ -189,8 +189,8 @@ void GattManagerDiscoverAllCharacteristics(const Task client)
 }
 
 void GattManagerDiscoverAllCharacteristicDescriptors(const Task client,
-                                                    uint16 start_handle,
-                                                    uint16 end_handle)
+                                                    u16 start_handle,
+                                                    u16 end_handle)
 {
     const gatt_manager_client_lookup_data_t * client_data;
 
@@ -216,7 +216,7 @@ void GattManagerDiscoverAllCharacteristicDescriptors(const Task client,
     }
 }
 
-void GattManagerReadCharacteristicValue(const Task client, uint16 handle)
+void GattManagerReadCharacteristicValue(const Task client, u16 handle)
 {
     const gatt_manager_client_lookup_data_t * client_data;
 
@@ -237,8 +237,8 @@ void GattManagerReadCharacteristicValue(const Task client, uint16 handle)
 }
 
 void GattManagerReadUsingCharacteristicUuid(const Task client,
-                                            uint16 start_handle,
-                                            uint16 end_handle,
+                                            u16 start_handle,
+                                            u16 end_handle,
                                             gatt_uuid_type_t uuid_type,
                                             const gatt_uuid_t *uuid)
 {
@@ -265,7 +265,7 @@ void GattManagerReadUsingCharacteristicUuid(const Task client,
     }
 }
 
-void GattManagerReadLongCharacteristicValue(Task client, uint16 handle)
+void GattManagerReadLongCharacteristicValue(Task client, u16 handle)
 {
     const gatt_manager_client_lookup_data_t * client_data;
 
@@ -286,9 +286,9 @@ void GattManagerReadLongCharacteristicValue(Task client, uint16 handle)
 }
 
 void GattManagerWriteWithoutResponse(const Task client,
-                                     uint16 handle,
-                                     uint16 size_value,
-                                     uint8 *value)
+                                     u16 handle,
+                                     u16 size_value,
+                                     u8 *value)
 {
     const gatt_manager_client_lookup_data_t * client_data;
 
@@ -311,9 +311,9 @@ void GattManagerWriteWithoutResponse(const Task client,
 
 
 void GattManagerSignedWriteWithoutResponse(const Task client,
-                                           uint16 handle,
-                                           uint16 size_value,
-                                           uint8 *value)
+                                           u16 handle,
+                                           u16 size_value,
+                                           u8 *value)
 {
     const gatt_manager_client_lookup_data_t * client_data;
 
@@ -335,9 +335,9 @@ void GattManagerSignedWriteWithoutResponse(const Task client,
 }
 
 void GattManagerWriteCharacteristicValue(const Task client,
-                                         uint16 handle,
-                                         uint16 size_value,
-                                         uint8 *value)
+                                         u16 handle,
+                                         u16 size_value,
+                                         u8 *value)
 {
     const gatt_manager_client_lookup_data_t * client_data;
 
@@ -359,9 +359,9 @@ void GattManagerWriteCharacteristicValue(const Task client,
 }
 
 void GattManagerWriteLongCharacteristicValue(const Task client,
-                                             uint16 handle,
-                                             uint16 size_value,
-                                             uint8 *value)
+                                             u16 handle,
+                                             u16 size_value,
+                                             u8 *value)
 {
     const gatt_manager_client_lookup_data_t * client_data;
 
@@ -383,10 +383,10 @@ void GattManagerWriteLongCharacteristicValue(const Task client,
 }
 
 void GattManagerReliableWritePrepare(const Task client,
-                                     uint16 handle,
-                                     uint16 offset,
-                                     uint16 size_value,
-                                     uint8 *value)
+                                     u16 handle,
+                                     u16 offset,
+                                     u16 size_value,
+                                     u8 *value)
 {
     const gatt_manager_client_lookup_data_t * client_data;
 
@@ -466,7 +466,7 @@ void gattManagerClientRemoteServerNotification(GATT_NOTIFICATION_IND_T * not)
     }
 
     memmove(message, not, sizeof(GATT_MANAGER_REMOTE_SERVER_NOTIFICATION_IND_T) -
-                          sizeof(uint8) + (not->size_value * sizeof(uint8)));
+                          sizeof(u8) + (not->size_value * sizeof(u8)));
     MessageSend(task, GATT_MANAGER_REMOTE_SERVER_NOTIFICATION_IND, message);
 }
 
@@ -481,7 +481,7 @@ void gattManagerClientRemoteServerIndication(GATT_INDICATION_IND_T * ind)
     }
 
     memmove(message, ind, sizeof(GATT_MANAGER_REMOTE_SERVER_INDICATION_IND_T) -
-                          sizeof(uint8) + (ind->size_value * sizeof(uint8)));
+                          sizeof(u8) + (ind->size_value * sizeof(u8)));
     MessageSend(task, GATT_MANAGER_REMOTE_SERVER_INDICATION_IND, message);
 }
 
@@ -549,7 +549,7 @@ void gattManagerClientReadCharacteristicValueConfirm(GATT_READ_CHARACTERISTIC_VA
         message->handle = cfm->handle;
         message->status = cfm->status;
         message->size_value = cfm->size_value;
-        memmove(message->value, cfm->value, cfm->size_value * sizeof(uint8));
+        memmove(message->value, cfm->value, cfm->size_value * sizeof(u8));
         
         MessageSend(task, GATT_MANAGER_READ_CHARACTERISTIC_VALUE_CFM, message);
     }
@@ -572,7 +572,7 @@ void gattManagerClientReadUsingCharacteristicUuidConfirm(GATT_READ_USING_CHARACT
         message->more_to_come = cfm->more_to_come;
         message->status = cfm->status;
         message->size_value = cfm->size_value;
-        memmove(message->value, cfm->value, cfm->size_value * sizeof(uint8));
+        memmove(message->value, cfm->value, cfm->size_value * sizeof(u8));
         
         MessageSend(task, GATT_MANAGER_READ_USING_CHARACTERISTIC_UUID_CFM, message);
     }
@@ -597,7 +597,7 @@ void gattManagerClientReadLongCharacteristicValueConfirm(GATT_READ_LONG_CHARACTE
         message->status = cfm->status;
         message->offset = cfm->offset;
         message->size_value = cfm->size_value;
-        memmove(message->value, cfm->value, cfm->size_value * sizeof(uint8));
+        memmove(message->value, cfm->value, cfm->size_value * sizeof(u8));
 
         MessageSend(task, GATT_MANAGER_READ_LONG_CHARACTERISTIC_VALUE_CFM, message);
     }

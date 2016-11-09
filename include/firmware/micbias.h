@@ -26,6 +26,6 @@
 
     Consult the datasheet for your BlueCore variant for more information.
 */
-bool MicbiasConfigure(mic_bias_id mic, mic_bias_config_key key, uint16 value);
+bool MicbiasConfigure(mic_bias_id mic, mic_bias_config_key key, u16 value);
 
 #endif

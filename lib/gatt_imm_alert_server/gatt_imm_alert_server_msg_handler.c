@@ -24,11 +24,11 @@ DESCRIPTION
     Sends Access Response to GATT manager
 */
 static void send_gatt_imm_alert_access_resp(Task libtask,
-                uint16 cid,
-                uint16 result,
-                uint16 handle,
-                uint16 size_value,
-                const uint8 *value)
+                u16 cid,
+                u16 result,
+                u16 handle,
+                u16 size_value,
+                const u8 *value)
 {
       if(!GattManagerServerAccessResponse(libtask, cid, handle, result, size_value, value))
         {
@@ -46,7 +46,7 @@ DESCRIPTION
 */
 static void send_imm_alert_access_resp(GIASS_T *const imm_alert_service,
               const GATT_MANAGER_SERVER_ACCESS_IND_T *access_ind,
-              uint16 status)
+              u16 status)
 {
         /* send the access response */
         send_gatt_imm_alert_access_resp((Task)&imm_alert_service->lib_task,access_ind->cid,status,access_ind->handle,0,NULL);

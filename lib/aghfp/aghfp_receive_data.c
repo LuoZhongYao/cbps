@@ -8,7 +8,10 @@ Part of ADK 4.0
 #include "aghfp_parse.h"
 #include "aghfp_receive_data.h"
 
+#include <source.h>
 #include <panic.h>
+
+u16 parseSource(Source rfcDataIn, Task task);
 
 
 /****************************************************************************
@@ -17,7 +20,7 @@ Part of ADK 4.0
 */
 void aghfpHandleReceivedData(AGHFP *aghfp, Source source)
 {
-    uint16 len = SourceSize(source);
+    u16 len = SourceSize(source);
 
     /* Only bother parsing if there is something to parse */
     while (len > 0)

@@ -61,7 +61,7 @@ used to implement stubs when features are not required.
 /*
     Return the Codec ID given a codec mask.
 */
-wbs_codec WbsCodecMaskToCodecId(codecs_info *codecs_info_in, uint16 codec_mask)
+wbs_codec WbsCodecMaskToCodecId(codecs_info *codecs_info_in, u16 codec_mask)
 {
 	PRINT(("WbsCodecMaskToCodecId - Unsupported\n"));
 
@@ -71,7 +71,7 @@ wbs_codec WbsCodecMaskToCodecId(codecs_info *codecs_info_in, uint16 codec_mask)
 /*
     Return the codec mask given a Codec ID.
 */
-uint16 WbsCodecIdToCodecMask(codecs_info *codecs_info_in, wbs_codec codec_id)
+u16 WbsCodecIdToCodecMask(codecs_info *codecs_info_in, wbs_codec codec_id)
  {
 	 PRINT(("WbsCodecIdToCodecMask - Unsupported\n"));
 	 

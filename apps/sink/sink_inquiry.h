@@ -79,7 +79,7 @@ typedef enum
 typedef struct
 {
     bdaddr bd_addr;                     /* Address of device */
-    int16  rssi;                        /* Highest received signal strength indication from device */
+    i16  rssi;                        /* Highest received signal strength indication from device */
 #ifdef ENABLE_PEER
     unsigned           unused:4;            /* Unused */ 
     remote_device      peer_device:2;       /* Indicates that the remote device is of the same type as the local one */
@@ -97,19 +97,19 @@ typedef struct
     unsigned           attempting:4;          /* Index of device being connected to   */
     supported_profiles remote_profiles:4;     /* Bitmask of profiles supported by a remote device */
     unsigned           profile_search_idx:3;  /* Index of current sdp service search */
-    uint16             peer_version;          /* Indicates the Peer Device support version number of the device being connected to (as per 'attempting' field) */ 
+    u16             peer_version;          /* Indicates the Peer Device support version number of the device being connected to (as per 'attempting' field) */ 
     inquiry_result_t*  results;               /* Array of inquiry results             */
 }inquiry_data_t;
 
 /* Inquiry Config */
 typedef struct
 {
-    uint16      tx_power;               /* The inquiry Tx power */
-	uint16      threshold;              /* The minimum RSSI reading for an AG to be paired */
-	uint16      diff_threshold;         /* The required difference between AG and next closest AG */
-    uint32      cod_filter;             /* COD to consider */
-	uint16      conn_threshold;         /* The minimum RSSI reading for an AG to be connected */
-	uint16      conn_diff_threshold;    /* The required difference between AG and next closest AG */
+    u16      tx_power;               /* The inquiry Tx power */
+	u16      threshold;              /* The minimum RSSI reading for an AG to be paired */
+	u16      diff_threshold;         /* The required difference between AG and next closest AG */
+    u32      cod_filter;             /* COD to consider */
+	u16      conn_threshold;         /* The minimum RSSI reading for an AG to be connected */
+	u16      conn_diff_threshold;    /* The required difference between AG and next closest AG */
     unsigned    max_responses:8;        /* Maximum number of inquiry responses (0 = unlimited) */
     unsigned    timeout:8;              /* Maximum inquiry time (timeout * 1.28s) */
     unsigned    resume_timeout:8;       /* Time to wait between inquiry attempts */

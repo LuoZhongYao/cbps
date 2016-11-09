@@ -24,7 +24,7 @@
 
 /* Macros for creating messages */
 #define MAKE_HID_CLIENT_MESSAGE(TYPE) MESSAGE_MAKE(message,TYPE##_T)
-#define MAKE_HID_CLIENT_MESSAGE_WITH_LEN(TYPE, LEN) TYPE##_T *message = (TYPE##_T *) PanicUnlessMalloc(sizeof(TYPE##_T) + LEN - sizeof(uint8))
+#define MAKE_HID_CLIENT_MESSAGE_WITH_LEN(TYPE, LEN) TYPE##_T *message = (TYPE##_T *) PanicUnlessMalloc(sizeof(TYPE##_T) + LEN - sizeof(u8))
 
 /* Macro to validate HID client */
 #define VALIDATE_HID_CLIENT(hid_client) (hid_client != NULL)
@@ -112,70 +112,70 @@ typedef enum
 /* Internal Message Structure to start HID service characteristic handle discovery */
 typedef struct 
 {
-    uint16 cid;
-    uint16 start_handle;
-    uint16 end_handle;
+    u16 cid;
+    u16 start_handle;
+    u16 end_handle;
 }HID_CLIENT_INTERNAL_MSG_DISCOVER_T;
 
 /* Internal Message Structure to indicate HID service discovery complete */
 typedef struct 
 {
-    uint16 cid;
+    u16 cid;
 }HID_CLIENT_INTERNAL_MSG_DISCOVER_COMPLETE_T;
 
 /* Internal Message Structure to Initiate get report request */
 typedef struct
 {
-    uint16 report_handle;
+    u16 report_handle;
 }HID_CLIENT_INTERNAL_MSG_GET_REPORT_T;
 
 /* Internal Message Structure to Initiate registering notification */
 typedef struct
 {
-    uint16  mode;
-    uint16 enable;
+    u16  mode;
+    u16 enable;
 }HID_CLIENT_INTERNAL_HANLDE_NOTIFICTION_REQ_T;
 
 /* Internal Message Structure to Initiate registering notification for a handle*/
 typedef struct
 {
-    uint16  handle;
-    uint16 enable;
+    u16  handle;
+    u16 enable;
 }HID_CLIENT_INTERNAL_SET_NOTIFICATION_CCDHANDLE_REQ_T;
 /* Internal Message Structure to Initiate set control point */
 typedef struct
 {
-    uint16 ctrl_type;
+    u16 ctrl_type;
 }HID_CLIENT_INTERNAL_SET_CTRL_POINT_T;
 
 /* Internal Message Structure to Initiate set report */
 typedef struct
 {
-    uint16 handle;
-    uint16 size_data;
-    uint16 type;
-    uint16 data[1];
+    u16 handle;
+    u16 size_data;
+    u16 type;
+    u16 data[1];
 }HID_CLIENT_INTERNAL_MSG_SET_REPORT_T;
 
 /* Internal Message Structure to Initiate set boot report */
 typedef struct
 {
-    uint16 handle;
-    uint16 size_data;
-    uint16 type;
-    uint16 data[1];
+    u16 handle;
+    u16 size_data;
+    u16 type;
+    u16 data[1];
 }HID_CLIENT_INTERNAL_MSG_WRITE_BOOT_REPORT_T;
 
 /* Internal Message Structure to Initiate read boot report */
 typedef struct
 {
-    uint16 report_type;
+    u16 report_type;
 }HID_CLIENT_INTERNAL_MSG_READ_BOOT_REPORT_T;
 
 /* Internal Message Structure to Initiate read of CCD handle */
 typedef struct
 {
-    uint16 ccd_handle;
+    u16 ccd_handle;
 }HID_CLIENT_INTERNAL_MSG_READ_CCD_T;
 
 
@@ -194,10 +194,10 @@ typedef struct
     unsigned max_char_handles:5; /* Maximum Characteristic handles supported */
     unsigned char_uuid_count:5; /* Characteristic UUID counts to keep in track how many are availabel */
     unsigned _SPARE_:1; 
-    uint16 char_descriptor_mask; /* Characteristic descriptor mask used to read the descriptors */
-    uint16 end_handle; /* End handle of the service */
-    uint16 characterisitc_handle; /* Store the characteritic report handle for a client characteristic descriptor */
-    uint16 char_array[1]; /* descriptor array used to store declaration handles till discovery is completed */
+    u16 char_descriptor_mask; /* Characteristic descriptor mask used to read the descriptors */
+    u16 end_handle; /* End handle of the service */
+    u16 characterisitc_handle; /* Store the characteritic report handle for a client characteristic descriptor */
+    u16 char_array[1]; /* descriptor array used to store declaration handles till discovery is completed */
 }gatt_hid_current_discovery_instance_t;
 
 

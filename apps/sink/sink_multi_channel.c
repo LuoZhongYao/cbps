@@ -3,11 +3,11 @@ Copyright (c) 2004 - 2015 Qualcomm Technologies International, Ltd.
 
 FILE NAME
     sink_multi_channel.c
-    
+
 DESCRIPTION
-    Module responsible for reading multi-channel configuration and other 
+    Module responsible for reading multi-channel configuration and other
     functionality related to multi-channel audio output.
-    
+
 */
 
 #include "sink_multi_channel.h"
@@ -115,8 +115,8 @@ typedef struct __pskey_volume_and_gain
 	pskey_volume_scaling_method_t volume_scaling_method_aux:2;
 	pskey_volume_scaling_method_t volume_scaling_method_main:2;
 
-	int16 fixed_hardware_gain;
-	int16 channel_trim[audio_channel_max];
+	i16 fixed_hardware_gain;
+	i16 channel_trim[audio_channel_max];
 } pskey_volume_and_gain_t;
 
 typedef struct __pskey_multi_channel_config
@@ -245,10 +245,10 @@ static multi_channel_out_t sinkGetMappedRightMultiChannelOutFromPSKey(const pske
 }
 
 /******************************************************************************/
-static int16 sinkGetMappedVolumeTrimFromPSKey(const pskey_multi_channel_config_t* const psKeyConfig,
+static i16 sinkGetMappedVolumeTrimFromPSKey(const pskey_multi_channel_config_t* const psKeyConfig,
 										pskey_audio_channel_t channelRequested)
 {
-	int16 channelTrim = 0;
+	i16 channelTrim = 0;
 	if(psKeyConfig->volume_and_gain.enable_channel_trims == enable_channel_trims_true)
 	{
 		channelTrim = psKeyConfig->volume_and_gain.channel_trim[channelRequested];
@@ -257,7 +257,7 @@ static int16 sinkGetMappedVolumeTrimFromPSKey(const pskey_multi_channel_config_t
 }
 
 /******************************************************************************/
-static int16 sinkGetMappedLeftChannelVolumeTrimFromPSKey(const pskey_multi_channel_config_t* const psKeyConfig,
+static i16 sinkGetMappedLeftChannelVolumeTrimFromPSKey(const pskey_multi_channel_config_t* const psKeyConfig,
 													pskey_audio_hardware_interface_t interfaceRequested)
 {
 	pskey_audio_channel_t leftChannelOfInterfaceRequested = audio_channel_primary_left;
@@ -278,7 +278,7 @@ static int16 sinkGetMappedLeftChannelVolumeTrimFromPSKey(const pskey_multi_chann
 }
 
 /******************************************************************************/
-static int16 sinkGetMappedRightChannelVolumeTrimFromPSKey(const pskey_multi_channel_config_t* const psKeyConfig,
+static i16 sinkGetMappedRightChannelVolumeTrimFromPSKey(const pskey_multi_channel_config_t* const psKeyConfig,
 													pskey_audio_hardware_interface_t interfaceRequested)
 {
 	pskey_audio_channel_t rightChannelOfInterfaceRequested = audio_channel_primary_right;
@@ -330,7 +330,7 @@ static multi_channel_group_gain_type_t sinkGetMappedAuxGroupGainTypeFromPSKey(co
 }
 
 /******************************************************************************/
-static int16 sinkGetMappedFixedHardwareGainFromPSKey(const pskey_multi_channel_config_t* const psKeyConfig)
+static i16 sinkGetMappedFixedHardwareGainFromPSKey(const pskey_multi_channel_config_t* const psKeyConfig)
 {
 	return psKeyConfig->volume_and_gain.fixed_hardware_gain;
 }
@@ -517,7 +517,7 @@ void SinkMultiChannelReadConfig(void)
     size_t size = sizeof(multi_channel_config_t);
 
     multi_channel_config_t* config = PanicUnlessMalloc(size);
-    
+
     memset(config, 0, size);
 
     /* Read multi-channel configuration key and populate config */

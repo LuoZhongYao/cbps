@@ -27,7 +27,7 @@ DESCRIPTION
 RETURNS
     
 */
-void gatt_exchange_mtu_req(uint16 cid, uint16 mtu)
+void gatt_exchange_mtu_req(u16 cid, u16 mtu)
 {
     MAKE_ATT_PRIM(ATT_EXCHANGE_MTU_REQ);
     
@@ -48,7 +48,7 @@ DESCRIPTION
 RETURNS
     
 */
-void gatt_exchange_mtu_rsp(uint16 cid, uint16 mtu)
+void gatt_exchange_mtu_rsp(u16 cid, u16 mtu)
 {
     MAKE_ATT_PRIM(ATT_EXCHANGE_MTU_RSP);
     
@@ -69,9 +69,9 @@ DESCRIPTION
 RETURNS
     
 */
-void gatt_read_by_group_type_req(uint16 cid,
-                                 uint16 start,
-                                 uint16 end,
+void gatt_read_by_group_type_req(u16 cid,
+                                 u16 start,
+                                 u16 end,
                                  gatt_uuid_type_t uuid_type,
                                  const gatt_uuid_t *uuid)
 {
@@ -100,16 +100,16 @@ DESCRIPTION
 RETURNS
     
 */
-void gatt_find_by_type_value_req(uint16 cid,
-                                 uint16 start,
-                                 uint16 end,
-                                 uint16 type,
+void gatt_find_by_type_value_req(u16 cid,
+                                 u16 start,
+                                 u16 end,
+                                 u16 type,
                                  gatt_uuid_type_t uuid_type,
                                  const gatt_uuid_t *uuid)
 {
-    uint32 u[4];
-    uint32 *p;
-    uint16 i;
+    u32 u[4];
+    u32 *p;
+    u16 i;
     MAKE_ATT_PRIM(ATT_FIND_BY_TYPE_VALUE_REQ);
     
     prim->cid = cid;
@@ -175,9 +175,9 @@ DESCRIPTION
 RETURNS
     
 */
-void gatt_read_by_type_req(uint16 cid,
-                           uint16 start,
-                           uint16 end,
+void gatt_read_by_type_req(u16 cid,
+                           u16 start,
+                           u16 end,
                            gatt_uuid_type_t uuid_type,
                            const gatt_uuid_t *uuid)
 {
@@ -205,8 +205,8 @@ DESCRIPTION
 RETURNS
     
 */
-void gatt_read_req(uint16 cid,
-                   uint16 handle)
+void gatt_read_req(u16 cid,
+                   u16 handle)
 {
     MAKE_ATT_PRIM(ATT_READ_REQ);
     
@@ -230,11 +230,11 @@ DESCRIPTION
 RETURNS
     
 */
-void gatt_write_req(uint16 cid,
-                    uint16 handle,
-                    uint16 flags,
-                    uint16 size_value,
-                    uint8 *value)
+void gatt_write_req(u16 cid,
+                    u16 handle,
+                    u16 flags,
+                    u16 size_value,
+                    u8 *value)
 {
     MAKE_ATT_PRIM(ATT_WRITE_REQ);
     
@@ -262,11 +262,11 @@ DESCRIPTION
 RETURNS
     
 */
-void gatt_prepare_write_req(uint16 cid,
-                            uint16 handle,
-                            uint16 offs,
-                            uint16 size_value,
-                            uint8 *value)
+void gatt_prepare_write_req(u16 cid,
+                            u16 handle,
+                            u16 offs,
+                            u16 size_value,
+                            u8 *value)
 {
     MAKE_ATT_PRIM(ATT_PREPARE_WRITE_REQ);
     
@@ -292,8 +292,8 @@ DESCRIPTION
 RETURNS
     
 */
-void gatt_execute_write_req(uint16 cid,
-                            uint16 flags)
+void gatt_execute_write_req(u16 cid,
+                            u16 flags)
 {
     MAKE_ATT_PRIM(ATT_EXECUTE_WRITE_REQ);
     
@@ -315,9 +315,9 @@ DESCRIPTION
 RETURNS
     
 */
-void gatt_find_info_req(uint16 cid,
-                        uint16 start,
-                        uint16 end)
+void gatt_find_info_req(u16 cid,
+                        u16 start,
+                        u16 end)
 {
     MAKE_ATT_PRIM(ATT_FIND_INFO_REQ);
     
@@ -340,9 +340,9 @@ DESCRIPTION
 RETURNS
     
 */
-void gatt_read_blob_req(uint16 cid,
-                        uint16 offs,
-                        uint16 handle)
+void gatt_read_blob_req(u16 cid,
+                        u16 offs,
+                        u16 handle)
 {
     MAKE_ATT_PRIM(ATT_READ_BLOB_REQ);
     
@@ -365,9 +365,9 @@ DESCRIPTION
 RETURNS
     
 */
-void gatt_read_multi_req(uint16 cid,
-                        uint16 size_handles,
-                        uint16 *handles)
+void gatt_read_multi_req(u16 cid,
+                        u16 size_handles,
+                        u16 *handles)
 {
     MAKE_ATT_PRIM(ATT_READ_MULTI_REQ);
     

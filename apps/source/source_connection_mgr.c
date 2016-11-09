@@ -123,7 +123,7 @@ bool connection_mgr_can_connect(const bdaddr *bd_addr, PROFILES_T profile_connec
 NAME    
     connection_mgr_start_connection_attempt - Begins connecting to a remote device by sending the APP_CONNECT_REQ message
 */
-void connection_mgr_start_connection_attempt(const bdaddr *addr, PROFILES_T profile, uint16 delay)
+void connection_mgr_start_connection_attempt(const bdaddr *addr, PROFILES_T profile, u16 delay)
 {
     MAKE_MESSAGE(APP_CONNECT_REQ); 
     message->force_inquiry_mode = FALSE;
@@ -187,8 +187,8 @@ NAME
 */
 bool connection_mgr_connect_next_profile(void)
 {       
-    uint16 supported_profiles = theSource->connection_data.supported_profiles;
-    uint16 current_profile = connection_mgr_get_current_profile();   
+    u16 supported_profiles = theSource->connection_data.supported_profiles;
+    u16 current_profile = connection_mgr_get_current_profile();   
     
     CONNECTION_MGR_DEBUG(("CM: Connect Next Profile - supported_profiles [%d] current_profile [%d]\n", supported_profiles, current_profile));
     
@@ -210,7 +210,7 @@ bool connection_mgr_connect_next_profile(void)
     
     if (current_profile != PROFILE_NONE)
     {
-        uint16 delay;
+        u16 delay;
         MAKE_MESSAGE(APP_CONNECT_REQ);
         /* wait for the delay specified in the PS Key, to give chance for the remote device to connect the next profile */
         delay = theSource->ps_config->ps_timers.profile_connection_delay_timer;
@@ -476,8 +476,8 @@ NAME
 static bool connection_mgr_next_paired_device(typed_bdaddr *addr)
 {
     typed_bdaddr paired_addr;
-    uint8 psdata[1];
-    const uint16 size_psdata = 0;
+    u8 psdata[1];
+    const u16 size_psdata = 0;
     
     CONNECTION_MGR_DEBUG(("CM: Next Paired Device\n"));
     
@@ -641,7 +641,7 @@ NAME
 */
 void connection_mgr_reset_pin_codes(void)
 {
-    uint16 index = 0;
+    u16 index = 0;
     
     if (theSource->connection_data.connection_pin)
     {
@@ -660,10 +660,10 @@ void connection_mgr_reset_pin_codes(void)
 NAME    
     connection_mgr_find_pin_index_by_addr - Find PIN index by the Bluetooth address supplied
 */
-uint16 connection_mgr_find_pin_index_by_addr(const bdaddr *addr)
+u16 connection_mgr_find_pin_index_by_addr(const bdaddr *addr)
 {
-    uint16 index = 0;
-    uint16 pins_stored = theSource->connection_data.connection_pin->device.number_device_pins;
+    u16 index = 0;
+    u16 pins_stored = theSource->connection_data.connection_pin->device.number_device_pins;
     
     for (index = 0; index < pins_stored; index++)
     {
@@ -687,7 +687,7 @@ NAME
 bool connection_mgr_get_next_pin_code(const bdaddr *addr)
 {
     /* may need to try next PIN code */
-    uint16 index = connection_mgr_find_pin_index_by_addr(addr);
+    u16 index = connection_mgr_find_pin_index_by_addr(addr);
         
     if (index != INVALID_VALUE)
     {

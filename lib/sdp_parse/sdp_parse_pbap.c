@@ -17,7 +17,7 @@ DESCRIPTION
 
 /* Find PBAP Repository */
 
-static bool findPbapRepos(const uint8 size_service_record, const uint8* service_record, Region* value)
+static bool findPbapRepos(const u8 size_service_record, const u8* service_record, Region* value)
 {
 	ServiceDataType type;
     Region record;
@@ -38,7 +38,7 @@ static bool findPbapRepos(const uint8 size_service_record, const uint8* service_
 
 /* Access PBAP Repository */
 
-bool SdpParseGetPbapRepos(const uint8 size_service_record, const uint8* service_record, uint8* repos)
+bool SdpParseGetPbapRepos(const u8 size_service_record, const u8* service_record, u8* repos)
 {
 	Region value;
 	if(findPbapRepos(size_service_record, service_record, &value))
@@ -53,7 +53,7 @@ bool SdpParseGetPbapRepos(const uint8 size_service_record, const uint8* service_
 
 /* Insert PBAP Repository */
 
-bool SdpParseInsertPbapRepos(const uint8 size_service_record, const uint8* service_record, uint8 repos)
+bool SdpParseInsertPbapRepos(const u8 size_service_record, const u8* service_record, u8 repos)
 {
 	Region value;
 	if(findPbapRepos(size_service_record, service_record, &value))

@@ -94,7 +94,7 @@ void obexStatusCfm( Obex        session,
                     ObexStatus  status,
                     ObexMessageId id,
                     Source  src,
-                    uint16  srcLen ) 
+                    u16  srcLen ) 
                             
 {
     MAKE_OBEX_MESSAGE( OBEX_MESSAGE_STATUS );
@@ -117,7 +117,7 @@ void obexCommandInd( Obex        session,
                      ObexMessageId id,
                      bool          final,
                      Source        src,
-                     uint16        srcLen ) 
+                     u16        srcLen ) 
                             
 {
     MAKE_OBEX_MESSAGE( OBEX_MESSAGE_IND );
@@ -168,9 +168,9 @@ void obexAuthReqInd( Obex session )
  *  Authentication of an ongoing connection.
  *
  ***********************************************************************/
-void obexAuthClgInd( Obex session, const uint8* pkt, uint16 pktLen )
+void obexAuthClgInd( Obex session, const u8* pkt, u16 pktLen )
 {
-    uint8 offset = OBEX_TLV_HDR_SIZE;
+    u8 offset = OBEX_TLV_HDR_SIZE;
     MAKE_OBEX_MESSAGE( OBEX_AUTH_CLG_IND );
     message->session = session;
     message->options = 0;
@@ -209,9 +209,9 @@ void obexAuthClgInd( Obex session, const uint8* pkt, uint16 pktLen )
  * DESCRIPTION 
  *  Dispatch the Authentication Response header to the application. 
  ***********************************************************************/
-void obexAuthRspCfm( Obex session, const uint8* pkt, uint16 pktLen )
+void obexAuthRspCfm( Obex session, const u8* pkt, u16 pktLen )
 {
-    uint16 size = 0;
+    u16 size = 0;
 
     /* Find out User ID is present */
     if( ( pktLen > OBEX_TOTAL_DIGEST_SIZE + OBEX_TLV_HDR_SIZE) &&
@@ -222,7 +222,7 @@ void obexAuthRspCfm( Obex session, const uint8* pkt, uint16 pktLen )
     }
 
     {
-        uint8 offset = OBEX_TLV_HDR_SIZE;
+        u8 offset = OBEX_TLV_HDR_SIZE;
         MAKE_OBEX_MESSAGE_WITH_LEN( OBEX_AUTH_RSP_CFM, size );         
         message->session = session;
         memmove( message->request, &pkt[offset], OBEX_SIZE_DIGEST );

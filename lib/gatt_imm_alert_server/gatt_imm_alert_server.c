@@ -17,8 +17,8 @@
 
 gatt_imm_alert_server_status GattImmAlertServiceServerInit(Task appTask ,
                                 GIASS_T *const imm_alert_server,
-                                uint16 start_handle,
-                                uint16 end_handle)
+                                u16 start_handle,
+                                u16 end_handle)
 {
     gatt_imm_alert_server_status retval = gatt_imm_alert_server_status_invalid_parameter;
 

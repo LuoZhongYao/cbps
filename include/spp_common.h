@@ -189,7 +189,7 @@ typedef struct
     Sink                        sink;
 	
 	/*! Negotiated RFCOMM payload size for the connection */
-	uint16					    payload_size;
+	u16					    payload_size;
 } SPP_CLIENT_CONNECT_CFM_T;
 
 

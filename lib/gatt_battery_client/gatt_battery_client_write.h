@@ -17,7 +17,7 @@ NAME
 DESCRIPTION
     Write Client Configuration descriptor value by handle.
 */
-void writeClientConfigValue(GBASC *battery_client, bool notifications_enable, uint16 handle);
+void writeClientConfigValue(GBASC *battery_client, bool notifications_enable, u16 handle);
 
 
 /***************************************************************************

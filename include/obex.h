@@ -184,14 +184,14 @@ typedef struct
     The ObexConnectRequest() and ObexConnectResponse() API creates a 
     connection  context task of this size and returns  
     that task by setting the  connTaskData as its TaskData. */    
-    uint16          sizeConnTask;
+    u16          sizeConnTask;
 
     /*! The Target header. The application must not free it  during the 
      entire OBEX session */
-    const uint8*    target;
+    const u8*    target;
 
     /*!  Size of the target parameter string */
-    uint16          sizeTarget; 
+    u16          sizeTarget; 
 
     /*! TRUE if OBEX auth is required as server. */
     bool            auth;  
@@ -218,7 +218,7 @@ typedef struct
 typedef struct
 {
     bdaddr  addr;           /**< The Bluetooth address of the remote device.*/
-    uint8   channel;        /**< The local server channel.*/               
+    u8   channel;        /**< The local server channel.*/               
     Sink    sink;           /**< The sink associated with the connection. */
 
 } OBEX_CONNECT_IND_T;
@@ -244,9 +244,9 @@ typedef struct
 typedef struct
 {
     bdaddr       addr;      /**< The Bluetooth address of the remote device.*/
-    uint16       psm;       /**< Incoming connection on this L2CAP PSM */ 
-    uint8        identifier;/**< channel Identifier to be used in the response */
-    uint16       connId;    /**< Connection Identifier for the connection */    
+    u16       psm;       /**< Incoming connection on this L2CAP PSM */ 
+    u8        identifier;/**< channel Identifier to be used in the response */
+    u16       connId;    /**< Connection Identifier for the connection */    
 } OBEX_L2CAP_CONNECT_IND_T;
 
 /*!
@@ -281,10 +281,10 @@ typedef struct
 typedef struct
 {
     Obex        session;        /**< Obex Session Handle */
-	uint8       nonce[OBEX_SIZE_DIGEST];/**< The Challenge nonce string */
+	u8       nonce[OBEX_SIZE_DIGEST];/**< The Challenge nonce string */
 	ObexAuthOptions options;    /**< The options field in the Challenge */
-	uint8       sizeRealm;      /**< Length of realm string */
-	const uint8* realm;         /**< The realm string */
+	u8       sizeRealm;      /**< Length of realm string */
+	const u8* realm;         /**< The realm string */
 } OBEX_AUTH_CLG_IND_T;
 
 /*!
@@ -300,9 +300,9 @@ typedef struct
 typedef struct
 {
     Obex    session;            /**< Obex Session Handle */
-	uint8   request[OBEX_SIZE_DIGEST];/**< The request digest string */
-	uint16  sizeUserId;               /**< The User ID string length */
-	uint8   userId[1];                /**< The User ID string */
+	u8   request[OBEX_SIZE_DIGEST];/**< The request digest string */
+	u16  sizeUserId;               /**< The User ID string length */
+	u8   userId[1];                /**< The User ID string */
 } OBEX_AUTH_RSP_CFM_T;
 
 /*!
@@ -315,7 +315,7 @@ typedef struct
 {
     Obex        session;   /**< Obex Session Handle */
     ObexFolderPath flags;  /**< The direction flag */
-    uint16      sourceLen; /**< Size of the source */
+    u16      sourceLen; /**< Size of the source */
     Source      source;    /**< The source for Unicode folder name  */
 } OBEX_SET_PATH_IND_T;  
 
@@ -355,7 +355,7 @@ typedef struct
 {
     Obex        session;   /**< Obex Session Handle */
     bool        final;     /**< TRUE if it is the last one is a multi-Put */
-    uint16      sourceLen; /**< Size of the source */
+    u16      sourceLen; /**< Size of the source */
     Source      source;    /**< The source Object containing the Headers */
 } OBEX_PUT_IND_T;  
 
@@ -379,7 +379,7 @@ typedef struct
 {
     Obex        session;   /**< Obex Session Handle */
     bool        final;     /**< TRUE if it is the last one is a multi-Get */
-    uint16      sourceLen; /**< Size of the source */
+    u16      sourceLen; /**< Size of the source */
     Source      source;    /**< The source Object containing the Headers */
 } OBEX_GET_IND_T;  
 
@@ -392,7 +392,7 @@ typedef struct
     Obex        session;          /**< Obex Session Handle */
     ObexStatus  status;           /**< Connection Status */
     bdaddr      remoteAddr;       /**< Remote device BDADDR */
-    uint16      channel;          /**< Server Channel or PSM */
+    u16      channel;          /**< Server Channel or PSM */
 
 }OBEX_CREATE_SESSION_CFM_T;
 
@@ -406,7 +406,7 @@ typedef struct
 {
     Obex        session;        /**< Obex Session Handle */
     ObexStatus  status;         /**< obex_remote_success on success */
-    uint16      maxPacketLen;   /**< Maximum OBEX packet size */
+    u16      maxPacketLen;   /**< Maximum OBEX packet size */
 
 } OBEX_CONNECT_CFM_T, OBEX_L2CAP_CONNECT_CFM_T;
 
@@ -428,7 +428,7 @@ typedef struct
 {
     Obex        session;   /**< Obex Session Handle */
     ObexStatus  status;    /**< Obex_remote_success on final success */
-    uint16      sourceLen; /**< Size of the source */
+    u16      sourceLen; /**< Size of the source */
     Source      source;    /**< The source Object containing the Headers */
 } OBEX_PUT_CFM_T;     
 
@@ -451,7 +451,7 @@ typedef struct
 {
     Obex        session;   /**< Obex Session Handle */
     ObexStatus  status;    /**< obex_remote_success on final success */
-    uint16      sourceLen; /**< Size of the source */
+    u16      sourceLen; /**< Size of the source */
     Source      source;    /**< The source containing the Headers */
 } OBEX_GET_CFM_T;     
 
@@ -520,7 +520,7 @@ typedef struct
     final status of the Connection.  
 */
 Task ObexConnectRequest( const bdaddr          *addr,
-                        uint8                 rfcChannel,
+                        u8                 rfcChannel,
                         const ObexConnParams  *connParams );
 
 
@@ -550,7 +550,7 @@ Task ObexConnectRequest( const bdaddr          *addr,
     only with v2 variant of the obex library. 
 */
 Task ObexL2capConnectRequest( const bdaddr          *addr,
-                              uint16                psm,
+                              u16                psm,
                               const ObexConnParams  *connParams );
 
 /*!
@@ -631,8 +631,8 @@ void ObexPutRequest( Obex session, bool final );
 */
 void ObexSetPathRequest( Obex session, 
                          ObexFolderPath flags, 
-                         uint16 folderLen, 
-                         const uint8* folderName);
+                         u16 folderLen, 
+                         const u8* folderName);
 
 /*!
 	@brief Delete a remote Object.
@@ -645,7 +645,7 @@ void ObexSetPathRequest( Obex session,
     OBEX_DELETE_CFM_T OBEX_DELETE_CFM
     @endlink is sent to the application. 
 */
-void ObexDeleteRequest(Obex session, uint16 sizeName, const uint8* name);
+void ObexDeleteRequest(Obex session, u16 sizeName, const u8* name);
 
 /*
     @brief Send a OBEX GET request
@@ -719,7 +719,7 @@ void ObexAbort( Obex session );
     will not receive any more messages related to the rejected connection.
 */
 Task ObexConnectResponse( Sink					sink,
-                          uint8                 rfcChannel,
+                          u8                 rfcChannel,
                           bool                  accept,
                           const ObexConnParams* connParams);   
 
@@ -755,9 +755,9 @@ Task ObexConnectResponse( Sink					sink,
     of the OBEX library.
    
 */
-Task ObexL2capConnectResponse( uint16                psm,
-                               uint8                 identifier,
-                               uint16                connId,
+Task ObexL2capConnectResponse( u16                psm,
+                               u8                 identifier,
+                               u16                connId,
                                bool                  accept,
                                const ObexConnParams* connParams ); 
 
@@ -845,10 +845,10 @@ void ObexSetPathResponse( Obex session, ObexResponse response );
     it just returns OBEX_CONNECT_CFM with failure status.
 */
 void ObexAuthReqResponse( Obex session,
-                          const uint8* nonce,
+                          const u8* nonce,
                           ObexAuthOptions options,
-                          uint16 realmLen,
-                          const uint8* realm );
+                          u16 realmLen,
+                          const u8* realm );
 
 /*!
     @brief Respond to the remote OBEX Authentication Challenge.
@@ -878,9 +878,9 @@ void ObexAuthReqResponse( Obex session,
     @link OBEX_CONNECT_CFM_T OBEX_CONNECT_CFM @endlink with status.
 */
 void ObexAuthClgResponse( Obex session,
-                          const uint8* reqDigest, 
-                          uint8 userIdLen,
-                          const uint8* userId ); 
+                          const u8* reqDigest, 
+                          u8 userIdLen,
+                          const u8* userId ); 
 
 /*! 
     @brief Create a new Object for PUT or GET 
@@ -906,7 +906,7 @@ void ObexAuthClgResponse( Obex session,
     delete the Object by calling ObexObjDelete( ). If the application 
     wants to use SRM mode, it must call the ObexSrmObjNew() API. 
 */
-uint16 ObexObjNew( Obex session );
+u16 ObexObjNew( Obex session );
 
 /*! 
     @brief Create a new Object for PUT or GET with SRM enabled.
@@ -923,7 +923,7 @@ uint16 ObexObjNew( Obex session );
     SRMP headers in the GET/PUT packet. The srmpWait is valid only
     for a PUT response or a GET request.
 */
-uint16 ObexObjSrmNew( Obex session, bool obexPut, bool srmpWait );
+u16 ObexObjSrmNew( Obex session, bool obexPut, bool srmpWait );
 
 
 /*!
@@ -954,7 +954,7 @@ void ObexObjDelete( Obex session );
 */
 bool ObexObjAddVariableHdr( Obex session,  
                             ObexSeqHeaderId hdrId,
-                            uint16  hdrLen,
+                            u16  hdrLen,
                             Source hdrVal );
 
 /*!
@@ -966,7 +966,7 @@ bool ObexObjAddVariableHdr( Obex session,
 
     Add a 4 byte or 1 byte unsigned header to the OBEX object.
 */
-bool ObexObjAddByteHdr( Obex session, ObexByteHeaderId hdrId, uint32 hdrVal);
+bool ObexObjAddByteHdr( Obex session, ObexByteHeaderId hdrId, u32 hdrVal);
 
 /*!
     @brief Map the OBEX header value in the Source buffer
@@ -979,10 +979,10 @@ bool ObexObjAddByteHdr( Obex session, ObexByteHeaderId hdrId, uint32 hdrVal);
     The application must copy the returned value for reuse if it is dropping 
     the source buffer or calling any other OBEX transaction APIs.
 */ 
-const uint8* ObexObjMapHdrValue( ObexSeqHeaderId hdrId,
-                                 uint16  sourceLen,
+const u8* ObexObjMapHdrValue( ObexSeqHeaderId hdrId,
+                                 u16  sourceLen,
                                  Source  source,
-                                 uint16* hdrLen );
+                                 u16* hdrLen );
 
 
 /*!
@@ -998,7 +998,7 @@ const uint8* ObexObjMapHdrValue( ObexSeqHeaderId hdrId,
 */
 Source ObexObjFilterHdrValue( Obex session,
                               ObexSeqHeaderId  hdrId,
-                              uint16 *hdrLen );
+                              u16 *hdrLen );
 
 /*!
     @brief Extract 4 byte header value 
@@ -1010,8 +1010,8 @@ Source ObexObjFilterHdrValue( Obex session,
     Extract a 4 byte or 1 byte header from the source. On failure it returns 
     0xFFFFFFFF.
 */
-uint32 ObexObjExtractByteHdrValue( ObexByteHeaderId hdrId,
-                                   uint16  sourceLen,
+u32 ObexObjExtractByteHdrValue( ObexByteHeaderId hdrId,
+                                   u16  sourceLen,
                                    Source  source );
 
 
@@ -1044,7 +1044,7 @@ Sink ObexGetSink( Obex session );
     session and the local server channel for the Server session. On failure
     it returns OBEX_INVALID_CHANNEL.
 */
-uint8 ObexGetChannel( Obex session );  
+u8 ObexGetChannel( Obex session );  
 
 /*!
     @brief  Get the L2CAP PSM associated with the OBEX connection.
@@ -1055,7 +1055,7 @@ uint8 ObexGetChannel( Obex session );
     wise it returns OBEX_INVALID_CHANNEL.
 */
 
-uint16 ObexGetPsm( Obex session );  
+u16 ObexGetPsm( Obex session );  
 
 #endif /* OBEX_H_ */
 

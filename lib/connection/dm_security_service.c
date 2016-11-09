@@ -25,7 +25,7 @@ NOTES
 
 
 /*****************************************************************************/
-void ConnectionSmRegisterIncomingService(dm_protocol_id protocol_id, uint32 channel, dm_security_in security)
+void ConnectionSmRegisterIncomingService(dm_protocol_id protocol_id, u32 channel, dm_security_in security)
 {
     /* Check params are within allowed values - debug build only */
 #ifdef CONNECTION_DEBUG_LIB
@@ -60,7 +60,7 @@ void ConnectionSmRegisterIncomingService(dm_protocol_id protocol_id, uint32 chan
 
 
 /*****************************************************************************/
-void ConnectionSmUnRegisterIncomingService(dm_protocol_id protocol_id, uint32 channel)
+void ConnectionSmUnRegisterIncomingService(dm_protocol_id protocol_id, u32 channel)
 {
 #ifdef CONNECTION_DEBUG_LIB
     if ((protocol_id != protocol_l2cap) && (protocol_id != protocol_rfcomm))

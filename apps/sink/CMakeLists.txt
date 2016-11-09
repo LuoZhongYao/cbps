@@ -35,7 +35,6 @@ if (SRC)
         fm_rx_api
         swat
         csr_i2s_audio_plugin
-        gaia
         gatt
         gatt_imm_alert_client
         gatt_apple_notification_client
@@ -43,7 +42,6 @@ if (SRC)
         gatt_device_info_client
         gatt_hid_client
         byte_utils
-        upgrade
         gatt_manager
         gatt_battery_server
         gatt_server
@@ -53,5 +51,7 @@ if (SRC)
         gatt_link_loss_server
         csr_multi_channel_plugin
         gatt_client
-        gatt_scan_params_client)
+        gatt_scan_params_client
+        kernel
+        )
 endif()

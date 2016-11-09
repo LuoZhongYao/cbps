@@ -71,7 +71,7 @@ typedef struct sync_Tag
     Sink a2dp_sink[MAX_BT_SINKS];    
     Transform t[MAX_BT_SINKS];
     Task codec_task;    
-    uint16 packet_size;
+    u16 packet_size;
     Source input_source;
     Sink input_sink;
     A2dpEncoderInputDeviceType input_device_type;
@@ -79,10 +79,10 @@ typedef struct sync_Tag
     bool mic_mute;
     bool speaker_mute;
     A2dpEncoderEqMode eq;
-    uint16 plugin;
-    uint32 rate;
-    uint8 bitpool;
-    uint8 bad_link_bitpool;
+    u16 plugin;
+    u32 rate;
+    u8 bitpool;
+    u8 bad_link_bitpool;
     bool content_protection;
 } CSR_ENCODER_T;
 
@@ -95,9 +95,9 @@ static CSR_ENCODER_T *ENCODER = NULL;
 NAME    
     csr_encoder_aptx_set_sample_rate - Informs the APT-X DSP application of the configured sample rate
 */   
-static void csr_encoder_aptx_set_sample_rate(uint32 rate)
+static void csr_encoder_aptx_set_sample_rate(u32 rate)
 {
-    uint16 aptx_format = 0;
+    u16 aptx_format = 0;
     
     switch (rate) 
     {
@@ -139,7 +139,7 @@ static void csr_encoder_aptx_set_sample_rate(uint32 rate)
 NAME    
     csr_encoder_load_dsp_application - Loads the DSP application for the configured Stream-End Point
 */   
-static void csr_encoder_load_dsp_application(uint16 plugin)
+static void csr_encoder_load_dsp_application(u16 plugin)
 {
     FILE_INDEX index = FILE_NONE;
     char* kap_file = NULL;
@@ -185,7 +185,7 @@ static void csr_encoder_load_dsp_application(uint16 plugin)
 NAME    
     csr_encoder_route_incoming_data - Routes incoming Bluetooth data to the DSP, or discards unwanted data
 */   
-static void csr_encoder_route_incoming_data(Sink sink, uint16 instance, uint16 dsp_port, bool bidirectional)
+static void csr_encoder_route_incoming_data(Sink sink, u16 instance, u16 dsp_port, bool bidirectional)
 {
     if (instance == 0)
     {                
@@ -212,9 +212,9 @@ static void csr_encoder_route_incoming_data(Sink sink, uint16 instance, uint16 d
 NAME    
     csr_encoder_route_outgoinging_data - Route for outgoing encoded data and start encode
 */
-static void csr_encoder_route_outgoinging_data(uint16 plugin, uint16 instance, uint16 dsp_port, Sink sink, uint32 rate)
+static void csr_encoder_route_outgoinging_data(u16 plugin, u16 instance, u16 dsp_port, Sink sink, u32 rate)
 {
-    PRINT(("ENCODER: route_outgoing plugin[%d] instance[%d] dsp_port[%d] sink[0x%x] rate[0x%x]\n", plugin, instance, dsp_port, (uint16)sink, (uint16)rate));
+    PRINT(("ENCODER: route_outgoing plugin[%d] instance[%d] dsp_port[%d] sink[0x%x] rate[0x%x]\n", plugin, instance, dsp_port, (u16)sink, (u16)rate));
     
     StreamDisconnect(StreamKalimbaSource(dsp_port), 0);
     
@@ -225,7 +225,7 @@ static void csr_encoder_route_outgoinging_data(uint16 plugin, uint16 instance, u
             bool transform_status;
             
             /* Send message to DSP that this is the SBC encoder */
-            if (!KalimbaSendMessage(KALIMBA_CODEC_TYPE_MESSAGE, CSR_ENCODER_CODEC_SBC, (uint16)rate, 0, 0))
+            if (!KalimbaSendMessage(KALIMBA_CODEC_TYPE_MESSAGE, CSR_ENCODER_CODEC_SBC, (u16)rate, 0, 0))
             {
                 Panic();
             }
@@ -255,7 +255,7 @@ static void csr_encoder_route_outgoinging_data(uint16 plugin, uint16 instance, u
             /* discard any incoming data */
             StreamConnectDispose(StreamSourceFromSink(sink));
     
-            PRINT(("ENCODER: SBC TransformStart sink:0x%x transform[0x%x] packet_size[0x%x] success[%d]\n",(uint16)sink, (uint16)ENCODER->t[instance], ENCODER->packet_size, transform_status));
+            PRINT(("ENCODER: SBC TransformStart sink:0x%x transform[0x%x] packet_size[0x%x] success[%d]\n",(u16)sink, (u16)ENCODER->t[instance], ENCODER->packet_size, transform_status));
         }
         break;
         
@@ -267,7 +267,7 @@ static void csr_encoder_route_outgoinging_data(uint16 plugin, uint16 instance, u
                 codec = CSR_ENCODER_CODEC_FASTSTREAM_BIDIR;
             
             /* Send message to DSP that this is the FastStream encoder (uni or bi - directional) */
-            if (!KalimbaSendMessage(KALIMBA_CODEC_TYPE_MESSAGE, codec, (uint16)rate, 0, 0))
+            if (!KalimbaSendMessage(KALIMBA_CODEC_TYPE_MESSAGE, codec, (u16)rate, 0, 0))
             {
                 Panic();
             }
@@ -278,14 +278,14 @@ static void csr_encoder_route_outgoinging_data(uint16 plugin, uint16 instance, u
             /* check for routing of bi-directional Faststream */            
             csr_encoder_route_incoming_data(sink, instance, dsp_port, ENCODER->bidirectional);
             
-            PRINT(("ENCODER: Faststream Connect sink:0x%x bidirectional:0x%x\n", (uint16)sink, ENCODER->bidirectional));
+            PRINT(("ENCODER: Faststream Connect sink:0x%x bidirectional:0x%x\n", (u16)sink, ENCODER->bidirectional));
         }
         break;
         
         case APTX_ENCODER:
         {
             /* Send message to DSP that this is the APTX encoder */
-            if (!KalimbaSendMessage(KALIMBA_CODEC_TYPE_MESSAGE, CSR_ENCODER_CODEC_APTX, (uint16)rate, 0, 0))
+            if (!KalimbaSendMessage(KALIMBA_CODEC_TYPE_MESSAGE, CSR_ENCODER_CODEC_APTX, (u16)rate, 0, 0))
             {
                 Panic();
             }
@@ -320,7 +320,7 @@ static void csr_encoder_route_outgoinging_data(uint16 plugin, uint16 instance, u
             /* discard any incoming data */
             StreamConnectDispose(StreamSourceFromSink(sink));
             
-            PRINT(("ENCODER: APTX connect sink:0x%x\n", (uint16)sink));
+            PRINT(("ENCODER: APTX connect sink:0x%x\n", (u16)sink));
         }
         break;
         
@@ -332,7 +332,7 @@ static void csr_encoder_route_outgoinging_data(uint16 plugin, uint16 instance, u
                 codec = CSR_ENCODER_CODEC_APTX_LL_BIDIR;
             
             /* Send message to DSP that this is the APTX Low Latency encoder (uni or bi - directional) */
-            if (!KalimbaSendMessage(KALIMBA_CODEC_TYPE_MESSAGE, codec, (uint16)rate, 0, 0))
+            if (!KalimbaSendMessage(KALIMBA_CODEC_TYPE_MESSAGE, codec, (u16)rate, 0, 0))
             {
                 Panic();
             }
@@ -369,7 +369,7 @@ static void csr_encoder_route_outgoinging_data(uint16 plugin, uint16 instance, u
             /* inform APT-X DSP application of the sample rate */
             csr_encoder_aptx_set_sample_rate(rate);
             
-            PRINT(("ENCODER: APTX Low Latency Connect sink:0x%x bidirectional:0x%x\n", (uint16)sink, ENCODER->bidirectional));
+            PRINT(("ENCODER: APTX Low Latency Connect sink:0x%x bidirectional:0x%x\n", (u16)sink, ENCODER->bidirectional));
         }
         break;
         
@@ -385,7 +385,7 @@ static void csr_encoder_route_outgoinging_data(uint16 plugin, uint16 instance, u
 NAME    
     csr_encoder_configure_encoding - Sends the encoding parameters to the DSP
 */
-static void csr_encoder_configure_encoding(uint8 format, uint8 bitpool)
+static void csr_encoder_configure_encoding(u8 format, u8 bitpool)
 {
     PRINT(("ENCODER: configure_encoding format[0x%x] bitpool[0x%x]\n", format, bitpool));
     
@@ -409,7 +409,7 @@ static void csr_encoder_configure_encoding(uint8 format, uint8 bitpool)
 NAME    
     csr_encoder_connect_input_device - Routes USB \ Analogue input
 */
-static void csr_encoder_connect_input_device(Source input_source, Sink input_sink, uint32 rate)
+static void csr_encoder_connect_input_device(Source input_source, Sink input_sink, u32 rate)
 {
     PRINT(("ENCODER: connect_input_device type[%d] rate[0x%lx]\n", ENCODER->input_device_type, rate));
 #ifdef USB_AUDIO    
@@ -429,7 +429,7 @@ static void csr_encoder_connect_input_device(Source input_source, Sink input_sin
             /* Select the source type */
             PanicFalse(KalimbaSendMessage(KALIMBA_ENCODER_SELECT, KALIMBA_ENCODER_USB, 0, 0, 0));
             
-            PRINT(("    usb connected mic[0x%x] speaker [0x%x]\n", (uint16)transform_mic, (uint16)transform_speaker));
+            PRINT(("    usb connected mic[0x%x] speaker [0x%x]\n", (u16)transform_mic, (u16)transform_speaker));
         }
 #endif  
 #ifdef SPDIF_AUDIO
@@ -552,7 +552,7 @@ static void csr_encoder_disconnect_input_device(void)
 NAME    
     csr_encoder_disconnect_bt_stream - Disconnects Bluetooth routing to DSP
 */
-static void csr_encoder_disconnect_bt_stream(uint16 index)
+static void csr_encoder_disconnect_bt_stream(u16 index)
 {
     /* Disconnect the Kalimba source from the media sink */
     StreamDisconnect(StreamKalimbaSource(index + DSP_PORT_A2DP_DEV_A), ENCODER->a2dp_sink[index]);    
@@ -563,7 +563,7 @@ static void csr_encoder_disconnect_bt_stream(uint16 index)
     StreamConnectDispose(StreamSourceFromSink(ENCODER->a2dp_sink[index]));
     
             
-    PRINT(("ENCODER: Disconnect media i:%d sink:0x%x\n", index, (uint16)ENCODER->a2dp_sink[index]));
+    PRINT(("ENCODER: Disconnect media i:%d sink:0x%x\n", index, (u16)ENCODER->a2dp_sink[index]));
                 
     /* clear the audio sink */    
     ENCODER->a2dp_sink[index] = 0;
@@ -638,10 +638,10 @@ static void csr_encoder_unmute_mic(void)
 DESCRIPTION
     This function connects a synchronous audio stream to the pcm subsystem
 */ 
-void CsrA2dpEncoderPluginConnect(A2dpEncoderPluginTaskdata *task, Task codec_task, uint16 volume, uint32 rate, AUDIO_MODE_T mode, const void *params)
+void CsrA2dpEncoderPluginConnect(A2dpEncoderPluginTaskdata *task, Task codec_task, u16 volume, u32 rate, AUDIO_MODE_T mode, const void *params)
 {    
     A2dpEncoderPluginConnectParams *codecData = (A2dpEncoderPluginConnectParams *)params;
-    uint16 i = 0;
+    u16 i = 0;
 
     if (!codecData)
         Panic();
@@ -750,7 +750,7 @@ DESCRIPTION
 */
 void CsrA2dpEncoderPluginDisconnect(Task plugin_task) 
 {   
-    uint16 i;
+    u16 i;
     
     if (!ENCODER)
         Panic() ;
@@ -786,7 +786,7 @@ void CsrA2dpEncoderPluginDisconnect(Task plugin_task)
 DESCRIPTION
     Indicate the volume has changed
 */
-void CsrA2dpEncoderPluginSetVolume(uint16 volume) 
+void CsrA2dpEncoderPluginSetVolume(u16 volume) 
 {
 }
 
@@ -800,8 +800,8 @@ void CsrA2dpEncoderPluginSetMode(A2dpEncoderPluginTaskdata *task, AUDIO_MODE_T m
     A2dpEncoderEqMode eq = ENCODER->eq;
     Sink connect_sink = 0;
     Sink disconnect_sink = 0;
-    uint8 bitpool = 0;
-    uint8 bad_link_bitpool = 0;
+    u8 bitpool = 0;
+    u8 bad_link_bitpool = 0;
     
     if (mode_params)
     {
@@ -860,28 +860,28 @@ void CsrA2dpEncoderPluginSetMode(A2dpEncoderPluginTaskdata *task, AUDIO_MODE_T m
 #ifdef MULTIPLE_STREAMS    
     if (connect_sink)
     {
-        uint16 i;
+        u16 i;
         for (i = 0; i < MAX_BT_SINKS; i++)
         {
             if ((ENCODER->a2dp_sink[i] == 0) && connect_sink)
             {                                    
                 ENCODER->a2dp_sink[i] = connect_sink;
                 csr_encoder_route_outgoinging_data(ENCODER->plugin, i, i == 0 ? DSP_PORT_A2DP_DEV_A : DSP_PORT_A2DP_DEV_B, ENCODER->a2dp_sink[i], ENCODER->rate);                      
-                PRINT(("ENCODER: Connect Sink 0x%x\n", (uint16)connect_sink));
+                PRINT(("ENCODER: Connect Sink 0x%x\n", (u16)connect_sink));
             }
         }
         mode_params->connect_sink = 0;
     }
     if (disconnect_sink)
     {
-        uint16 i;
+        u16 i;
         for (i = 0; i < MAX_BT_SINKS; i++)
         {
             if (ENCODER->a2dp_sink[i] == disconnect_sink)
             {                                        
                 csr_encoder_disconnect_bt_stream(i);  
 
-                PRINT(("ENCODER: Disconnect Sink 0x%x\n", (uint16)disconnect_sink));
+                PRINT(("ENCODER: Disconnect Sink 0x%x\n", (u16)disconnect_sink));
             }
         }
         mode_params->disconnect_sink = 0;
@@ -910,7 +910,7 @@ FUNCTION
 DESCRIPTION
     Handle internal messages and messages from the DSP
 */
-void CsrA2dpEncoderPluginInternalMessage(A2dpEncoderPluginTaskdata *task, uint16 id, Message message)
+void CsrA2dpEncoderPluginInternalMessage(A2dpEncoderPluginTaskdata *task, u16 id, Message message)
 {
     switch (id)
     {
@@ -937,7 +937,7 @@ void CsrA2dpEncoderPluginInternalMessage(A2dpEncoderPluginTaskdata *task, uint16
 
                         if (ENCODER->content_protection)
                         {
-                            uint16 scms_bits = 0; /* must be initialised for later logic to work */
+                            u16 scms_bits = 0; /* must be initialised for later logic to work */
 
                             /* always process channel status, it may change and 0 is a valid state
                              * that we may need to tell the RTP transform about. */

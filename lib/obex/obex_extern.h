@@ -97,8 +97,8 @@ typedef struct
 
     /* The L2CAP PSM value if l2capObex is TRUE, otherwise RFCOMM channel */
     union{
-        uint8  channel;
-        uint16 psm;
+        u8  channel;
+        u16 psm;
     }u;
 
 }ObexChannel;
@@ -112,8 +112,8 @@ typedef struct
         Sink sink;
         struct
         {
-            uint8 identifier;
-            uint16 connId;
+            u8 identifier;
+            u16 connId;
         } l2cap;        
     } u;
 }ObexConnId;
@@ -143,7 +143,7 @@ typedef enum
 typedef struct{
     Obex        session;
     ObexStatus  status;
-    uint16      hdrsLen;
+    u16      hdrsLen;
     Source      hdrs;
 } OBEX_MESSAGE_STATUS_T;
 
@@ -151,7 +151,7 @@ typedef struct{
 typedef struct{
     Obex        session;
     bool        final;
-    uint16      hdrsLen;
+    u16      hdrsLen;
     Source      hdrs;
 } OBEX_MESSAGE_IND_T;
 
@@ -183,21 +183,21 @@ void obexStatusCfm( Obex        session,
                     ObexStatus  status,
                     ObexMessageId id,
                     Source  src,
-                    uint16  srcLen );
+                    u16  srcLen );
 void obexCommandInd( Obex        session, 
                      ObexMessageId id,
                      bool          final,
                      Source        src,
-                     uint16        srcLen );
+                     u16        srcLen );
 void obexAbortInd( Obex session ); 
 void obexAuthReqInd( Obex session );
-void obexAuthClgInd( Obex session, const uint8* pkt, uint16 pktLen );
-void obexAuthRspCfm( Obex session, const uint8* pkt, uint16 pktLen );
+void obexAuthClgInd( Obex session, const u8* pkt, u16 pktLen );
+void obexAuthRspCfm( Obex session, const u8* pkt, u16 pktLen );
 
 /***********************************************************************
 All packet and utility routines
 *************************************************************************/
-uint16 obexNewPacket( Obex session, uint16 size, uint8 opcode);
+u16 obexNewPacket( Obex session, u16 size, u8 opcode);
 void obexObjDelete( Obex session );
 void obexObjFlush( Obex session, bool out );
 
@@ -205,11 +205,11 @@ void obexObjFlush( Obex session, bool out );
 /**********************************************************************
 All Command and Response routines
 ***********************************************************************/
-void obexPutReq( Obex session, uint8 opcode );
-void obexGetReq( Obex session, uint8 opcode );
+void obexPutReq( Obex session, u8 opcode );
+void obexGetReq( Obex session, u8 opcode );
 void obexSendResponse( Obex session, ObexResponse resp );
 void obexSendErrorResponse( Obex session, ObexResponse response );
-void obexSetPathReq( Obex session, uint8 flags );
+void obexSetPathReq( Obex session, u8 flags );
 void obexDeleteReq( Obex session );
 void obexAbortReq( Obex session );
 void obexDisconnectReq( Obex session );
@@ -217,7 +217,7 @@ void obexSourceEmpty( Obex session );
 
 #ifdef GOEP_VERSION_2_0
 
-uint16 obexNewSrmPacket( Obex session, bool srm, bool srmWait );
+u16 obexNewSrmPacket( Obex session, bool srm, bool srmWait );
 
 #endif /* GOEP_VERSION_2_0 */
 

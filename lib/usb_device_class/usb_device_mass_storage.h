@@ -99,41 +99,41 @@ Copyright (c) 2010 - 2015 Qualcomm Technologies International, Ltd.
 /* Mass Storage Command Block Wrapper (CBW) */
 typedef struct
 {
-    uint8 dCBWSignature[4];                /* defined value to identify this packet as a CBW */
-    uint8 dCBWTag[4];                      /* the tag that should be used in the CSW */
-    uint8 dCBWDataTransferLength[4];       /* bytes the host expects to be transferred */
-    uint8 bCBWFlags[1];                    /* bit 7 = 0 - data out from host to device; 1 - device to host: other bits = 0 */
-    uint8 bCBWLUN[1];                      /* LUN that the command is the target for */
-    uint8 bCBWCBLength[1];                 /* length of CBWCB */
-    uint8 CBWCB[16];                       /* SCSI command */
+    u8 dCBWSignature[4];                /* defined value to identify this packet as a CBW */
+    u8 dCBWTag[4];                      /* the tag that should be used in the CSW */
+    u8 dCBWDataTransferLength[4];       /* bytes the host expects to be transferred */
+    u8 bCBWFlags[1];                    /* bit 7 = 0 - data out from host to device; 1 - device to host: other bits = 0 */
+    u8 bCBWLUN[1];                      /* LUN that the command is the target for */
+    u8 bCBWCBLength[1];                 /* length of CBWCB */
+    u8 CBWCB[16];                       /* SCSI command */
 } UsbCbwType;
 
 
 /* Mass Storage Command Status Wrapper (CSW) */
 typedef struct
 {
-    uint8 dCSWSignature[4];                /* defined value to identify this packet as a CSW */
-    uint8 dCSWTag[4];                      /* the same tag as used in the CBW */
-    uint8 dCSWDataResidue[4];              /* difference between dCBWDataTransferLength and the data actually sent/processed */
-    uint8 bCSWStatus[1];                   /* status of the CSW */
+    u8 dCSWSignature[4];                /* defined value to identify this packet as a CSW */
+    u8 dCSWTag[4];                      /* the same tag as used in the CBW */
+    u8 dCSWDataResidue[4];              /* difference between dCBWDataTransferLength and the data actually sent/processed */
+    u8 bCSWStatus[1];                   /* status of the CSW */
 } UsbCswType;
 
 
 /* Inquiry Response structure */
 typedef struct 
 {
-    uint8 Peripheral[1];                   /* b7-b5:Peripheral_Qualifier; b4-b0:Peripheral_DevType */
-    uint8 Removble[1];                      /* b7:removable medium; b6-b0:reserved */
-    uint8 Version[1];                       /* version*/
-    uint8 Response_Data_Format[1];          /* b7-b6:Obsolete; b5:Access control co-ordinator; b4:hierarchical addressing support; 
+    u8 Peripheral[1];                   /* b7-b5:Peripheral_Qualifier; b4-b0:Peripheral_DevType */
+    u8 Removble[1];                      /* b7:removable medium; b6-b0:reserved */
+    u8 Version[1];                       /* version*/
+    u8 Response_Data_Format[1];          /* b7-b6:Obsolete; b5:Access control co-ordinator; b4:hierarchical addressing support; 
                                                b3-b0:2 indicates response is in format defined by spec */
-    uint8 AdditionalLength[1];              /* length in bytes of remaining in standard inquiry data */
-    uint8 Sccstp[1];                        /* b7:SCCS; b6:ACC; b5-b4:TGPS; b3:3PC; b2-b1:Reserved, b0:Protected */
-    uint8 bqueetc[1];                       /* b7:bque; b6:EncServ; b5:VS; b4:MultiP; b3:MChngr; b2-b1:Obsolete; b0:Addr16    */
-    uint8 CmdQue[1];                        /* b7-b6:Obsolete; b5:WBUS; b4:Sync; b3:Linked; b2:Obsolete; b1:Cmdque; b0:VS */
-    uint8 vendorID[8];                      /* vendor ID */
-    uint8 productID[16];                    /* product ID */
-    uint8 productRev[4];                    /* product revision */
+    u8 AdditionalLength[1];              /* length in bytes of remaining in standard inquiry data */
+    u8 Sccstp[1];                        /* b7:SCCS; b6:ACC; b5-b4:TGPS; b3:3PC; b2-b1:Reserved, b0:Protected */
+    u8 bqueetc[1];                       /* b7:bque; b6:EncServ; b5:VS; b4:MultiP; b3:MChngr; b2-b1:Obsolete; b0:Addr16    */
+    u8 CmdQue[1];                        /* b7-b6:Obsolete; b5:WBUS; b4:Sync; b3:Linked; b2:Obsolete; b1:Cmdque; b0:VS */
+    u8 vendorID[8];                      /* vendor ID */
+    u8 productID[16];                    /* product ID */
+    u8 productRev[4];                    /* product revision */
 } InquiryResponseType;
 
 #define SIZE_INQUIRY_RESPONSE sizeof(InquiryResponseType)
@@ -142,16 +142,16 @@ typedef struct
 /* Request Sense Response structure */
 typedef struct 
 {
-    uint8 Valid_ResponseCode[1];            /* b7:Valid; b6-b0:Response Code */
-    uint8 Obsolete[1];                      /* always set to 0 */
-    uint8 SenseKey[1];                      /* b7:Filemark; b6:EOM; b5:ILI; b4:Reserved; b3-b0:Sense Key */
-    uint8 Information[4];                   /* device type or command specific */
-    uint8 AddSenseLen[1];                   /* number of additional sense bytes */
-    uint8 CmdSpecificInfo[4];               /* command sepcific */
-    uint8 ASC[1];                           /* additional sense code */
-    uint8 ASCQ[1];                          /* additional sense code qualifier */
-    uint8 FRUC[1];                          /* field replaceable unit code */
-    uint8 SenseKeySpecific[3];              /* msb is SKSV */    
+    u8 Valid_ResponseCode[1];            /* b7:Valid; b6-b0:Response Code */
+    u8 Obsolete[1];                      /* always set to 0 */
+    u8 SenseKey[1];                      /* b7:Filemark; b6:EOM; b5:ILI; b4:Reserved; b3-b0:Sense Key */
+    u8 Information[4];                   /* device type or command specific */
+    u8 AddSenseLen[1];                   /* number of additional sense bytes */
+    u8 CmdSpecificInfo[4];               /* command sepcific */
+    u8 ASC[1];                           /* additional sense code */
+    u8 ASCQ[1];                          /* additional sense code qualifier */
+    u8 FRUC[1];                          /* field replaceable unit code */
+    u8 SenseKeySpecific[3];              /* msb is SKSV */    
     /* bytes 18 - n are additional sense bytes, but not defined here */
 } RequestSenseResponse;
 
@@ -161,8 +161,8 @@ typedef struct
 /* Read Capacity 10 Response structure */
 typedef struct 
 {
-    uint8 LBA[4];                        /* Last LBA value */
-    uint8 BlockLength[4];                /* Block length */ 
+    u8 LBA[4];                        /* Last LBA value */
+    u8 BlockLength[4];                /* Block length */ 
 } ReadCapacity10Response;
 
 #define SIZE_READ_CAPACITY10_RESPONSE sizeof(ReadCapacity10Response)
@@ -170,10 +170,10 @@ typedef struct
 /* Read Capacity 16 Response structure */
 typedef struct 
 {
-    uint8 LBA[8];                        /* Last LBA value */
-    uint8 BlockLength[4];                /* Block length */     
-    uint8 ProtPType[1];                  /* b7-b4 Reserved; b3-b1 P_TYPE; b1 PROT_EN */
-    uint8 Reserved[19];                  /* Reserved */   
+    u8 LBA[8];                        /* Last LBA value */
+    u8 BlockLength[4];                /* Block length */     
+    u8 ProtPType[1];                  /* b7-b4 Reserved; b3-b1 P_TYPE; b1 PROT_EN */
+    u8 Reserved[19];                  /* Reserved */   
 } ReadCapacity16Response;
 
 #define SIZE_READ_CAPACITY16_RESPONSE sizeof(ReadCapacity16Response)
@@ -182,9 +182,9 @@ typedef struct
 /* Read Format Capacities Response structure */
 typedef struct 
 {
-    uint8 CapacityListHeader[4];
-    uint8 CurrentMaximumCapacityHeader[8];
-    uint8 FormattableCapacityDescriptor[8];
+    u8 CapacityListHeader[4];
+    u8 CurrentMaximumCapacityHeader[8];
+    u8 FormattableCapacityDescriptor[8];
 } ReadFormatCapacitiesResponse;
 
 #define SIZE_READ_FORMAT_CAPACITIES_RESPONSE sizeof(ReadFormatCapacitiesResponse)
@@ -193,10 +193,10 @@ typedef struct
 /* Mode Parameter Header */
 typedef struct 
 {
-    uint8 ModeDataLength[1];
-    uint8 MediumType[1];
-    uint8 DeviceSpecificParam[1];
-    uint8 BlockDescriptorLength[1];
+    u8 ModeDataLength[1];
+    u8 MediumType[1];
+    u8 DeviceSpecificParam[1];
+    u8 BlockDescriptorLength[1];
 } ModeParameterHeader;
 
 #define SIZE_MODE_PARAM_HEADER sizeof(ModeParameterHeader)
@@ -205,11 +205,11 @@ typedef struct
 /* Timer Protect Page Response */
 typedef struct 
 {
-    uint8 PageCode[1];
-    uint8 PageLength[1];
-    uint8 Reserved1[1];
-    uint8 InactivityTimeMult[1];
-    uint8 Reserved2[4];
+    u8 PageCode[1];
+    u8 PageLength[1];
+    u8 Reserved1[1];
+    u8 InactivityTimeMult[1];
+    u8 Reserved2[4];
 } PageTimerProtectResponse;
 
 #define SIZE_PAGE_TIMER_PROTECT_RESPONSE sizeof(PageTimerProtectResponse)
@@ -217,12 +217,12 @@ typedef struct
 
 typedef struct
 {
-    uint16 index;
-    uint32 size;
-    uint8 *params;
-    uint32 current_start_sector;
+    u16 index;
+    u32 size;
+    u8 *params;
+    u32 current_start_sector;
     Source src;
-    uint32 end_sector;
+    u32 end_sector;
 } FileInfoType;
 
 
@@ -255,7 +255,7 @@ typedef enum
 /* Functions */
 bool usbEnumerateMassStorage(void);   
 
-bool usbConfigureMassStorage(uint16 config, uint16 value_16, uint32 value_32, uint8 *params);
+bool usbConfigureMassStorage(u16 config, u16 value_16, u32 value_32, u8 *params);
 
 Sink usbMassStorageSink(void);
 

@@ -34,8 +34,8 @@ DESCRIPTION
 #endif
 
 
-/* Assigned numbers for GATT Bluetooth Namespace Descriptors */ 
-#define NAMESPACE_BLUETOOTH_SIG             0x01        /* Bluetooth SIG Namespace */ 
+/* Assigned numbers for GATT Bluetooth Namespace Descriptors */
+#define NAMESPACE_BLUETOOTH_SIG             0x01        /* Bluetooth SIG Namespace */
 #define DESCRIPTION_BATTERY_UNKNOWN         0x0000      /* Bluetooth SIG description "unknown" */
 #define DESCRIPTION_BATTERY_LOCAL           0x010F      /* Bluetooth SIG description "internal" for local battery*/
 #define DESCRIPTION_BATTERY_SECOND          0x0002      /* Bluetooth SIG description "Second" for remote battery*/
@@ -66,8 +66,8 @@ RETURNS
 */
 void sinkBleBatteryLevelReadSendAndRepeat(void)
 {
-  uint16 idx;
-  uint16 updateNeedsSending = 0;
+  u16 idx;
+  u16 updateNeedsSending = 0;
 
   for( idx = 0;idx < GATT.client.number_connections;idx++ )
   {
@@ -76,7 +76,7 @@ void sinkBleBatteryLevelReadSendAndRepeat(void)
       if( LOCAL_UPDATE_REQD( conn ) )
       {
           updateNeedsSending++;
-          GattBatteryServerSendLevelNotification( GATT_SERVER.bas_server_local, 
+          GattBatteryServerSendLevelNotification( GATT_SERVER.bas_server_local,
 		      1, &(conn->cid), powerManagerBatteryLevelAsPercentage() );
       }
 
@@ -84,7 +84,7 @@ void sinkBleBatteryLevelReadSendAndRepeat(void)
       if( PEER_UPDATE_REQD( conn ) )
       {
           updateNeedsSending++;
-          GattBatteryServerSendLevelNotification( GATT_SERVER.bas_server_peer, 
+          GattBatteryServerSendLevelNotification( GATT_SERVER.bas_server_peer,
 			  1, &(conn->cid), peerGetBatteryLevel() );
       }
 #endif
@@ -93,7 +93,7 @@ void sinkBleBatteryLevelReadSendAndRepeat(void)
 	  if( REMOTE_UPDATE_REQD( conn ) )
       {
           updateNeedsSending++;
-          GattBatteryServerSendLevelNotification( GATT_SERVER.bas_server_remote, 
+          GattBatteryServerSendLevelNotification( GATT_SERVER.bas_server_remote,
 			  1, &(conn->cid), gattBatteryClientGetCachedLevel() );
       }
 #endif
@@ -120,7 +120,7 @@ PARAMETERS
 RETURNS
     TRUE if the Battery server available, FALSE otherwise.
 */
-static bool sinkGattGetBatteryServerHandles(uint16 *start, uint16 *end, gatt_server_battery_id battery_id)
+static bool sinkGattGetBatteryServerHandles(u16 *start, u16 *end, gatt_server_battery_id battery_id)
 {
     bool status = FALSE;
 
@@ -159,18 +159,18 @@ static bool sinkGattGetBatteryServerHandles(uint16 *start, uint16 *end, gatt_ser
 /*******************************************************************************
 NAME
     sinkGattGetBatteryServerUpdateRundata
-    
+
 DESCRIPTION
     Updates rundata for the given server.
-    
+
 PARAMETERS
     ptr        - ointer to allocated memory to store server tasks rundata.
     battery_id - Battery server ID
-    
+
 RETURNS
     TRUE if the Battery server available, FALSE otherwise.
 */
-static bool sinkGattGetBatteryServerUpdateRundata(uint16 **ptr, gatt_server_battery_id battery_id)
+static bool sinkGattGetBatteryServerUpdateRundata(u16 **ptr, gatt_server_battery_id battery_id)
 {
     bool status = FALSE;
 
@@ -220,12 +220,12 @@ PARAMETERS
 RETURNS
     TRUE if the Battery server task was initialised, FALSE otherwise.
 */
-static bool sinkGattBatteryServerInitTask(uint16 **ptr, gatt_server_battery_id battery_id)
+static bool sinkGattBatteryServerInitTask(u16 **ptr, gatt_server_battery_id battery_id)
 {
     gatt_battery_server_init_params_t params = {BATTERY_SERVER_ENABLE_NOTIFICATIONS};
     gatt_battery_server_status_t bas_status;
-    uint16 start_handle;
-    uint16 end_handle;
+    u16 start_handle;
+    u16 end_handle;
 
     if (!ptr)
     {
@@ -256,10 +256,10 @@ static bool sinkGattBatteryServerInitTask(uint16 **ptr, gatt_server_battery_id b
 
 
 /*******************************************************************************/
-uint16 sinkGattBatteryServerCalculateSize(void)
+u16 sinkGattBatteryServerCalculateSize(void)
 {
     /* Local battery server size */
-    uint16 size = sizeof(GBASS);
+    u16 size = sizeof(GBASS);
 
 #ifdef GATT_BATTERY_SERVER_REMOTE
     size += sizeof(GBASS);
@@ -275,7 +275,7 @@ uint16 sinkGattBatteryServerCalculateSize(void)
 
 
 /*******************************************************************************/
-bool sinkGattBatteryServerInitialise(uint16 **ptr)
+bool sinkGattBatteryServerInitialise(u16 **ptr)
 {
     /* Initialise battery server for local battery */
     if (!sinkGattBatteryServerInitTask(ptr, GATT_BATTERY_SERVER_LOCAL_ID))
@@ -315,7 +315,7 @@ RETURNS
 */
 static void handleReadBatteryLevel(GATT_BATTERY_SERVER_READ_LEVEL_IND_T * ind)
 {
-    uint16 battery_level = BATTERY_LEVEL_INVALID;
+    u16 battery_level = BATTERY_LEVEL_INVALID;
 
     GATT_BATTERY_SERVER_INFO(("GATT_BATTERY_SERVER_READ_LEVEL_IND bas=[0x%p] cid=[0x%x]\n", (void *)ind->battery_server, ind->cid));
 
@@ -363,7 +363,7 @@ RETURNS
 */
 static void handleReadBatteryLevelClientConfig(GATT_BATTERY_SERVER_READ_CLIENT_CONFIG_IND_T * ind)
 {
-    uint16 client_config = 0;
+    u16 client_config = 0;
     gatt_client_connection_t *conn = gattClientFindByCid(ind->cid);
 
     /* Return the current value of the client configuration descriptor for the device */
@@ -410,12 +410,12 @@ static void handleWriteBatteryLevelClientConfig(GATT_BATTERY_SERVER_WRITE_CLIENT
 {
     gatt_client_connection_t *conn = gattClientFindByCid(ind->cid);
 
-    /* 
-     * Check whether the remote device has enabled or disabled 
+    /*
+     * Check whether the remote device has enabled or disabled
      * notifications for the Battery Level characteristic. This value will need
      * to be stored as device attributes so they are persistent.
     */
-    GATT_BATTERY_SERVER_INFO(("GATT_BATTERY_SERVER_WRITE_CLIENT_CONFIG_IND bas=[0x%p] cid=[0x%x] value[0x%x]\n", 
+    GATT_BATTERY_SERVER_INFO(("GATT_BATTERY_SERVER_WRITE_CLIENT_CONFIG_IND bas=[0x%p] cid=[0x%x] value[0x%x]\n",
         (void *)ind->battery_server, ind->cid, ind->config_value));
 
     if (conn)
@@ -427,7 +427,7 @@ static void handleWriteBatteryLevelClientConfig(GATT_BATTERY_SERVER_WRITE_CLIENT
             conn->client_config.battery_local = ind->config_value;
             GATT_BATTERY_SERVER_INFO((" battery local client_config[0x%x]\n", conn->client_config.battery_local));
             gattClientStoreConfigAttributes(ind->cid, gatt_attr_service_battery_local);
-            
+
 			if( LOCAL_UPDATE_REQD(conn) )
 			{
 				updateNeedsSending++;
@@ -438,7 +438,7 @@ static void handleWriteBatteryLevelClientConfig(GATT_BATTERY_SERVER_WRITE_CLIENT
             conn->client_config.battery_remote = ind->config_value;
             GATT_BATTERY_SERVER_INFO((" battery remote client_config[0x%x]\n", conn->client_config.battery_remote));
             gattClientStoreConfigAttributes(ind->cid, gatt_attr_service_battery_remote);
-            
+
 			if( REMOTE_UPDATE_REQD(conn) )
 			{
 				updateNeedsSending++;
@@ -449,7 +449,7 @@ static void handleWriteBatteryLevelClientConfig(GATT_BATTERY_SERVER_WRITE_CLIENT
             conn->client_config.battery_peer = ind->config_value;
             GATT_BATTERY_SERVER_INFO((" battery peer client_config[0x%x]\n", conn->client_config.battery_peer));
             gattClientStoreConfigAttributes(ind->cid, gatt_attr_service_battery_peer);
-            
+
 			if( PEER_UPDATE_REQD(conn) )
 			{
 				updateNeedsSending++;
@@ -480,7 +480,7 @@ RETURNS
 */
 static void handleReadBatteryPresentation(GATT_BATTERY_SERVER_READ_PRESENTATION_IND_T * ind)
 {
-    uint16 description = DESCRIPTION_BATTERY_UNKNOWN;
+    u16 description = DESCRIPTION_BATTERY_UNKNOWN;
 
     GATT_BATTERY_SERVER_INFO(("GATT_BATTERY_SERVER_READ_PRESENTATION_IND bas=[0x%p] cid=[0x%x]\n", (void *)ind->battery_server, ind->cid));
 

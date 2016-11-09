@@ -52,17 +52,17 @@ DESCRIPTION
 typedef struct
 {
     /*FM Rx properties*/
-    uint16 seek_band_bottom;
-    uint16 seek_band_top;
-    uint16 seek_freq_spacing;
-    uint16 seek_tune_rssi;
-    uint16 seek_tune_snr;
-    uint16 rsq_rssi_low;
-    uint16 rsq_rssi_high;
-    uint16 rsq_snr_low;
-    uint16 rsq_snr_high;
-    uint16 antenna_source;
-    uint16 hardware_pio;
+    u16 seek_band_bottom;
+    u16 seek_band_top;
+    u16 seek_freq_spacing;
+    u16 seek_tune_rssi;
+    u16 seek_tune_snr;
+    u16 rsq_rssi_low;
+    u16 rsq_rssi_high;
+    u16 rsq_snr_low;
+    u16 rsq_snr_high;
+    u16 antenna_source;
+    u16 hardware_pio;
 } fm_rx_config;
 
 #define FMRX_MAX_RDS_BUFF_SIZE (13) /* (12) RDS  + (1) status*/
@@ -73,21 +73,21 @@ typedef struct
 typedef struct
 {
     bool   program_code_valid;
-    uint16 program_code;/*16 bit program identification code*/
+    u16 program_code;/*16 bit program identification code*/
     
-    uint8  program_type;/*program type value as decoded*/
+    u8  program_type;/*program type value as decoded*/
 
     bool   ps_valid;
-    uint8  ps_bitmask; /* Each bit covers one pair of characters in the buffer. max 8 bytes of PS*/
+    u8  ps_bitmask; /* Each bit covers one pair of characters in the buffer. max 8 bytes of PS*/
     
-    uint32 rt_bitmask; /* Each bit covers one pair of characters in the buffer for blk C/D*/
+    u32 rt_bitmask; /* Each bit covers one pair of characters in the buffer for blk C/D*/
 
-    uint8  rt_abflag; /* Defines the type of the text - BLK A or B data. The buffer must be cleared if the flag changes. */                                        
+    u8  rt_abflag; /* Defines the type of the text - BLK A or B data. The buffer must be cleared if the flag changes. */                                        
 
-    uint8  *program_service;/*Contains the Programme Service name comprising eight characters, intended for static display on a receiver. 
+    u8  *program_service;/*Contains the Programme Service name comprising eight characters, intended for static display on a receiver. 
                         It is the primary aid to listeners in programme service identification and selection.  */
                         
-    uint8  *radio_text;/*scrolling radio data*/
+    u8  *radio_text;/*scrolling radio data*/
                         
 }fm_rds_data;
 
@@ -109,7 +109,7 @@ typedef enum
 
 typedef struct 
 {
-    uint16 freq[FM_MAX_PRESET_STATIONS];
+    u16 freq[FM_MAX_PRESET_STATIONS];
    
 }fm_stored_freq;
 
@@ -135,13 +135,13 @@ typedef struct
     TaskData *app_task; 
     Sink fm_sink;                   /* audio sink of FM receiver for audio plugin use */
     fm_rx_states state;             /* FM receiver state machine state */
-    const uint16 *parameter_id;     /* FM receiver init */
-    const uint16 *parameter_value;  /* FM receiver init */
-    uint16 currently_tuned_freq;    /* current operating frequency */
-    uint8  volume;                  /* current operating volume level */
+    const u16 *parameter_id;     /* FM receiver init */
+    const u16 *parameter_value;  /* FM receiver init */
+    u16 currently_tuned_freq;    /* current operating frequency */
+    u8  volume;                  /* current operating volume level */
     fm_rx_config   config;          /* FM receiver operating parameters from pskey */
     fm_rds_data rds_data;           /* RDS data for currently tuned station, if available*/
-    uint8   rx_buff[1];             /* FM receiver command buffer */
+    u8   rx_buff[1];             /* FM receiver command buffer */
 
 } fm_rx_data_t;
 
@@ -206,7 +206,7 @@ typedef struct
 */
 typedef struct 
 {
-     uint16 volume ;
+     u16 volume ;
 } FM_PLUGIN_RX_UPDATE_VOLUME_MSG_T;
 
 /*!
@@ -216,7 +216,7 @@ typedef struct
 */
 typedef struct 
 {
-     uint16 frequency ;
+     u16 frequency ;
 } FMRX_TUNE_FREQ_MSG_T;
 
 /*!
@@ -236,7 +236,7 @@ typedef struct
 typedef struct 
 {
      bool        result;
-     uint16      tuned_freq;/*currently tuned freq*/
+     u16      tuned_freq;/*currently tuned freq*/
      
 }FM_PLUGIN_TUNE_COMPLETE_IND_T;
 
@@ -247,8 +247,8 @@ typedef struct
 typedef struct 
 {
      fm_rds_type    rds_type;
-     uint8  data_len;
-     uint8  data[1];
+     u8  data_len;
+     u8  data[1];
      
 }FM_PLUGIN_RDS_IND_T;
 

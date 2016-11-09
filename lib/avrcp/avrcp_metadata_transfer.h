@@ -29,11 +29,11 @@ DESCRIPTION
     Prepares and send Metadata command for to set the values at remote device.
 */
 avrcp_status_code avrcpSendMetadataCommand(AVRCP        *avrcp, 
-                                           uint16         id, 
+                                           u16         id, 
                                            avrcpPending   pending, 
-                                           uint16         extra_param_len,
-                                           uint8*         extra_param,
-                                           uint16         data_size, 
+                                           u16         extra_param_len,
+                                           u8*         extra_param,
+                                           u16         data_size, 
                                            Source         data);
 
 
@@ -56,8 +56,8 @@ DESCRIPTION
     vendordependent PDU).
 */
 void avrcpHandleMetadataResponse(   AVRCP       *avrcp, 
-                                    const uint8 *ptr, 
-                                    uint16      packet_size);
+                                    const u8 *ptr, 
+                                    u16      packet_size);
 
 #endif /* !AVRCP_TG_ONLY_LIB */
 
@@ -72,8 +72,8 @@ DESCRIPTION
     vendordependent PDU).
 */
 void avrcpHandleMetadataCommand(AVRCP       *avrcp, 
-                                const uint8 *ptr, 
-                                uint16      packet_size);
+                                const u8 *ptr, 
+                                u16      packet_size);
 
 
 /****************************************************************************
@@ -96,11 +96,11 @@ DESCRIPTION
 */
 void prepareMetadataStatusResponse(AVRCP                *avrcp,
                                  avrcp_response_type    response, 
-                                 uint16                 id, 
-                                 uint16                 param_length, 
+                                 u16                 id, 
+                                 u16                 param_length, 
                                  Source                 data_list, 
-                                 uint16                 size_mandatory_data, 
-                                 uint8                  *mandatory_data);
+                                 u16                 size_mandatory_data, 
+                                 u8                  *mandatory_data);
 
 /****************************************************************************
 NAME    
@@ -111,12 +111,12 @@ DESCRIPTION
 */
 void avrcpSendMetadataResponse(AVRCP                *avrcp,
                                avrcp_response_type   response,
-                               uint8                 pdu_id, 
+                               u8                 pdu_id, 
                                Source                caps_list, 
                                avrcp_packet_type     metadata_packet_type, 
-                               uint16                param_length, 
-                               uint16                size_mandatory_data, 
-                               uint8                *mandatory_data);
+                               u16                param_length, 
+                               u16                size_mandatory_data, 
+                               u8                *mandatory_data);
 
 
 
@@ -129,7 +129,7 @@ DESCRIPTION
 */
 void avrcpSendRejectMetadataResponse(AVRCP              *avrcp, 
                                     avrcp_response_type response, 
-                                    uint16              id);
+                                    u16              id);
 
 /****************************************************************************
 NAME
@@ -140,7 +140,7 @@ DESCRIPTION
 */
 void avrcpHandleInternalRejectMetadataResponse(AVRCP              *avrcp, 
                                               avrcp_response_type response, 
-                                              uint16              id);
+                                              u16              id);
 
 #endif /* !AVRCP_CT_ONLY_LIB*/
 

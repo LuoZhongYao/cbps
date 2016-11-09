@@ -42,11 +42,11 @@ DESCRIPTION
     
 
 /* Display unhandled states in Debug Mode */    
-#define avrcp_unhandled_state(inst) AVRCP_DEBUG(("    AVRCP Unhandled State [%d] inst[0x%x]\n", avrcp_get_state(inst), (uint16)inst));    
+#define avrcp_unhandled_state(inst) AVRCP_DEBUG(("    AVRCP Unhandled State [%d] inst[0x%x]\n", avrcp_get_state(inst), (u16)inst));    
         
 
 /* AVRCP service search pattern */    
-static const uint8 avrcp_service_search_pattern[] = {0x35, 0x03, 0x19, 0x11, 0x0E};
+static const u8 avrcp_service_search_pattern[] = {0x35, 0x03, 0x19, 0x11, 0x0E};
 
 
 /* exit state functions*/
@@ -77,7 +77,7 @@ NAME
 void avrcp_init(void)
 {
     avrcp_init_params params;
-    uint16 index;
+    u16 index;
     
     /* allocate memory for A2DP instances */
     theSource->avrcp_data.inst = (avrcpInstance *)memory_get_block(MEMORY_GET_BLOCK_PROFILE_AVRCP);
@@ -137,7 +137,7 @@ NAME
 */
 avrcpInstance *avrcp_get_instance_from_pointer(AVRCP *avrcp)
 {
-    uint16 index;
+    u16 index;
     avrcpInstance *inst = theSource->avrcp_data.inst;
     
     if (inst)
@@ -160,7 +160,7 @@ NAME
 */
 avrcpInstance *avrcp_get_instance_from_bdaddr(const bdaddr addr)
 {
-    uint16 index;
+    u16 index;
     avrcpInstance *inst = theSource->avrcp_data.inst;
     
     if (inst)
@@ -183,7 +183,7 @@ NAME
 */
 avrcpInstance *avrcp_get_free_instance(void)
 {
-    uint16 index;
+    u16 index;
     avrcpInstance *inst = theSource->avrcp_data.inst;
     
     if (inst)
@@ -260,7 +260,7 @@ NAME
 */
 void avrcp_disconnect_all(void)
 {
-    uint16 index;
+    u16 index;
     avrcpInstance *inst = theSource->avrcp_data.inst;
     
     if (inst)
@@ -279,7 +279,7 @@ void avrcp_disconnect_all(void)
 NAME    
     avrcp_send_internal_vendor_command - Queue AVRCP_INTERNAL_VENDOR_COMMAND_REQ message
 */
-void avrcp_send_internal_vendor_command(avrcpInstance *inst, avc_subunit_type subunit_type, avc_subunit_id subunit_id, uint8 ctype, uint32 company_id, uint16 cmd_id, uint16 size_data, Source data)
+void avrcp_send_internal_vendor_command(avrcpInstance *inst, avc_subunit_type subunit_type, avc_subunit_id subunit_id, u8 ctype, u32 company_id, u16 cmd_id, u16 size_data, Source data)
 {
     MAKE_MESSAGE(AVRCP_INTERNAL_VENDOR_COMMAND_REQ);    
     message->subunit_type = subunit_type;
@@ -394,11 +394,11 @@ void avrcp_sdp_search_cfm(avrcpInstance *inst, const CL_SDP_SERVICE_SEARCH_CFM_T
 NAME    
     avrcp_handle_vendor_ind - Handle AVRCP Vendor command sent from remote device
 */
-void avrcp_handle_vendor_ind(uint8 mic_mute_eq)
+void avrcp_handle_vendor_ind(u8 mic_mute_eq)
 {  
     bool mic_mute = mic_mute_eq & 0x01;
-    uint8 eq_index = mic_mute_eq >> 1;
-    uint16 old_eq_index = theSource->volume_data.eq_index;
+    u8 eq_index = mic_mute_eq >> 1;
+    u16 old_eq_index = theSource->volume_data.eq_index;
     bool old_mic_mute_mode = theSource->volume_data.mic_mute;
  
     AVRCP_DEBUG(("AVRCP: Handle Vendor Headset -> Dongle; [Mic mute:0x%x] [EQ:0x%x]\n", mic_mute, eq_index));
@@ -427,9 +427,9 @@ NAME
 */
 void avrcp_send_source_volume(avrcpInstance *inst)
 {
-    const uint16 size_data = 5;
-    uint8 data[5];                        
-    uint16 index = 0;
+    const u16 size_data = 5;
+    u8 data[5];                        
+    u16 index = 0;
     
     data[0] = AVRCP_SET_ABSOLUTE_VOLUME_PDU_ID;
     data[1] = 0x00;
@@ -488,9 +488,9 @@ NAME
 */
 void avrcp_register_volume_changes(avrcpInstance *inst)
 {
-    const uint16 size_data = 9;
-    uint8 data[9];                        
-    uint16 index = 0;
+    const u16 size_data = 9;
+    u8 data[9];                        
+    u16 index = 0;
     
     data[0] = AVRCP_REGISTER_NOTIFICATION_PDU_ID;
     data[1] = 0x00;
@@ -541,10 +541,10 @@ void avrcp_register_volume_changes(avrcpInstance *inst)
 NAME    
     avrcp_source_vendor_command - Build AVRCP Vendor command to send to remote device
 */
-void avrcp_source_vendor_command(avrcpInstance *inst, uint32 company_id, uint16 cmd_id, uint16 size_data, const uint8 *data)
+void avrcp_source_vendor_command(avrcpInstance *inst, u32 company_id, u16 cmd_id, u16 size_data, const u8 *data)
 {
     Source data_source;
-    uint16 index;
+    u16 index;
     
     /* only send Vendor commands if the feature is enabled and the remote device has not rejected them */
     if ((theSource->ps_config->features.avrcp_vendor_enable) && (inst->remote_vendor_support != AVRCP_SUPPORT_NO))
@@ -590,7 +590,7 @@ void avrcp_source_vendor_command(avrcpInstance *inst, uint32 company_id, uint16 
             {
                 message->data[index] = data[index];
             }
-            MessageSendConditionally(&inst->avrcpTask, AVRCP_SOURCE_VENDOR_COMMAND_REQ, message, (uint16 *)&inst->vendor_data);
+            MessageSendConditionally(&inst->avrcpTask, AVRCP_SOURCE_VENDOR_COMMAND_REQ, message, (u16 *)&inst->vendor_data);
         }
     }
 }

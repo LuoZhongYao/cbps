@@ -651,14 +651,14 @@ static bool hfpLinkDisable(hfp_link_data* link, bool disable)
     {
         if(link->ag_slc_state != hfp_slc_idle)
             return FALSE;
-        PRINT(("0x%X disabled\n", (uint16)link));
+        PRINT(("0x%X disabled\n", (u16)link));
         link->ag_slc_state = hfp_slc_disabled;
     }
     else
     {
         if(link->ag_slc_state != hfp_slc_disabled)
             return FALSE;
-        PRINT(("0x%X enabled\n", (uint16)link));
+        PRINT(("0x%X enabled\n", (u16)link));
         link->ag_slc_state = hfp_slc_idle;
     }
     return TRUE;
@@ -761,10 +761,10 @@ DESCRIPTION
 RETURNS
     TRUE if successful, FALSE otherwise
 */
-bool HfpLinkSetMaxConnections(uint8 max_connections)
+bool HfpLinkSetMaxConnections(u8 max_connections)
 {
     hfp_link_data* link;
-    uint8 link_count = 0;
+    u8 link_count = 0;
     
     /* Count number of active links */
     for_all_links(link)
@@ -781,13 +781,13 @@ bool HfpLinkSetMaxConnections(uint8 max_connections)
     else if(max_connections > link_count)
     {
         link = hfpGetLinkFromSlcState(hfp_slc_disabled);
-        PRINT(("Enabling link 0x%X\n", (uint16)link));
+        PRINT(("Enabling link 0x%X\n", (u16)link));
         return hfpLinkDisable(link, FALSE);
     }
     else
     {
         link = hfpGetIdleLink();
-        PRINT(("Disabling link 0x%X\n", (uint16)link));
+        PRINT(("Disabling link 0x%X\n", (u16)link));
         return hfpLinkDisable(link, TRUE);
     }
 }

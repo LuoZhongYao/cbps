@@ -44,7 +44,7 @@ NOTES
 void avrcpHandleReceivedData(AVRCP *avrcp)
 {
     Source source = StreamSourceFromSink(avrcp->sink);
-    uint16 packet_size;
+    u16 packet_size;
 
     while (((packet_size = SourceBoundary(source)) != 0) && 
             (!avrcp->block_received_data))
@@ -87,11 +87,11 @@ void avrcpHandleReceivedData(AVRCP *avrcp)
 ****************************************************************************/
 void avrcpHandleResponse(AVRCP *avrcp)
 {
-    const uint8 *ptr = avrcp->av_msg;
-    uint16 ctype_offset = AVCTP_SINGLE_PKT_HEADER_SIZE;
-    uint16 packet_type = ptr[AVCTP_HEADER_START_OFFSET] & 
+    const u8 *ptr = avrcp->av_msg;
+    u16 ctype_offset = AVCTP_SINGLE_PKT_HEADER_SIZE;
+    u16 packet_type = ptr[AVCTP_HEADER_START_OFFSET] & 
                          AVCTP0_PACKET_TYPE_MASK;
-    uint16 packet_size = avrcp->av_msg_len;
+    u16 packet_size = avrcp->av_msg_len;
    
     if (packet_type == AVCTP0_PACKET_TYPE_START)
     {
@@ -154,7 +154,7 @@ void avrcpHandleInternalWatchdogTimeout(AVRCP *avrcp)
                 break;
             case avrcp_unit_info:
                 avrcpSendUnitInfoCfmToClient(avrcp, avrcp_timeout, 0, 0,
-                                             (uint32) 0);
+                                             (u32) 0);
                 break;
             case avrcp_subunit_info:
                 avrcpSendSubunitInfoCfmToClient(avrcp, avrcp_timeout, 0, 0);
@@ -188,15 +188,15 @@ void avrcpHandleInternalWatchdogTimeout(AVRCP *avrcp)
 ***************************************************************************/
 void avrcpHandleCommand(AVRCP *avrcp)
 {
-    const uint8 *ptr = avrcp->av_msg;
-    uint16 ctype_offset = AVCTP_SINGLE_PKT_HEADER_SIZE;
-    uint16 packet_type = ptr[AVCTP_HEADER_START_OFFSET] 
+    const u8 *ptr = avrcp->av_msg;
+    u16 ctype_offset = AVCTP_SINGLE_PKT_HEADER_SIZE;
+    u16 packet_type = ptr[AVCTP_HEADER_START_OFFSET] 
                         & AVCTP0_PACKET_TYPE_MASK;
-    uint16 packet_size = avrcp->av_msg_len;
+    u16 packet_size = avrcp->av_msg_len;
 
     if (packet_type == AVCTP0_PACKET_TYPE_START)
     {
-        uint16 opcode_offset = AVCTP_START_PKT_HEADER_SIZE + 
+        u16 opcode_offset = AVCTP_START_PKT_HEADER_SIZE + 
                                AVRCP_OPCODE_OFFSET;
 
         /* 1 extra Byte in header for Num Packets. Skip that */
@@ -256,10 +256,10 @@ void avrcpHandleCommand(AVRCP *avrcp)
 *    
 *PARAMETERS
 *   avrcp                   - Task
-*   uint16 hdr_size         - Header size of AVRCP Response message 
+*   u16 hdr_size         - Header size of AVRCP Response message 
 *                               (same as Command)
 *   avrcp_response_type  response - Response to send
-*   uint16 data_len         - AVRCP message Response parameters to be send 
+*   u16 data_len         - AVRCP message Response parameters to be send 
 *                                   (Max is 512-hdr_size)
 *   Source   data           - AVRCP Message data to append after AVRCP
 *                             message head    
@@ -267,16 +267,16 @@ void avrcpHandleCommand(AVRCP *avrcp)
 *RETURN
 *****************************************************************************/
 void avrcpSendAvcResponse(AVRCP                *avrcp,
-                          uint16                hdr_size,  
+                          u16                hdr_size,  
                           avrcp_response_type   response,
-                          uint16                data_len,
+                          u16                data_len,
                           Source                data)  
 {
-    uint16 avctp_header_size; 
-    uint8 *rsp;
-    uint16 packet_size = data_len + hdr_size; 
-    uint16 max_mtu = avrcp->l2cap_mtu - AVCTP_SINGLE_PKT_HEADER_SIZE;
-    uint8  cmd_offset=AVCTP_SINGLE_PKT_HEADER_SIZE;
+    u16 avctp_header_size; 
+    u8 *rsp;
+    u16 packet_size = data_len + hdr_size; 
+    u16 max_mtu = avrcp->l2cap_mtu - AVCTP_SINGLE_PKT_HEADER_SIZE;
+    u8  cmd_offset=AVCTP_SINGLE_PKT_HEADER_SIZE;
     Sink sink = avrcp->sink;
     
 
@@ -414,9 +414,9 @@ void avrcpSendAvcResponse(AVRCP                *avrcp,
 *******************************************************************************/
 void avrcpBlockReceivedData(AVRCP *avrcp, 
                             avrcpPending pending,
-                            uint16 data)
+                            u16 data)
 {
-    uint32 timeout = (pending == avrcp_app_unknown)? 
+    u32 timeout = (pending == avrcp_app_unknown)? 
                       AVRCP_APP_WATCHDOG_TIMEOUT:
                       AVCTP_SEND_RESPONSE_TIMEOUT;
 

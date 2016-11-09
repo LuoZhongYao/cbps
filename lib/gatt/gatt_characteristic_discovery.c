@@ -23,12 +23,12 @@ NOTES
 
 #if (GATT_FEATURES & GATT_CHARACTERISTIC_DISCOVERY)
 
-static const uint32 uuid_characteristic = ATT_UUID_CHARACTERISTIC;
+static const u32 uuid_characteristic = ATT_UUID_CHARACTERISTIC;
 
 void GattDiscoverAllCharacteristicsRequest(Task theAppTask,
-                                           uint16 cid,
-                                           uint16 start,
-                                           uint16 end)
+                                           u16 cid,
+                                           u16 start,
+                                           u16 end)
 {
     cid_map_t *conn;
     
@@ -104,8 +104,8 @@ void gattHandleAttReadByTypeCfmCharacteristic(ATT_READ_BY_TYPE_CFM_T *m)
 {
     cid_map_t *conn = PanicNull(gattFindConn(m->cid)); /* never NULL */
     STASH(conn, stash, DISCOVER_ALL_CHARACTERISTICS);
-    uint8 *data;
-    uint8 *p;
+    u8 *data;
+    u8 *p;
     bool more;
     bool send;
 

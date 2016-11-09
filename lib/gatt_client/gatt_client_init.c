@@ -16,7 +16,7 @@
 
 
 /******************************************************************************/
-void gattClientSendInitSuccessCfm(GGATTC *gatt_client, uint16 service_changed_handle)
+void gattClientSendInitSuccessCfm(GGATTC *gatt_client, u16 service_changed_handle)
 {
     MAKE_GATT_CLIENT_MESSAGE(GATT_CLIENT_INIT_CFM);
     
@@ -29,7 +29,7 @@ void gattClientSendInitSuccessCfm(GGATTC *gatt_client, uint16 service_changed_ha
 
 
 /******************************************************************************/
-void gattClientSendInitDiscoveryErrorCfm(GGATTC *gatt_client, uint16 service_changed_handle)
+void gattClientSendInitDiscoveryErrorCfm(GGATTC *gatt_client, u16 service_changed_handle)
 {
     MAKE_GATT_CLIENT_MESSAGE(GATT_CLIENT_INIT_CFM);
     

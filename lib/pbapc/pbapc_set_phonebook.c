@@ -67,8 +67,8 @@ pbapcSetPhonebookState pbapcPbNextState( pbapcPb pb )
  ***************************************************************************/
 void pbapcSetPb(pbapcState *state)
 {
-    const uint8 *folder = NULL;
-    uint16 len = 0;
+    const u8 *folder = NULL;
+    u16 len = 0;
     ObexFolderPath flag= obex_folder_in;
     
     switch (state->setPbState)

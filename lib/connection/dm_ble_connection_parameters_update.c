@@ -41,12 +41,12 @@ RETURNS
 void ConnectionDmBleConnectionParametersUpdateReq(
         Task theAppTask,
         typed_bdaddr *taddr,
-        uint16 min_interval,
-        uint16 max_interval,
-        uint16 latency,
-        uint16 timeout,
-        uint16 min_ce_length,
-        uint16 max_ce_length
+        u16 min_interval,
+        u16 max_interval,
+        u16 latency,
+        u16 timeout,
+        u16 min_ce_length,
+        u16 max_ce_length
         )
 {
     connectionState *state = (connectionState*)connectionGetCmTask();
@@ -186,11 +186,11 @@ RETURNS
 void ConnectionDmBleAcceptConnectionParUpdateResponse(
         bool                accept_update,
         const typed_bdaddr  *taddr,
-        uint16              id,
-        uint16              conn_interval_min,
-        uint16              conn_interval_max,
-        uint16              conn_latency,
-        uint16              supervision_timeout
+        u16              id,
+        u16              conn_interval_min,
+        u16              conn_interval_max,
+        u16              conn_latency,
+        u16              supervision_timeout
         )
 {
     MAKE_PRIM_T(DM_BLE_ACCEPT_CONNECTION_PAR_UPDATE_RSP);

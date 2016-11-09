@@ -21,7 +21,7 @@ NOTES
 #include <message.h>
 
 /*****************************************************************************/
-void ConnectionSetPageTimeout(uint16 page_timeout)
+void ConnectionSetPageTimeout(u16 page_timeout)
 {
     MAKE_CL_MESSAGE(CL_INTERNAL_DM_WRITE_PAGE_TIMEOUT_REQ);
     /* If page timeout is zero use HCI default timeout. Interval and retries not used */

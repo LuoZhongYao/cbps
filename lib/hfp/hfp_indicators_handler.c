@@ -36,7 +36,7 @@ static __inline__ ptr matchChar(ptr p, ptr e, char ch)
 }
 
 /* Pull out indicator init state from struct passed inf rom parser */
-static uint16 getIndicatorValue(const struct hfpHandleIndicatorStatus *s, uint16 index)
+static u16 getIndicatorValue(const struct hfpHandleIndicatorStatus *s, u16 index)
 {
     if(1 <= index && index <= s->d.count)
     {
@@ -46,7 +46,7 @@ static uint16 getIndicatorValue(const struct hfpHandleIndicatorStatus *s, uint16
     return 0;
 }
 
-static void sendIndicatorServiceToApp(hfp_link_data* link, uint16 service)
+static void sendIndicatorServiceToApp(hfp_link_data* link, u16 service)
 {
     /* Send a message to the app */
     MAKE_HFP_MESSAGE(HFP_SERVICE_IND);
@@ -55,7 +55,7 @@ static void sendIndicatorServiceToApp(hfp_link_data* link, uint16 service)
     MessageSend(theHfp->clientTask, HFP_SERVICE_IND, message);
 }
 
-static void sendIndicatorSignalToApp(hfp_link_data* link, uint16 signal)
+static void sendIndicatorSignalToApp(hfp_link_data* link, u16 signal)
 {
     /* Send a message to the app */
     MAKE_HFP_MESSAGE(HFP_SIGNAL_IND);
@@ -64,7 +64,7 @@ static void sendIndicatorSignalToApp(hfp_link_data* link, uint16 signal)
     MessageSend(theHfp->clientTask, HFP_SIGNAL_IND, message);
 }
 
-static void sendIndicatorRoamToApp(hfp_link_data* link, uint16 roam)
+static void sendIndicatorRoamToApp(hfp_link_data* link, u16 roam)
 {
     /* Send a message to the app */
     MAKE_HFP_MESSAGE(HFP_ROAM_IND);
@@ -73,7 +73,7 @@ static void sendIndicatorRoamToApp(hfp_link_data* link, uint16 roam)
     MessageSend(theHfp->clientTask, HFP_ROAM_IND, message);
 }
 
-static void sendIndicatorBattChgToApp(hfp_link_data* link, uint16 batt_chg)
+static void sendIndicatorBattChgToApp(hfp_link_data* link, u16 batt_chg)
 {
     /* Send a message to the app */
     MAKE_HFP_MESSAGE(HFP_BATTCHG_IND);
@@ -82,7 +82,7 @@ static void sendIndicatorBattChgToApp(hfp_link_data* link, uint16 batt_chg)
     MessageSend(theHfp->clientTask, HFP_BATTCHG_IND, message);
 }
 
-static void sendUnhandledIndicatorToApp(hfp_link_data* link, uint16 index, uint16 value)
+static void sendUnhandledIndicatorToApp(hfp_link_data* link, u16 index, u16 value)
 {
     /*
         We have received an indicator not defined by the HFP spec. Pass it 
@@ -97,12 +97,12 @@ static void sendUnhandledIndicatorToApp(hfp_link_data* link, uint16 index, uint1
 }
 
 /* Record the index of an indicator present in +CIND: and requested by the application */
-static void hfpStoreUnhandledIndicator(hfp_link_data* link, uint16 cind_index)
+static void hfpStoreUnhandledIndicator(hfp_link_data* link, u16 cind_index)
 {
     /* Local copy of ptr and count*/
-    uint16** extra_indicator_idxs = &link->ag_supported_indicators.extra_indicator_idxs;
-    uint16* num_extra_indicator_idxs = &link->ag_supported_indicators.num_extra_indicator_idxs;
-    uint16* temp;
+    u16** extra_indicator_idxs = &link->ag_supported_indicators.extra_indicator_idxs;
+    u16* num_extra_indicator_idxs = &link->ag_supported_indicators.num_extra_indicator_idxs;
+    u16* temp;
     
     /* Make space to store indicator and store it */
     temp = realloc(*extra_indicator_idxs, (*num_extra_indicator_idxs) + 1);
@@ -119,7 +119,7 @@ static void hfpStoreUnhandledIndicator(hfp_link_data* link, uint16 cind_index)
 }
 
 /* Send the indicator list to the app so it can parse it for any non-HFP indicators it is interested in */
-static void hfpSendUnhandledIndicatorListToApp(hfp_link_data* link, uint16 register_index, uint16 cind_index, uint16 min_range, uint16 max_range)
+static void hfpSendUnhandledIndicatorListToApp(hfp_link_data* link, u16 register_index, u16 cind_index, u16 min_range, u16 max_range)
 {
     MAKE_HFP_MESSAGE(HFP_EXTRA_INDICATOR_INDEX_IND);
     message->priority = hfpGetLinkPriority(link);
@@ -162,32 +162,32 @@ DESCRIPTION
 RETURNS
     void
 */
-static void hfpHandleExtraIndicatorsList(hfp_link_data* link, ptr indicator, ptr indicators_end, uint16 index, uint16 length)
+static void hfpHandleExtraIndicatorsList(hfp_link_data* link, ptr indicator, ptr indicators_end, u16 index, u16 length)
 {
-    uint16 indicator_length = 0;
-    uint16 i = 0;
-    uint16 register_index = 0;
+    uintptr_t indicator_length = 0;
+    uintptr_t i = 0;
+    uintptr_t register_index = 0;
     ptr temp;
 
     /* Get the end ptr for the string the app passed in. */
-    uint8 *end = (uint8 *) (theHfp->extra_indicators + strlen((char*)theHfp->extra_indicators));
+    u8 *end = (u8 *) (theHfp->extra_indicators + strlen((char*)theHfp->extra_indicators));
 
     /* Find the length of the indicator in the CIND string */
-    indicator_length = (uint16)UtilFind(0xFFFF, '"', (const uint16*)indicator, 0, 1, length);
-    indicator_length -= (uint16)indicator;
+    indicator_length = (uintptr_t)UtilFind(0xFFFF, '"', (const u16*)indicator, 0, 1, length);
+    indicator_length -= (uintptr_t)indicator;
     
     /* 
         For each indicator string in the config string the app passed in see 
         if the current indicator matches that string 
     */
-    while ((uint8 *) theHfp->extra_indicators+i < end)
+    while ((u8 *) theHfp->extra_indicators+i < end)
     {
-        uint16 cind_index = 0;
-        uint16 min = 0;
-        uint16 max = 0;
+        u16 cind_index = 0;
+        u16 min = 0;
+        u16 max = 0;
 
         /* Match the indicator string against the app config string */
-        if (!UtilCompare((const uint16 *) indicator, (const uint16 *) theHfp->extra_indicators+i, indicator_length))
+        if (!UtilCompare((const u16 *) indicator, (const u16 *) theHfp->extra_indicators+i, indicator_length))
         {
             /* We have a match, so set the cind_index. */
             cind_index = index;
@@ -207,7 +207,7 @@ static void hfpHandleExtraIndicatorsList(hfp_link_data* link, ptr indicator, ptr
             hfpSendUnhandledIndicatorListToApp(link, register_index, cind_index, min, max);
 
         /* Increment i to the end of the current string, look for the \r separator */
-        while ((uint8 *) theHfp->extra_indicators+i != end && *(theHfp->extra_indicators+i) != '\r')
+        while ((u8 *) theHfp->extra_indicators+i != end && *(theHfp->extra_indicators+i) != '\r')
             i++;
 
         /* Skip past the \r */
@@ -238,9 +238,9 @@ void hfpHandleIndicatorList(Task link_ptr, const struct hfpHandleIndicatorList *
 {
     hfp_link_data*  link           = (hfp_link_data*)link_ptr;
     hfp_indicators  ind_indexes    = { 0, 0, 0, 0, 0, 0, 0 };
-    uint16          index          = 0;
+    u16          index          = 0;
     ptr             indicator      = ind->str.data;
-    uint16          length         = ind->str.length;
+    u16          length         = ind->str.length;
     ptr             indicators_end = indicator + length;
     ptr             next_indicator;
 
@@ -263,41 +263,41 @@ void hfpHandleIndicatorList(Task link_ptr, const struct hfpHandleIndicatorList *
             only that string matches e.g. for "call" we don't 
             want "call_tmp" to match. Store the indicator index.
         */
-        if (!UtilCompare((const uint16 *) indicator, (const uint16 *) "service", 7))
+        if (!UtilCompare((const u16 *) indicator, (const u16 *) "service", 7))
         {
             ind_indexes.service = index;
         }
-        else if (!UtilCompare((const uint16 *) indicator, (const uint16 *) "callsetup", 9))
+        else if (!UtilCompare((const u16 *) indicator, (const u16 *) "callsetup", 9))
         {
             if(ind_indexes.call_setup)
                 ind_indexes.extra_call_setup = index;
             else
                 ind_indexes.call_setup = index;
         }
-        else if (!UtilCompare((const uint16 *) indicator, (const uint16 *) "call_setup", 10))
+        else if (!UtilCompare((const u16 *) indicator, (const u16 *) "call_setup", 10))
         {
             if(ind_indexes.call_setup)
                 ind_indexes.extra_call_setup = index;
             else
                 ind_indexes.call_setup = index;
         }
-        else if (!UtilCompare((const uint16 *) indicator, (const uint16 *) "call\"", 5))
+        else if (!UtilCompare((const u16 *) indicator, (const u16 *) "call\"", 5))
         {
             ind_indexes.call = index;
         }
-        else if (!UtilCompare((const uint16 *) indicator, (const uint16 *) "signal", 6))
+        else if (!UtilCompare((const u16 *) indicator, (const u16 *) "signal", 6))
         {
             ind_indexes.signal_strength = index;
         }
-        else if (!UtilCompare((const uint16 *) indicator, (const uint16 *) "roam", 4))
+        else if (!UtilCompare((const u16 *) indicator, (const u16 *) "roam", 4))
         {
             ind_indexes.roaming_status = index;
         }
-        else if (!UtilCompare((const uint16 *) indicator, (const uint16 *) "battchg", 7))
+        else if (!UtilCompare((const u16 *) indicator, (const u16 *) "battchg", 7))
         {
             ind_indexes.battery_charge = index;
         }
-        else if (!UtilCompare((const uint16 *) indicator, (const uint16 *) "callheld", 8))
+        else if (!UtilCompare((const u16 *) indicator, (const u16 *) "callheld", 8))
         {
             ind_indexes.call_hold_status = index;
         }
@@ -426,13 +426,13 @@ void hfpHandleIndicatorStatusUpdate(Task link_ptr, const struct hfpHandleIndicat
 
 
 /* Helper function to set the status of indicator of index indicator_idx in AT+BIA command */
-static void hfpUpdateIndicatorsCommand(char* indicators_start, uint16 indicator_idx, hfp_indicator_status status)
+static void hfpUpdateIndicatorsCommand(char* indicators_start, u16 indicator_idx, hfp_indicator_status status)
 {
     /* If indicator_idx is set and status is not the default */
     if(indicator_idx && status != hfp_indicator_off)
     {
         /* work out which char we want to modify in relation to first indicator */
-        uint16 char_idx = (indicator_idx-1) * 2;
+        u16 char_idx = (indicator_idx-1) * 2;
         /* set the char (either '0' or '1') */
         *(indicators_start + char_idx) =  (status == hfp_indicator_on) ? '1':' ';
     }
@@ -461,7 +461,7 @@ void hfpHandleSetActiveIndicatorsReq(hfp_link_data* link)
         static const char atEnd[] = {'0','\r','\0'};
         
         /* 'AT+BIA=' takes 7 chars, two chars for each indicator plus three more for atEnd */
-        uint16 size_bia = sizeof(atCmd) + (link->ag_supported_indicators.num_indicators * sizeof(atCmdSeparator)) + sizeof(atEnd);
+        u16 size_bia = sizeof(atCmd) + (link->ag_supported_indicators.num_indicators * sizeof(atCmdSeparator)) + sizeof(atEnd);
         char *bia;
         char *p;
         
@@ -469,7 +469,7 @@ void hfpHandleSetActiveIndicatorsReq(hfp_link_data* link)
         
         if(bia)
         {
-            uint16 i;
+            u16 i;
             /* Add "AT+BIA=" */
             memmove(bia, atCmd, sizeof(atCmd));
             /* Fill in default value for all indicators "0,"*/

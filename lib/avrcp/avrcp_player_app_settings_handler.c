@@ -73,9 +73,9 @@ void avrcpHandleListAppAttributesCommand(AVRCP *avrcp)
 void avrcpHandleInternalListAppAttributesResponse(AVRCP *avrcp, 
                 AVRCP_INTERNAL_LIST_APP_ATTRIBUTE_RES_T *res)
 {
-    uint16 size_mandatory_data = 1;
-    uint8 mandatory_data[1];
-    uint16 param_length = 1;
+    u16 size_mandatory_data = 1;
+    u8 mandatory_data[1];
+    u16 param_length = 1;
 
     mandatory_data[0] = avrcpGetErrorStatusCode(&res->response,
                                                  AVRCP0_CTYPE_STATUS);
@@ -105,7 +105,7 @@ void avrcpHandleInternalListAppAttributesResponse(AVRCP *avrcp,
  *  AVRCP       -  AVRCP Instance
  *  attribute_id -  Requested attribute ID for Value.
  ****************************************************************************/
-void avrcpHandleListAppValuesCommand(AVRCP *avrcp, uint16 attribute_id)
+void avrcpHandleListAppValuesCommand(AVRCP *avrcp, u16 attribute_id)
 {
 
     if (!isAvrcpPlayerSettingsEnabled(avrcpGetDeviceTask()))
@@ -141,9 +141,9 @@ void avrcpHandleListAppValuesCommand(AVRCP *avrcp, uint16 attribute_id)
 void avrcpHandleInternalListAppValuesResponse(AVRCP *avrcp,
                  AVRCP_INTERNAL_LIST_APP_VALUE_RES_T *res)
 {
-    uint16 size_mandatory_data = 1;
-    uint8 mandatory_data[1];
-    uint16 param_length = 1;
+    u16 size_mandatory_data = 1;
+    u8 mandatory_data[1];
+    u16 param_length = 1;
 
     mandatory_data[0] = avrcpGetErrorStatusCode(&res->response, 
                                             AVRCP0_CTYPE_STATUS);
@@ -175,10 +175,10 @@ void avrcpHandleInternalListAppValuesResponse(AVRCP *avrcp,
  *  packet_size -  size of data
  ****************************************************************************/
 void avrcpHandleGetAppValuesCommand(AVRCP *avrcp, 
-                                    const uint8* ptr,
-                                    uint16 packet_size)
+                                    const u8* ptr,
+                                    u16 packet_size)
 {
-    uint16 data_offset=1;
+    u16 data_offset=1;
     Source source=0;
 
     if(isAvrcpPlayerSettingsEnabled(avrcpGetDeviceTask()) && packet_size)
@@ -223,8 +223,8 @@ void avrcpHandleGetAppValuesCommand(AVRCP *avrcp,
 void avrcpHandleInternalGetAppValueResponse(AVRCP *avrcp,
                AVRCP_INTERNAL_GET_APP_VALUE_RES_T *res)
 {
-    uint8 mandatory_data[1];
-    uint16 param_length = AVRCP_APP_NUM_ATTR_HDR_SIZE;
+    u8 mandatory_data[1];
+    u16 param_length = AVRCP_APP_NUM_ATTR_HDR_SIZE;
 
     mandatory_data[0] = avrcpGetErrorStatusCode(&res->response, 
                                                 AVRCP0_CTYPE_STATUS);
@@ -256,10 +256,10 @@ void avrcpHandleInternalGetAppValueResponse(AVRCP *avrcp,
  *  packet_size -  size of data
  ****************************************************************************/
 void avrcpHandleSetAppValuesCommand(AVRCP *avrcp, 
-                                    const uint8* ptr, 
-                                    uint16 packet_size)
+                                    const u8* ptr, 
+                                    u16 packet_size)
 {
-    uint16 data_offset=1;
+    u16 data_offset=1;
     Source source=0;
 
     if(isAvrcpPlayerSettingsEnabled(avrcpGetDeviceTask()) && packet_size)
@@ -304,7 +304,7 @@ void avrcpHandleSetAppValuesCommand(AVRCP *avrcp,
 void avrcpHandleInternalSetAppValueResponse(AVRCP *avrcp, 
                AVRCP_INTERNAL_SET_APP_VALUE_RES_T *res)
 {
-    uint8 mandatory_data[1];
+    u8 mandatory_data[1];
 
     mandatory_data[0] = avrcpGetErrorStatusCode(&res->response, 
                                                 AVRCP0_CTYPE_CONTROL);
@@ -331,11 +331,11 @@ void avrcpHandleInternalSetAppValueResponse(AVRCP *avrcp,
  *  packet_size -  size of data
  ****************************************************************************/
 void avrcpHandleGetAppAttributeTextCommand(AVRCP *avrcp, 
-                                        const uint8* ptr, 
-                                        uint16 packet_size)
+                                        const u8* ptr, 
+                                        u16 packet_size)
 {
     Source source=0;
-    uint16 data_offset=1;
+    u16 data_offset=1;
 
     if(isAvrcpPlayerSettingsEnabled(avrcpGetDeviceTask()) && packet_size)
     {
@@ -380,8 +380,8 @@ void avrcpHandleGetAppAttributeTextCommand(AVRCP *avrcp,
 void avrcpHandleInternalGetAppAttributeTextResponse(AVRCP *avrcp,
              AVRCP_INTERNAL_GET_APP_ATTRIBUTES_TEXT_RES_T *res)
 {
-    uint8 mandatory_data[AVRCP_APP_NUM_ATTR_HDR_SIZE];
-    uint16 param_length = AVRCP_APP_NUM_ATTR_HDR_SIZE;
+    u8 mandatory_data[AVRCP_APP_NUM_ATTR_HDR_SIZE];
+    u16 param_length = AVRCP_APP_NUM_ATTR_HDR_SIZE;
 
     mandatory_data[0] = avrcpGetErrorStatusCode(&res->response, 
                                                 AVRCP0_CTYPE_STATUS);
@@ -416,13 +416,13 @@ void avrcpHandleInternalGetAppAttributeTextResponse(AVRCP *avrcp,
  *  packet_size -  size of data
  ****************************************************************************/
 void avrcpHandleGetAppValueTextCommand(AVRCP *avrcp,  
-                                      const uint8* data, 
-                                      uint16 packet_size)
+                                      const u8* data, 
+                                      u16 packet_size)
 {
     if(isAvrcpPlayerSettingsEnabled(avrcpGetDeviceTask()) && (packet_size > 1))
     {
         Source source=0;
-        uint16 data_offset=2;
+        u16 data_offset=2;
 
         packet_size-= data_offset;
 
@@ -482,8 +482,8 @@ void avrcpHandleGetAppValueTextCommand(AVRCP *avrcp,
 void avrcpHandleInternalGetAppValueTextResponse(AVRCP *avrcp,
               AVRCP_INTERNAL_GET_APP_VALUE_TEXT_RES_T *res)
 {
-    uint8 mandatory_data[AVRCP_APP_NUM_ATTR_HDR_SIZE];
-    uint16 param_length = AVRCP_APP_NUM_ATTR_HDR_SIZE;
+    u8 mandatory_data[AVRCP_APP_NUM_ATTR_HDR_SIZE];
+    u16 param_length = AVRCP_APP_NUM_ATTR_HDR_SIZE;
 
     mandatory_data[0] = avrcpGetErrorStatusCode(&res->response, 
                                                 AVRCP0_CTYPE_STATUS);
@@ -514,7 +514,7 @@ void avrcpHandleInternalGetAppValueTextResponse(AVRCP *avrcp,
  *  AVRCP          -  AVRCP Instance
  *  battery_status -  Battery status
  ****************************************************************************/
-void avrcpHandleInformBatteryStatusCommand(AVRCP *avrcp, uint16 battery_status)
+void avrcpHandleInformBatteryStatusCommand(AVRCP *avrcp, u16 battery_status)
 {
     /*    
         Process the command PDU. If app settings are not enabled at 
@@ -554,13 +554,13 @@ void avrcpHandleInformBatteryStatusCommand(AVRCP *avrcp, uint16 battery_status)
  *  packet_size -  size of data
  ****************************************************************************/
 void avrcpHandleInformCharSetCommand(AVRCP *avrcp,
-                                     const uint8* ptr, 
-                                     uint16 packet_size)
+                                     const u8* ptr, 
+                                     u16 packet_size)
 {
     if(isAvrcpPlayerSettingsEnabled(avrcpGetDeviceTask()) && packet_size)
     {
         Source source=0;
-        uint16 data_offset=1;
+        u16 data_offset=1;
 
         packet_size-= data_offset;
         if(packet_size)

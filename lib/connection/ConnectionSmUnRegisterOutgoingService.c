@@ -25,7 +25,7 @@ NOTES
 
 
 /*****************************************************************************/
-void ConnectionSmUnRegisterOutgoingService(const bdaddr* bd_addr, dm_protocol_id protocol_id, uint32 channel)
+void ConnectionSmUnRegisterOutgoingService(const bdaddr* bd_addr, dm_protocol_id protocol_id, u32 channel)
 {
 #ifdef CONNECTION_DEBUG_LIB
     if ((protocol_id != protocol_l2cap) && (protocol_id != protocol_rfcomm))

@@ -9,7 +9,7 @@
 #include "sink_gatt_db.h"
 
 /* Static GATT database */
-const uint16 gattDatabase[] = {
+const u16 gattDatabase[] = {
     /* 0001: Primary Service 1801 */
     0x0002, 0x0118,
     /* 0002: Characteristic Declaration 2a05 */
@@ -94,15 +94,15 @@ const uint16 gattDatabase[] = {
     0x6c00,
 };
 
-uint16 *GattGetDatabase(uint16 *len)
+u16 *GattGetDatabase(u16 *len)
 {
-    uint16 *rc = PanicUnlessMalloc(sizeof(gattDatabase));
+    u16 *rc = PanicUnlessMalloc(sizeof(gattDatabase));
     *len = sizeof(gattDatabase);
     memmove(rc, gattDatabase, sizeof(gattDatabase));
     return rc;
 }
 
-uint16 GattGetDatabaseSize(void)
+u16 GattGetDatabaseSize(void)
 {
     return sizeof(gattDatabase);
 }

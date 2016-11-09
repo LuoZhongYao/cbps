@@ -56,8 +56,8 @@ typedef struct
     unsigned bitpool:8;                                     /* Encoding Bitpool value in use by the codec */
     unsigned bad_link_bitpool:8;                            /* Encoding Bitpool value when in bad link situation */
     unsigned format:8;                                      /* Encoding format in use by the codec */
-    uint16 packet_size;                                     /* Encode packet size to use */
-    uint32 rate;                                            /* Additional rate */
+    u16 packet_size;                                     /* Encode packet size to use */
+    u32 rate;                                            /* Additional rate */
     A2dpEncoderPluginModeParams *mode;                      /* Mode parameters */
     Sink a2dp_sink[CSR_A2DP_ENCODER_PLUGIN_MAX_A2DP_SINKS]; /* A2DP media Sinks */ 
     Source input_source;                                    /* Input Source (USB/Analogue) */

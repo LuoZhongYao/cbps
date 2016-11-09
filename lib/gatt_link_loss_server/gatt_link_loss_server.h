@@ -57,7 +57,7 @@ typedef struct
 typedef struct PACK_STRUCT __GATT_LLS_ALERT_LEVEL_CHANGE_IND
 {
     const GLLSS_T *link_loss_server;   /*! Reference structure for the instance */
-    uint16 cid;                        /*! Connection ID */
+    u16 cid;                        /*! Connection ID */
 } GATT_LLS_ALERT_LEVEL_CHANGE_IND_T;
 
 /*! @brief Enumeration of messages a client task may receive from the Link Loss service library.
@@ -97,8 +97,8 @@ typedef enum
 gatt_link_loss_server_status GattLinkLossServerInit(
                                 Task appTask , 
                                 GLLSS_T *const link_loss_server,
-                                uint16 start_handle,
-                                uint16 end_handle);
+                                u16 start_handle,
+                                u16 end_handle);
 
 
 /*!

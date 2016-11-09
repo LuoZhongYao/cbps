@@ -37,9 +37,9 @@ DESCRIPTION
 
 
 /* Display unhandled states in Debug Mode */
-#define avrcp_msg_unhandled_state(inst) AVRCP_MSG_DEBUG(("AVRCP MSG Ignored; state [%d] inst[0x%x]\n", avrcp_get_state(inst), (uint16)inst));
+#define avrcp_msg_unhandled_state(inst) AVRCP_MSG_DEBUG(("AVRCP MSG Ignored; state [%d] inst[0x%x]\n", avrcp_get_state(inst), (u16)inst));
 
-#define AVRCP_MSG_DEBUG_INST(inst) AVRCP_MSG_DEBUG(("        inst[0x%x]\n", (uint16)inst))
+#define AVRCP_MSG_DEBUG_INST(inst) AVRCP_MSG_DEBUG(("        inst[0x%x]\n", (u16)inst))
 
 
 /* AVRCP library message handling functions */
@@ -288,7 +288,7 @@ static void avrcp_msg_connect_cfm(const AVRCP_CONNECT_CFM_T *message)
 {    
     avrcpInstance *inst = avrcp_get_instance_from_bdaddr(message->bd_addr);
     
-    AVRCP_MSG_DEBUG(("  sink[0x%x]\n", (uint16)message->sink));
+    AVRCP_MSG_DEBUG(("  sink[0x%x]\n", (u16)message->sink));
  
     if (inst == NULL)
     {
@@ -570,7 +570,7 @@ static void avrcp_msg_subunitinfo_ind(const AVRCP_SUBUNITINFO_IND_T *message)
         case AVRCP_STATE_CONNECTED:
         {
             /* Send the correct response to SubUnitInfo requests. */
-            uint8 page_data[4];
+            u8 page_data[4];
             page_data[0] = 0x48; /* subunit_type: panel; max_subunit_ID: 0 */
             page_data[1] = 0xff;
             page_data[2] = 0xff;
@@ -696,7 +696,7 @@ static void avrcp_msg_volume_changed_event_ind(const AVRCP_EVENT_VOLUME_CHANGED_
         {
             if ((message->response == avctp_response_interim) || (message->response == avctp_response_changed))
             {
-                uint8 volume = message->volume / AVRCP_ABS_VOL_STEP_CHANGE;
+                u8 volume = message->volume / AVRCP_ABS_VOL_STEP_CHANGE;
                 
                 AVRCP_MSG_DEBUG(("  volume ind[%d] current volume[%d]\n", message->volume, theSource->volume_data.speaker_vol));
                 

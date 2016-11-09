@@ -13,10 +13,10 @@ Copyright (c) 2015 Qualcomm Technologies International, Ltd.
 
 typedef struct
 {
-    uint8       vendor_id_source;       /* Identifies the source of the Vendor ID field */
-    uint16      vendor_id;              /* Identifies the product vendor from the namespace in the Vendor ID Source */
-    uint16      product_id;             /* Manufacturer managed identifier for this product */
-    uint16      product_version;        /* Manufacturer managed version for this product */
+    u8       vendor_id_source;       /* Identifies the source of the Vendor ID field */
+    u16      vendor_id;              /* Identifies the product vendor from the namespace in the Vendor ID Source */
+    u16      product_id;             /* Manufacturer managed identifier for this product */
+    u16      product_version;        /* Manufacturer managed version for this product */
 }pnp_id_t;
 
 /*! @brief This is a 64-bit structure which consists of a 40-bit manufacturer-defined identifier
@@ -27,7 +27,7 @@ typedef struct
 */
 typedef struct
 {
-    uint32    system_id[2];
+    u32    system_id[2];
 }sys_id_t;
 
 /*! brief The content of this characteristic is determined by the Authorizing Organization 
@@ -40,7 +40,7 @@ typedef struct
 */
 typedef struct
 {
-    uint8*    ieee_data_list;
+    u8*    ieee_data_list;
 }ieee_t;
     
 typedef struct 
@@ -102,6 +102,6 @@ typedef enum
 */
 gatt_dis_status_t GattDeviceInfoServerInit(Task appTask, gdiss_t *const dev_info_server,
                                            gatt_dis_init_params_t *const init_params,
-										   uint16 start_handle,
-										   uint16 end_handle);
+										   u16 start_handle,
+										   u16 end_handle);
 #endif

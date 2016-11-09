@@ -34,14 +34,14 @@ Incorrect use of these functions could produce a non-functional module, and so c
 /*!
    @brief Read the current boot mode.
 */
-uint16 BootGetMode(void);
+u16 BootGetMode(void);
 
 /*!
   @brief Set the mode and force a reboot using a warm reset.
   @param newBootmode The new boot mode to use.
 
 */
-void BootSetMode(uint16 newBootmode);
+void BootSetMode(u16 newBootmode);
 
 /*!
    @brief Read the (single) word preserved between warm resets caused by BootSetMode(). 
@@ -49,7 +49,7 @@ void BootSetMode(uint16 newBootmode);
    \note
    Any other boot causes will invalidate the preserved word and return 0.
 */
-uint16 BootGetPreservedWord(void);
+u16 BootGetPreservedWord(void);
 
 /*!
    @brief Write the (single) word preserved between warm resets caused by BootSetMode().
@@ -58,6 +58,6 @@ uint16 BootGetPreservedWord(void);
    \note
    This word will be invalidated if the device resets for other reasons. See VmGetResetSource().
 */
-void BootSetPreservedWord(uint16 state);
+void BootSetPreservedWord(u16 state);
 
 #endif

@@ -38,9 +38,9 @@ RETURNS
 static void gattSendCfm(
     Task task, 
     gatt_status_t status, 
-    uint16 cid,
-    uint16 flags,
-    uint16 handle
+    u16 cid,
+    u16 flags,
+    u16 handle
     )
 {
     /* NOTIFICATION and INDICATION message are identical in structure. */
@@ -69,10 +69,10 @@ RETURNS
 */
 void GattNotificationRequest(
         Task theAppTask, 
-        uint16 cid, 
-        uint16 handle, 
-        uint16 size_value,
-        const uint8 *value
+        u16 cid, 
+        u16 handle, 
+        u16 size_value,
+        const u8 *value
         )
 {
     cid_map_t *conn = gattFindConn(cid);
@@ -123,10 +123,10 @@ RETURNS
 */
 void GattIndicationRequest(
         Task theAppTask, 
-        uint16 cid, 
-        uint16 handle, 
-        uint16 size_value,
-        const uint8 *value
+        u16 cid, 
+        u16 handle, 
+        u16 size_value,
+        const u8 *value
         )
 {
     cid_map_t *conn = gattFindConn(cid);
@@ -196,7 +196,7 @@ void gattHandleInternalHandleValueReq(GATT_INTERNAL_HANDLE_VALUE_REQ_T *req)
         
         if (req->size_value)
         {
-            uint8 *value = (uint8 *)PanicUnlessMalloc(req->size_value);
+            u8 *value = (u8 *)PanicUnlessMalloc(req->size_value);
             memmove(value, req->value, req->size_value);
             prim->value = VmGetHandleFromPointer(value);
         }
@@ -289,9 +289,9 @@ RETURNS
 */
 void gattHandleAttHandleValueInd(ATT_HANDLE_VALUE_IND_T *ind)
 {
-    uint8 *value = 0;
+    u8 *value = 0;
     if (ind->size_value)
-        value = (uint8 *) VmGetPointerFromHandle(ind->value);   
+        value = (u8 *) VmGetPointerFromHandle(ind->value);   
 
     if ( gattCidIsValid(ind->cid) )
     {
@@ -334,7 +334,7 @@ DESCRIPTION
 RETURNS
 
 */
-void GattIndicationResponse(uint16 cid)
+void GattIndicationResponse(u16 cid)
 {
     if( gattCidIsValid(cid) )
     {

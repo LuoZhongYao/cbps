@@ -24,7 +24,7 @@ PBAPC *Pbapc[MAX_PBAPC_CONNECTIONS] = {NULL, NULL};
  *  Send the Authentication Challenge String
  **************************************************************************/
 static void pbapcSendAuthChallenge( PBAPC *pbapc, 
-                                    const uint8 *nonce)
+                                    const u8 *nonce)
 {
     if( nonce )
     {
@@ -46,9 +46,9 @@ static void pbapcSendAuthChallenge( PBAPC *pbapc,
  *  Send the Authentication Response String
  **************************************************************************/
 static void pbapcSendAuthResponse( PBAPC *pbapc, 
-                                    const uint8 *digest, 
-                                    uint16 sizeUserId, 
-                                    const uint8 *userId ) 
+                                    const u8 *digest, 
+                                    u16 sizeUserId, 
+                                    const u8 *userId ) 
 {
     MAKE_PBAPC_MESSAGE_WITH_LEN(PBAPC_INT_AUTH_RESP, sizeUserId );
     memmove(message->digest, digest, PBAPC_OBEX_SIZE_DIGEST);
@@ -64,9 +64,9 @@ static void pbapcSendAuthResponse( PBAPC *pbapc,
  * DESCRIPTION
  *  Get the device_id of PBAPC link connected to bdAddr
  **************************************************************************/
-uint16 PbapcGetLinkFrmAddr(const bdaddr *bdAddr)
+u16 PbapcGetLinkFrmAddr(const bdaddr *bdAddr)
 {
-    uint16 device_id = pbapc_invalid_link;
+    u16 device_id = pbapc_invalid_link;
     
     for(device_id = 0; device_id < MAX_PBAPC_CONNECTIONS; device_id++)
     {
@@ -95,7 +95,7 @@ static bool pbapcAddPbapDevice(const bdaddr *bdAddr, pbapc_link_priority *priori
         
         if(*priority == pbapc_invalid_link)
         {
-            uint8 device_id = 0;
+            u8 device_id = 0;
         
             for(device_id = 0; device_id < MAX_PBAPC_CONNECTIONS; device_id++)
             {
@@ -199,11 +199,11 @@ void PbapcConnectRequest( Task theAppTask, const bdaddr *bdAddr )
  * PARAMETERS
  *  Refer pbapc.h 
  **************************************************************************/
-void PbapcConnectAuthResponse( uint16 device_id, 
-                               const uint8 *digest, 
-                               uint16 sizeUserId, 
-                               const uint8 *userId, 
-                               const uint8 *nonce)
+void PbapcConnectAuthResponse( u16 device_id, 
+                               const u8 *digest, 
+                               u16 sizeUserId, 
+                               const u8 *userId, 
+                               const u8 *nonce)
 {
     PBAPC *pbapc = Pbapc[device_id];
     PBAPC_ASSERT( (pbapc && digest && nonce), ("Invalid parameters"));
@@ -225,12 +225,12 @@ void PbapcConnectAuthResponse( uint16 device_id,
  * PARAMETERS
  *  Refer pbapc.h 
  **************************************************************************/
-void PbapcPullPhonebookRequest( uint16 device_id, 
+void PbapcPullPhonebookRequest( u16 device_id, 
                                 PbapcPhoneRepository repository, 
                                 PbapcPhoneBook phonebook,
                                 const PbapcPullPhonebookParams *params)
 {
-    uint8 reps;
+    u8 reps;
 	PBAPC *pbapc = Pbapc[device_id];
  
     PBAPC_ASSERT( ( pbapc ), ("Invalid Params"));
@@ -274,7 +274,7 @@ void PbapcPullPhonebookRequest( uint16 device_id,
  * PARAMETERS
  *  Refer pbapc.h 
  **************************************************************************/
-void PbapcPullContinue( uint16 device_id )
+void PbapcPullContinue( u16 device_id )
 {
     PBAPC *pbapc = Pbapc[device_id];
 
@@ -300,7 +300,7 @@ void PbapcPullContinue( uint16 device_id )
  * PARAMETERS
  *  Refer pbapc.h 
  **************************************************************************/
-void PbapcPullComplete( uint16 device_id )
+void PbapcPullComplete( u16 device_id )
 {
     PBAPC *pbapc = Pbapc[device_id];
 
@@ -326,11 +326,11 @@ void PbapcPullComplete( uint16 device_id )
  * PARAMETERS
  *  Refer pbapc.h 
  **************************************************************************/
-void PbapcSetPhonebookRequest( uint16 device_id, 
+void PbapcSetPhonebookRequest( u16 device_id, 
                                PbapcPhoneRepository repository, 
                                PbapcPhoneBook phonebook )
 {
-    uint8 reps;
+    u8 reps;
     PBAPC *pbapc = Pbapc[device_id];
 
     PBAPC_ASSERT((phonebook !=  pbap_root ), ("Invalid phonebook"));  
@@ -365,11 +365,11 @@ void PbapcSetPhonebookRequest( uint16 device_id,
  *  Refer pbapc.h 
  **************************************************************************/
 
-void PbapcPullVcardListingRequest( uint16 device_id, 
+void PbapcPullVcardListingRequest( u16 device_id, 
                                    PbapcPhoneBook phonebook, 
                                    const PbapcPullvCardListParams *params )
 {
-    uint16 len = 0;
+    u16 len = 0;
     PBAPC *pbapc = Pbapc[device_id];
 
     PBAPC_ASSERT( pbapc, ("Invalid Params"));
@@ -419,8 +419,8 @@ void PbapcPullVcardListingRequest( uint16 device_id,
  * PARAMETERS
  *  Refer pbapc.h 
  **************************************************************************/
-void PbapcPullVcardEntryRequest( uint16 device_id,
-                                 uint32 entry, 
+void PbapcPullVcardEntryRequest( u16 device_id,
+                                 u32 entry, 
                                  const PbapcPullvCardEntryParams* params )
 {
     PBAPC *pbapc = Pbapc[device_id];
@@ -455,7 +455,7 @@ void PbapcPullVcardEntryRequest( uint16 device_id,
  * PARAMETERS
  *  Refer pbapc.h 
  **************************************************************************/
-void PbapcDisconnectRequest(uint16 device_id)
+void PbapcDisconnectRequest(u16 device_id)
 {
     PBAPC *pbapc = Pbapc[device_id];
 
@@ -477,9 +477,9 @@ void PbapcDisconnectRequest(uint16 device_id)
  * DESCRIPTION
  *  Check how many PBAPC links have been connected
  **************************************************************************/
-uint8 PbapcGetNoOfConnection(void)
+u8 PbapcGetNoOfConnection(void)
 {
-    uint8 NoOfDevices = 0;
+    u8 NoOfDevices = 0;
 
     if((Pbapc[pbapc_primary_link]) && (Pbapc[pbapc_primary_link])->connect_state == pbapc_connected)
         NoOfDevices++;
@@ -497,7 +497,7 @@ uint8 PbapcGetNoOfConnection(void)
  * DESCRIPTION
  *  Check server the supported repositories mask
  **************************************************************************/
-uint8 PbapcGetServerProperties(uint16 device_id)
+u8 PbapcGetServerProperties(u16 device_id)
 {
 	PBAPC *pbapc = Pbapc[device_id];
 	
@@ -519,7 +519,7 @@ uint8 PbapcGetServerProperties(uint16 device_id)
 	
 	@return the server to obtain the sink of obex connection.
 */
-Sink PbapcGetSink(uint16 device_id)
+Sink PbapcGetSink(u16 device_id)
 {
     PBAPC *pbapc = Pbapc[device_id];
 	

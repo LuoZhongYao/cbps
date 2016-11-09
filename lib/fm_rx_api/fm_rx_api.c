@@ -114,7 +114,7 @@ DESCRIPTION
 RETURNS
     nothing
 */   
-void fmRxUpdateVolume(uint8 vol)
+void fmRxUpdateVolume(u8 vol)
 {
     /*Send a message to the plugin to set the FM recevier chip output gain*/
     MAKE_FM_MESSAGE(FM_PLUGIN_RX_UPDATE_VOLUME_MSG);
@@ -138,7 +138,7 @@ DESCRIPTION
 RETURNS
     nothing
 */   
-void fmRxTuneFrequency(uint16 frequency)
+void fmRxTuneFrequency(u16 frequency)
 {
     /*Send a message to the plugin to tell the plugin what frequency to tune to*/
     MAKE_FM_MESSAGE(FMRX_TUNE_FREQ_MSG);   

@@ -145,8 +145,8 @@ typedef enum
 typedef struct 
 {
     MapcStatus  status;         /*!< The status of the Notification Service */
-    uint8       mnsChannel;     /*!< The RFCOMM server channel for MNS */
-    uint32      sdpHandle;      /*!< SDP Record Service Handle */
+    u8       mnsChannel;     /*!< The RFCOMM server channel for MNS */
+    u32      sdpHandle;      /*!< SDP Record Service Handle */
 
 }MAPC_MNS_START_CFM_T; 
 
@@ -170,7 +170,7 @@ typedef struct
 typedef struct
 {
     bdaddr  addr;           /*!< Address of the remote MSE device */
-    uint8   mnsChannel;     /*!< The local channel received this connection */
+    u8   mnsChannel;     /*!< The local channel received this connection */
     Sink    connectID;      /*!< Connection ID for this Connection */
     
 }MAPC_MNS_CONNECT_IND_T;
@@ -189,7 +189,7 @@ typedef struct{
     Mns         mnsSession;     /*!< The session handle. Invalid on failure */
     MapcStatus  status;         /*!< The Status of the MAP session. */
     bdaddr      addr;           /*!< BDAddress of the remote device */
-    uint8       mnsChannel;     /*!< Channel associated with the session */
+    u8       mnsChannel;     /*!< Channel associated with the session */
 
 }MAPC_MNS_CONNECT_CFM_T;
 
@@ -218,7 +218,7 @@ typedef struct{
     Mas         masSession;    /*!< The session handle. Invalid on failure */ 
     MapcStatus  status;        /*!< The Status of the MAP session. */
     bdaddr      addr;          /*!< BDAddress of the remote device */
-    uint8       masChannel;    /*!< rfcChannel associated with the session */
+    u8       masChannel;    /*!< rfcChannel associated with the session */
 
 }MAPC_MAS_CONNECT_CFM_T;
 
@@ -272,9 +272,9 @@ typedef struct{
 typedef struct{
     Mas         masSession;     /*!< The session handle of the MAS session */ 
     MapcStatus  status;         /*!< Status of the operation */
-    uint16      folderListSize; /*!< Number of available folders. 0xFFFF if  
+    u16      folderListSize; /*!< Number of available folders. 0xFFFF if  
                                      this information is unavailable. */
-    uint16      sourceLen;      /*!< Data length in the source */
+    u16      sourceLen;      /*!< Data length in the source */
     Source      folderListing;  /*!< The folder-listing object */
 } MAPC_MAS_GET_FOLDER_LISTING_CFM_T;
 
@@ -290,8 +290,8 @@ typedef struct{
 typedef struct{
     Mas         masSession;     /*!< The session handle of the MAS session */
     MapcStatus  status;         /*!< Status of the operation */
-    uint16      msgListSize;    /*!< Size of available messages */
-    uint16      sourceLen;      /*!< Data length in the source */
+    u16      msgListSize;    /*!< Size of available messages */
+    u16      sourceLen;      /*!< Data length in the source */
     Source      messagesListing;/*!< The Messages-Listing Object */ 
 } MAPC_MAS_GET_MESSAGES_LISTING_CFM_T;
 
@@ -307,7 +307,7 @@ typedef struct{
 typedef struct{
     Mas         masSession;     /*!< The session handle of the MAS session */
     MapcStatus  status;         /*!< Status of the operation */
-    uint16      sourceLen;      /*!< Data length in the source */
+    u16      sourceLen;      /*!< Data length in the source */
     Source      bMessage;       /*!< The bMessage Object */ 
 } MAPC_MAS_GET_MESSAGE_CFM_T;
 
@@ -325,8 +325,8 @@ typedef struct{
 typedef struct{
     Mas         masSession;  /*!< The session handle of the MAS session */
     MapcStatus  status;      /*!< Status of the operation */
-    uint16      handleLen;   /*!< The length of the handle */
-    uint8       handle[1];   /*!< handle of length handleLen */
+    u16      handleLen;   /*!< The length of the handle */
+    u8       handle[1];   /*!< handle of length handleLen */
 } MAPC_MAS_PUT_MESSAGE_CFM_T; 
 
 
@@ -365,9 +365,9 @@ typedef struct{
 */
 typedef struct{
     Mns     mnsSession;     /*!< The MNS session handle */
-    uint8   masInstanceId;  /*!< Remote MAS instance */
+    u8   masInstanceId;  /*!< Remote MAS instance */
     bool    moreData;       /*!< TRUE if there is more data to come */
-    uint16  sourceLen;      /*!< Data length in the source */
+    u16  sourceLen;      /*!< Data length in the source */
     Source  eventReport;    /*!< Source containing the event Report Object */
 }MAPC_MNS_SEND_EVENT_IND_T;
 
@@ -402,7 +402,7 @@ typedef struct{
     @return Message @link MAPC_MNS_START_CFM_T MAPC_MNS_START_CFM @endlink
     is sent to the application.
 */
-void MapcMnsStart( Task theAppTask, bool popSdpRec, uint8 mnsChannel );
+void MapcMnsStart( Task theAppTask, bool popSdpRec, u8 mnsChannel );
 
 /*!
     @brief  Shutdown the MNS Service
@@ -416,7 +416,7 @@ void MapcMnsStart( Task theAppTask, bool popSdpRec, uint8 mnsChannel );
     accept any new MNS connections after calling this API. This API
     unregister the SDP record and deallocate the MNS server channel.
 */
-void MapcMnsShutdown( uint32 recordHandle, uint8 mnsChannel );
+void MapcMnsShutdown( u32 recordHandle, u8 mnsChannel );
 
 /*!
     @brief Confirm the deletion of a MNS session.
@@ -461,7 +461,7 @@ void MapcMnsDisconnectResponse( Mns mnsSession );
 */ 
 void MapcMnsConnectResponse( Task theAppTask, 
                              const bdaddr* addr,
-                             uint8  mnsChannel,
+                             u8  mnsChannel,
                              bool   accept,
                              Sink   connectID );
 
@@ -516,7 +516,7 @@ void MapcMasSdpAttrSearchRequest( Task theAppTask, const bdaddr* addr );
      @link MAPC_MAS_CONNECT_CFM_T MAPC_MAS_CONNECT_CFM @endlink 
     with mapc_success.
 */
-void MapcMasConnectRequest( Task theAppTask, const bdaddr* addr, uint8 masChannel ); 
+void MapcMasConnectRequest( Task theAppTask, const bdaddr* addr, u8 masChannel ); 
 
 /*!
     @brief Disconnect the MAS session.
@@ -606,8 +606,8 @@ void MapcMnsSendEventResponse( Mns mnsSession, MapcResponse response );
 */
 void MapcMasSetFolderRequest( Mas masSession, 
                               bool back, 
-                              const uint8* name, 
-                              uint16 len );
+                              const u8* name, 
+                              u16 len );
 /*!
     @brief Request to get the remote folder listing
 
@@ -625,8 +625,8 @@ void MapcMasSetFolderRequest( Mas masSession,
     @endlink is sent to the application. 
 */
 void MapcMasGetFolderListingRequest( Mas masSession, 
-                                     uint16 maxListCount, 
-                                     uint16 listStartOffset);
+                                     u16 maxListCount, 
+                                     u16 listStartOffset);
 
 /*!
     @brief Request to get the list of messages from the MSE folder
@@ -652,10 +652,10 @@ void MapcMasGetFolderListingRequest( Mas masSession,
     @endlink is sent to the application. 
 */
 void MapcMasGetMessagesListingRequest( Mas masSession, 
-                                       const uint8* name,
-                                       uint16 nameLen,
-                                       uint16 maxListCount, 
-                                       uint16 listStartOffset,
+                                       const u8* name,
+                                       u16 nameLen,
+                                       u16 maxListCount, 
+                                       u16 listStartOffset,
                                        MapcMessageFilter filter );
 
 /*!
@@ -676,7 +676,7 @@ void MapcMasGetMessagesListingRequest( Mas masSession,
     @endlink is sent to the application. 
 */
 void MapcMasGetMessageRequest( Mas masSession,
-                               const uint8* handle,
+                               const u8* handle,
                                bool native );
 
 /*!
@@ -732,7 +732,7 @@ void MapcMasUpdateInboxRequest( Mas masSession );
     @endlink is sent to the application. 
 */
 void MapcMasSetMessageStatusRequest( Mas masSession,
-                                     const uint8* handle,
+                                     const u8* handle,
                                      MapcMessageStatus status );
 
 /*!
@@ -761,8 +761,8 @@ void MapcMasSetMessageStatusRequest( Mas masSession,
    
 */
 void MapcMasPutMessageRequest( Mas masSession, 
-                               const uint8* name,
-                               uint16 nameLen,
+                               const u8* name,
+                               u16 nameLen,
                                bool native,
                                bool moreData,
                                Source message );

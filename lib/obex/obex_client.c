@@ -31,7 +31,7 @@ DESCRIPTION
  *  The connection context task to which it will notify on session establishment.
  **************************************************************************/
 Task ObexConnectRequest( const bdaddr          *addr,
-                        uint8                 rfcChannel,
+                        u8                 rfcChannel,
                         const ObexConnParams  *connParams )
 {
     ObexChannel channel;
@@ -55,7 +55,7 @@ Task ObexConnectRequest( const bdaddr          *addr,
  **************************************************************************/
 void ObexPutRequest( Obex session, bool final )
 {
-    uint8 opcode= OBEX_PUT;
+    u8 opcode= OBEX_PUT;
 
     OBEX_ASSERT( session ); 
 
@@ -76,7 +76,7 @@ void ObexPutRequest( Obex session, bool final )
  **************************************************************************/
 void ObexGetRequest( Obex session, bool final )
 {
-    uint8 opcode= OBEX_GET;
+    u8 opcode= OBEX_GET;
 
     OBEX_ASSERT( session ); 
 
@@ -111,7 +111,7 @@ void ObexAbort( Obex session )
  * PARAMETERS
  *  Refer obex.h
  **************************************************************************/
-void ObexDeleteRequest(Obex session, uint16 objLen , const uint8* objName)
+void ObexDeleteRequest(Obex session, u16 objLen , const u8* objName)
 {
     Source name=0;
     OBEX_ASSERT( session ); 
@@ -156,8 +156,8 @@ void ObexDeleteRequest(Obex session, uint16 objLen , const uint8* objName)
  **************************************************************************/
 void ObexSetPathRequest( Obex session, 
                          ObexFolderPath flags, 
-                         uint16 folderLen, 
-                         const uint8* folderName)
+                         u16 folderLen, 
+                         const u8* folderName)
 {
     Source name=0;
     OBEX_ASSERT( session ); 
@@ -232,7 +232,7 @@ void ObexDisconnectRequest( Obex session )
  *  The connection context task to which it will notify on session establishment.
  **************************************************************************/
 Task ObexL2capConnectRequest( const bdaddr          *addr,
-                              uint16                 psm,
+                              u16                 psm,
                               const ObexConnParams  *connParams )
 {
     ObexChannel   channel;

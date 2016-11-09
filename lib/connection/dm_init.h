@@ -60,7 +60,7 @@ This Function is called to initialise the Trusted Device List (if there is one).
 RETURNS
 
 */
-uint16 connectionAuthInit(void);
+u16 connectionAuthInit(void);
 
 
 #endif	/* CONNECTION_DM_INIT_H_ */

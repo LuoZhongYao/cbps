@@ -98,7 +98,7 @@ transport has not been configured.)
 
    @note This call will return zero if the source/sink stream is connected to another stream.
 */
-uint16 StreamMove(Sink sink, Source source, uint16 count);
+u16 StreamMove(Sink sink, Source source, u16 count);
 
 /*!
   @brief Make an automatic connection between a source and sink
@@ -168,7 +168,7 @@ void StreamDisconnect(Source source, Sink sink);
     #VM_STREAM_L2CAP_ADD_LARGE_BUFFER_ON_PSM key should be used to configure 
     before sending or accepting L2CAP connection request.
 */
-bool StreamConfigure(vm_stream_config_key key, uint16 value);
+bool StreamConfigure(vm_stream_config_key key, u16 value);
 
 /*!
   @brief Find the Source from its Sink.
@@ -204,13 +204,13 @@ Sink StreamSinkFromSource(Source source);
 
   If length is zero then 0 is returned.
 */
-Source StreamRegionSource(const uint8 *data, uint16 length);
+Source StreamRegionSource(const u8 *data, u16 length);
 
 /*!
   @brief Get the Sink for the specified stream-based BCSP#13 channel.
   @param channel The channel to fetch the Sink for.
 */
-Sink StreamHostSink(uint16 channel);
+Sink StreamHostSink(u16 channel);
 
 /*!
   @brief Find the Sink associated with the raw UART.
@@ -267,19 +267,19 @@ Sink StreamAudioSink(audio_hardware hardware, audio_instance instance, audio_cha
    @brief Returns a Sink from the SCO stream passed.
    @param handle The SCO stream from which to fetch the Sink.
 */
-Sink StreamScoSink(uint16 handle);
+Sink StreamScoSink(u16 handle);
 
 /*!
   @brief Find the Sink corresponding to an RFCOMM connection.
 */
-Sink StreamRfcommSink(uint16 conn_id);
+Sink StreamRfcommSink(u16 conn_id);
 
 /*!
   @brief Find the Sink corresponding to an L2CAP connection
 
   @param cid The connection ID to fetch the Sink for.
 */
-Sink StreamL2capSink(uint16 cid);
+Sink StreamL2capSink(u16 cid);
 
 /*!
   @brief Find all the sinks connected to a given Bluetooth address. 
@@ -290,7 +290,7 @@ Sink StreamL2capSink(uint16 cid);
 
   @return TRUE if there was enough space, FALSE if some had to be discarded.
 */
-bool StreamSinksFromBdAddr(uint16 *max, Sink *sinks, const tp_bdaddr *tpaddr);
+bool StreamSinksFromBdAddr(u16 *max, Sink *sinks, const tp_bdaddr *tpaddr);
 
 /*!
   @brief Return a source with the contents of the specified file.
@@ -305,7 +305,7 @@ Source StreamFileSource(FILE_INDEX index);
   @brief The Sink connected to the port passed on Kalimba.
   @param port In the range 0..3 (BC3-MM) or 0..7 (BC5-MM)
 */
-Sink StreamKalimbaSink(uint16 port);
+Sink StreamKalimbaSink(u16 port);
 
 /*!
   @brief Return a source with the contents of the specified I2C address.
@@ -315,7 +315,7 @@ Sink StreamKalimbaSink(uint16 port);
 
   @return The source associated with the I2C stream.
 */
-Source StreamI2cSource(uint16 slave_addr, uint16 array_addr, uint16 size);
+Source StreamI2cSource(u16 slave_addr, u16 array_addr, u16 size);
 
 /*!
    @brief Return the USB Class Request Sink.
@@ -327,7 +327,7 @@ Sink StreamUsbClassSink(UsbInterface interface);
    @brief Return the USB Request Sink associated with the USB transport.
    @param end_point The USB endpoint (bEndPointAddress field in EndPointInfo structure) to fetch the Sink for.
 */
-Sink StreamUsbEndPointSink(uint16 end_point);
+Sink StreamUsbEndPointSink(u16 end_point);
 
 /*!
    @brief Return the USB Vendor Sink associated with the USB transport.
@@ -338,14 +338,14 @@ Sink StreamUsbVendorSink(void);
     @brief Return the FastPipe Sink for the pipe requested.
     @param id The ID of the pipe needed.
 */
-Sink StreamFastPipeSink(uint16 id);
+Sink StreamFastPipeSink(u16 id);
 
 /*!
   @brief Return the sink corresponding to the shunt for the given L2CAP CID on the given ACL
   @param acl the ACL connection handle (from the host)
   @param cid the L2CAP connection id (from the host)
 */
-Sink StreamShuntSink(uint16 acl, uint16 cid);
+Sink StreamShuntSink(u16 acl, u16 cid);
 
 /*!
   @brief Find the Source corresponding to an ATT connection with a specific
@@ -355,7 +355,7 @@ Sink StreamShuntSink(uint16 acl, uint16 cid);
 
   @return Source on success or zero on failure.
 */
-Source StreamAttSource(uint16 cid, uint16 handle);
+Source StreamAttSource(u16 cid, u16 handle);
 
 
 /*!
@@ -369,7 +369,7 @@ Source StreamAttSource(uint16 cid, uint16 handle);
   @param handle The attribute handle to get the connection source id for.
   @return Source in case of successful addition or zero on failure.
 */
-Source StreamAttSourceAddHandle(uint16 cid, uint16 handle);
+Source StreamAttSourceAddHandle(u16 cid, u16 handle);
 
 /*!
   @brief Open a sink to erase and write to an external flash partition.
@@ -399,7 +399,7 @@ Source StreamAttSourceAddHandle(uint16 cid, uint16 handle);
   sector or start of next partition's sector).
 
 */
-Sink StreamPartitionOverwriteSink(partition_filesystem_devices device, uint16 partition);
+Sink StreamPartitionOverwriteSink(partition_filesystem_devices device, u16 partition);
 
 /*!
   @brief Remove all attribute handles corresponding to an ATT connection registered with
@@ -409,7 +409,7 @@ Sink StreamPartitionOverwriteSink(partition_filesystem_devices device, uint16 pa
 
   @return bool TRUE in case of successful deletion otherwise FALSE
 */
-bool StreamAttSourceRemoveAllHandles(uint16 cid);
+bool StreamAttSourceRemoveAllHandles(u16 cid);
 
 /*!
   @brief Open a sink to erase and write to an external serial flash.
@@ -449,7 +449,7 @@ Sink StreamReformatSerialFlashSink(partition_filesystem_devices device);
   sink position from which the data can be written.
 
 */
-Sink StreamPartitionResumeSink(partition_filesystem_devices device, uint16 partition_no, uint16 first_word);
+Sink StreamPartitionResumeSink(partition_filesystem_devices device, u16 partition_no, u16 first_word);
 
 /*!
   @brief Make an automatic connection between a source and sink, or dispose it.

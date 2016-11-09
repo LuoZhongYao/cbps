@@ -37,9 +37,9 @@ NOTES
 
 /*helper functions*/
 static void ConnectAudio (CsrAgAudioPluginTaskData *task,  bool stereo );
-static void CodecMessage (CsrAgAudioPluginTaskData *task, T_mic_gain input_gain_l,T_mic_gain input_gain_r, uint16 output_gain ) ;
-uint32 CsrCalcDacRate ( CSR_AG_AUDIO_PLUGIN_TYPE_T cvc_plugin_variant, uint32 rate );
-static FILE_INDEX CsrSelectKapFile(CSR_AG_AUDIO_PLUGIN_TYPE_T plugin_variant, uint32 dac_rate);
+static void CodecMessage (CsrAgAudioPluginTaskData *task, T_mic_gain input_gain_l,T_mic_gain input_gain_r, u16 output_gain ) ;
+u32 CsrCalcDacRate ( CSR_AG_AUDIO_PLUGIN_TYPE_T cvc_plugin_variant, u32 rate );
+static FILE_INDEX CsrSelectKapFile(CSR_AG_AUDIO_PLUGIN_TYPE_T plugin_variant, u32 dac_rate);
 
 
 typedef struct audio_Tag
@@ -57,11 +57,11 @@ typedef struct audio_Tag
    /*! The link_type being used*/
    sync_link_type link_type;
    /*! The current volume level*/
-   uint16 volume;
+   u16 volume;
    /*! The current tone volume level*/
-   uint16 tone_volume;
+   u16 tone_volume;
    /*! Over the air rate  */
-   uint32  dac_rate;	
+   u32  dac_rate;	
    /*! Left microphone gain */
    T_mic_gain mic_gain_left;
    /*! Right microphone gain */
@@ -71,7 +71,7 @@ typedef struct audio_Tag
    /* USB configuration */
    const CsrAgAudioPluginUsbParams *usb;
    /* Warp value */
-   uint16 warp[CSR_AG_AUDIO_WARP_NUMBER_VALUES];
+   u16 warp[CSR_AG_AUDIO_WARP_NUMBER_VALUES];
    /* The App Task */
    Task app_task;
 } AG_AUDIO_T ;
@@ -81,7 +81,7 @@ static AG_AUDIO_T *CSR_AG_AUDIO = NULL;
 
 
 
-static FILE_INDEX CsrSelectKapFile(CSR_AG_AUDIO_PLUGIN_TYPE_T plugin_variant, uint32 dac_rate)
+static FILE_INDEX CsrSelectKapFile(CSR_AG_AUDIO_PLUGIN_TYPE_T plugin_variant, u32 dac_rate)
 {		
    FILE_INDEX index = 0;
    char* kap_file = NULL;
@@ -129,9 +129,9 @@ static FILE_INDEX CsrSelectKapFile(CSR_AG_AUDIO_PLUGIN_TYPE_T plugin_variant, ui
    return(index);
 }
 
-uint32 CsrCalcDacRate ( CSR_AG_AUDIO_PLUGIN_TYPE_T cvc_plugin_variant, uint32 rate )
+u32 CsrCalcDacRate ( CSR_AG_AUDIO_PLUGIN_TYPE_T cvc_plugin_variant, u32 rate )
 {
-   uint32 dac_rate = 0 ;
+   u32 dac_rate = 0 ;
    /* Calculate the DAC rate based on over the air rate value and the type of codec
    It holds true for both 8K and 16K connection and calculates the rate correctly */
 
@@ -166,11 +166,11 @@ DESCRIPTION
 RETURNS
    void
 */
-void CsrAgAudioPluginConnect( CsrAgAudioPluginTaskData *task, Sink audio_sink , AUDIO_SINK_T sink_type, Task codec_task , uint16 volume , uint32 rate , bool stereo , AUDIO_MODE_T mode , const void * params , Task app_task)
+void CsrAgAudioPluginConnect( CsrAgAudioPluginTaskData *task, Sink audio_sink , AUDIO_SINK_T sink_type, Task codec_task , u16 volume , u32 rate , bool stereo , AUDIO_MODE_T mode , const void * params , Task app_task)
 {
    FILE_INDEX index;
    tp_bdaddr rem_addr; 
-   uint16 i = 0;
+   u16 i = 0;
    
    CsrAgAudioPluginConnectParams *audio_params = (CsrAgAudioPluginConnectParams *)params;
 	
@@ -360,7 +360,7 @@ DESCRIPTION
 RETURNS
    void
 */
-void CsrAgAudioPluginSetVolume( CsrAgAudioPluginTaskData *task, uint16 volume )
+void CsrAgAudioPluginSetVolume( CsrAgAudioPluginTaskData *task, u16 volume )
 {
    if (!CSR_AG_AUDIO)
       Panic() ;
@@ -447,7 +447,7 @@ RETURNS
    false if a tone is already playing
     
 */
-void CsrAgAudioPluginPlayTone (CsrAgAudioPluginTaskData *task, ringtone_note * tone , Task codec_task , uint16 tone_volume)
+void CsrAgAudioPluginPlayTone (CsrAgAudioPluginTaskData *task, ringtone_note * tone , Task codec_task , u16 tone_volume)
 {   
    Source lSource;  
    Sink lSink; 
@@ -586,7 +586,7 @@ DESCRIPTION
 static void CsrAgAudioMicSetGain(audio_instance instance, audio_channel channel, bool digital, T_mic_gain gain)
 {
     Source mic_source = AudioPluginGetMic(instance, channel, digital);
-    uint8 mic_gain = (digital ? gain.digital_gain : gain.analogue_gain);
+    u8 mic_gain = (digital ? gain.digital_gain : gain.analogue_gain);
     AudioPluginSetMicGain(mic_source, digital, mic_gain, gain.preamp_enable);
 }
 
@@ -595,10 +595,10 @@ static void CsrAgAudioMicSetGain(audio_instance instance, audio_channel channel,
 DESCRIPTION
    Handles a CVC_CODEC message received from CSR_AG_AUDIO
 */
-static void CodecMessage (CsrAgAudioPluginTaskData *task, T_mic_gain input_gain_l, T_mic_gain input_gain_r, uint16 output_gain )
+static void CodecMessage (CsrAgAudioPluginTaskData *task, T_mic_gain input_gain_l, T_mic_gain input_gain_r, u16 output_gain )
 {   
     PRINT(("CSR_AG_AUDIO: Output gain = 0x%x\n" , output_gain ));
-    PRINT(("CSR_AG_AUDIO: Input gain L:R = 0x%x : 0x%x \n", *(uint16*)&input_gain_l, *(uint16*)&input_gain_r));
+    PRINT(("CSR_AG_AUDIO: Input gain L:R = 0x%x : 0x%x \n", *(u16*)&input_gain_l, *(u16*)&input_gain_r));
 
     /* check pointer validity as there is a very small window where a message arrives
        as the result of playing a tone after CSR_AG_AUDIO has been powered down */
@@ -624,7 +624,7 @@ static void CodecMessage (CsrAgAudioPluginTaskData *task, T_mic_gain input_gain_
 DESCRIPTION
    handles the internal cvc messages /  messages from the dsp
 */
-void CsrAgAudioPluginInternalMessage( CsrAgAudioPluginTaskData *task ,uint16 id , Message message ) 
+void CsrAgAudioPluginInternalMessage( CsrAgAudioPluginTaskData *task ,u16 id , Message message ) 
 {
     switch(id)
     {

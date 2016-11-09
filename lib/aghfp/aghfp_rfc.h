@@ -29,7 +29,7 @@ void aghfpHandleRfcommConnectRequest(AGHFP *aghfp, const AGHFP_INTERNAL_RFCOMM_C
 /****************************************************************************
 	Response to an incoming RFCOMM connect request.
 */
-void aghfpHandleRfcommConnectResponse(AGHFP *aghfp, bool response, Sink sink, uint8 server_channel, const rfcomm_config_params *config);
+void aghfpHandleRfcommConnectResponse(AGHFP *aghfp, bool response, Sink sink, u8 server_channel, const rfcomm_config_params *config);
 
 
 /****************************************************************************

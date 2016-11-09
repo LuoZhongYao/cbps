@@ -14,7 +14,7 @@ DESCRIPTION
 #define HSP_SERVICE_RECORD_H_
 
 
-static const uint8 hsp_service_record[] =
+static const u8 hsp_service_record[] =
 {
     /* Service class ID list */
     0x09,0x00,0x01, /* AttrID , ServiceClassIDList */
@@ -58,7 +58,7 @@ static const uint8 hsp_service_record[] =
     0x28, 0x01 /* boolean - TRUE we do support remote audio volume control */
 };
 
-static const uint8 hsp_service_record_2[] =
+static const u8 hsp_service_record_2[] =
 {
     /* Service class ID list */
     0x09,0x00,0x01, /* AttrID , ServiceClassIDList */

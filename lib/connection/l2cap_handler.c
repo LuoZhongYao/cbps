@@ -65,12 +65,12 @@ static void convertToQosFlow_t(const L2CA_QOS_T *in, qos_flow *out)
 static void sendL2capConnectCfm(
         Task appTask,
         l2cap_connect_status status,
-        uint16 psm,
+        u16 psm,
         Sink sink,
-        uint16 mtu,
-        uint16 timeout,
+        u16 mtu,
+        u16 timeout,
         const qos_flow *qos,
-        uint8 mode,
+        u8 mode,
         l2ca_cid_t cid,
         bdaddr *addr
         )
@@ -79,7 +79,7 @@ static void sendL2capConnectCfm(
                 "CL_L2CAP_CONNECT_CFM status 0x%x psm 0x%x sink 0x%x\n", 
                 status,
                 psm,
-                (uint16)sink)
+                (u16)sink)
             );
 
     {
@@ -160,7 +160,7 @@ void connectionHandleL2capRegisterReq(
                           L2CA_MODE_MASK_ENHANCED_RETRANS | 
                           L2CA_MODE_MASK_STREAMING;
     prim->flags         = req->flags;
-    prim->reg_ctx       = (uint16) req->clientTask;
+    prim->reg_ctx       = req->clientTask;
     
     /* Reserved parameters - intialise to 0 */
     prim->connection_oriented.buffer_size_sink      = 0;
@@ -274,7 +274,7 @@ void connectionHandleL2capConnectReq(const CL_INTERNAL_L2CAP_CONNECT_REQ_T *req)
     /* Attempt to connect */
     MAKE_PRIM_T(L2CA_AUTO_CONNECT_REQ);
 
-    prim->con_ctx = (uint16) req->theAppTask;
+    prim->con_ctx = req->theAppTask;
     prim->cid = 0;                      /* Only used for reconfigurations */
     prim->psm_local = req->psm_local;
     BdaddrConvertVmToBluestack(&(prim->bd_addr), &(req->bd_addr));
@@ -284,7 +284,7 @@ void connectionHandleL2capConnectReq(const CL_INTERNAL_L2CAP_CONNECT_REQ_T *req)
     prim->conftab_length = req->length;    
     if (req->length)
     {
-        prim->conftab = (uint16 *) VmGetHandleFromPointer( req->data );
+        prim->conftab = (u16 *) VmGetHandleFromPointer( req->data );
     }
     else
     {
@@ -457,7 +457,7 @@ void connectionHandleL2capConnectRes(const CL_INTERNAL_L2CAP_CONNECT_RES_T *res)
 
     MAKE_PRIM_T(L2CA_AUTO_CONNECT_RSP);
     
-    prim->con_ctx = (uint16) res->theAppTask;
+    prim->con_ctx = res->theAppTask;
     prim->identifier = res->identifier;
     prim->cid = res->connection_id;
     
@@ -468,7 +468,7 @@ void connectionHandleL2capConnectRes(const CL_INTERNAL_L2CAP_CONNECT_RES_T *res)
         prim->conftab_length = res->length;
 
         if (res->length)
-            prim->conftab = (uint16 *) VmGetHandleFromPointer(res->data);
+            prim->conftab = (u16 *) VmGetHandleFromPointer(res->data);
         else
             prim->conftab = 0;
     }
@@ -625,8 +625,8 @@ RETURNS
 */
 void connectionHandleQosSetupCfm(const DM_HCI_QOS_SETUP_CFM_T* cfm)
 {
-#define MINIMUM_LATENCY ((uint32)8750)
-#define PREFERRED_LATENCY   ((uint32)25000)
+#define MINIMUM_LATENCY ((u32)8750)
+#define PREFERRED_LATENCY   ((u32)25000)
     
     if(cfm->latency < MINIMUM_LATENCY)
     {
@@ -702,7 +702,7 @@ static void sendL2capMapFixedCidReq(connectionL2capState *state, const CL_INTERN
     prim->fixed_cid = L2CA_CID_CONNECTIONLESS;
     prim->cl_local_psm = req->psm_local;
     prim->cl_remote_psm = req->psm_remote;
-    prim->con_ctx = (uint16)req->theAppTask;
+    prim->con_ctx = req->theAppTask;
     
     if (req->type == l2cap_connectionless_data_broadcast)
         prim->flags = L2CA_CONFLAG_BROADCAST;
@@ -747,7 +747,7 @@ void connectionHandleL2capMapConnectionlessReq(connectionL2capState *state, cons
                 prim->phandle = 0;
                 prim->bd_addr = bd_addr;
                 prim->info_type = L2CA_GETINFO_TYPE_EXT_FEAT;
-                prim->req_ctx = (uint16)req->theAppTask;
+                prim->req_ctx = req->theAppTask;
                 prim->flags = 0;
                 VmSendL2capPrim(prim);
             }
@@ -783,7 +783,7 @@ DESCRIPTION
 RETURNS
     void
 */
-static void sendL2capMapConnectionlessCfm(Task theAppTask, l2cap_map_connectionless_status status, uint16 local_psm, Sink sink, const bdaddr *addr, uint16 fixed_cid)
+static void sendL2capMapConnectionlessCfm(Task theAppTask, l2cap_map_connectionless_status status, u16 local_psm, Sink sink, const bdaddr *addr, u16 fixed_cid)
 {
     MAKE_CL_MESSAGE(CL_L2CAP_MAP_CONNECTIONLESS_CFM);
     message->status = status;
@@ -821,8 +821,8 @@ void connectionHandleL2capGetInfoCfm(connectionL2capState *state, const L2CA_GET
             cfm->info_type  == L2CA_GETINFO_TYPE_EXT_FEAT
            )
         {
-            uint8* info_data = VmGetPointerFromHandle(cfm->info_data);
-            uint16 ext_feat = (uint16)(info_data[1]<<8) | (uint16)info_data[0];
+            u8* info_data = VmGetPointerFromHandle(cfm->info_data);
+            u16 ext_feat = (u16)(info_data[1]<<8) | (u16)info_data[0];
             free(info_data);
 
             /* Is Unicast Connectionless Data supported by the Remote device! */
@@ -888,7 +888,7 @@ void connectionHandleL2capMapFixedCidCfm(connectionL2capState *state, const L2CA
         {
             Sink sink = 0;
             bdaddr addr;
-            Task theAppTask = (Task) PanicZero(cfm->con_ctx);
+            Task theAppTask = (Task) PanicNull(cfm->con_ctx);
 
             if (cfm->result == L2CA_MISC_SUCCESS)
             {
@@ -982,7 +982,7 @@ void connectionHandleL2capMapConnectionlessRsp(const CL_INTERNAL_L2CAP_MAP_CONNE
 
     prim->cid = SinkGetL2capCid(sink);
     prim->ucd_remote_psm = 0;
-    prim->con_ctx = (uint16)res->theAppTask;
+    prim->con_ctx = res->theAppTask;
 
     /* If this is a Unicast data Source then nail up 
     ** the connection using the LOCK ACL flag. The ACL will stay up until 

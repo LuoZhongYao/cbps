@@ -49,11 +49,11 @@ void DisplaySetState( bool state );
 	
 */
 void DisplaySetText( char* text, 
-					 uint8 txtlen, 
-					 uint8 line,
+					 u8 txtlen, 
+					 u8 line,
                      bool  scroll,
-					 uint16 scroll_update,
-                     uint16 scroll_pause,
+					 u16 scroll_update,
+                     u16 scroll_pause,
                      bool  flash,
                      bool  display_time );				  
 				  
@@ -62,7 +62,7 @@ void DisplaySetText( char* text,
 	@param 	volume 
 	
 */
-void DisplaySetVolume( uint16 volume  );
+void DisplaySetVolume( u16 volume  );
 
 /*!
 	@brief 	update an icon status on the display
@@ -70,14 +70,14 @@ void DisplaySetVolume( uint16 volume  );
 	@param 	icon state	
 	
 */
-void DisplaySetIcon( uint8 icon, bool state );
+void DisplaySetIcon( u8 icon, bool state );
 
 /*!
 	@brief 	update the battery level on the display
 	@param 	battery level 
 	
 */
-void DisplaySetBatteryLevel( uint8 battery_level );
+void DisplaySetBatteryLevel( u8 battery_level );
 
 
 #endif /*_DISPLAY_H_*/

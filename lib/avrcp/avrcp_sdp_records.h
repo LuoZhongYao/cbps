@@ -18,7 +18,7 @@ DESCRIPTION
 #define AVRCP_CONTROLLER_CAT_DEFAULT AVRCP_CATEGORY_1
 
 /* Static Data structures for populating Service Records */
-static const uint8 serviceClassControllerDefault[] =
+static const u8 serviceClassControllerDefault[] =
 {
     0x09, 0x00, 0x01,                           /* ServiceClassIDList(0x0001) */
         0x35, 0x06,                             /* Data Element Sequence - 6 Bytes */
@@ -45,7 +45,7 @@ static const uint8 serviceClassControllerDefault[] =
 
 #define AVRCP_TARGET_CAT_DEFAULT AVRCP_CATEGORY_2
 
-static const uint8 serviceClassTargetDefault[] =
+static const u8 serviceClassTargetDefault[] =
 {
     0x09, 0x00, 0x01,                           /* ServiceClassIDList(0x0001) */
         0x35, 0x03,                             /* Data Element Sequence - 3 Bytes */

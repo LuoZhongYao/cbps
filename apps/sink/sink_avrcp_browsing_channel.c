@@ -12,23 +12,21 @@ FILE NAME
 
 DESCRIPTION
     Handles AVRCP browsing channel connection/disconnection.
-    Support for connection/disconnection of browsing channel is independent of browsing support. 
-    So, even if browsing is not supported but if AVRCP CATEGORY-1 or CATEGORY-3 target is supported 
+    Support for connection/disconnection of browsing channel is independent of browsing support.
+    So, even if browsing is not supported but if AVRCP CATEGORY-1 or CATEGORY-3 target is supported
     then connection/disconnection of browsing channel must be supported.
     NOTE: Connection/disconnection of browsing channel functionality is independent of ENABLE_AVRCP_BROWSING
-    
+
     The connection of the browsing channel will always be performed before sending a browsing command using the Request functions,
     so it is not neccessary to call sinkAvrcpBrowsingChannelConnectRequest directly.
-    
+
     The disconnection of the browsing channel will always be made when the AVRCP control channel is disconnected. The browsing channel can
     also be removed after a period of inactivity by calling sinkAvrcpBrowsingDisconnectOnIdleRequest, where disconnection will occur
     if no commands are sent within the AVRCP_BROWSING_DISCONNECT_ON_IDLE_TIMER timeout.
 */
 
 #ifdef DEBUG_AVRCP_BROWSING_CHANNEL
-#define AVRCP_BROWSING_CHANNEL_DEBUG(x) DEBUG(x)
 #else
-#define AVRCP_BROWSING_CHANNEL_DEBUG(x) 
 #endif
 
 /* browsing channel connection states */
@@ -37,23 +35,23 @@ typedef enum
     browsing_channel_connected,
     browsing_channel_disconnected,
     browsing_channel_pending,
-    browsing_channel_disconnecting    
+    browsing_channel_disconnecting
 } browsing_channel_state;
 
 /*************************************************************************
-NAME    
+NAME
     sinkAvrcpBrowsingChannelInit
-    
+
 DESCRIPTION
     Initialises the AVRCP Browsing Channel
 
 **************************************************************************/
-void sinkAvrcpBrowsingChannelInit(bool all_links, uint16 link_index)
+void sinkAvrcpBrowsingChannelInit(bool all_links, u16 link_index)
 {
-    uint16 i = 0;
-    uint16 start_index = 0;
-    uint16 end_index = MAX_AVRCP_CONNECTIONS;
-    
+    u16 i = 0;
+    u16 start_index = 0;
+    u16 end_index = MAX_AVRCP_CONNECTIONS;
+
     if (!all_links)
     {
         start_index = link_index;
@@ -67,46 +65,46 @@ void sinkAvrcpBrowsingChannelInit(bool all_links, uint16 link_index)
 }
 
 /*************************************************************************
-NAME    
+NAME
     sinkAvrcpBrowsingChannelConnectInd
-    
+
 DESCRIPTION
     Responds to incoming AVRCP Browsing Channel connection
 
 **************************************************************************/
 void sinkAvrcpBrowsingChannelConnectInd(AVRCP_BROWSE_CONNECT_IND_T *msg)
 {
-    uint16 Index;
+    u16 Index;
     bool accept = FALSE;
-    
+
     if (sinkAvrcpGetIndexFromBdaddr(&msg->bd_addr, &Index, TRUE))
     {
         accept = TRUE;
         theSink.avrcp_link_data->browsing_channel[Index] = browsing_channel_pending;
-        AVRCP_BROWSING_CHANNEL_DEBUG(("  accept\n"));
+        AVRCP_BROWSING_LOGD("  accept\n");
         AvrcpBrowseConnectResponse(theSink.avrcp_link_data->avrcp[Index], msg->connection_id, msg->signal_id, accept);
     }
     /* AvrcpBrowseConnectResponse takes AVRCP* as first param but AVRCP_BROWSE_CONNECT_IND doesn't contain this.
-       A response cannot be sent if AVRCP* not found. 
+       A response cannot be sent if AVRCP* not found.
     */
 }
 
 /*************************************************************************
-NAME    
+NAME
     sinkAvrcpBrowsingChannelDisconnectInd
-    
+
 DESCRIPTION
     AVRCP Browsing Channel has disconnected
 
 **************************************************************************/
 void sinkAvrcpBrowsingChannelDisconnectInd(AVRCP_BROWSE_DISCONNECT_IND_T *msg)
 {
-    uint16 Index;
-    
+    u16 Index;
+
     if (sinkAvrcpBrowsingChannelGetIndexFromInstance(msg->avrcp, &Index))
     {
         browsing_channel_state state = theSink.avrcp_link_data->browsing_channel[Index];
-        
+
         sinkAvrcpBrowsingChannelInit(FALSE, Index);
         sinkAvrcpBrowsingCancelDisconnectOnIdle(Index);
         if (state == browsing_channel_pending)
@@ -120,14 +118,14 @@ void sinkAvrcpBrowsingChannelDisconnectInd(AVRCP_BROWSE_DISCONNECT_IND_T *msg)
             {
                 theSink.avrcp_link_data->avrcp[Index] = NULL;
             }
-        }       
+        }
     }
 }
 
 /*************************************************************************
-NAME    
+NAME
     sinkAvrcpBrowsingChannelDisconnectRequest
-    
+
 DESCRIPTION
     Disconnects the AVRCP Browsing Channel Immediately. This will be called if the AVRCP control connection is removed.
     The function sinkAvrcpBrowsingChannelDisconnectInd will be called when the browsing channel has disconnected.
@@ -135,13 +133,13 @@ DESCRIPTION
 **************************************************************************/
 void sinkAvrcpBrowsingChannelDisconnectRequest(AVRCP *avrcp)
 {
-    uint16 Index;
-    
+    u16 Index;
+
     if (sinkAvrcpBrowsingChannelGetIndexFromInstance(avrcp, &Index))
     {
         if (theSink.avrcp_link_data->browsing_channel[Index] == browsing_channel_connected)
         {
-            AVRCP_BROWSING_CHANNEL_DEBUG(("AVRCP Browsing Disconnect Request\n"));
+            AVRCP_BROWSING_LOGD("AVRCP Browsing Disconnect Request\n");
             theSink.avrcp_link_data->browsing_channel[Index] = browsing_channel_disconnecting;
             AvrcpBrowseDisconnectRequest(avrcp);
         }
@@ -149,9 +147,9 @@ void sinkAvrcpBrowsingChannelDisconnectRequest(AVRCP *avrcp)
 }
 
 /*************************************************************************
-NAME    
+NAME
     sinkAvrcpBrowsingChannelConnectRequest
-    
+
 DESCRIPTION
     Connects the AVRCP Browsing Channel. A browsing channel will always be connected before sending a browsing command using functions in this file.
     The function sinkAvrcpBrowsingChannelConnectCfm will be called as confirmation of the connection attempt.
@@ -159,14 +157,14 @@ DESCRIPTION
 **************************************************************************/
 void sinkAvrcpBrowsingChannelConnectRequest(AVRCP *avrcp)
 {
-    uint16 Index;
-    
+    u16 Index;
+
     if (sinkAvrcpGetIndexFromInstance(avrcp, &Index))
     {
         if (theSink.avrcp_link_data->browsing_channel[Index] == browsing_channel_disconnected)
         {
             theSink.avrcp_link_data->browsing_channel[Index] = browsing_channel_pending;
-            AVRCP_BROWSING_CHANNEL_DEBUG(("AVRCP Browsing Connect Request\n"));
+            AVRCP_BROWSING_LOGD("AVRCP Browsing Connect Request\n");
             AvrcpBrowseConnectRequest(avrcp, &theSink.avrcp_link_data->bd_addr[Index]);
         }
         else if (theSink.avrcp_link_data->browsing_channel[Index] == browsing_channel_disconnecting)
@@ -174,28 +172,28 @@ void sinkAvrcpBrowsingChannelConnectRequest(AVRCP *avrcp)
             /* if disconnecting, set to pending so it can connect on disconnect */
             theSink.avrcp_link_data->browsing_channel[Index] = browsing_channel_pending;
         }
-        
+
     }
 }
 
 /*************************************************************************
-NAME    
+NAME
     sinkAvrcpBrowsingChannelConnectCfm
-    
+
 DESCRIPTION
     AVRCP Browsing Channel connection outcome
 
 **************************************************************************/
 void sinkAvrcpBrowsingChannelConnectCfm(AVRCP_BROWSE_CONNECT_CFM_T *msg)
 {
-    uint16 Index;
-    
+    u16 Index;
+
     if (sinkAvrcpBrowsingChannelGetIndexFromInstance(msg->avrcp, &Index))
     {
         if (msg->status == avrcp_success)
         {
-            AVRCP_BROWSING_CHANNEL_DEBUG(("  success\n"));            
-            theSink.avrcp_link_data->browsing_channel[Index] = browsing_channel_connected;            
+            AVRCP_BROWSING_LOGD("  success\n");
+            theSink.avrcp_link_data->browsing_channel[Index] = browsing_channel_connected;
             if (!theSink.avrcp_link_data->connected[Index] || (Index != sinkAvrcpGetActiveConnection()))
             {
                 /* Disconnect Browsing channel if AVRCP has disconnected or is not active connection */
@@ -210,7 +208,7 @@ void sinkAvrcpBrowsingChannelConnectCfm(AVRCP_BROWSE_CONNECT_CFM_T *msg)
         }
         else
         {
-            AVRCP_BROWSING_CHANNEL_DEBUG(("  fail %d\n", msg->status));
+            AVRCP_BROWSING_LOGD("  fail %d\n", msg->status);
             if (theSink.avrcp_link_data->browsing_channel[Index] == browsing_channel_pending)
             {
                 theSink.avrcp_link_data->browsing_channel[Index] = browsing_channel_disconnected;
@@ -226,50 +224,50 @@ void sinkAvrcpBrowsingChannelConnectCfm(AVRCP_BROWSE_CONNECT_CFM_T *msg)
 }
 
 /*************************************************************************
-NAME    
+NAME
     sinkAvrcpBrowsingChannelGetIndexFromInstance
-    
+
 DESCRIPTION
     Retrieve the correct AVRCP browsing connection index based on the AVRCP library instance pointer.
-   
+
 RETURNS
     Returns TRUE if the AVRCP browsing connection was found, FASLE otherwise.
     The actual connection index is returned in the Index variable.
 
 **************************************************************************/
-bool sinkAvrcpBrowsingChannelGetIndexFromInstance(AVRCP *avrcp, uint16 *Index)
+bool sinkAvrcpBrowsingChannelGetIndexFromInstance(AVRCP *avrcp, u16 *Index)
 {
-    uint8 i;
-    
+    u8 i;
+
     /* go through Avrcp instances looking for device_id match */
     for_all_avrcp(i)
     {
-      
+
         /* if a device_id match is found return its value and a
                status of successful match found */
         if (avrcp && (theSink.avrcp_link_data->avrcp[i] == avrcp))
         {
             *Index = i;
-            AVRCP_BROWSING_CHANNEL_DEBUG(("AVRCP: browsing getIndex = %d\n", i)); 
+            AVRCP_BROWSING_LOGD("AVRCP: browsing getIndex = %d\n", i);
             return TRUE;
         }
     }
-    /* no matches found so return not successful */    
+    /* no matches found so return not successful */
     return FALSE;
 }
 
 /*************************************************************************
-NAME    
+NAME
     sinkAvrcpBrowsingChannelIsConnected
-    
+
 DESCRIPTION
     Utility function to check if the browsing channel is connected.
-   
+
 RETURNS
     Returns TRUE if the AVRCP browsing connection is connected, FASLE otherwise.
 
 **************************************************************************/
-bool sinkAvrcpBrowsingChannelIsConnected(uint16 index)
+bool sinkAvrcpBrowsingChannelIsConnected(u16 index)
 {
     if(index < MAX_AVRCP_CONNECTIONS)
     {
@@ -280,17 +278,17 @@ bool sinkAvrcpBrowsingChannelIsConnected(uint16 index)
 }
 
 /*************************************************************************
-NAME    
+NAME
     sinkAvrcpBrowsingChannelIsDisconnected
-    
+
 DESCRIPTION
     Utility function to check if the browsing channel is disconnected.
-   
+
 RETURNS
     Returns TRUE if the AVRCP browsing connection is disconnected, FASLE otherwise.
 
 **************************************************************************/
-bool sinkAvrcpBrowsingChannelIsDisconnected(uint16 index)
+bool sinkAvrcpBrowsingChannelIsDisconnected(u16 index)
 {
     if(index < MAX_AVRCP_CONNECTIONS)
     {
@@ -301,17 +299,17 @@ bool sinkAvrcpBrowsingChannelIsDisconnected(uint16 index)
 }
 
 /*************************************************************************
-NAME    
+NAME
     sinkAvrcpBrowsingChannelSendMessageWhenConnected
-    
+
 DESCRIPTION
     Utility function to send the message only upon the browsing channel being connected.
-   
+
 RETURNS
     None
 
 **************************************************************************/
-void sinkAvrcpBrowsingChannelSendMessageWhenConnected(Task task, MessageId id, void* message, uint16 index)
+void sinkAvrcpBrowsingChannelSendMessageWhenConnected(Task task, MessageId id, void* message, u16 index)
 {
     if(index < MAX_AVRCP_CONNECTIONS)
     {

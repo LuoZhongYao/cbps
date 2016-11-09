@@ -95,7 +95,7 @@ typedef enum {
 
 typedef struct
 {
-    uint16 coefficients[11];
+    u16 coefficients[11];
 } IIR_COEFFICIENTS;
 
 #endif  /* __APP_AUDIO_IF_H__ */

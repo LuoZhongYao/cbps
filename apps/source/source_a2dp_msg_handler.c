@@ -37,10 +37,10 @@ DESCRIPTION
 #endif     
 
 
-#define A2DP_MSG_DEBUG_INST(inst) A2DP_MSG_DEBUG(("        inst[0x%x]\n", (uint16)inst))
+#define A2DP_MSG_DEBUG_INST(inst) A2DP_MSG_DEBUG(("        inst[0x%x]\n", (u16)inst))
 
 /* Display unhandled states in Debug Mode */
-#define a2dp_msg_unhandled_state(inst) A2DP_MSG_DEBUG(("A2DP MSG Ignored; state[%d] inst[0x%x]\n", a2dp_get_state(inst), (uint16)inst));
+#define a2dp_msg_unhandled_state(inst) A2DP_MSG_DEBUG(("A2DP MSG Ignored; state[%d] inst[0x%x]\n", a2dp_get_state(inst), (u16)inst));
 
 
 /* A2DP library message handling functions */

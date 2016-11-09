@@ -72,13 +72,13 @@ RETURNS
 */ 
 
 void displayShowText(char* text, 
-                     uint8 txtlen, 
-                     uint8 line,
+                     u8 txtlen, 
+                     u8 line,
                      bool scroll,
-                     uint16 scroll_update,                     
-                     uint16 scroll_pause,
+                     u16 scroll_update,                     
+                     u16 scroll_pause,
                      bool  flash,
-                     uint16  display_time );
+                     u16  display_time );
 
 
 
@@ -105,7 +105,7 @@ DESCRIPTION
 RETURNS
     void
 */ 
-void displayShowSimpleText(char* text, uint8 line);
+void displayShowSimpleText(char* text, u8 line);
 
         
 /****************************************************************************
@@ -119,7 +119,7 @@ RETURNS
     void
 */ 
 
-void displayUpdateIcon( uint8 icon, bool state );
+void displayUpdateIcon( u8 icon, bool state );
 
 
 /****************************************************************************
@@ -132,7 +132,7 @@ DESCRIPTION
 RETURNS
     void
 */ 
-void displayUpdateVolume( int16 vol );
+void displayUpdateVolume( i16 vol );
 
 
 /****************************************************************************

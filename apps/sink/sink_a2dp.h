@@ -108,7 +108,7 @@ typedef struct
     unsigned list_id:8;
     unsigned gAvVolumeLevel:8;
     unsigned av_source:8;
-    uint16 clockMismatchRate;
+    u16 clockMismatchRate;
     bdaddr bd_addr;
 } a2dp_instance_data;
 
@@ -127,21 +127,21 @@ typedef struct
 #endif
     remote_features peer_features[MAX_A2DP_CONNECTIONS];            /* :4 */
     remote_device peer_device[MAX_A2DP_CONNECTIONS];                /* :2 */
-    uint16 peer_version[MAX_A2DP_CONNECTIONS];                      /* :16 */
+    u16 peer_version[MAX_A2DP_CONNECTIONS];                      /* :16 */
     peer_buffer_level peer_dsp_required_buffering_level[MAX_A2DP_CONNECTIONS];   /* :1 */
     PeerStatus local_peer_status[MAX_A2DP_CONNECTIONS];             /* :2 */
     PeerStatus remote_peer_status[MAX_A2DP_CONNECTIONS];            /* :2 */
     bool playing[MAX_A2DP_CONNECTIONS];                             /* :1 */
     a2dp_link_role link_role[MAX_A2DP_CONNECTIONS];                 /* :2 */
     a2dp_suspend_state SuspendState[MAX_A2DP_CONNECTIONS];          /* :2 */
-    uint16 av_source[MAX_A2DP_CONNECTIONS];                         /* :2 */
-    uint16 device_id[MAX_A2DP_CONNECTIONS];                         /* :3 */
-    uint16 stream_id[MAX_A2DP_CONNECTIONS];                         /* :1 */
-    uint16 seid[MAX_A2DP_CONNECTIONS];                              /* :6 */
-	uint16 latency[MAX_A2DP_CONNECTIONS];                           /* :16 */
-    uint8 list_id[MAX_A2DP_CONNECTIONS];                            /* :8 */
+    u16 av_source[MAX_A2DP_CONNECTIONS];                         /* :2 */
+    u16 device_id[MAX_A2DP_CONNECTIONS];                         /* :3 */
+    u16 stream_id[MAX_A2DP_CONNECTIONS];                         /* :1 */
+    u16 seid[MAX_A2DP_CONNECTIONS];                              /* :6 */
+	u16 latency[MAX_A2DP_CONNECTIONS];                           /* :16 */
+    u8 list_id[MAX_A2DP_CONNECTIONS];                            /* :8 */
     bdaddr bd_addr[MAX_A2DP_CONNECTIONS];
-    uint16 clockMismatchRate[MAX_A2DP_CONNECTIONS];                 /* :16 */
+    u16 clockMismatchRate[MAX_A2DP_CONNECTIONS];                 /* :16 */
 #ifdef ENABLE_AVRCP
     avrcpSupport avrcp_support[MAX_A2DP_CONNECTIONS];               /* :2 */
 #endif
@@ -150,7 +150,7 @@ typedef struct
 
     unsigned    local_peer_optional_codecs:8;
     unsigned    remote_peer_optional_codecs:8;
-    uint8*    dest_service_caps;          /* Remote device Reconfigure capabilities. ( used for PTS TWS qualification ) */
+    u8*    dest_service_caps;          /* Remote device Reconfigure capabilities. ( used for PTS TWS qualification ) */
     bdaddr reconnected_ag_address;        /* BD Address of the AG to be reconnected*/	
 }a2dp_data;
 
@@ -170,7 +170,7 @@ RETURNS
     TRUE if successful, FALSE otherwise
     
 **************************************************************************/
-bool a2dpGetPeerIndex (uint16* Index);
+bool a2dpGetPeerIndex (u16* Index);
 
 /*************************************************************************
 NAME    
@@ -184,7 +184,7 @@ RETURNS
     
 **************************************************************************/
 #ifdef ENABLE_PEER
-bool a2dpIsIndexPeer(uint16 index);
+bool a2dpIsIndexPeer(u16 index);
 #else
 #define a2dpIsIndexPeer(index) (FALSE)
 #endif
@@ -200,7 +200,7 @@ RETURNS
     TRUE if successful, FALSE otherwise
     
 **************************************************************************/
-bool a2dpGetSourceIndex (uint16* Index);
+bool a2dpGetSourceIndex (u16* Index);
 
 /*************************************************************************
 NAME    
@@ -226,7 +226,7 @@ RETURNS
     None
     
 **************************************************************************/
-void sinkA2dpHandlePeerAvrcpConnectCfm (uint16 peer_id, bool successful);
+void sinkA2dpHandlePeerAvrcpConnectCfm (u16 peer_id, bool successful);
 
 /****************************************************************************
 NAME    
@@ -265,7 +265,7 @@ RETURNS
     None
     
 **************************************************************************/
-void a2dpSetSuspendState (uint16 id, uint16 state);
+void a2dpSetSuspendState (u16 id, u16 state);
 
 /*************************************************************************
 NAME    
@@ -280,7 +280,7 @@ RETURNS
     
 **************************************************************************/
 #ifdef ENABLE_AVRCP
-    void a2dpPauseNonRoutedSource(uint16 id);
+    void a2dpPauseNonRoutedSource(u16 id);
 #endif
 
 /*************************************************************************
@@ -295,7 +295,7 @@ RETURNS
 
 **************************************************************************/
 #ifdef ENABLE_AVRCP
-    void a2dpAvrcpStop(const uint16 avrcpIndex);
+    void a2dpAvrcpStop(const u16 avrcpIndex);
 #endif
 
 /*************************************************************************
@@ -391,7 +391,7 @@ RETURNS
     None
     
 **************************************************************************/
-void a2dpSetPlayingState (uint16 id, bool playing);
+void a2dpSetPlayingState (u16 id, bool playing);
 
 /*************************************************************************
 NAME    
@@ -413,7 +413,7 @@ DESCRIPTION
 RETURNS
     match status of true or false
 **************************************************************************/
-bool getA2dpIndex(uint16 DeviceId, uint16 * Index);
+bool getA2dpIndex(u16 DeviceId, u16 * Index);
 
 /*************************************************************************
 NAME    
@@ -426,7 +426,7 @@ DESCRIPTION
 RETURNS
     match status of true or false
 **************************************************************************/
-bool getA2dpIndexFromSink(Sink sink, uint16 * Index);
+bool getA2dpIndexFromSink(Sink sink, u16 * Index);
 
 /*************************************************************************
 NAME    
@@ -439,7 +439,7 @@ DESCRIPTION
 RETURNS
     match status of true or false
 **************************************************************************/
-bool getA2dpIndexFromPlugin(Task audio_plugin, uint16 * Index);
+bool getA2dpIndexFromPlugin(Task audio_plugin, u16 * Index);
 
 /*************************************************************************
 NAME    
@@ -448,7 +448,7 @@ NAME
 DESCRIPTION
     Retrieves a list of the preferred Stream End Points to connect with.
 */
-uint16 InitSeidConnectPriority(uint8 seid, uint8 *seid_list);
+u16 InitSeidConnectPriority(u8 seid, u8 *seid_list);
 
 
 /*************************************************************************
@@ -484,7 +484,7 @@ NAME
 DESCRIPTION
     Retrieves the audio plugin for the requested SEP.
 */
-Task getA2dpPlugin(uint8 seid);
+Task getA2dpPlugin(u8 seid);
 
 /****************************************************************************
 NAME    
@@ -521,7 +521,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPSignallingConnectInd(uint16 DeviceId, bdaddr SrcAddr);
+void handleA2DPSignallingConnectInd(u16 DeviceId, bdaddr SrcAddr);
 
 /*************************************************************************
 NAME    
@@ -533,7 +533,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPSignallingConnected(a2dp_status_code status, uint16 DeviceId, bdaddr SrcAddr, bool locally_initiated);
+void handleA2DPSignallingConnected(a2dp_status_code status, u16 DeviceId, bdaddr SrcAddr, bool locally_initiated);
 
 /*************************************************************************
 NAME    
@@ -547,7 +547,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void connectA2dpStream (a2dp_link_priority priority, uint16 delay);
+void connectA2dpStream (a2dp_link_priority priority, u16 delay);
 
 /*************************************************************************
 NAME    
@@ -560,7 +560,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPOpenInd(uint16 DeviceId, uint8 seid);
+void handleA2DPOpenInd(u16 DeviceId, u8 seid);
 
 /*************************************************************************
 NAME    
@@ -572,7 +572,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPOpenCfm(uint16 DeviceId, uint16 StreamId, uint8 seid, a2dp_status_code status);
+void handleA2DPOpenCfm(u16 DeviceId, u16 StreamId, u8 seid, a2dp_status_code status);
 
 /*************************************************************************
 NAME    
@@ -583,7 +583,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPSignallingDisconnected(uint16 DeviceId, a2dp_status_code status,  bdaddr SrcAddr);
+void handleA2DPSignallingDisconnected(u16 DeviceId, a2dp_status_code status,  bdaddr SrcAddr);
 
 /*************************************************************************
 NAME    
@@ -594,7 +594,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPSignallingLinkloss(uint16 DeviceId);
+void handleA2DPSignallingLinkloss(u16 DeviceId);
 
 
 /*************************************************************************
@@ -606,7 +606,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPLinklossReconnectCancel(uint16 DeviceId);
+void handleA2DPLinklossReconnectCancel(u16 DeviceId);
 
 /*************************************************************************
 NAME    
@@ -617,7 +617,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPStartInd(uint16 DeviceId, uint16 StreamId);
+void handleA2DPStartInd(u16 DeviceId, u16 StreamId);
 
 /*************************************************************************
 NAME    
@@ -628,7 +628,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPStartStreaming(uint16 DeviceId, uint16 StreamId, a2dp_status_code status);
+void handleA2DPStartStreaming(u16 DeviceId, u16 StreamId, a2dp_status_code status);
 
 /*************************************************************************
 NAME    
@@ -639,7 +639,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPSuspendStreaming(uint16 DeviceId, uint16 StreamId, a2dp_status_code status);
+void handleA2DPSuspendStreaming(u16 DeviceId, u16 StreamId, a2dp_status_code status);
 
 
 /*************************************************************************
@@ -651,7 +651,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPStoreClockMismatchRate(uint16 clockMismatchRate);
+void handleA2DPStoreClockMismatchRate(u16 clockMismatchRate);
 
 
 /*************************************************************************
@@ -663,10 +663,10 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPStoreCurrentEqBank(uint16 clockMismatchRate);
+void handleA2DPStoreCurrentEqBank(u16 clockMismatchRate);
 
 
-/* TODO - index below should be a2dp_link_priority not uint8.  */
+/* TODO - index below should be a2dp_link_priority not u8.  */
 
 /*************************************************************************
 NAME    
@@ -707,10 +707,10 @@ void ResumeA2dpStream(a2dp_link_priority priority, a2dp_stream_state state, Sink
 
 
 #ifdef ENABLE_AVRCP
-bool getA2dpVolume(const bdaddr *bd_addr, uint16 *a2dp_volume);
+bool getA2dpVolume(const bdaddr *bd_addr, u16 *a2dp_volume);
 
 
-bool setA2dpVolume(const bdaddr *bd_addr, uint16 a2dp_volume);
+bool setA2dpVolume(const bdaddr *bd_addr, u16 a2dp_volume);
 #endif
 
 
@@ -725,7 +725,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPSyncDelayInd (uint16 device_id, uint8 seid);
+void handleA2DPSyncDelayInd (u16 device_id, u8 seid);
 
 /*************************************************************************
 NAME    
@@ -738,7 +738,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPLatencyReport (Task audio_plugin, bool estimated, uint16 latency);
+void handleA2DPLatencyReport (Task audio_plugin, bool estimated, u16 latency);
 
 /*************************************************************************
 NAME    
@@ -764,7 +764,7 @@ RETURNS
     TRUE if successful, FALSE otherwise
     
 **************************************************************************/
-bool getA2dpIndexFromBdaddr (const bdaddr *bd_addr, uint16 *index);
+bool getA2dpIndexFromBdaddr (const bdaddr *bd_addr, u16 *index);
 
 /*************************************************************************
 NAME    
@@ -825,7 +825,7 @@ DESCRIPTION
 RETURNS
     
 **************************************************************************/
-void handleA2DPStoreEnhancements(uint16 enhancements);
+void handleA2DPStoreEnhancements(u16 enhancements);
 
 /*************************************************************************
  NAME    
@@ -879,7 +879,7 @@ RETURNS
     TRUE if a command was issued
 **************************************************************************/
 
-bool controlA2DPPeer (uint16 event);
+bool controlA2DPPeer (u16 event);
 
 #ifdef ENABLE_SUBWOOFER
 /*************************************************************************
@@ -896,7 +896,7 @@ RETURNS
     none
     
 **************************************************************************/
-void suspendWhenSubwooferStreamingLowLatency(uint16 Id);
+void suspendWhenSubwooferStreamingLowLatency(u16 Id);
 #endif
 
 /*************************************************************************

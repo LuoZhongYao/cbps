@@ -73,8 +73,8 @@ bool AudioConnect(Task audio_plugin,
                   Sink audio_sink , 
 				  AUDIO_SINK_T sink_type , 
 				  Task codec_task , 
-				  uint16 volume, 
-				  uint32 rate  , 
+				  u16 volume, 
+				  u32 rate  , 
 				  AudioPluginFeatures features , 
 				  AUDIO_MODE_T mode , 
 				  AUDIO_ROUTE_T route , 
@@ -108,7 +108,7 @@ void AudioDisconnect(void);
     
     Note : the initial volume setting is passed in as part of AudioConnect 
 */    
-void AudioSetVolume(uint16 volume , uint16 tone_volume, Task codec_task);
+void AudioSetVolume(u16 volume , u16 tone_volume, Task codec_task);
 
 /*!
     @brief Updates the mode of any currently connected audio connection
@@ -202,7 +202,7 @@ void AudioStopForwarding(void);
     Tones will be played back in the order they are requested.       
 */
 
-void AudioPlayTone ( const ringtone_note * tone , bool can_queue , Task codec_task, uint16 tone_volume , AudioPluginFeatures features ) ;
+void AudioPlayTone ( const ringtone_note * tone , bool can_queue , Task codec_task, u16 tone_volume , AudioPluginFeatures features ) ;
 
 /*!
     @brief Stops a currently playing tone or audio prompt
@@ -246,7 +246,7 @@ void AudioStopToneAndPrompt ( bool prompt_terminate ) ;
 
     @param override  prompt is set to play immediately, cancel any queued prompts
 */
-void AudioPlayAudioPrompt ( Task plugin , uint16 id ,  uint16 language , bool can_queue , Task codec_task, uint16 ap_volume , AudioPluginFeatures features, bool override, Task app_task );
+void AudioPlayAudioPrompt ( Task plugin , u16 id ,  u16 language , bool can_queue , Task codec_task, u16 ap_volume , AudioPluginFeatures features, bool override, Task app_task );
 
 /*!
     @brief Initialises the voice prompts indexing, telling the plugin where in EEPROM voice 
@@ -265,7 +265,7 @@ void AudioPlayAudioPrompt ( Task plugin , uint16 id ,  uint16 language , bool ca
                   | idx 0 | idx 1 | idx 2 | idx 3 |
                   |lang00|lang01|lang10|lang11|
 */
-void AudioVoicePromptsInit( TaskData * plugin, uint16 no_prompts, uint16 no_languages);
+void AudioVoicePromptsInit( TaskData * plugin, u16 no_prompts, u16 no_languages);
 
 /*!
     @brief Updates the Power level of any currently connected audio connection
@@ -464,7 +464,7 @@ DESCRIPTION
 RETURNS
 	pointer to current audio_busy task value
 */
-uint16 * AudioBusyPtr(void);
+Task * AudioBusyPtr(void);
 
 /****************************************************************************
 NAME	

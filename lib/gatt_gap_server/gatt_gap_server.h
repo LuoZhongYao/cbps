@@ -92,8 +92,8 @@ typedef enum __gatt_gap_server_message_id
 typedef struct PACK_STRUCT __GATT_GAP_SERVER_READ_DEVICE_NAME_IND
 {
     const GGAPS *gap_server;
-    uint16 cid;
-    uint16 name_offset;
+    u16 cid;
+    u16 name_offset;
     
 } GATT_GAP_SERVER_READ_DEVICE_NAME_IND_T;
 
@@ -111,7 +111,7 @@ typedef struct PACK_STRUCT __GATT_GAP_SERVER_READ_DEVICE_NAME_IND
 typedef struct PACK_STRUCT __GATT_GAP_SERVER_READ_APPEARANCE_IND
 {
     const GGAPS *gap_server;
-    uint16 cid;
+    u16 cid;
     
 } GATT_GAP_SERVER_READ_APPEARANCE_IND_T;
 
@@ -128,8 +128,8 @@ typedef struct PACK_STRUCT __GATT_GAP_SERVER_READ_APPEARANCE_IND
     @return The status result of calling the API.
 
 */
-gatt_gap_server_status_t GattGapServerInit(GGAPS *gap_server, Task app_task, uint16 start_handle,
-                                                                       uint16 end_handle);
+gatt_gap_server_status_t GattGapServerInit(GGAPS *gap_server, Task app_task, u16 start_handle,
+                                                                       u16 end_handle);
 
 
 /*!
@@ -149,9 +149,9 @@ gatt_gap_server_status_t GattGapServerInit(GGAPS *gap_server, Task app_task, uin
     @return status of the request.
 */
 gatt_gap_server_status_t GattGapServerReadDeviceNameResponse(GGAPS *gap_server,
-                                                             uint16 cid,
-                                                             uint16 size,
-                                                             uint8 * data);
+                                                             u16 cid,
+                                                             u16 size,
+                                                             u8 * data);
 
 
 /*!
@@ -167,7 +167,7 @@ gatt_gap_server_status_t GattGapServerReadDeviceNameResponse(GGAPS *gap_server,
     @return status of the request.
 */
 gatt_gap_server_status_t GattGapServerReadAppearanceResponse(GGAPS *gap_server,
-                                                             uint16 cid,
-                                                             uint16 size,
-                                                             uint8 * data);
+                                                             u16 cid,
+                                                             u16 size,
+                                                             u8 * data);
 #endif

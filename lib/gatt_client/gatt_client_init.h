@@ -15,7 +15,7 @@ NAME
 DESCRIPTION
     Send a success GATT_CLIENT_INIT_CFM message to the registered client task.
 */
-void gattClientSendInitSuccessCfm(GGATTC *gatt_client, uint16 service_changed_handle);
+void gattClientSendInitSuccessCfm(GGATTC *gatt_client, u16 service_changed_handle);
 
 
 /***************************************************************************
@@ -25,7 +25,7 @@ NAME
 DESCRIPTION
     Send a discovery error GATT_CLIENT_INIT_CFM message to the registered client task.
 */
-void gattClientSendInitDiscoveryErrorCfm(GGATTC *gatt_client, uint16 service_changed_handle);
+void gattClientSendInitDiscoveryErrorCfm(GGATTC *gatt_client, u16 service_changed_handle);
 
 
 #endif

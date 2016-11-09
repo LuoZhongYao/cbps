@@ -17,7 +17,7 @@ Copyright (c) 2010 - 2015 Qualcomm Technologies International, Ltd.
 #include <micbias.h>
 #include <pio.h>
 
-void PioSetPio (uint16 pPIO , bool pOnOrOff);
+void PioSetPio (u16 pPIO , bool pOnOrOff);
 
 /* Select Amp PIO depending on board used.  If not defined, assume the CNS10001v4 board is assumed. */
 #ifdef H13179V2
@@ -34,7 +34,7 @@ void PioSetPio (uint16 pPIO , bool pOnOrOff);
 /* Location of DSP kap file in the file system */
 static const char kal[] = "my_second_dsp_app_kalimba/my_second_dsp_app_kalimba.kap";
 
-uint16 sampleRate = 48000; 
+u16 sampleRate = 48000; 
 
 void start_kalimba(void);
 void connect_streams(void);
@@ -123,10 +123,10 @@ void connect_streams(void)
 #endif
 }
 
-void PioSetPio (uint16 pPIO , bool pOnOrOff) 
+void PioSetPio (u16 pPIO , bool pOnOrOff) 
 {
-    uint16 lPinVals = 0 ;
-    uint16 lWhichPin  = (1<< pPIO) ;
+    u16 lPinVals = 0 ;
+    u16 lWhichPin  = (1<< pPIO) ;
         
     if ( pOnOrOff )    
     {

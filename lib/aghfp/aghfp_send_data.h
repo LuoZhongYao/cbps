@@ -20,11 +20,11 @@ void aghfpSendAtCmd(AGHFP *aghfp, const char *at_cmd);
 
 void aghfpAtCmdBegin(AGHFP *aghfp);
 void aghfpAtCmdString(AGHFP *aghfp, const char *string);
-void aghfpAtCmdData(AGHFP *aghfp, const uint8 *data, uint16 len);
+void aghfpAtCmdData(AGHFP *aghfp, const u8 *data, u16 len);
 void aghfpAtCmdEnd(AGHFP *aghfp);
 
 /* Send raw data to the remote end, do not add any formatting to it. */
-void aghfpSendRawData(AGHFP *aghfp, uint16 length, const uint8 *data);
+void aghfpSendRawData(AGHFP *aghfp, u16 length, const u8 *data);
 
 
 #endif /* AGHFP_SEND_DATA_H_ */

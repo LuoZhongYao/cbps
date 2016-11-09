@@ -34,7 +34,7 @@ DESCRIPTION
 RETURNS
  	0 if no data was read otherwise the length of data
 */
-uint16 ConfigRetrieve(uint16 config_id, void* data, uint16 len);
+u16 ConfigRetrieve(u16 config_id, void* data, u16 len);
 
 /****************************************************************************
 NAME 
@@ -47,13 +47,13 @@ DESCRIPTION
 RETURNS
  	0 if no data was stored otherwise the length of data
 */
-uint16 ConfigStore(uint16 config_id, const void* data, uint16 len);
+u16 ConfigStore(u16 config_id, const void* data, u16 len);
 
 
 /***************************************************************************
  * Flags a fatal config error to the user, this function never returns.
  */
-void ConfigIndicateConfigError(const uint16 config_id);
+void ConfigIndicateConfigError(const u16 config_id);
 
 
 /****************************************************************************
@@ -67,7 +67,7 @@ DESCRIPTION
 RETURNS
  	a pointer to the service record
 */
-uint8 * get_service_record ( void ) ;
+u8 * get_service_record ( void ) ;
 
 /****************************************************************************
 NAME 
@@ -80,7 +80,7 @@ DESCRIPTION
 RETURNS
  	the length of the service record
 */
-uint16 get_service_record_length ( void ) ;
+u16 get_service_record_length ( void ) ;
 
 
 #endif /* _SINK_CONFIG_H_ */

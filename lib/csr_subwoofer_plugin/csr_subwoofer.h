@@ -37,12 +37,12 @@ typedef struct subwooferPluginData
     csrSubwooferInput   input;      /* Keeps track of the input in use (ADC/eSCO/L2CAP) */
     csrSubwooferOutput  output;     /* Keeps track of the output in use (DAC/I2S) */
     
-    uint16  swat_system_volume_db;  /* Soundbar system volume */
-    uint16  swat_trim_gain_db;      /* Trim gain from soundbar */
-    uint16  adc_volume_index;       /* Volume when ADC is connected */
-    uint16  sample_rate;            /* Sample rate used in L2CAP mode */
-    uint16  adc_sample_rate;        /* Sample rate for the ADC */
-    uint16  dsp_set_sample_rate;    /* sample rate that the dsp has been set to */
+    u16  swat_system_volume_db;  /* Soundbar system volume */
+    u16  swat_trim_gain_db;      /* Trim gain from soundbar */
+    u16  adc_volume_index;       /* Volume when ADC is connected */
+    u16  sample_rate;            /* Sample rate used in L2CAP mode */
+    u16  adc_sample_rate;        /* Sample rate for the ADC */
+    u16  dsp_set_sample_rate;    /* sample rate that the dsp has been set to */
     
     Task    app_task;               /* Store the message handler for the application */
     Task    codec_task;             /* Store the codec task */
@@ -53,11 +53,11 @@ typedef struct subwooferPluginData
 /* Message structure for messages sent from the Kalimba to the plugin */
 typedef struct
 {
-    uint16 id;
-    uint16 a;
-    uint16 b;
-    uint16 c;
-    uint16 d;
+    u16 id;
+    u16 a;
+    u16 b;
+    u16 c;
+    u16 d;
 } DSP_REGISTER_T;
 
 
@@ -102,7 +102,7 @@ NAME
 DESCRIPTION
     This function sends the subwoofer volume level to the DSP application
 */
-void CsrSubwooferPluginSetVolume(uint16 volume);
+void CsrSubwooferPluginSetVolume(u16 volume);
 
 
 /****************************************************************************
@@ -122,7 +122,7 @@ NAME
 DESCRIPTION
     This function sends the sample rate to the DSP application
 */
-void CsrSubwooferPluginSetSampleRate(uint16 sample_rate);
+void CsrSubwooferPluginSetSampleRate(u16 sample_rate);
 
 
 /****************************************************************************

@@ -23,15 +23,13 @@ DESCRIPTION
 
 #ifdef GATT_DIS_SERVER
 
-/* The device information is to be made PS configurable, for now 
+/* The device information is to be made PS configurable, for now
     this is retained as static due to unavailability of free User PS key.
 */
 #define DEVICE_INFO_MANUFACTURER_NAME_STRING    "CSR"
 
 #ifdef DEBUG_GATT
-#define GATT_DEBUG(x) DEBUG(x)
 #else
-#define GATT_DEBUG(x) 
 #endif
 
 static gatt_dis_init_params_t dis_init_params;
@@ -43,7 +41,7 @@ static bool sinkGattGetDeviceInfoParams(void)
 
     if(dis_init_params.dis_strings != NULL)
     {
-        /* Initialize device manufacturer name string 
+        /* Initialize device manufacturer name string
             Note: this is currently made static however this needs to be made configurable using a PSKEY.
         */
         dis_init_params.dis_strings->manufacturer_name_string = DEVICE_INFO_MANUFACTURER_NAME_STRING;
@@ -55,27 +53,27 @@ static bool sinkGattGetDeviceInfoParams(void)
         return TRUE;
     }
     /* Failed to allocate memory */
-    GATT_DEBUG(("GATT Device Info Server failed to allocate memory\n"));
+    LOGD("GATT Device Info Server failed to allocate memory\n");
     return FALSE;
 }
 
 /*******************************************************************************/
-bool sinkGattDeviceInfoServerInitialise(uint16 **ptr)
+bool sinkGattDeviceInfoServerInitialise(u16 **ptr)
 {
     if (ptr)
     {
         gatt_dis_status_t dis_status;
-        
+
         /* Read the device information service to be initialized */
         if(sinkGattGetDeviceInfoParams())
         {
             dis_status = GattDeviceInfoServerInit(sinkGetBleTask(), (gdiss_t*)*ptr, &dis_init_params,
                                     HANDLE_DEVICE_INFORMATION_SERVICE,
                                     HANDLE_DEVICE_INFORMATION_SERVICE_END);
-            
+
             if (dis_status == gatt_dis_status_success)
             {
-                GATT_DEBUG(("GATT Device Info Server initialised\n"));
+                LOGD("GATT Device Info Server initialised\n");
                 /* The size of DISS is also calculated and memory is alocated.
                  * So advance the ptr so that the next Server while initializing.
                  * shall not over write the same memory */
@@ -83,10 +81,10 @@ bool sinkGattDeviceInfoServerInitialise(uint16 **ptr)
                 return TRUE;
             }
             /* Failed to initialize Device Information server */
-            GATT_DEBUG(("GATT Device Info Server init failed [%x]\n", dis_status));
+            LOGD("GATT Device Info Server init failed [%x]\n", dis_status);
             /* Free the allocated memory */
             free(dis_init_params.dis_strings);
-        }       
+        }
     }
     return FALSE;
 }

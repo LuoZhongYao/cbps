@@ -50,9 +50,9 @@ void obexSourceEmpty( Obex session )
 * DESCRIPTION
 * Verify available length
 ****************************************************************************/
-uint16 obexSinkSlack( Obex session )
+u16 obexSinkSlack( Obex session )
 {
-    uint16 maxLen = SinkSlack(session->sink) + SinkClaim(session->sink, 0);
+    u16 maxLen = SinkSlack(session->sink) + SinkClaim(session->sink, 0);
 
     if( maxLen > session->maxPktLen) maxLen = session->maxPktLen;
 
@@ -66,9 +66,9 @@ uint16 obexSinkSlack( Obex session )
 * DESCRIPTION
 * Claim the OBEX sink for outgoing packet
 ****************************************************************************/
-bool obexSinkClaim( Obex session, uint16 len )
+bool obexSinkClaim( Obex session, u16 len )
 {
-    uint16 space = obexSinkSpace(session) ;
+    u16 space = obexSinkSpace(session) ;
 
     if(obexSinkSpace(session) >= len ) return TRUE;
 
@@ -92,10 +92,10 @@ bool obexSinkClaim( Obex session, uint16 len )
 * RETURNS
 *   Size allocated for the packet. Return 0 on failure.
 ****************************************************************************/
-uint16 obexNewPacket( Obex session , uint16 size, uint8 opcode )
+u16 obexNewPacket( Obex session , u16 size, u8 opcode )
 {
-    uint16 hdrLen;
-    uint16 allocLen;
+    u16 hdrLen;
+    u16 allocLen;
 
     /* Return 0 if an Outgoing packet is already in the Sink */
     if( session->pktLen ) return 0;
@@ -159,10 +159,10 @@ uint16 obexNewPacket( Obex session , uint16 size, uint8 opcode )
 * RETURNS
 *  returns 0 on failure
 ****************************************************************************/
-bool obexFrameConnectPkt( Obex session, uint8 opcode )
+bool obexFrameConnectPkt( Obex session, u8 opcode )
 {
-    uint8* dest; 
-    uint16 dataLen = 0;
+    u8* dest; 
+    u16 dataLen = 0;
 
     /* Include Who header to a success connect response and a connect 
        request if a Target header is associated with this session */
@@ -196,7 +196,7 @@ bool obexFrameConnectPkt( Obex session, uint8 opcode )
     /* Add the  who/Target Header */
     if( dataLen )
     {
-        uint8 opcode = IsObexServer( session )? OBEX_WHO_HDR:OBEX_TARGET_HDR;
+        u8 opcode = IsObexServer( session )? OBEX_WHO_HDR:OBEX_TARGET_HDR;
         Source src = StreamRegionSource( session->targetWho ,
                                          session->sizeTargetWho );
         /* Add the Target/who header */
@@ -225,9 +225,9 @@ bool obexFrameConnectPkt( Obex session, uint8 opcode )
  * DESCRIPTION
  *  Send the request or response packet 
  *************************************************************************/
-void obexFlushPacket( Obex session, uint8 opcode )
+void obexFlushPacket( Obex session, u8 opcode )
 {
-    uint8* pkt = SinkMap ( session->sink ); /* Sink must be valid */
+    u8* pkt = SinkMap ( session->sink ); /* Sink must be valid */
 
     /* Empty the source and unblock any incoming data */
     obexSourceEmpty( session );
@@ -252,13 +252,13 @@ void obexFlushPacket( Obex session, uint8 opcode )
 void obexHandleIncomingPacket( Obex session )
 {
     Source source = StreamSourceFromSink( session->sink );
-    uint16 srcData;
+    u16 srcData;
 
     while( ((srcData =  SourceBoundary( source )) >= OBEX_PKT_HDR_SIZE) && 
             (session->srcUsed == 0) )
     {
-        const uint8* pkt = SourceMap( source );
-        uint16 pktLen;
+        const u8* pkt = SourceMap( source );
+        u16 pktLen;
 
         /* Validate the Length of the packet */
         OBEX_UINT8_TO_UINT16(pktLen, pkt, 1);
@@ -304,7 +304,7 @@ void obexHandleIncomingPacket( Obex session )
  *  pkt     -   Connect Request or Response pkt
  *  len     -   Length of the Connect Packet
  **************************************************************************/
-bool obexStoreConnectionID( Obex session, const uint8* pkt, uint16 len )
+bool obexStoreConnectionID( Obex session, const u8* pkt, u16 len )
 {
     /* Extract the Connection ID Header from the Connect packet */
     session->connID  = obexGetUint32Header( pkt, len, OBEX_CONNECTID_HDR );
@@ -324,10 +324,10 @@ bool obexStoreConnectionID( Obex session, const uint8* pkt, uint16 len )
 *   len (INOUT) : Length of the packet as input and length of the unprocessed
 *                 packet as output.
 *************************************************************************/
-bool obexValidateConnectionID(Obex session, Source source, uint16 *len)
+bool obexValidateConnectionID(Obex session, Source source, u16 *len)
 {
-    const uint8* pkt = SourceMap(source);
-    uint32 connID;
+    const u8* pkt = SourceMap(source);
+    u32 connID;
 
     if( pkt[0] == OBEX_SET_PATH )
     {
@@ -360,7 +360,7 @@ bool obexValidateConnectionID(Obex session, Source source, uint16 *len)
 * DESCRIPTION
 * Send a Authentication Request or Response packet
 ***************************************************************************/
-void obexSendAuthPacket( Obex session, uint8 hdr, uint16 size, Source src )
+void obexSendAuthPacket( Obex session, u8 hdr, u16 size, Source src )
 {
     /* Add the Digest header */
     if( size && !obexAddSeqHeader( session, hdr, size, src ) )
@@ -383,7 +383,7 @@ void obexSendAuthPacket( Obex session, uint8 hdr, uint16 size, Source src )
 
     if( IsObexServer( session ) )
     {
-        uint8 response = ( session->auth)? OBEX_UNAUTHORIZED_RSP:
+        u8 response = ( session->auth)? OBEX_UNAUTHORIZED_RSP:
                               OBEX_SUCCESS;  
         obexFlushPacket( session, response ); 
         if(response == OBEX_SUCCESS) obexConnectCfm( session, response );

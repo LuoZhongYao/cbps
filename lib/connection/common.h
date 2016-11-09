@@ -31,7 +31,7 @@ DESCRIPTION
 RETURNS
     hci_status corresponding to the status passed in
 */
-hci_status connectionConvertHciStatus(uint16 status);
+hci_status connectionConvertHciStatus(u16 status);
 
 
 /****************************************************************************
@@ -45,7 +45,7 @@ DESCRIPTION
 RETURNS
     auth_status corresponding to the status passed in
 */
-authentication_status connectionConvertAuthStatus(uint16 status);
+authentication_status connectionConvertAuthStatus(u16 status);
         
         
 /****************************************************************************
@@ -73,7 +73,7 @@ DESCRIPTION
 RETURNS
     Bluestack role
 */
-hci_role connectionConvertHciRole(uint8 role);
+hci_role connectionConvertHciRole(u8 role);
 
 
 /****************************************************************************
@@ -86,7 +86,7 @@ DESCRIPTION
 RETURNS
     Bluestack role
 */
-uint8 connectionConvertHciRole_t(hci_role role);
+u8 connectionConvertHciRole_t(hci_role role);
 
 
 /****************************************************************************
@@ -99,7 +99,7 @@ DESCRIPTION
 RETURNS
     hci inquiry mode corresponding to the mode passed in
 */
-uint8 connectionConvertInquiryMode_t(inquiry_mode mode);
+u8 connectionConvertInquiryMode_t(inquiry_mode mode);
 
 
 /****************************************************************************
@@ -112,7 +112,7 @@ DESCRIPTION
 RETURNS
     CL inquiry mode corresponding to the mode passed in
 */
-inquiry_mode connectionConvertInquiryMode(uint8 mode);
+inquiry_mode connectionConvertInquiryMode(u8 mode);
 
 
 /****************************************************************************
@@ -126,7 +126,7 @@ DESCRIPTION
 RETURNS
     sdp_open_status corresponding to the status passed in
 */
-sdp_open_status connectionConvertSdpOpenStatus(uint16 status);
+sdp_open_status connectionConvertSdpOpenStatus(u16 status);
 
 
 /****************************************************************************
@@ -140,7 +140,7 @@ DESCRIPTION
 RETURNS
     sdp_search_status corresponding to the status passed in
 */
-sdp_search_status connectionConvertSdpSearchStatus(uint16 status);
+sdp_search_status connectionConvertSdpSearchStatus(u16 status);
 
 
 /****************************************************************************
@@ -154,7 +154,7 @@ DESCRIPTION
 RETURNS
     rfcomm_disconnect_status corresponding to the status passed in
 */
-rfcomm_disconnect_status connectionConvertRfcommDisconnectStatus(uint16 status);
+rfcomm_disconnect_status connectionConvertRfcommDisconnectStatus(u16 status);
 
 
 /****************************************************************************
@@ -252,7 +252,7 @@ DESCRIPTION
 RETURNS
     Blustack HCI scan mode 
 */
-uint8 connectionConvertHciScanEnable(hci_scan_enable mode);
+u8 connectionConvertHciScanEnable(hci_scan_enable mode);
 
 
 /****************************************************************************
@@ -280,7 +280,7 @@ DESCRIPTION
 RETURNS
     Bluestack security level
 */
-uint8_t connectionConvertSspSecurityLevel_t(dm_ssp_security_level level, bool outgoing_ok, bool authorised, bool disable_legacy);
+u16 connectionConvertSspSecurityLevel_t(dm_ssp_security_level level, bool outgoing_ok, bool authorised, bool disable_legacy);
 
 
 /****************************************************************************
@@ -294,7 +294,7 @@ DESCRIPTION
 RETURNS
     Bluestack write auth enable
 */
-uint8_t connectionConvertWriteAuthEnable_t(cl_sm_wae);
+u16 connectionConvertWriteAuthEnable_t(cl_sm_wae);
 
 
 /****************************************************************************
@@ -308,7 +308,7 @@ DESCRIPTION
 RETURNS
     connection lib authentication requirements
 */
-cl_sm_auth_requirements connectionConvertAuthenticationRequirements(uint8_t authentication_requirements);
+cl_sm_auth_requirements connectionConvertAuthenticationRequirements(u8 authentication_requirements);
 
 
 /****************************************************************************
@@ -431,7 +431,7 @@ DESCRIPTION
 RETURNS
 	Connection Lib l2cap_connect_status
 */
-l2cap_connect_status connectionConvertL2capConnectStatus(uint16 result);
+l2cap_connect_status connectionConvertL2capConnectStatus(u16 result);
 
 /****************************************************************************
 NAME	
@@ -444,7 +444,7 @@ DESCRIPTION
 RETURNS
 	Connection Lib l2cap_connect_status
 */
-l2cap_map_connectionless_status connectionConvertL2capMapFixedCidResult(uint16 result);
+l2cap_map_connectionless_status connectionConvertL2capMapFixedCidResult(u16 result);
 
 #ifndef DISABLE_BLE
 /****************************************************************************
@@ -458,7 +458,7 @@ DESCRIPTION
 RETURNS
 	ble_advertising_event_type
 */
-ble_advertising_event_type connectionConvertBleEventType(uint8 event_type);
+ble_advertising_event_type connectionConvertBleEventType(u8 event_type);
 #endif
 
 

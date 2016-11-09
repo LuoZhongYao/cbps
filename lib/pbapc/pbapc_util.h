@@ -34,26 +34,26 @@ enum
     pbapc_app_new_missed_calls
 };
 
-void pbapcFrame2ByteAppParams( uint8* ptr, uint8 param, uint16 value );
-void pbapcFrameByteAppParams( uint8* ptr, uint8 param, uint8 value );
-void pbapcFrame4ByteAppParams( uint8* ptr, uint8 param, uint32 value );
-uint16 pbapcFramevCardListAppParams( uint8 order ,
-                                     const uint8* srchVal,
-                                     uint16 srchValLen,
-                                     uint8 srchAttr,
-                                     uint8* listData );
-uint16 pbapcFrameListAppParams( uint16 maxListCount,
-                              uint16 startOffset,
-                              uint8* listData );
-uint16 pbapcFrameFilterFormat( uint32  filterHi,
-                               uint32  filterLo,
-                               uint8   format,
-                               uint8* listData );
-const uint8 *pbapcGetPbNameFromID(uint8 book, uint16 *len);
-const uint8* pbapcGetSimName( uint16 *len );
-uint16 pbapcGetPbPathFromID( bool  sim,  uint8 book, uint8* path); 
-const uint8 *pbapcGetPhonebookMimeType(uint16 *len);
-const uint8 *pbapcGetvCardListingMimeType(uint16 *len);
-const uint8 *pbapcGetvCardMimeType(uint16 *len);
+void pbapcFrame2ByteAppParams( u8* ptr, u8 param, u16 value );
+void pbapcFrameByteAppParams( u8* ptr, u8 param, u8 value );
+void pbapcFrame4ByteAppParams( u8* ptr, u8 param, u32 value );
+u16 pbapcFramevCardListAppParams( u8 order ,
+                                     const u8* srchVal,
+                                     u16 srchValLen,
+                                     u8 srchAttr,
+                                     u8* listData );
+u16 pbapcFrameListAppParams( u16 maxListCount,
+                              u16 startOffset,
+                              u8* listData );
+u16 pbapcFrameFilterFormat( u32  filterHi,
+                               u32  filterLo,
+                               u8   format,
+                               u8* listData );
+const u8 *pbapcGetPbNameFromID(u8 book, u16 *len);
+const u8* pbapcGetSimName( u16 *len );
+u16 pbapcGetPbPathFromID( bool  sim,  u8 book, u8* path); 
+const u8 *pbapcGetPhonebookMimeType(u16 *len);
+const u8 *pbapcGetvCardListingMimeType(u16 *len);
+const u8 *pbapcGetvCardMimeType(u16 *len);
  
 #endif /* PBAP_COMMON_H_ */

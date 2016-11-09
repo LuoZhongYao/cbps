@@ -22,7 +22,7 @@ NOTES
 #include <panic.h>
 
 
-void HfpCallHoldActionRequest(hfp_link_priority priority, hfp_chld_action action, uint16 index)
+void HfpCallHoldActionRequest(hfp_link_priority priority, hfp_chld_action action, u16 index)
 {
     MAKE_HFP_MESSAGE(HFP_INTERNAL_AT_CHLD_REQ);
     message->link = hfpGetLinkFromPriority(priority);

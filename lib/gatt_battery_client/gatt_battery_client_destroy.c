@@ -13,7 +13,7 @@
 
 
 /****************************************************************************/
-gatt_battery_client_status_t GattBatteryClientDestroy(GBASC *battery_client, uint16 cid)
+gatt_battery_client_status_t GattBatteryClientDestroy(GBASC *battery_client, u16 cid)
 {
     gatt_battery_client_status_t result = gatt_battery_client_status_invalid_parameter;
 

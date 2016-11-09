@@ -71,7 +71,7 @@ void swatCommandHandler(Task task, MessageId id, Message message)
         /* open media channel request/response */
         case SWAT_COMMAND_OPEN:
         {
-            uint8 * ptr = &((SWAT_COMMAND_OPEN_T *)message)->data[0];
+            u8 * ptr = &((SWAT_COMMAND_OPEN_T *)message)->data[0];
             remoteDevice* device = ((SWAT_COMMAND_OPEN_T *)message)->device;
             
             if (ptr[PKT_SIGNAL_TYPE] == SWAT_CMD)
@@ -98,7 +98,7 @@ void swatCommandHandler(Task task, MessageId id, Message message)
         /* close media channel request/repsonse */
         case SWAT_COMMAND_CLOSE:
         {
-            uint8 * ptr = &((SWAT_COMMAND_CLOSE_T *)message)->data[0];
+            u8 * ptr = &((SWAT_COMMAND_CLOSE_T *)message)->data[0];
             remoteDevice* device = ((SWAT_COMMAND_CLOSE_T *)message)->device;
             
             if (ptr[PKT_SIGNAL_TYPE] == SWAT_CMD)
@@ -125,7 +125,7 @@ void swatCommandHandler(Task task, MessageId id, Message message)
         /* start media streaming request/response */
         case SWAT_COMMAND_START:
         {
-            uint8 * ptr = &((SWAT_COMMAND_START_T *)message)->data[0];
+            u8 * ptr = &((SWAT_COMMAND_START_T *)message)->data[0];
             remoteDevice* device = ((SWAT_COMMAND_START_T *)message)->device;
             
             if (ptr[PKT_SIGNAL_TYPE] == SWAT_CMD)
@@ -152,7 +152,7 @@ void swatCommandHandler(Task task, MessageId id, Message message)
         /* suspend the media streaming request/response */
         case SWAT_COMMAND_SUSPEND:
         {
-            uint8 * ptr = &((SWAT_COMMAND_SUSPEND_T *)message)->data[0];
+            u8 * ptr = &((SWAT_COMMAND_SUSPEND_T *)message)->data[0];
             remoteDevice* device = ((SWAT_COMMAND_SUSPEND_T *)message)->device;
             
             if (ptr[PKT_SIGNAL_TYPE] == SWAT_CMD)
@@ -179,7 +179,7 @@ void swatCommandHandler(Task task, MessageId id, Message message)
         /* set volume request/response */
         case SWAT_COMMAND_SET_VOLUME:
         {
-            uint8 * ptr = &((SWAT_COMMAND_SET_VOLUME_T *)message)->data[0];
+            u8 * ptr = &((SWAT_COMMAND_SET_VOLUME_T *)message)->data[0];
             remoteDevice* device = ((SWAT_COMMAND_SET_VOLUME_T *)message)->device;
             
             if (ptr[PKT_SIGNAL_TYPE] == SWAT_CMD)
@@ -206,8 +206,8 @@ void swatCommandHandler(Task task, MessageId id, Message message)
         /* Set sample rate request/response */
         case SWAT_COMMAND_SAMPLE_RATE:
         {
-            uint16 sample_rate = 0;
-            uint8 * ptr = &((SWAT_COMMAND_SAMPLE_RATE_T *)message)->data[0];
+            u16 sample_rate = 0;
+            u8 * ptr = &((SWAT_COMMAND_SAMPLE_RATE_T *)message)->data[0];
             remoteDevice* device = ((SWAT_COMMAND_SAMPLE_RATE_T *)message)->device;
             
             if (ptr[PKT_SIGNAL_TYPE] == SWAT_CMD)
@@ -216,14 +216,14 @@ void swatCommandHandler(Task task, MessageId id, Message message)
                 device->signalling_block = DATA_BLOCK;
                 
                 SWAT_DEBUG(("[SWAT] SWAT_SAMPLE_RATE_CMD Actioned\n"));
-                /* Sample rate is 1x(uint16) stuffed into 2x(uint8), so unpack */
+                /* Sample rate is 1x(u16) stuffed into 2x(u8), so unpack */
                 sample_rate = (ptr[PKT_PAYLOAD+1] << 8) | ptr[PKT_PAYLOAD];
                 swatHandleSampleRateCommandFromRemoteDevice(device, sample_rate);
             }
             else if (ptr[PKT_SIGNAL_TYPE] == SWAT_RSP)
             {
                 SWAT_DEBUG(("[SWAT] SWAT_SAMPLE_RATE_RSP Actioned\n"));
-                /* Sample rate is 1x(uint16) stuffed into 2x(uint8), so unpack */
+                /* Sample rate is 1x(u16) stuffed into 2x(u8), so unpack */
                 sample_rate = (ptr[PKT_PAYLOAD+2] << 8) | ptr[PKT_PAYLOAD+1];
                 swatHandleSampleRateResponseFromRemoteDevice(device, ptr[PKT_PAYLOAD], sample_rate);
             }
@@ -237,7 +237,7 @@ void swatCommandHandler(Task task, MessageId id, Message message)
         
         case SWAT_COMMAND_GET_VERSION:
         {
-            uint8 * ptr = &((SWAT_COMMAND_GET_VERSION_T *)message)->data[0];
+            u8 * ptr = &((SWAT_COMMAND_GET_VERSION_T *)message)->data[0];
             remoteDevice* device = ((SWAT_COMMAND_GET_VERSION_T *)message)->device;
             
             if (ptr[PKT_SIGNAL_TYPE] == SWAT_CMD)
@@ -264,7 +264,7 @@ void swatCommandHandler(Task task, MessageId id, Message message)
         /* general reject of packet due to being interpretted incorrectly */
         case SWAT_COMMAND_GENERAL_REJECT:
         {
-            uint8 * ptr = &((SWAT_COMMAND_GENERAL_REJECT_T *)message)->data[0];
+            u8 * ptr = &((SWAT_COMMAND_GENERAL_REJECT_T *)message)->data[0];
             swatHandleGeneralRejectFromRemoteDevice(((SWAT_COMMAND_GENERAL_REJECT_T *)message)->device->id, ptr[PKT_PAYLOAD]);
         }
         break;
@@ -272,7 +272,7 @@ void swatCommandHandler(Task task, MessageId id, Message message)
         /* Recieved an unrecognised SWAT command; Reject this command */
         case SWAT_COMMAND_DEFAULT:
         {
-            uint8 * ptr = &((SWAT_COMMAND_DEFAULT_T *)message)->data[0];
+            u8 * ptr = &((SWAT_COMMAND_DEFAULT_T *)message)->data[0];
             swatSendGeneralReject(((SWAT_COMMAND_DEFAULT_T *)message)->device, ptr[PKT_SIGNAL_ID]);
         }      
         break;
@@ -283,12 +283,12 @@ void swatCommandHandler(Task task, MessageId id, Message message)
 
 
 /****************************************************************************/
-void swatSendMediaOpenRequest(uint16 device_id, swatMediaType media_type)
+void swatSendMediaOpenRequest(u16 device_id, swatMediaType media_type)
 {
     remoteDevice * device = &swat->remote_devs[device_id];
     
     /* Build the SWAT_OPEN_REQ packet */
-    uint8 packet[4] = {SWAT_OPEN, 1, SWAT_CMD, 0};
+    u8 packet[4] = {SWAT_OPEN, 1, SWAT_CMD, 0};
     packet[PKT_PAYLOAD] = media_type;
     
     /* Check the device supplied is valid */
@@ -420,7 +420,7 @@ void swatHandleMediaOpenResponseFromClient(remoteDevice * device, swatMediaType 
 void swatSendMediaOpenResponse(remoteDevice * device, swatMediaResponse response, swatMediaType media_type)
 {
     /* Build the MEDIA_OPEN_RSP packet */
-    uint8 packet[5] = {SWAT_OPEN, 2, SWAT_RSP, 0, 0};
+    u8 packet[5] = {SWAT_OPEN, 2, SWAT_RSP, 0, 0};
     packet[PKT_PAYLOAD]   = response;
     packet[PKT_PAYLOAD+1] = media_type;
     
@@ -478,12 +478,12 @@ void swatHandleOpenMediaRspFromRemoteDevice(remoteDevice * device, swatMediaResp
 
 
 /*****************************************************************************/
-void swatSendMediaCloseReq(uint16 device_id, swatMediaType media_type)
+void swatSendMediaCloseReq(u16 device_id, swatMediaType media_type)
 {
     remoteDevice * device = &swat->remote_devs[device_id];
     
     /* Build the close request packet */
-    uint8 packet[4] = {SWAT_CLOSE, 1, SWAT_CMD};
+    u8 packet[4] = {SWAT_CLOSE, 1, SWAT_CMD};
     packet[PKT_PAYLOAD] = media_type;
     
     /* Ensure the media channel is in correct state to send a CLOSE_REQ */
@@ -547,7 +547,7 @@ void swatHandleCloseRequestFromRemoteDevice(remoteDevice * device, swatMediaType
 void swatSendMediaCloseResponse(remoteDevice * device, swatMediaResponse response, swatMediaType media_type)
 {
     /* Build the MEDIA_CLOSE_RSP packet */
-    uint8 packet[5] = {SWAT_CLOSE, 2, SWAT_RSP, 0, 0};
+    u8 packet[5] = {SWAT_CLOSE, 2, SWAT_RSP, 0, 0};
     packet[PKT_PAYLOAD]   = response;
     packet[PKT_PAYLOAD+1] = media_type;
     
@@ -621,12 +621,12 @@ void swatHandleCloseResponseFromRemoteDevice(remoteDevice * device, swatMediaRes
 
 
 /****************************************************************************/
-void swatSendMediaStartReq(uint16 device_id, swatMediaType media_type)
+void swatSendMediaStartReq(u16 device_id, swatMediaType media_type)
 {
     remoteDevice * device = &swat->remote_devs[device_id];
     
     /* Build the SWAT_START_REQ packet */
-    uint8 packet[4] = {SWAT_START, 1, SWAT_CMD, 0};
+    u8 packet[4] = {SWAT_START, 1, SWAT_CMD, 0};
     packet[PKT_PAYLOAD] = media_type;
     
     /* Ensure the media channel is in the right state to send a START request */
@@ -721,7 +721,7 @@ void swatHandleMediaStartResponseFromClient(remoteDevice * device, swatMediaType
 void swatSendMediaStartResponse(remoteDevice * device, swatMediaResponse response, swatMediaType media_type)
 {
     /* Build the MEDIA_START_RSP packet */
-    uint8 packet[5] = {SWAT_START, 2, SWAT_RSP, 0, 0};
+    u8 packet[5] = {SWAT_START, 2, SWAT_RSP, 0, 0};
     packet[PKT_PAYLOAD]   = response;
     packet[PKT_PAYLOAD+1] = media_type;
     
@@ -785,12 +785,12 @@ void swatHandleStartResponseFromRemoteDevice(remoteDevice * device, swatMediaRes
 
 
 /****************************************************************************/
-void swatSendMediaSuspendReq(uint16 device_id, swatMediaType media_type)
+void swatSendMediaSuspendReq(u16 device_id, swatMediaType media_type)
 {
     remoteDevice * device = &swat->remote_devs[device_id];
     
     /* Build the SWAT_SUSPEND_REQ packet */
-    uint8 packet[4] = {SWAT_SUSPEND, 1, SWAT_CMD, 0};
+    u8 packet[4] = {SWAT_SUSPEND, 1, SWAT_CMD, 0};
     packet[PKT_PAYLOAD] = media_type;
     
     /* Ensure the media channel is in correct state to send a suspend request */
@@ -847,7 +847,7 @@ void swatHandleSuspendRequestFromRemoteDevice(remoteDevice * device, swatMediaTy
 void swatSendMediaSuspendResponse(remoteDevice * device, swatMediaResponse response, swatMediaType media_type)
 {
     /* Build the MEDIA_SUSPEND_RSP packet */
-    uint8 packet[5] = {SWAT_SUSPEND, 2, SWAT_RSP, 0, 0};
+    u8 packet[5] = {SWAT_SUSPEND, 2, SWAT_RSP, 0, 0};
     packet[PKT_PAYLOAD]   = response;
     packet[PKT_PAYLOAD+1] = media_type;
     
@@ -913,14 +913,14 @@ void swatHandleSuspendResponseFromRemoteDevice(remoteDevice * device, swatMediaR
 
 
 /****************************************************************************/
-void swatSendSetVolumeReq(uint16 device_id, uint8 volume, uint8 sub_trim)
+void swatSendSetVolumeReq(u16 device_id, u8 volume, u8 sub_trim)
 {
     remoteDevice * device = &swat->remote_devs[device_id];
     
     if (device)
     {
         /* Build the SWAT_SET_VOLUME_REQ packet */
-        uint8 packet[5] = {SWAT_SET_VOLUME, 2, SWAT_CMD, 0, 0};
+        u8 packet[5] = {SWAT_SET_VOLUME, 2, SWAT_CMD, 0, 0};
         packet[PKT_PAYLOAD]   = volume;
         packet[PKT_PAYLOAD+1] = sub_trim;
         
@@ -942,10 +942,10 @@ void swatSendSetVolumeReq(uint16 device_id, uint8 volume, uint8 sub_trim)
 
 
 /****************************************************************************/
-void swatHandleVolumeRequestFromRemoteDevice(remoteDevice *device, uint8 volume, uint8 sub_trim)
+void swatHandleVolumeRequestFromRemoteDevice(remoteDevice *device, u8 volume, u8 sub_trim)
 {
     /* Build the SET_VOLUME_RSP packet */
-    uint8 packet[5] = {SWAT_SET_VOLUME, 2, SWAT_RSP, 0, 0};
+    u8 packet[5] = {SWAT_SET_VOLUME, 2, SWAT_RSP, 0, 0};
     packet[PKT_PAYLOAD]   = volume;
     packet[PKT_PAYLOAD+1] = sub_trim;
     
@@ -970,20 +970,20 @@ void swatHandleVolumeRequestFromRemoteDevice(remoteDevice *device, uint8 volume,
 
 
 /****************************************************************************/
-void swatHandleVolumeResponseFromRemoteDevice(remoteDevice *device, uint8 volume, uint8 sub_trim)
+void swatHandleVolumeResponseFromRemoteDevice(remoteDevice *device, u8 volume, u8 sub_trim)
 {
     SWAT_DEBUG(("[SWAT] Volume sync'd with remote device ID[%x] VOLUME[%x]\n", device->id, volume));
     swatSendVolumeCfmToClient(swat_success, device->id, volume, sub_trim);
 }
 
 /*****************************************************************************/
-void swatSendSampleRateCommand(uint16 device_id, uint16 rate)
+void swatSendSampleRateCommand(u16 device_id, u16 rate)
 {
     remoteDevice * device = &swat->remote_devs[device_id];
     
     /* Build the SWAT_SAMPLE_RATE_REQ packet */
-    uint8 packet[5] = {SWAT_SAMPLE_RATE, 2, SWAT_CMD};
-    /* Stuff sample rate (uint16) into 2x (uint8) for sending over the air */
+    u8 packet[5] = {SWAT_SAMPLE_RATE, 2, SWAT_CMD};
+    /* Stuff sample rate (u16) into 2x (u8) for sending over the air */
     packet[PKT_PAYLOAD]   = rate & 0xFF;
     packet[PKT_PAYLOAD+1] = (rate >> 8) & 0xFF;
     
@@ -1018,7 +1018,7 @@ void swatSendSampleRateCommand(uint16 device_id, uint16 rate)
 
 
 /*****************************************************************************/
-void swatHandleSampleRateCommandFromRemoteDevice(remoteDevice * device, uint16 rate)
+void swatHandleSampleRateCommandFromRemoteDevice(remoteDevice * device, u16 rate)
 {
     if (device)
     {
@@ -1051,7 +1051,7 @@ void swatHandleSampleRateCommandFromRemoteDevice(remoteDevice * device, uint16 r
 
 
 /*****************************************************************************/
-void swatHandleSampleRateResponseFromClient(remoteDevice * device, uint16 rate)
+void swatHandleSampleRateResponseFromClient(remoteDevice * device, u16 rate)
 {
     if (BdaddrIsZero((const bdaddr *) &device->bd_addr))
     {
@@ -1073,12 +1073,12 @@ void swatHandleSampleRateResponseFromClient(remoteDevice * device, uint16 rate)
 
 
 /*****************************************************************************/
-void swatSendSampleRateResponse(remoteDevice * device, swatMediaResponse response, uint16 rate)
+void swatSendSampleRateResponse(remoteDevice * device, swatMediaResponse response, u16 rate)
 {
     /* Build the SAMPLE_RATE_RSP packet */
-    uint8 packet[6] = {SWAT_SAMPLE_RATE, 3, SWAT_RSP};
+    u8 packet[6] = {SWAT_SAMPLE_RATE, 3, SWAT_RSP};
     packet[PKT_PAYLOAD]   = response;
-    /* Stuff sample rate (uint16) into 2x (uint8) for sending over the air */
+    /* Stuff sample rate (u16) into 2x (u8) for sending over the air */
     packet[PKT_PAYLOAD+1]   = rate & 0xFF;
     packet[PKT_PAYLOAD+2] = (rate >> 8) & 0xFF;
     
@@ -1098,7 +1098,7 @@ void swatSendSampleRateResponse(remoteDevice * device, swatMediaResponse respons
 
 
 /*****************************************************************************/
-void swatHandleSampleRateResponseFromRemoteDevice(remoteDevice * device, swatMediaResponse media_rsp, uint16 rate)
+void swatHandleSampleRateResponseFromRemoteDevice(remoteDevice * device, swatMediaResponse media_rsp, u16 rate)
 {
     SWAT_DEBUG(("[SWAT] Device ID[%x] responded to sample rate [%u]\n", device->id, rate));
     
@@ -1124,7 +1124,7 @@ void swatHandleSampleRateResponseFromRemoteDevice(remoteDevice * device, swatMed
 void swatSendGeneralReject(remoteDevice * device, swatCommandId cmd_id)
 {
     /* Build the SWAT_GENERAL_REJECT packet */
-    uint8 packet[4] = {SWAT_GENERAL_REJECT, 1, SWAT_CMD, 0};
+    u8 packet[4] = {SWAT_GENERAL_REJECT, 1, SWAT_CMD, 0};
     packet[PKT_PAYLOAD] = cmd_id;
     
     /* Send GENERAL_REJECT packet to the device */
@@ -1144,7 +1144,7 @@ void swatSendGeneralReject(remoteDevice * device, swatCommandId cmd_id)
 
 
 /****************************************************************************/
-void swatHandleGeneralRejectFromRemoteDevice(uint16 device_id, uint16 cmd_id)
+void swatHandleGeneralRejectFromRemoteDevice(u16 device_id, u16 cmd_id)
 {
     /* Check that the command is not one that we think should be valid */
     switch (cmd_id)
@@ -1175,14 +1175,14 @@ void swatHandleGeneralRejectFromRemoteDevice(uint16 device_id, uint16 cmd_id)
 /****************************************************************************/
 /* Soundbar function to get the version number from the Subwoofer device    */
 /****************************************************************************/
-void swatSendGetVersionNoReq(uint16 device_id)
+void swatSendGetVersionNoReq(u16 device_id)
 {
     remoteDevice * device = &swat->remote_devs[device_id];
     
     if (device)
     {
         /* Build the SWAT_SET_VOLUME_REQ packet */
-        uint8 packet[3] = {SWAT_GET_VERSION, 0, SWAT_CMD};
+        u8 packet[3] = {SWAT_GET_VERSION, 0, SWAT_CMD};
 
         /* set to legacy (ROM) subwoofer version before querying version as
            ROM will not respond with a version number */
@@ -1210,7 +1210,7 @@ void swatSendGetVersionNoReq(uint16 device_id)
 void swatHandleVersionNoRequestFromRemoteDevice(remoteDevice *device)
 {
     /* Build the SWAT_GET_VERSION packet */
-    uint8 packet[5] = {SWAT_GET_VERSION, 2, SWAT_RSP, 0, 0};
+    u8 packet[5] = {SWAT_GET_VERSION, 2, SWAT_RSP, 0, 0};
     packet[PKT_PAYLOAD]   = SUBWOOFER_MAJOR_VERSION;
     packet[PKT_PAYLOAD+1] = SUBWOOFER_MINOR_VERSION;
     
@@ -1232,7 +1232,7 @@ void swatHandleVersionNoRequestFromRemoteDevice(remoteDevice *device)
 
 
 /****************************************************************************/
-void swatHandleVersionNoResponseFromRemoteDevice(remoteDevice *device, uint16 major, uint16 minor)
+void swatHandleVersionNoResponseFromRemoteDevice(remoteDevice *device, u16 major, u16 minor)
 {
     SWAT_DEBUG(("[SWAT] Version No Major[%x] Minor[%x]\n", major, minor));
 

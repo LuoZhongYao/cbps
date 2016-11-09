@@ -54,10 +54,10 @@ NOTES
 static void avrcpSendNowPlayingCommand( AVRCP*              avrcp, 
                                         avrcp_browse_scope  scope,    
                                         avrcp_browse_uid    uid,  
-                                        uint16              uid_counter,
-                                        uint16              pdu_id)
+                                        u16              uid_counter,
+                                        u16              pdu_id)
 {
-    uint8 extra_params[AVRCP_PLAY_ITEM_SIZE];
+    u8 extra_params[AVRCP_PLAY_ITEM_SIZE];
     avrcp_status_code status;
 
     if((scope ==  avrcp_media_player_scope) ||
@@ -68,7 +68,7 @@ static void avrcpSendNowPlayingCommand( AVRCP*              avrcp,
     }
 
     /* Fill in the Parameters */
-    extra_params[0] = (uint8)scope;
+    extra_params[0] = (u8)scope;
     convertUint32ToUint8Values(&extra_params[1], uid.msb);
     convertUint32ToUint8Values(&extra_params[5], uid.lsb);
     AVRCP_UINT16_TO_UINT8(uid_counter, extra_params, 9);
@@ -98,7 +98,7 @@ static void avrcpSendNowPlayingCommand( AVRCP*              avrcp,
 *   avrcp              - Task
 *   avrcp_browse_scope - scope
 *   avrcp_browse_uid   - uid
-*   uint16             - counter
+*   u16             - counter
 *
 *RETURN
 *  AVRCP_PLAY_ITEM_CFM 
@@ -106,7 +106,7 @@ static void avrcpSendNowPlayingCommand( AVRCP*              avrcp,
 void AvrcpPlayItemRequest( AVRCP*              avrcp, 
                            avrcp_browse_scope  scope,    
                            avrcp_browse_uid    uid,  
-                           uint16              uid_counter)
+                           u16              uid_counter)
 {
     avrcpSendNowPlayingCommand( avrcp, scope, 
                                 uid, uid_counter, 
@@ -124,7 +124,7 @@ void AvrcpPlayItemRequest( AVRCP*              avrcp,
 *   avrcp              - Task
 *   avrcp_browse_scope - scope
 *   avrcp_browse_uid   - uid
-*   uint16             - counter
+*   u16             - counter
 *
 *RETURN
 *  AVRCP_PLAY_ITEM_CFM 
@@ -132,7 +132,7 @@ void AvrcpPlayItemRequest( AVRCP*              avrcp,
 void AvrcpAddToNowPlayingRequest( AVRCP*              avrcp, 
                                   avrcp_browse_scope  scope,    
                                   avrcp_browse_uid    uid,  
-                                  uint16              uid_counter)
+                                  u16              uid_counter)
 {
     avrcpSendNowPlayingCommand( avrcp, scope, 
                                 uid, uid_counter, 
@@ -237,12 +237,12 @@ void AvrcpEventNowPlayingContentChangedResponse(AVRCP                *avrcp,
 *   avrcp_response_type - Response indicating whether request was accepted or
 *                         rejected. All valid responses are defined in 
 *                         avrcp_response_type.
-*   uint16              - UID Counter
+*   u16              - UID Counter
 *
 *****************************************************************************/
 void AvrcpEventUidsChangedResponse(AVRCP                *avrcp,
                                    avrcp_response_type  response,
-                                   uint16               uid_counter)
+                                   u16               uid_counter)
 {
 
     if (isEventRegistered(avrcp,EVENT_UIDS_CHANGED))

@@ -64,7 +64,7 @@ RETURNS
     TRUE if the ANCS service was successfully added, FALSE otherwise.
 */
 #ifdef GATT_ANCS_CLIENT
-bool sinkGattAncsClientAddService(uint16 cid, uint16 start, uint16 end);
+bool sinkGattAncsClientAddService(u16 cid, u16 start, u16 end);
 #else
 #define sinkGattAncsClientAddService(cid, start, end) (FALSE)
 #endif

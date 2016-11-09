@@ -33,7 +33,7 @@ DESCRIPTION
     Handle the continuing command received from the CT.
     
 */
-void avrcpHandleRequestContinuingCommand(AVRCP *avrcp, uint16 pdu);
+void avrcpHandleRequestContinuingCommand(AVRCP *avrcp, u16 pdu);
 
 
 /****************************************************************************
@@ -43,7 +43,7 @@ NAME
 DESCRIPTION
     Handle the abort continuing command received from the CT.
 */
-void avrcpHandleAbortContinuingCommand(AVRCP *avrcp, uint16 pdu);
+void avrcpHandleAbortContinuingCommand(AVRCP *avrcp, u16 pdu);
 
 
 /****************************************************************************
@@ -66,9 +66,9 @@ DESCRIPTION
 */
 void avrcpStoreNextContinuationPacket(  AVRCP   *avrcp, 
                                         Source  data, 
-                                        uint16  param_length, 
-                                        uint16  pdu_id, 
-                                        uint16  response); 
+                                        u16  param_length, 
+                                        u16  pdu_id, 
+                                        u16  response); 
 
 
 /****************************************************************************

@@ -22,10 +22,10 @@ Copyright (c) 2007 - 2015 Qualcomm Technologies International, Ltd.
         void PblockStore(void)
             Store the data to persistance. Can be called at will.
   
-        uint16* PblockGet(uint16 entry_id, uint16* entry_len)
+        u16* PblockGet(u16 entry_id, u16* entry_len)
             Retrieve data from a keyed block
   
-        void PblockSet(uint16 entry_id, uint16 entry_len, uint16 *data)
+        void PblockSet(u16 entry_id, u16 entry_len, u16 *data)
             Store data to a keyed block. Entry will be created if not present
 
     Notes
@@ -55,20 +55,20 @@ typedef struct
 {
     unsigned id:8;
     unsigned size:8;
-    uint16   data[1];
+    u16   data[1];
 } pblock_entry;
 
 typedef struct
 {
-    uint16      key;
+    u16      key;
     unsigned    len:8;
     unsigned    cur_len:8;
-    uint16*     cache;
+    u16*     cache;
 } pblock_key;
 
-pblock_key * PblockInit(uint16 key, uint16 len);
+pblock_key * PblockInit(u16 key, u16 len);
 void PblockStore(void);
-const pblock_entry* PblockGet(uint16 id);
-void PblockSet(uint16 id, uint16 len, uint16 *data);
+const pblock_entry* PblockGet(u16 id);
+void PblockSet(u16 id, u16 len, u16 *data);
 
 #endif /*PBLOCK_H_*/

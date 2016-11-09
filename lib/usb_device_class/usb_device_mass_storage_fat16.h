@@ -51,72 +51,72 @@ Copyright (c) 2010 - 2015 Qualcomm Technologies International, Ltd.
 /* First 446 bytes of Master Boot Record is executable code */     
 typedef struct
 {
-    uint8 exe[446];
+    u8 exe[446];
 } MasterBootRecordExeType;
 
 /* Partition details in Master Boot Record */
 typedef struct
 {
-    uint8 bootIndicator[1];
-    uint8 startingHead[1];
-    uint8 startingSectorCyl[2];
-    uint8 partitionType[1];
-    uint8 endingHead[1];
-    uint8 endingSectorCyl[2];
-    uint8 startingSector[4];
-    uint8 sectorsInPartition[4];
+    u8 bootIndicator[1];
+    u8 startingHead[1];
+    u8 startingSectorCyl[2];
+    u8 partitionType[1];
+    u8 endingHead[1];
+    u8 endingSectorCyl[2];
+    u8 startingSector[4];
+    u8 sectorsInPartition[4];
 } MasterBootRecordPartitionType;
 
 /* Executable signature */
 typedef struct
 {
-    uint8 executableSignature[2];
+    u8 executableSignature[2];
 } ExeSignatureType;
 
 /* Boot record header information */
 typedef struct
 {
-    uint8 jumpInstruction[3];
-    uint8 oemName[8];
-    uint8 bytesPerSector[2];
-    uint8 sectorsPerCluster[1];
-    uint8 noReservedSectors[2];
-    uint8 noFats[1];
-    uint8 maxRootDirEntries[2];
-    uint8 totalSectorCountSmall[2];
-    uint8 mediaDescriptor[1];
-    uint8 sectorsPerFat[2];
-    uint8 sectorsPerTrack[2];
-    uint8 noHeads[2];
-    uint8 hiddenSectors[4];
-    uint8 totalSectorCountLarge[4];
-    uint8 phyiscalDriveNumber[1];
-    uint8 reserved1[1];
-    uint8 extendedBootSignature[1];
-    uint8 serialNumber[4];
-    uint8 volumeLabel[11];
-    uint8 fileSystemType[8];
+    u8 jumpInstruction[3];
+    u8 oemName[8];
+    u8 bytesPerSector[2];
+    u8 sectorsPerCluster[1];
+    u8 noReservedSectors[2];
+    u8 noFats[1];
+    u8 maxRootDirEntries[2];
+    u8 totalSectorCountSmall[2];
+    u8 mediaDescriptor[1];
+    u8 sectorsPerFat[2];
+    u8 sectorsPerTrack[2];
+    u8 noHeads[2];
+    u8 hiddenSectors[4];
+    u8 totalSectorCountLarge[4];
+    u8 phyiscalDriveNumber[1];
+    u8 reserved1[1];
+    u8 extendedBootSignature[1];
+    u8 serialNumber[4];
+    u8 volumeLabel[11];
+    u8 fileSystemType[8];
 } BootSectorType;
 
 typedef struct
 {
-    uint8 exe[448];
+    u8 exe[448];
 } BootSectorExeType;
 
 typedef struct
 {
-    uint8 filename[8];
-    uint8 extension[3];
-    uint8 attributes[1];
-    uint8 ignore1[1];
-    uint8 creationTime[3];
-    uint8 creationDate[2];
-    uint8 lastAccessDate[2];
-    uint8 lastAccessTime[2];
-    uint8 lastWriteTime[2];
-    uint8 lastWriteDate[2];
-    uint8 firstLogicalCluster[2];
-    uint8 fileSizeBytes[4];    
+    u8 filename[8];
+    u8 extension[3];
+    u8 attributes[1];
+    u8 ignore1[1];
+    u8 creationTime[3];
+    u8 creationDate[2];
+    u8 lastAccessDate[2];
+    u8 lastAccessTime[2];
+    u8 lastWriteTime[2];
+    u8 lastWriteDate[2];
+    u8 firstLogicalCluster[2];
+    u8 fileSizeBytes[4];    
 } DirectoryType;
 
 
@@ -148,7 +148,7 @@ void Fat16_Initialise(MassStorageType *ms);
         transfer_length - the number of consecutive blocks to read data from       
         
 */    
-void Fat16_Read(MassStorageType *ms, uint32 logical_address, uint32 transfer_length);
+void Fat16_Read(MassStorageType *ms, u32 logical_address, u32 transfer_length);
 
 
 /*
@@ -161,7 +161,7 @@ void Fat16_Read(MassStorageType *ms, uint32 logical_address, uint32 transfer_len
     RETURN VALUE
         Returns the block size of the file system.
 */    
-uint32 Fat16_GetBlockSize(void);
+u32 Fat16_GetBlockSize(void);
 
 
 /*
@@ -174,7 +174,7 @@ uint32 Fat16_GetBlockSize(void);
     RETURN VALUE
         Returns the total number of blocks of the file system.
 */    
-uint32 Fat16_GetTotalBlocks(void);
+u32 Fat16_GetTotalBlocks(void);
 
 
 /*
@@ -192,7 +192,7 @@ uint32 Fat16_GetTotalBlocks(void);
         params - data to use for FAT data area
  
 */   
-void Fat16_ConfigureDataArea(MassStorageType *ms, uint16 value_16, uint32 value_32, uint8 *params);
+void Fat16_ConfigureDataArea(MassStorageType *ms, u16 value_16, u32 value_32, u8 *params);
 
 
 /*
@@ -210,7 +210,7 @@ void Fat16_ConfigureDataArea(MassStorageType *ms, uint16 value_16, uint32 value_
         params - data to use for the FAT table 
          
 */   
-void Fat16_ConfigureFat(MassStorageType *ms, uint16 value_16, uint32 value_32, uint8 *params);
+void Fat16_ConfigureFat(MassStorageType *ms, u16 value_16, u32 value_32, u8 *params);
 
 
 /*
@@ -228,7 +228,7 @@ void Fat16_ConfigureFat(MassStorageType *ms, uint16 value_16, uint32 value_32, u
         params - data to use for root directory
         
 */   
-void Fat16_ConfigureRootDir(MassStorageType *ms, uint16 value_16, uint32 value_32, uint8 *params);
+void Fat16_ConfigureRootDir(MassStorageType *ms, u16 value_16, u32 value_32, u8 *params);
 
 
 /*
@@ -242,7 +242,7 @@ void Fat16_ConfigureRootDir(MassStorageType *ms, uint16 value_16, uint32 value_3
         sink - the sink to check
         size - the size in bytes
 */   
-void Fat16_WaitAvailable(Sink sink, uint16 size);
+void Fat16_WaitAvailable(Sink sink, u16 size);
 
 
 #endif /* _USB_DEVICE_MASS_STORAGE_FAT_16_H */

@@ -52,7 +52,7 @@ DESCRIPTION
     If not, no command is sent
     
 */
-void sinkSendATCmd( uint16 at_id) ;
+void sinkSendATCmd( u16 at_id) ;
 
 
 /****************************************************************************

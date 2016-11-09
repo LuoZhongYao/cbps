@@ -28,10 +28,10 @@ NOTES
 
 
 /*****************************************************************************/
-void selectOptimalCsrTwsSbcCapsSink(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalCsrTwsSbcCapsSink(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
-    if (a2dpFindStdEmbeddedCodecCaps((const uint8 **)&local_codec_caps, AVDTP_MEDIA_CODEC_SBC) && 
-        a2dpFindStdEmbeddedCodecCaps((const uint8 **)&remote_codec_caps, AVDTP_MEDIA_CODEC_SBC))
+    if (a2dpFindStdEmbeddedCodecCaps((const u8 **)&local_codec_caps, AVDTP_MEDIA_CODEC_SBC) && 
+        a2dpFindStdEmbeddedCodecCaps((const u8 **)&remote_codec_caps, AVDTP_MEDIA_CODEC_SBC))
     {
         selectOptimalSbcCapsSink(local_codec_caps, remote_codec_caps);
     }
@@ -39,10 +39,10 @@ void selectOptimalCsrTwsSbcCapsSink(const uint8 *local_codec_caps, uint8 *remote
 
 
 /*****************************************************************************/
-void selectOptimalCsrTwsSbcCapsSource(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalCsrTwsSbcCapsSource(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
-    if (a2dpFindStdEmbeddedCodecCaps((const uint8 **)&local_codec_caps, AVDTP_MEDIA_CODEC_SBC) && 
-        a2dpFindStdEmbeddedCodecCaps((const uint8 **)&remote_codec_caps, AVDTP_MEDIA_CODEC_SBC))
+    if (a2dpFindStdEmbeddedCodecCaps((const u8 **)&local_codec_caps, AVDTP_MEDIA_CODEC_SBC) && 
+        a2dpFindStdEmbeddedCodecCaps((const u8 **)&remote_codec_caps, AVDTP_MEDIA_CODEC_SBC))
     {
         selectOptimalSbcCapsSource(local_codec_caps, remote_codec_caps);
     }
@@ -50,10 +50,10 @@ void selectOptimalCsrTwsSbcCapsSource(const uint8 *local_codec_caps, uint8 *remo
 
 
 /*****************************************************************************/
-void selectOptimalCsrTwsMp3CapsSink(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalCsrTwsMp3CapsSink(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
-    if (a2dpFindStdEmbeddedCodecCaps((const uint8 **)&local_codec_caps, AVDTP_MEDIA_CODEC_MPEG1_2_AUDIO) && 
-        a2dpFindStdEmbeddedCodecCaps((const uint8 **)&remote_codec_caps, AVDTP_MEDIA_CODEC_MPEG1_2_AUDIO))
+    if (a2dpFindStdEmbeddedCodecCaps((const u8 **)&local_codec_caps, AVDTP_MEDIA_CODEC_MPEG1_2_AUDIO) && 
+        a2dpFindStdEmbeddedCodecCaps((const u8 **)&remote_codec_caps, AVDTP_MEDIA_CODEC_MPEG1_2_AUDIO))
     {
         selectOptimalMp3CapsSink(local_codec_caps, remote_codec_caps);
     }
@@ -61,10 +61,10 @@ void selectOptimalCsrTwsMp3CapsSink(const uint8 *local_codec_caps, uint8 *remote
 
 
 /*****************************************************************************/
-void selectOptimalCsrTwsMp3CapsSource(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalCsrTwsMp3CapsSource(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
-    if (a2dpFindStdEmbeddedCodecCaps((const uint8 **)&local_codec_caps, AVDTP_MEDIA_CODEC_MPEG1_2_AUDIO) && 
-        a2dpFindStdEmbeddedCodecCaps((const uint8 **)&remote_codec_caps, AVDTP_MEDIA_CODEC_MPEG1_2_AUDIO))
+    if (a2dpFindStdEmbeddedCodecCaps((const u8 **)&local_codec_caps, AVDTP_MEDIA_CODEC_MPEG1_2_AUDIO) && 
+        a2dpFindStdEmbeddedCodecCaps((const u8 **)&remote_codec_caps, AVDTP_MEDIA_CODEC_MPEG1_2_AUDIO))
     {
         selectOptimalMp3CapsSource(local_codec_caps, remote_codec_caps);
     }
@@ -72,10 +72,10 @@ void selectOptimalCsrTwsMp3CapsSource(const uint8 *local_codec_caps, uint8 *remo
 
 
 /*****************************************************************************/
-void selectOptimalCsrTwsAacCapsSink(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalCsrTwsAacCapsSink(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
-    if (a2dpFindStdEmbeddedCodecCaps((const uint8 **)&local_codec_caps, AVDTP_MEDIA_CODEC_MPEG2_4_AAC) && 
-        a2dpFindStdEmbeddedCodecCaps((const uint8 **)&remote_codec_caps, AVDTP_MEDIA_CODEC_MPEG2_4_AAC))
+    if (a2dpFindStdEmbeddedCodecCaps((const u8 **)&local_codec_caps, AVDTP_MEDIA_CODEC_MPEG2_4_AAC) && 
+        a2dpFindStdEmbeddedCodecCaps((const u8 **)&remote_codec_caps, AVDTP_MEDIA_CODEC_MPEG2_4_AAC))
     {
         selectOptimalAacCapsSink(local_codec_caps, remote_codec_caps);
     }
@@ -83,10 +83,10 @@ void selectOptimalCsrTwsAacCapsSink(const uint8 *local_codec_caps, uint8 *remote
 
 
 /*****************************************************************************/
-void selectOptimalCsrTwsAacCapsSource(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalCsrTwsAacCapsSource(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
-    if (a2dpFindStdEmbeddedCodecCaps((const uint8 **)&local_codec_caps, AVDTP_MEDIA_CODEC_MPEG2_4_AAC) && 
-        a2dpFindStdEmbeddedCodecCaps((const uint8 **)&remote_codec_caps, AVDTP_MEDIA_CODEC_MPEG2_4_AAC))
+    if (a2dpFindStdEmbeddedCodecCaps((const u8 **)&local_codec_caps, AVDTP_MEDIA_CODEC_MPEG2_4_AAC) && 
+        a2dpFindStdEmbeddedCodecCaps((const u8 **)&remote_codec_caps, AVDTP_MEDIA_CODEC_MPEG2_4_AAC))
     {
         selectOptimalAacCapsSource(local_codec_caps, remote_codec_caps);
     }
@@ -94,10 +94,10 @@ void selectOptimalCsrTwsAacCapsSource(const uint8 *local_codec_caps, uint8 *remo
 
 
 /*****************************************************************************/
-void selectOptimalCsrTwsAptxCapsSink(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalCsrTwsAptxCapsSink(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
-    if (a2dpFindNonStdEmbeddedCodecCaps((const uint8 **)&local_codec_caps, A2DP_APT_VENDOR_ID, A2DP_CSR_APTX_CODEC_ID) && 
-        a2dpFindNonStdEmbeddedCodecCaps((const uint8 **)&remote_codec_caps, A2DP_APT_VENDOR_ID, A2DP_CSR_APTX_CODEC_ID))
+    if (a2dpFindNonStdEmbeddedCodecCaps((const u8 **)&local_codec_caps, A2DP_APT_VENDOR_ID, A2DP_CSR_APTX_CODEC_ID) && 
+        a2dpFindNonStdEmbeddedCodecCaps((const u8 **)&remote_codec_caps, A2DP_APT_VENDOR_ID, A2DP_CSR_APTX_CODEC_ID))
     {
         selectOptimalCsrAptxCapsSink(local_codec_caps, remote_codec_caps);
     }
@@ -105,10 +105,10 @@ void selectOptimalCsrTwsAptxCapsSink(const uint8 *local_codec_caps, uint8 *remot
 
 
 /*****************************************************************************/
-void selectOptimalCsrTwsAptxCapsSource(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalCsrTwsAptxCapsSource(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
-    if (a2dpFindNonStdEmbeddedCodecCaps((const uint8 **)&local_codec_caps, A2DP_APT_VENDOR_ID, A2DP_CSR_APTX_CODEC_ID) && 
-        a2dpFindNonStdEmbeddedCodecCaps((const uint8 **)&remote_codec_caps, A2DP_APT_VENDOR_ID, A2DP_CSR_APTX_CODEC_ID))
+    if (a2dpFindNonStdEmbeddedCodecCaps((const u8 **)&local_codec_caps, A2DP_APT_VENDOR_ID, A2DP_CSR_APTX_CODEC_ID) && 
+        a2dpFindNonStdEmbeddedCodecCaps((const u8 **)&remote_codec_caps, A2DP_APT_VENDOR_ID, A2DP_CSR_APTX_CODEC_ID))
     {
         selectOptimalCsrAptxCapsSource(local_codec_caps, remote_codec_caps);
     }
@@ -116,7 +116,7 @@ void selectOptimalCsrTwsAptxCapsSource(const uint8 *local_codec_caps, uint8 *rem
 
 
 /*****************************************************************************/
-void getCsrTwsSbcConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_settings)
+void getCsrTwsSbcConfigSettings(const u8 *service_caps, a2dp_codec_settings *codec_settings)
 {
     if (a2dpFindStdEmbeddedCodecCaps(&service_caps, AVDTP_MEDIA_CODEC_SBC))
     {
@@ -126,7 +126,7 @@ void getCsrTwsSbcConfigSettings(const uint8 *service_caps, a2dp_codec_settings *
 
 
 /*****************************************************************************/
-void getCsrTwsMp3ConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_settings)
+void getCsrTwsMp3ConfigSettings(const u8 *service_caps, a2dp_codec_settings *codec_settings)
 {
     if (a2dpFindStdEmbeddedCodecCaps(&service_caps, AVDTP_MEDIA_CODEC_MPEG1_2_AUDIO))
     {
@@ -136,7 +136,7 @@ void getCsrTwsMp3ConfigSettings(const uint8 *service_caps, a2dp_codec_settings *
 
 
 /*****************************************************************************/
-void getCsrTwsAacConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_settings)
+void getCsrTwsAacConfigSettings(const u8 *service_caps, a2dp_codec_settings *codec_settings)
 {
     if (a2dpFindStdEmbeddedCodecCaps(&service_caps, AVDTP_MEDIA_CODEC_MPEG2_4_AAC))
     {
@@ -146,7 +146,7 @@ void getCsrTwsAacConfigSettings(const uint8 *service_caps, a2dp_codec_settings *
 
 
 /*****************************************************************************/
-void getCsrTwsAptxConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_settings)
+void getCsrTwsAptxConfigSettings(const u8 *service_caps, a2dp_codec_settings *codec_settings)
 {
     if (a2dpFindNonStdEmbeddedCodecCaps(&service_caps, A2DP_APT_VENDOR_ID, A2DP_CSR_APTX_CODEC_ID))
     {

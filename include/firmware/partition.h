@@ -23,7 +23,7 @@
 
   @return TRUE if partition found and mounted successfully, otherwise FALSE
 */
-bool PartitionMountFilesystem(partition_filesystem_devices device, uint16 partition,  partition_filesystem_priority priority);
+bool PartitionMountFilesystem(partition_filesystem_devices device, u16 partition,  partition_filesystem_priority priority);
 
 /*!
   @brief Get information about a partition
@@ -35,7 +35,7 @@ bool PartitionMountFilesystem(partition_filesystem_devices device, uint16 partit
 
   @return TRUE if partition found and queried successfully, otherwise FALSE
 */
-bool PartitionGetInfo(partition_filesystem_devices device, uint16 partition, partition_info_key key, uint32 *value);
+bool PartitionGetInfo(partition_filesystem_devices device, u16 partition, partition_info_key key, u32 *value);
 
 /*!
   @brief Set a message digest for a stream writing to flash partition.
@@ -63,7 +63,7 @@ bool PartitionGetInfo(partition_filesystem_devices device, uint16 partition, par
   Message digest configuration using PartitionSetMessageDigest() can only be done once
   in the life time of the partition sink.
 */
-bool PartitionSetMessageDigest(Sink sink, partition_message_digest_type md_type, uint16 *data, uint16 len);
+bool PartitionSetMessageDigest(Sink sink, partition_message_digest_type md_type, u16 *data, u16 len);
 
 /*!
   @brief This API will return the source with the contents of the specified raw serial partition 
@@ -73,7 +73,7 @@ bool PartitionSetMessageDigest(Sink sink, partition_message_digest_type md_type,
 
   @return The source associated with the raw partition stream.
 */
-Source PartitionGetRawSerialSource(uint16 device, uint16 partition);
+Source PartitionGetRawSerialSource(u16 device, u16 partition);
 
 /*!
   @brief Get the sink position of the partition sink stream.
@@ -88,6 +88,6 @@ Source PartitionGetRawSerialSource(uint16 device, uint16 partition);
   contents before the sink position (except first word) are successfully written.
 
 */
-uint32 PartitionSinkGetPosition(Sink sink);
+u32 PartitionSinkGetPosition(Sink sink);
 
 #endif

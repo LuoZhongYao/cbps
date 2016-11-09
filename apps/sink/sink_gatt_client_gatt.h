@@ -26,7 +26,7 @@ RETURNS
     TRUE if the GATT service was successfully added, FALSE otherwise.
 */
 #ifdef GATT_ENABLED
-bool sinkGattClientServiceAdd(uint16 cid, uint16 start, uint16 end);
+bool sinkGattClientServiceAdd(u16 cid, u16 start, u16 end);
 #else
 #define sinkGattClientServiceAdd(cid, start, end) (FALSE)
 #endif
@@ -44,7 +44,7 @@ PARAMETERS
     cid             The connection ID
 */
 #ifdef GATT_ENABLED
-void sinkGattClientServiceRemove(GGATTC *ggattc, uint16 cid);
+void sinkGattClientServiceRemove(GGATTC *ggattc, u16 cid);
 #else
 #define sinkGattClientServiceRemove(ggattc, cid) ((void)(0))
 #endif

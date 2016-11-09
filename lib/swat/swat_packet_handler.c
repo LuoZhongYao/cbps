@@ -30,10 +30,10 @@ DESCRIPTION
 #include <print.h>
 
 /*****************************************************************************/
-bool swatSendData(remoteDevice *device, uint8 *data, uint16 len)
+bool swatSendData(remoteDevice *device, u8 *data, u16 len)
 {
-    uint8 * sink_ptr;      /* Ptr to the first byte in the sink */
-    uint16 claim_result;   /* Result from the sink claim */
+    u8 * sink_ptr;      /* Ptr to the first byte in the sink */
+    u16 claim_result;   /* Result from the sink claim */
     
     /* Get the signalling data from the Sink */
     claim_result = SinkClaim(device->signalling_sink, len);
@@ -64,8 +64,8 @@ bool swatSendData(remoteDevice *device, uint8 *data, uint16 len)
 /*****************************************************************************/
 void swatHandleSwatSignallingData(Source source)
 {
-    uint16 packet_size, data_size;
-    const uint8 *ptr = SourceMap(source);
+    u16 packet_size, data_size;
+    const u8 *ptr = SourceMap(source);
     
     /* Get the device that sent the signalling data */
     remoteDevice* device = swatFindDeviceFromSink( StreamSinkFromSource(source) );

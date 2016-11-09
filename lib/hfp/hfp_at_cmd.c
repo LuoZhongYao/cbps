@@ -37,7 +37,7 @@ RETURNS
 */
 void HfpAtCmdRequest(hfp_link_priority priority, const char* cmd)
 {
-    uint8 size_cmd = (cmd ? strlen(cmd) : 0);
+    u8 size_cmd = (cmd ? strlen(cmd) : 0);
     MAKE_HFP_MESSAGE_WITH_LEN(HFP_INTERNAL_AT_CMD_REQ, size_cmd + 1);
     message->link = hfpGetLinkFromPriority(priority);
     message->size_cmd = size_cmd;

@@ -111,10 +111,10 @@ void audio_init(void)
 NAME    
     audio_a2dp_connect - Route A2DP audio
 */
-void audio_a2dp_connect(Sink sink, uint16 device_id, uint16 stream_id)
+void audio_a2dp_connect(Sink sink, u16 device_id, u16 stream_id)
 {
-    uint8 bitpool;
-    uint8 bad_link_bitpool;
+    u8 bitpool;
+    u8 bad_link_bitpool;
     bool multiple_streams;
     
     /* start audio active timer */
@@ -134,10 +134,10 @@ void audio_a2dp_connect(Sink sink, uint16 device_id, uint16 stream_id)
     
         AUDIO_DEBUG(("  audio_routed [%d] input_source [0x%x] input_sink [0x%x] a2dp_sink_0 [0x%x] a2dp_sink_1 [0x%x]\n", 
                      theSource->audio_data.audio_routed, 
-                     (uint16)theSource->audio_data.audio_a2dp_connect_params.input_source,
-                     (uint16)theSource->audio_data.audio_a2dp_connect_params.input_sink,
-                     (uint16)theSource->audio_data.audio_a2dp_connect_params.a2dp_sink[0],
-                     (uint16)theSource->audio_data.audio_a2dp_connect_params.a2dp_sink[1]));
+                     (u16)theSource->audio_data.audio_a2dp_connect_params.input_source,
+                     (u16)theSource->audio_data.audio_a2dp_connect_params.input_sink,
+                     (u16)theSource->audio_data.audio_a2dp_connect_params.a2dp_sink[0],
+                     (u16)theSource->audio_data.audio_a2dp_connect_params.a2dp_sink[1]));
 
         if (theSource->audio_data.audio_a2dp_connect_params.a2dp_sink[0] || theSource->audio_data.audio_a2dp_connect_params.a2dp_sink[1])
         {        
@@ -209,7 +209,7 @@ void audio_a2dp_connect(Sink sink, uint16 device_id, uint16 stream_id)
         
         AUDIO_DEBUG(("  audio_routed [%d] connect_sink [0x%x] bitpool [%d] bad_link_bitpool [%d]\n",
                       theSource->audio_data.audio_routed,
-                      (uint16)sink,
+                      (u16)sink,
                       bitpool,
                       bad_link_bitpool));
          
@@ -222,9 +222,9 @@ void audio_a2dp_connect(Sink sink, uint16 device_id, uint16 stream_id)
 NAME    
     audio_a2dp_disconnect - Disconnect A2DP audio
 */
-void audio_a2dp_disconnect(uint16 device_id, Sink media_sink)
+void audio_a2dp_disconnect(u16 device_id, Sink media_sink)
 {
-    uint16 index = 0;
+    u16 index = 0;
     bool active_audio = FALSE;
     
     if (media_sink)
@@ -249,7 +249,7 @@ void audio_a2dp_disconnect(uint16 device_id, Sink media_sink)
                 theSource->audio_data.audio_a2dp_mode_params.disconnect_sink = media_sink;
                 
                 AUDIO_DEBUG(("  Disconnect A2DP Audio: sink [0x%x]\n",
-                          (uint16)media_sink));
+                          (u16)media_sink));
                 
                 audio_update_mode_parameters();             
             }
@@ -269,7 +269,7 @@ NAME
 */
 void audio_a2dp_disconnect_all(void)
 {
-    uint16 index = 0;
+    u16 index = 0;
     
     if (theSource->audio_data.audio_routed == AUDIO_ROUTED_A2DP)
     {
@@ -290,7 +290,7 @@ void audio_a2dp_disconnect_all(void)
 NAME    
     audio_a2dp_set_plugin - Set A2DP audio plugin
 */
-void audio_a2dp_set_plugin(uint8 seid)
+void audio_a2dp_set_plugin(u8 seid)
 {
     AUDIO_DEBUG(("AUDIO: audio_a2dp_set_plugin [%d]\n", seid));
     
@@ -388,9 +388,9 @@ void audio_switch_voip_music_mode(AUDIO_VOIP_MUSIC_MODE_T new_mode)
 NAME    
     audio_aghfp_connect - Route AGHFP audio
 */
-void audio_aghfp_connect(Sink sink, bool esco, bool wbs, uint16 size_warp, uint16 *warp)
+void audio_aghfp_connect(Sink sink, bool esco, bool wbs, u16 size_warp, u16 *warp)
 {
-    uint16 i = 0;
+    u16 i = 0;
     AudioPluginFeatures features = {0,0,0}; /* no stereo or i2s output */
 
     AUDIO_DEBUG(("AUDIO: audio_aghfp_connect\n"));
@@ -501,7 +501,7 @@ void audio_start_active_timer(void)
 NAME    
     audio_a2dp_update_bitpool - Change the bitpool for the A2DP audio
 */
-void audio_a2dp_update_bitpool(uint8 bitpool, uint8 bad_link_bitpool)
+void audio_a2dp_update_bitpool(u8 bitpool, u8 bad_link_bitpool)
 {
     if (theSource->audio_data.audio_routed == AUDIO_ROUTED_A2DP)
     {
@@ -542,7 +542,7 @@ NAME
 */
 static Task audio_aghfp_get_plugin(bool wbs)
 {
-    uint32 usb_sample_rate = usb_get_speaker_sample_rate();
+    u32 usb_sample_rate = usb_get_speaker_sample_rate();
     
     if (wbs)
     {

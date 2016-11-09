@@ -64,7 +64,7 @@ void sendPassThroughResponse(AVRCP *avrcp, avrcp_response_type response)
 *   avrcp       -   AVRCP Instance.
 *   accept      -   TRUE on command success and FALSE on command reject.
 *   uint_type   -   Subunit type ID. 
-*   uint8       -   Unit ID.
+*   u8       -   Unit ID.
 *   company_id  -   Company ID to send in the response. 
 *
 * RETURNS
@@ -73,8 +73,8 @@ void sendPassThroughResponse(AVRCP *avrcp, avrcp_response_type response)
 void sendUnitInfoResponse(AVRCP *avrcp, 
                          bool accept,
                          avc_subunit_type unit_type, 
-                         uint8 unit, 
-                         uint32 company_id)
+                         u8 unit, 
+                         u32 company_id)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_INTERNAL_UNITINFO_RES);
 
@@ -115,7 +115,7 @@ void sendUnitInfoResponse(AVRCP *avrcp,
 * RETURNS
 *    void
 *******************************************************************************/
-void sendSubunitInfoResponse(AVRCP *avrcp, bool accept, const uint8 *page_data)
+void sendSubunitInfoResponse(AVRCP *avrcp, bool accept, const u8 *page_data)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_INTERNAL_SUBUNITINFO_RES);
     message->accept= accept;
@@ -178,7 +178,7 @@ void sendVendorDependentResponse(AVRCP *avrcp, avrcp_response_type response)
 void avrcpSendGetCapsResponse(AVRCP *avrcp, 
                             avrcp_response_type response, 
                             avrcp_capability_id caps, 
-                            uint16 size_caps_list, 
+                            u16 size_caps_list, 
                             Source caps_list)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_INTERNAL_GET_CAPS_RES);
@@ -208,8 +208,8 @@ void avrcpSendGetCapsResponse(AVRCP *avrcp,
 *******************************************************************************/
 void sendGetElementsResponse(AVRCP *avrcp,
                              avrcp_response_type response, 
-                             uint16 number_of_attributes, 
-                             uint16 size_attributes,
+                             u16 number_of_attributes, 
+                             u16 size_attributes,
                              Source attributes)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_INTERNAL_GET_ELEMENT_ATTRIBUTES_RES);
@@ -262,8 +262,8 @@ void sendGroupResponse(AVRCP *avrcp, avrcp_response_type response)
 *******************************************************************************/
 void sendPlayStatusResponse(AVRCP *avrcp,
                             avrcp_response_type response, 
-                            uint32 song_length, 
-                            uint32 song_elapsed, 
+                            u32 song_length, 
+                            u32 song_elapsed, 
                             avrcp_play_status play_status)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_INTERNAL_GET_PLAY_STATUS_RES);
@@ -292,7 +292,7 @@ void sendPlayStatusResponse(AVRCP *avrcp,
 *******************************************************************************/
 void sendListAttrResponse(AVRCP *avrcp,
                          avrcp_response_type response, 
-                         uint16 size_attributes,
+                         u16 size_attributes,
                          Source attributes)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_INTERNAL_LIST_APP_ATTRIBUTE_RES);
@@ -320,7 +320,7 @@ void sendListAttrResponse(AVRCP *avrcp,
 *******************************************************************************/
 void sendListValuesResponse(AVRCP *avrcp, 
                             avrcp_response_type response, 
-                            uint16 size_values, 
+                            u16 size_values, 
                             Source values)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_INTERNAL_LIST_APP_VALUE_RES);
@@ -348,7 +348,7 @@ void sendListValuesResponse(AVRCP *avrcp,
 *******************************************************************************/
 void sendGetValuesResponse(AVRCP *avrcp,
                            avrcp_response_type response, 
-                           uint16 size_values,
+                           u16 size_values,
                            Source values)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_INTERNAL_GET_APP_VALUE_RES);
@@ -398,8 +398,8 @@ void sendSetValuesResponse(AVRCP *avrcp, avrcp_response_type response)
 *******************************************************************************/
 void sendGetAttributeTextResponse(AVRCP *avrcp,
                                   avrcp_response_type response, 
-                                  uint16 number_of_attributes, 
-                                  uint16 size_attributes, 
+                                  u16 number_of_attributes, 
+                                  u16 size_attributes, 
                                   Source attributes)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_INTERNAL_GET_APP_ATTRIBUTES_TEXT_RES);
@@ -430,8 +430,8 @@ void sendGetAttributeTextResponse(AVRCP *avrcp,
 *******************************************************************************/
 void sendGetValueTextResponse(AVRCP *avrcp,
                              avrcp_response_type response, 
-                             uint16 number_of_values, 
-                             uint16 size_values, 
+                             u16 number_of_values, 
+                             u16 size_values, 
                              Source values)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_INTERNAL_GET_APP_VALUE_TEXT_RES);
@@ -497,7 +497,7 @@ void avrcpSendEventResponse(AVRCP                   *avrcp,
 ****************************************************************************/
 void avrcpSendMetaDataControlResponse(AVRCP                   *avrcp,
                                       avrcp_response_type      response,
-                                      uint16                  pdu_id)
+                                      u16                  pdu_id)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_INTERNAL_COMMON_METADATA_CONTROL_RES);
     message->response = response;

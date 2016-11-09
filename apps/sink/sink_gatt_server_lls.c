@@ -26,14 +26,12 @@ DESCRIPTION
 
 
 #ifdef DEBUG_GATT
-#define GATT_DEBUG(x) DEBUG(x)
 #else
-#define GATT_DEBUG(x) 
 #endif
 
 
 /*******************************************************************************/
-bool sinkGattLinkLossServerInitialiseTask(uint16 **ptr)
+bool sinkGattLinkLossServerInitialiseTask(u16 **ptr)
 {
     if (ptr)
     {
@@ -41,24 +39,24 @@ bool sinkGattLinkLossServerInitialiseTask(uint16 **ptr)
         lls_status = GattLinkLossServerInit(sinkGetBleTask(), (GLLSS_T*)*ptr,
                                 HANDLE_LINK_LOSS_SERVICE,
                                 HANDLE_LINK_LOSS_SERVICE_END);
-        
+
         if (lls_status == gatt_link_loss_server_status_success)
         {
-            GATT_DEBUG(("GATT Link Loss Server initialised\n"));
+            LOGD("GATT Link Loss Server initialised\n");
             GATT_SERVER.lls_server = (GLLSS_T*)*ptr;
            *ptr += sizeof(GLLSS_T);
             return TRUE;
         }
         else
         {
-            GATT_DEBUG(("GATT Link Loss Server init failed [%x]\n", lls_status));
+            LOGD("GATT Link Loss Server init failed [%x]\n", lls_status);
         }
     }
     return FALSE;
 }
 
 /******************************************************************************/
-void sinkGattHandleLinkUpInd(uint16 cid)
+void sinkGattHandleLinkUpInd(u16 cid)
 {
     /* Check if the cid is same of the connected device */
     if(GATT_SERVER.cid == cid)
@@ -69,7 +67,7 @@ void sinkGattHandleLinkUpInd(uint16 cid)
 }
 
 /******************************************************************************/
-void sinkGattHandleLinkLossInd(uint16 cid)
+void sinkGattHandleLinkLossInd(u16 cid)
 {
     bool alertStopTimer = FALSE;
     gatt_link_loss_alert_level alert_level = gatt_link_loss_alert_level_reserved;
@@ -105,7 +103,7 @@ void sinkGattHandleLinkLossInd(uint16 cid)
             sinkGattLinkLossAlertHigh(0);
         }
         break;
-        
+
         default:
         break;
     }
@@ -119,7 +117,7 @@ void sinkGattHandleLinkLossInd(uint16 cid)
 
 /******************************************************************************
  * Helper funtion to stop the alterting
-******************************************************************************/ 
+******************************************************************************/
 void sinkGattLinkLossAlertStop(void)
 {
     MessageCancelAll(&theSink.task, EventSysLlsAlertTimeout);
@@ -134,12 +132,12 @@ void sinkGattLinkLossServerMsgHandler(Task task, MessageId id, Message message)
     {
         case GATT_LLS_ALERT_LEVEL_CHANGE_IND:
         {
-             GATT_DEBUG(("GATT Link Loss Alert level changed\n"));
+             LOGD("GATT Link Loss Alert level changed\n");
         }
         break;
 
         default:
-             GATT_DEBUG(("GATT Unknown message from LLS lib\n"));
+             LOGD("GATT Unknown message from LLS lib\n");
          break;
     }
 }

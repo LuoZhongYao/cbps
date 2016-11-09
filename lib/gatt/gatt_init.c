@@ -51,7 +51,7 @@ RETURNS
 
 */
 
-void GattInitEx(Task theAppTask, uint16 size_database, uint16* database, uint16 flags)
+void GattInitEx(Task theAppTask, u16 size_database, u16* database, u16 flags)
 {
     if (theGatt)
     {
@@ -93,7 +93,7 @@ RETURNS
 
 */
 
-void GattInit(Task theAppTask, uint16 size_database, uint16* database)
+void GattInit(Task theAppTask, u16 size_database, u16* database)
 {
     GattInitEx(theAppTask, size_database, database, GATT_FLAGS_DEFAULT);
 }
@@ -143,7 +143,7 @@ RETURNS
 */
 void gattInitCidTaskMap()
 {
-    uint16 i;
+    u16 i;
 
     /* First clear the array map. */
     memset(theGatt->u.cid_map, 0, sizeof(cid_map_t) * MAX_ATT_CONNECTIONS);
@@ -186,11 +186,11 @@ RETURNS
     Ptr of cid_map_t structure in table, if found, or 0, if not.
     
 */
-cid_map_t *gattFindConn(uint16 cid)
+cid_map_t *gattFindConn(u16 cid)
 {
     return (cid_map_t*)UtilFind(0xffff,                 /* mask */
                                 cid,                    /* value */
-                                (const uint16*)CID_MAP, /* data_start */
+                                (const u16*)CID_MAP, /* data_start */
                                 0,                      /* offset */
                                 sizeof(cid_map_t),      /* size */
                                 MAX_ATT_CONNECTIONS);   /* count */
@@ -214,7 +214,7 @@ cid_map_t *gattFindConnAddr(const bdaddr *addr)
     cid_map_t *found = NULL;
     cid_map_t *conn;
     tp_bdaddr tpaddr;
-    uint16 i;
+    u16 i;
 
     /* go through active connections */
     for (i = 0; i < MAX_ATT_CONNECTIONS; i++)
@@ -255,7 +255,7 @@ DESCRIPTION
 RETURNS
     TRUE if found, otherwise FALSE.
 */
-bool gattCidIsValid(uint16 cid)
+bool gattCidIsValid(u16 cid)
 {
     return gattFindConn(cid) ? TRUE : FALSE;
 }
@@ -271,7 +271,7 @@ DESCRIPTION
 RETURNS
 
 */
-cid_map_t *gattAddCid(uint16 cid, Task task)
+cid_map_t *gattAddCid(u16 cid, Task task)
 {
     if (MAX_ATT_CONNECTIONS == theGatt->connect_count)
     {
@@ -305,7 +305,7 @@ DESCRIPTION
 RETURNS
 
 */
-void gattDeleteCid(uint16 cid)
+void gattDeleteCid(u16 cid)
 {
     cid_map_t *ptr = gattFindConn(cid);
 
@@ -336,7 +336,7 @@ DESCRIPTION
 RETURNS
     conn_data_t pointer.
 */
-conn_data_t *gattGetCidData(uint16 cid)
+conn_data_t *gattGetCidData(u16 cid)
 {
     cid_map_t *cid_map = (cid_map_t *)gattFindConn(cid);
     
@@ -357,7 +357,7 @@ DESCRIPTION
 RETURNS
 
 */
-bool gattLockCid(uint16 cid,  gatt_msg_scen_t scenario)
+bool gattLockCid(u16 cid,  gatt_msg_scen_t scenario)
 {
     cid_map_t *ptr = (cid_map_t *)PanicNull(gattFindConn(cid));
 
@@ -382,7 +382,7 @@ DESCRIPTION
 RETURNS
 
 */
-void gattUnlockCid(uint16 cid)
+void gattUnlockCid(u16 cid)
 {
     cid_map_t *ptr = (cid_map_t *)PanicNull(gattFindConn(cid));
 
@@ -410,7 +410,7 @@ DESCRIPTION
 RETURNS
     Task ptr
 */
-Task gattGetCidMappedTask(uint16 cid)
+Task gattGetCidMappedTask(u16 cid)
 {
     cid_map_t *ptr = (cid_map_t *)PanicNull(gattFindConn(cid));
     return ptr->task;
@@ -517,12 +517,12 @@ DESCRIPTION
     0 if no matching address is found.
 
 RETURNS
-    uint16 containing the cid.
+    u16 containing the cid.
 
 */
-uint16 GattGetCidForBdaddr(const typed_bdaddr *taddr)
+u16 GattGetCidForBdaddr(const typed_bdaddr *taddr)
 {
-    uint16 i;
+    u16 i;
     tp_bdaddr    cid_tpaddr;
 
     for (i=0; i<MAX_ATT_CONNECTIONS; i++)

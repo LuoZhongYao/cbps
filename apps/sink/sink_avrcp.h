@@ -30,15 +30,15 @@ Copyright (c) 2005 - 2016 Qualcomm Technologies International, Ltd.
 
     typedef struct
     {
-        uint8 lap[3];        
-        uint8 uap;
-        uint8 nap[2];        
+        u8 lap[3];        
+        u8 uap;
+        u8 nap[2];        
     }byte_aligned_bd_addr_t;
 
     typedef struct
     {
         AudioSrc src;
-        uint8 isConnected;        
+        u8 isConnected;        
         byte_aligned_bd_addr_t bd_addr;
     }audio_src_conn_state_t;
 
@@ -96,10 +96,10 @@ typedef enum
 
 typedef struct
 {
-    uint16 avrcp_index;     /* Index into avrcp_link_data structure */
-    uint16 cmd_id;          /* Vendor unique command id */
-    uint16 size_data;       /* Size of any payload data */
-    uint8 data[1];          /* The payload data */
+    u16 avrcp_index;     /* Index into avrcp_link_data structure */
+    u16 cmd_id;          /* Vendor unique command id */
+    u16 size_data;       /* Size of any payload data */
+    u8 data[1];          /* The payload data */
 } SINK_AVRCP_VENDOR_UNIQUE_PASSTHROUGH_REQ_T;
 
 typedef enum
@@ -188,7 +188,7 @@ typedef enum
 typedef struct
 {
     avrcp_controls control;
-    uint16 index;
+    u16 index;
 } AVRCP_CONTROL_SEND_T;
 
 typedef struct
@@ -198,13 +198,13 @@ typedef struct
 
 typedef struct
 {
-    uint16 pdu_id;
+    u16 pdu_id;
 } AVRCP_CTRL_ABORT_CONTINUING_RESPONSE_T;
 
 typedef struct 
 {
     TaskData            task;
-    uint8               *data;
+    u8               *data;
 } SinkAvrcpCleanUpTask;
 
 
@@ -215,27 +215,27 @@ typedef struct
     unsigned active_avrcp:2;
     unsigned avrcp_manual_connect:1;
     unsigned unused:13;
-    uint16 extensions[MAX_AVRCP_CONNECTIONS];
-    uint16 features[MAX_AVRCP_CONNECTIONS];
-    uint16 event_capabilities[MAX_AVRCP_CONNECTIONS];
+    u16 extensions[MAX_AVRCP_CONNECTIONS];
+    u16 features[MAX_AVRCP_CONNECTIONS];
+    u16 event_capabilities[MAX_AVRCP_CONNECTIONS];
     bool connected[MAX_AVRCP_CONNECTIONS];
     AVRCP *avrcp[MAX_AVRCP_CONNECTIONS];
     bool pending_cmd[MAX_AVRCP_CONNECTIONS];
-    uint16 cmd_queue_size[MAX_AVRCP_CONNECTIONS];
+    u16 cmd_queue_size[MAX_AVRCP_CONNECTIONS];
     bdaddr bd_addr[MAX_AVRCP_CONNECTIONS];
-    uint16 registered_events[MAX_AVRCP_CONNECTIONS];
-    uint16 play_status[MAX_AVRCP_CONNECTIONS];
-    uint16 absolute_volume[MAX_AVRCP_CONNECTIONS];
+    u16 registered_events[MAX_AVRCP_CONNECTIONS];
+    u16 play_status[MAX_AVRCP_CONNECTIONS];
+    u16 absolute_volume[MAX_AVRCP_CONNECTIONS];
     bdaddr avrcp_play_addr;
     bool   link_active[MAX_AVRCP_CONNECTIONS];
-    uint8 *vendor_data[MAX_AVRCP_CONNECTIONS];
-    uint16 browsing_channel[MAX_AVRCP_CONNECTIONS];   
+    u8 *vendor_data[MAX_AVRCP_CONNECTIONS];
+    u16 browsing_channel[MAX_AVRCP_CONNECTIONS];   
 #ifdef ENABLE_AVRCP_BROWSING
     TaskData avrcp_browsing_handler[MAX_AVRCP_CONNECTIONS];
-    uint16 uid_counter[MAX_AVRCP_CONNECTIONS];
-    uint16 media_player_features[MAX_AVRCP_CONNECTIONS];
-    uint16 media_player_id[MAX_AVRCP_CONNECTIONS];
-    uint16 browsing_scope[MAX_AVRCP_CONNECTIONS];
+    u16 uid_counter[MAX_AVRCP_CONNECTIONS];
+    u16 media_player_features[MAX_AVRCP_CONNECTIONS];
+    u16 media_player_id[MAX_AVRCP_CONNECTIONS];
+    u16 browsing_scope[MAX_AVRCP_CONNECTIONS];
 #endif
 } avrcp_data;
 
@@ -248,10 +248,10 @@ typedef enum
 /* initialisation */
 void sinkAvrcpInit(void);
 
-bool avrcpGetPeerIndex (uint16 *peer_index);
+bool avrcpGetPeerIndex (u16 *peer_index);
 
 /* connection */
-void sinkAvrcpConnect(const bdaddr *bd_addr, uint16 delay_time);
+void sinkAvrcpConnect(const bdaddr *bd_addr, u16 delay_time);
 
 void sinkAvrcpDisconnect(const bdaddr *bd_addr);
         
@@ -259,9 +259,9 @@ void sinkAvrcpDisconnectAll(bool disconnect_peer);
 
 void sinkAvrcpAclClosed(bdaddr bd_addr);  
 
-uint16 getAvrcpQueueSpace(uint16 Index);
+u16 getAvrcpQueueSpace(u16 Index);
 
-void avrcpSendControlMessage(avrcp_controls control, uint16 Index);
+void avrcpSendControlMessage(avrcp_controls control, u16 Index);
 
 /* media commands */
 #ifdef ENABLE_PEER
@@ -301,27 +301,27 @@ void sinkAvrcpPreviousGroupRelease(void);
 /* general helper functions */
 void sinkAvrcpToggleActiveConnection(void);
 
-void sinkAvrcpSetLocalVolume(uint16 Index, uint16 a2dp_volume);
+void sinkAvrcpSetLocalVolume(u16 Index, u16 a2dp_volume);
 
-bool sinkAvrcpGetIndexFromInstance(AVRCP *avrcp, uint16 *Index);
+bool sinkAvrcpGetIndexFromInstance(AVRCP *avrcp, u16 *Index);
 
-bool sinkAvrcpGetIndexFromBdaddr(const bdaddr *bd_addr, uint16 *Index, bool require_connection);
+bool sinkAvrcpGetIndexFromBdaddr(const bdaddr *bd_addr, u16 *Index, bool require_connection);
 
 void sinkAvrcpSetActiveConnectionFromBdaddr(const bdaddr *bd_addr);
 
-uint16 sinkAvrcpGetActiveConnection(void);
+u16 sinkAvrcpGetActiveConnection(void);
 
 void sinkAvrcpUpdateActiveConnection(void);
 
-uint16 sinkAvrcpGetNumberConnections(void);
+u16 sinkAvrcpGetNumberConnections(void);
 
-void sinkAvrcpSetPlayStatus(const bdaddr *bd_addr, uint16 play_status);
+void sinkAvrcpSetPlayStatus(const bdaddr *bd_addr, u16 play_status);
 
 void avrcpUpdatePeerPlayStatus (avrcp_play_status play_status);
 
 bool sinkAvrcpCheckManualConnectReset(bdaddr *bd_addr);
 
-void sinkAvrcpDisplayMediaAttributes(uint32 attribute_id, uint16 attribute_length, const uint8 *data);
+void sinkAvrcpDisplayMediaAttributes(u32 attribute_id, u16 attribute_length, const u8 *data);
 
 #ifdef ENABLE_PEER
 void sinkAvrcpUpdatePeerWirelessSourceConnected (AudioSrc audio_source, bdaddr * bd_addr);
@@ -333,31 +333,31 @@ void sinkAvrcpUpdateLedIndicationOnOff(bool OnorOff);
 
 #ifdef ENABLE_AVRCP_NOW_PLAYING
 /* Now Playing information commands */
-void sinkAvrcpRetrieveNowPlayingRequest(uint32 track_index_high, uint32 track_index_low, bool full_attributes);
+void sinkAvrcpRetrieveNowPlayingRequest(u32 track_index_high, u32 track_index_low, bool full_attributes);
 
-void sinkAvrcpRetrieveNowPlayingNoBrowsingRequest(uint16 Index, bool full_attributes);
+void sinkAvrcpRetrieveNowPlayingNoBrowsingRequest(u16 Index, bool full_attributes);
 #endif /* ENABLE_AVRCP_NOW_PLAYING */
 
 #ifdef ENABLE_AVRCP_PLAYER_APP_SETTINGS
 /* Player Application Settings commands */ 
 bool sinkAvrcpListPlayerAttributesRequest(void);
 
-bool sinkAvrcpListPlayerAttributesTextRequest(uint16 size_attributes, Source attributes);
+bool sinkAvrcpListPlayerAttributesTextRequest(u16 size_attributes, Source attributes);
 
-bool sinkAvrcpListPlayerValuesRequest(uint8 attribute_id);
+bool sinkAvrcpListPlayerValuesRequest(u8 attribute_id);
 
-bool sinkAvrcpGetPlayerValueRequest(uint16 size_attributes, Source attributes);
+bool sinkAvrcpGetPlayerValueRequest(u16 size_attributes, Source attributes);
 
-bool sinkAvrcpListPlayerValueTextRequest(uint16 attribute_id, uint16 size_values, Source values);
+bool sinkAvrcpListPlayerValueTextRequest(u16 attribute_id, u16 size_values, Source values);
 
-bool sinkAvrcpSetPlayerValueRequest(uint16 size_attributes, Source attributes);
+bool sinkAvrcpSetPlayerValueRequest(u16 size_attributes, Source attributes);
 
 bool sinkAvrcpInformBatteryStatusRequest(avrcp_battery_status status);
 #endif /* ENABLE_AVRCP_PLAYER_APP_SETTINGS */
 
-bool sinkAvrcpPlayPauseRequest(uint16 Index, avrcp_remote_actions action);
+bool sinkAvrcpPlayPauseRequest(u16 Index, avrcp_remote_actions action);
 
-bool sinkAvrcpStopRequest(uint16 Index);
+bool sinkAvrcpStopRequest(u16 Index);
 
 /* message handler for AVRCP */
 void sinkAvrcpHandleMessage(Task task, MessageId id, Message message);
@@ -366,17 +366,17 @@ void sinkAvrcpManualConnect(void);
 
 void sinkAvrcpDataCleanUp(Task task, MessageId id, Message message);
 
-Source sinkAvrcpSourceFromData(SinkAvrcpCleanUpTask *avrcp, uint8 *data, uint16 length);
+Source sinkAvrcpSourceFromData(SinkAvrcpCleanUpTask *avrcp, u8 *data, u16 length);
 
 void sinkAvrcpShuffle(avrcp_shuffle_t type);
 
-uint16 sinkAvrcpGetShuffleType(avrcp_shuffle_t type);
+u16 sinkAvrcpGetShuffleType(avrcp_shuffle_t type);
 
 void sinkAvrcpRepeat(avrcp_repeat_t type);
 
-uint16 sinkAvrcpGetRepeatType(avrcp_repeat_t type);
+u16 sinkAvrcpGetRepeatType(avrcp_repeat_t type);
 
-bool sinkAvrcpVendorUniquePassthroughRequest (uint16 avrcp_index, uint16 cmd_id, uint16 size_data, const uint8 *data);
+bool sinkAvrcpVendorUniquePassthroughRequest (u16 avrcp_index, u16 cmd_id, u16 size_data, const u8 *data);
 
 #endif /* ENABLE_AVRCP */
 
@@ -384,7 +384,7 @@ bool sinkAvrcpVendorUniquePassthroughRequest (uint16 avrcp_index, uint16 cmd_id,
 #define AVRCP_MIN_ABS_VOL 0
 
 #ifdef ENABLE_AVRCP
-void sinkAvrcpVolumeStepChange(const volume_direction operation, const uint16 step_change, const uint16 no_of_steps);
+void sinkAvrcpVolumeStepChange(const volume_direction operation, const u16 step_change, const u16 no_of_steps);
 #else
 #define sinkAvrcpVolumeStepChange(operation, step_change, no_of_steps) ((void)(0))
 #endif

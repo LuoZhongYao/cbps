@@ -240,7 +240,7 @@ RETURNS
     TRUE or FALSE
 */
 #ifdef ENABLE_PEER
-bool isTWSDeviceAvailable(uint8 Id);
+bool isTWSDeviceAvailable(u8 Id);
 #endif
 /****************************************************************************
 NAME    
@@ -252,7 +252,7 @@ DESCRIPTION
 RETURNS
     TRUE or FALSE
 */
-bool isPdlEntryAvailable( uint8 Id );
+bool isPdlEntryAvailable( u8 Id );
 
 
 /****************************************************************************
@@ -282,7 +282,7 @@ DESCRIPTION
 RETURNS
     true or false success status
 */   
-bool slcIsListIdAvailable(uint8 ListID);
+bool slcIsListIdAvailable(u8 ListID);
 
 #endif /* _SINK_SLC_H_ */
 

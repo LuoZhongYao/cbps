@@ -16,7 +16,7 @@
 
 /****************************************************************************/
 gatt_ancs_status_t GattAncsInit(GANCS *ancs, Task app_task,
-                                                    uint16 cid, uint16 start_handle, uint16 end_handle)
+                                                    u16 cid, u16 start_handle, u16 end_handle)
 {
     gatt_ancs_status_t result = gatt_ancs_status_invalid_parameter;
 

@@ -11,7 +11,7 @@ Part of ADK 4.0
  HS has sent us a keypad command. Profile handler has asked
  us to act on this request.
 */
-void aghfpHandleKeypadCommand(AGHFP *aghfp, uint16 keycode);
+void aghfpHandleKeypadCommand(AGHFP *aghfp, u16 keycode);
 
 /****************************************************************************
  HF wants to enable/disable NR and EC on the AG. Profile handler has asked
@@ -49,45 +49,45 @@ void aghfpHandlePhoneNumberForVoiceTagReq(AGHFP *aghfp);
  AG wants to send a phone number to the HF in response to an AT+BINP request.
  Profile handler has asked us to handle this.
 */
-void aghfpHandleSendPhoneNumberForVoiceTag(AGHFP *aghfp, uint16 size_number, uint8 *number);
+void aghfpHandleSendPhoneNumberForVoiceTag(AGHFP *aghfp, u16 size_number, u8 *number);
 
 
 /****************************************************************************
  AG wants to send speaker volume information to the HF. Profile handler has
  asked us to act on this request.
 */
-void aghfpHandleSetRemoteSpeakerVolume(AGHFP *aghfp, uint8 volume);
+void aghfpHandleSetRemoteSpeakerVolume(AGHFP *aghfp, u8 volume);
 
 
 /****************************************************************************
  AG wants to send microphone gain information to the HF. Profile handler has
  asked us to act on this request.
 */
-void aghfpHandleSetRemoteMicrophoneGain(AGHFP *aghfp, uint8 gain);
+void aghfpHandleSetRemoteMicrophoneGain(AGHFP *aghfp, u8 gain);
 
 
 /****************************************************************************
  HF has sent us its microphone gain value. We need to acknowledge the
  message with OK and send the gain value to the app.
 */
-void aghfpHandleSyncMicrophoneGain(AGHFP *aghfp, uint8 gain);
+void aghfpHandleSyncMicrophoneGain(AGHFP *aghfp, u8 gain);
 
 
 /****************************************************************************
  HF has sent us its speaker volume value. We need to acknowledge the
  message with OK and send the volume value to the app.
 */
-void aghfpHandleSyncSpeakerVolume(AGHFP *aghfp, uint8 volume);
+void aghfpHandleSyncSpeakerVolume(AGHFP *aghfp, u8 volume);
 
 
 /****************************************************************************
  AG wants to send microphone gain information to the HF. Profile handler has
  asked us to act on this request.
 */
-void aghfpHandleTransmitDtmfCode(AGHFP *aghfp, uint8 code);
+void aghfpHandleTransmitDtmfCode(AGHFP *aghfp, u8 code);
 
 void aghfpHandleResponseHoldStatusRequest(AGHFP *aghfp);
-void aghfpHandleSetResponseHoldStatus(AGHFP *aghfp, uint8 cmd);
+void aghfpHandleSetResponseHoldStatus(AGHFP *aghfp, u8 cmd);
 void aghfpHandleSendResponseHoldState(AGHFP *aghfp, aghfp_response_hold_state state);
 void aghfpHandleConfirmResponseHoldState(AGHFP *aghfp, aghfp_response_hold_state state);
 
@@ -99,8 +99,8 @@ void aghfpHandleCurrentCallsRequest(AGHFP *aghfp);
 void aghfpHandleSendCurrentCall(AGHFP *aghfp, AGHFP_INTERNAL_SEND_CURRENT_CALL_T *res);
 void aghfpHandleSendCurrentCallsComplete(AGHFP *aghfp);
 
-void aghfpHandleNetworkOperatorFormatRequest(AGHFP *aghfp, uint8 mode, uint8 format);
+void aghfpHandleNetworkOperatorFormatRequest(AGHFP *aghfp, u8 mode, u8 format);
 void aghfpHandleNetworkOperatorRequest(AGHFP *aghfp);
-void aghfpHandleSendNetworkOperator(AGHFP *aghfp, uint8 mode, uint16 size_operator, uint8* operator);
+void aghfpHandleSendNetworkOperator(AGHFP *aghfp, u8 mode, u16 size_operator, u8* operator);
 
 #endif /* AGHFP_MISC_HANDLER_H_ */

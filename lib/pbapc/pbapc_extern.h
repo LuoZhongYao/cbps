@@ -88,25 +88,25 @@ typedef struct
 
 typedef struct
 {
-    uint8 nonce[PBAPC_OBEX_SIZE_DIGEST];
+    u8 nonce[PBAPC_OBEX_SIZE_DIGEST];
 } PBAPC_INT_AUTH_CLG_T;
 
 typedef struct
 {
-    uint8 digest[PBAPC_OBEX_SIZE_DIGEST];
-    uint16 sizeUserId;
-    uint8 userId[1];
+    u8 digest[PBAPC_OBEX_SIZE_DIGEST];
+    u16 sizeUserId;
+    u8 userId[1];
 } PBAPC_INT_AUTH_RESP_T;
 
 typedef struct
 {
     PbapcPhoneRepository repository;
     PbapcPhoneBook phonebook;
-    uint32 filterLo;
-    uint32 filterHi;
+    u32 filterLo;
+    u32 filterHi;
     PbapcFormatValues format;
-    uint16 maxList;
-    uint16 listStart;
+    u16 maxList;
+    u16 listStart;
 } PBAPC_INT_GET_PHONEBOOK_T;
 
 typedef struct
@@ -119,10 +119,10 @@ typedef struct
     PbapcPhoneBook      phonebook;
     PbapcOrderValues    order;
     PbapcSearchValues   srchAttr;
-    uint16              maxList;
-    uint16              listStart;
-    uint8               srchValLen;
-    uint8               srchVal[1];
+    u16              maxList;
+    u16              listStart;
+    u8               srchValLen;
+    u8               srchVal[1];
 }PBAPC_INT_GET_VCARD_LIST_T;
 
 typedef struct
@@ -133,20 +133,20 @@ typedef struct
 
 typedef struct
 {
-    uint32 entry;
-    uint32 filterLo;
-    uint32 filterHi;
+    u32 entry;
+    u32 filterLo;
+    u32 filterHi;
     PbapcFormatValues format;
 } PBAPC_INT_GET_VCARD_T;
 
 
 Task pbapcCreateTask( Task theAppTask );
 Task pbapcGetAppTask( PBAPC *state );
-uint8 pbapcGetSupportedRepositories( PBAPC* state );
+u8 pbapcGetSupportedRepositories( PBAPC* state );
 
 /* functions to send messages to the app */
 void pbapcMsgInitCfm( Task              theAppTask, 
-                      uint32            sdpHandle, 
+                      u32            sdpHandle, 
                       PbapcLibStatus    status );
 
 void pbapcMsgSendSetPhonebookCfm( PBAPC *state,
@@ -157,31 +157,31 @@ void pbapcMsgSendSetPhonebookCfm( PBAPC *state,
 void pbapcMsgSendPullPhoneBookCfm ( PBAPC *state,
                                     MessageId id,
                                     PbapcLibStatus status,
-                                    uint16 pbSize,
-                                    uint8 newMisscall,
-                                    uint16 len,
+                                    u16 pbSize,
+                                    u8 newMisscall,
+                                    u16 len,
                                     Source src );
 
 void pbapcMsgSendPullVcardCfm ( PBAPC *state,
                                 PbapcLibStatus status,
-                                uint16 len,
+                                u16 len,
                                 Source src );
 
 void pbapcMsgSendConnectCfm( Task theAppTask,
                              PBAPC *state, 
                              const bdaddr* addr,
                              PbapcLibStatus status, 
-                             uint8  repository,
-                             uint16 pktSize );
+                             u8  repository,
+                             u16 pktSize );
 
 void pbapcMsgSendAuthReqInd( PBAPC *state,
-                             const uint8 *nonce,
+                             const u8 *nonce,
                              PbapcObexAuthOptions options,
-                             uint16 sizeRealm, 
-                             const uint8* realm );
+                             u16 sizeRealm, 
+                             const u8* realm );
 
 void pbapcMsgSendAuthRspCfm( PBAPC *state,
-                             const uint8* digest );
+                             const u8* digest );
 
 void pbapcMsgSendDisconnectCfm( PBAPC *state, PbapcLibStatus status);
  

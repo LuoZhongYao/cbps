@@ -21,7 +21,7 @@
 /*******************************************************************************
  * Helper function to send a GATT_BATTERY_CLIENT_READ_LEVEL_CFM message to the application task.
  */
-static void makeBatteryReadLevelMsg(GBASC *battery_client, gatt_battery_client_status_t status, uint8 battery_level)
+static void makeBatteryReadLevelMsg(GBASC *battery_client, gatt_battery_client_status_t status, u8 battery_level)
 {
     MAKE_BATTERY_MESSAGE(GATT_BATTERY_CLIENT_READ_LEVEL_CFM);
     memset(message, 0, sizeof(GATT_BATTERY_CLIENT_READ_LEVEL_CFM_T));
@@ -45,7 +45,7 @@ static void makeBatteryReadLevelMsg(GBASC *battery_client, gatt_battery_client_s
 static void handleReadValueLevelResp(GBASC *battery_client, const GATT_MANAGER_READ_CHARACTERISTIC_VALUE_CFM_T *read_cfm)
 {
     gatt_battery_client_status_t status = gatt_battery_client_status_failed;
-    uint8 battery_level = 0;
+    u8 battery_level = 0;
     
     if ((read_cfm->status == gatt_status_success) && read_cfm->size_value)
     {
@@ -89,10 +89,10 @@ Internal functions
 ****************************************************************************/
 
 /*******************************************************************************/
-void makeBatteryReadDescriptorMsg(GBASC *battery_client, gatt_battery_client_status_t status, uint16 size_value, const uint8 *value)
+void makeBatteryReadDescriptorMsg(GBASC *battery_client, gatt_battery_client_status_t status, u16 size_value, const u8 *value)
 {
     MAKE_BATTERY_MESSAGE_WITH_LEN(GATT_BATTERY_CLIENT_READ_DESCRIPTOR_CFM, size_value);
-    memset(message, 0, sizeof(GATT_BATTERY_CLIENT_READ_DESCRIPTOR_CFM_T) + size_value - sizeof(uint8));
+    memset(message, 0, sizeof(GATT_BATTERY_CLIENT_READ_DESCRIPTOR_CFM_T) + size_value - sizeof(u8));
     message->battery_client = battery_client;
     message->status = status;
     message->descriptor_uuid = battery_client->pending_uuid;
@@ -111,7 +111,7 @@ void makeBatteryReadDescriptorMsg(GBASC *battery_client, gatt_battery_client_sta
 }
 
 /***************************************************************************/
-void batteryReadLevelRequest(GBASC *battery_client, uint16 level_handle, bool discover_if_unknown)
+void batteryReadLevelRequest(GBASC *battery_client, u16 level_handle, bool discover_if_unknown)
 {
     bool success = FALSE;
     
@@ -169,7 +169,7 @@ void handleBatteryReadValueResp(GBASC *battery_client, const GATT_MANAGER_READ_C
 
 
 /***************************************************************************/
-void batteryReadDescriptor(GBASC *battery_client, uint16 descriptor_uuid, bool discover_if_unknown)
+void batteryReadDescriptor(GBASC *battery_client, u16 descriptor_uuid, bool discover_if_unknown)
 {
     bool success = FALSE;
     
@@ -199,13 +199,13 @@ void batteryReadDescriptor(GBASC *battery_client, uint16 descriptor_uuid, bool d
 }
 
 /****************************************************************************/
-void readCharacteristicValue(GBASC *battery_client, uint16 handle)
+void readCharacteristicValue(GBASC *battery_client, u16 handle)
 {   
     GattManagerReadCharacteristicValue((Task)&battery_client->lib_task, handle);
 }
 
 /****************************************************************************/
-void readCharacteristicDescriptorValue(GBASC *battery_client, uint16 handle)
+void readCharacteristicDescriptorValue(GBASC *battery_client, u16 handle)
 {
     GattManagerReadCharacteristicValue((Task)&battery_client->lib_task, handle);
 }
@@ -227,7 +227,7 @@ void GattBatteryClientReadLevelRequest(const GBASC *battery_client)
 
 
 /****************************************************************************/
-void GattBatteryClientReadDescriptorRequest(const GBASC *battery_client, uint16 descriptor_uuid)
+void GattBatteryClientReadDescriptorRequest(const GBASC *battery_client, u16 descriptor_uuid)
 {
     MAKE_BATTERY_MESSAGE(BATTERY_INTERNAL_MSG_READ_DESCRIPTOR);
     message->descriptor_uuid = descriptor_uuid;

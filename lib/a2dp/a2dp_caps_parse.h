@@ -21,10 +21,10 @@ NAME
 	a2dpConvertUint8ValuesToUint32
 
 DESCRIPTION
-	Make a uint32 out of consecutive array of uint8 values.
+	Make a u32 out of consecutive array of u8 values.
 
 */
-uint32 a2dpConvertUint8ValuesToUint32(const uint8 *ptr);
+u32 a2dpConvertUint8ValuesToUint32(const u8 *ptr);
 
 
 /****************************************************************************
@@ -32,10 +32,10 @@ NAME
 	a2dpConvertUint8ValuesToUint16
 
 DESCRIPTION
-	Make a uint16 out of consecutive array of uint8 values.
+	Make a u16 out of consecutive array of u8 values.
 
 */
-uint16 a2dpConvertUint8ValuesToUint16(const uint8 *ptr);
+u16 a2dpConvertUint8ValuesToUint16(const u8 *ptr);
 
 
 /****************************************************************************
@@ -50,7 +50,7 @@ DESCRIPTION
 	gavdpValidateServiceCaps() first to make sure.
 
 */
-bool a2dpFindStdEmbeddedCodecCaps(const uint8 **codec_caps, uint8 embedded_codec);
+bool a2dpFindStdEmbeddedCodecCaps(const u8 **codec_caps, u8 embedded_codec);
 
 
 /****************************************************************************
@@ -65,7 +65,7 @@ DESCRIPTION
 	gavdpValidateServiceCaps() first to make sure.
 
 */
-bool a2dpFindNonStdEmbeddedCodecCaps(const uint8 **codec_caps, uint32 embedded_vendor, uint16 embedded_codec);
+bool a2dpFindNonStdEmbeddedCodecCaps(const u8 **codec_caps, u32 embedded_vendor, u16 embedded_codec);
 
 /****************************************************************************
 NAME	
@@ -79,7 +79,7 @@ DESCRIPTION
 	gavdpValidateServiceCaps() first to make sure.
 
 */
-const uint8* a2dpFindMatchingCodecSpecificInformation(const uint8 *local_caps, const uint8 *remote_caps, bool initiating);
+const u8* a2dpFindMatchingCodecSpecificInformation(const u8 *local_caps, const u8 *remote_caps, bool initiating);
 
 
 /****************************************************************************
@@ -109,8 +109,8 @@ DESCRIPTION
 	and the AVDTP error code to error_category and error_code parameters.
 
 */
-bool a2dpValidateServiceCaps(const uint8 *caps, uint16 caps_size, bool reconfigure, bool only_check_structure, bool ignore_bad_serv_category,
-							  uint8 *error_category, uint8 *error_code);
+bool a2dpValidateServiceCaps(const u8 *caps, u16 caps_size, bool reconfigure, bool only_check_structure, bool ignore_bad_serv_category,
+							  u8 *error_category, u8 *error_code);
 
 
 /****************************************************************************
@@ -124,7 +124,7 @@ DESCRIPTION
 	gavdpValidateServiceCaps() first to make sure.
 
 */
-bool a2dpFindCodecSpecificInformation(const uint8 **caps, uint16 *caps_size);
+bool a2dpFindCodecSpecificInformation(const u8 **caps, u16 *caps_size);
 
 
 /****************************************************************************
@@ -141,9 +141,9 @@ DESCRIPTION
 	gavdpValidateServiceCaps() first to make sure.
 
 */
-bool a2dpAreServicesCategoriesCompatible(const uint8 *local_caps, uint16 local_caps_size,
-                                        const uint8 *config_caps, uint16 config_caps_size,
-                                        uint8 *unsupported_service);
+bool a2dpAreServicesCategoriesCompatible(const u8 *local_caps, u16 local_caps_size,
+                                        const u8 *config_caps, u16 config_caps_size,
+                                        u8 *unsupported_service);
 
 
 /****************************************************************************
@@ -156,7 +156,7 @@ DESCRIPTION
 	
 	
 */
-a2dp_content_protection a2dpGetContentProtection(const uint8 *ptr, const uint16 size_ptr, uint8 **returned_caps);
+a2dp_content_protection a2dpGetContentProtection(const u8 *ptr, const u16 size_ptr, u8 **returned_caps);
 
 
 /****************************************************************************
@@ -169,7 +169,7 @@ DESCRIPTION
 	
 	
 */
-bool a2dpIsServiceSupported (uint8 service, const uint8 *caps, const uint16 size_caps);
+bool a2dpIsServiceSupported (u8 service, const u8 *caps, const u16 size_caps);
 
 
 #endif /* A2DP_CAPS_PARSE_H_ */

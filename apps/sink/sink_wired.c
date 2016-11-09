@@ -2,7 +2,7 @@
 Copyright (c) 2005 - 2015 Qualcomm Technologies International, Ltd.
 
 FILE NAME
-    sink_wired.c        
+    sink_wired.c
 
 DESCRIPTION
     Application level implementation of Wired Sink features
@@ -38,9 +38,7 @@ NOTES
 #ifdef ENABLE_WIRED
 
 #ifdef DEBUG_WIRED
-    #define WIRED_DEBUG(x) DEBUG(x)
 #else
-    #define WIRED_DEBUG(x) 
 #endif
 
 /* Wired PIOs */
@@ -78,35 +76,35 @@ NOTES
 
 
 /****************************************************************************
-NAME 
+NAME
     wiredAudioInit
-    
+
 DESCRIPTION
     Set up wired audio PIOs and configuration
-    
+
 RETURNS
     void
-*/ 
+*/
 void wiredAudioInit(void)
 {
     if(ANALOG_READY)
     {
-        WIRED_DEBUG(("WIRE: analog Select %d Detect %d\n", PIO_WIRED_SELECT, PIO_ANALOG_DETECT));
-        
+        LOGD("WIRE: analog Select %d Detect %d\n", PIO_WIRED_SELECT, PIO_ANALOG_DETECT);
+
         /* Pull detect high, audio jack will pull it low */
         if(PIO_ANALOG_DETECT != PIN_WIRED_ALWAYSON)
             PioSetPio(PIO_ANALOG_DETECT, pio_pull, TRUE);
 
         stateManagerAmpPowerControl(POWER_UP);
-        
+
         /* Check audio routing */
         audioHandleRouting(audio_source_none);
     }
 
     if(SPDIF_READY)
     {
-        WIRED_DEBUG(("WIRE: spdif Select %d Detect %d\n", PIO_WIRED_SELECT, PIO_SPDIF_DETECT));
-    
+        LOGD("WIRE: spdif Select %d Detect %d\n", PIO_WIRED_SELECT, PIO_SPDIF_DETECT);
+
         if(PIO_SPDIF_DETECT != PIN_WIRED_ALWAYSON)
         {
             /* Pull detect high, audio jack will pull it low */
@@ -117,9 +115,9 @@ void wiredAudioInit(void)
         if((PIO_SPDIF_INPUT != PIN_WIRED_ALWAYSON) && (PIO_SPDIF_INPUT != PIN_WIRED_DISABLED))
         {
             /* configure SPDIF ports, required for CSR8675 */
-            PioSetFunction(PIO_SPDIF_INPUT, SPDIF_RX);            
+            PioSetFunction(PIO_SPDIF_INPUT, SPDIF_RX);
         }
-        if(PIO_SPDIF_OUTPUT != PIN_INVALID) 
+        if(PIO_SPDIF_OUTPUT != PIN_INVALID)
         {
             /* configure SPDIF output port, required for CSR8675 */
             PioSetFunction(PIO_SPDIF_OUTPUT, SPDIF_TX);
@@ -130,15 +128,15 @@ void wiredAudioInit(void)
 }
 
 /****************************************************************************
-NAME 
+NAME
     wiredAudioRoute
-    
+
 DESCRIPTION
     Route wired audio stream through DSP
-    
+
 RETURNS
     void
-*/ 
+*/
 static void wiredAudioRoute(Sink audio_sink, AUDIO_SINK_T variant_type)
 {
     volume_info *variant_volumes = &theSink.volume_levels->analog_volume;
@@ -146,29 +144,29 @@ static void wiredAudioRoute(Sink audio_sink, AUDIO_SINK_T variant_type)
 {
           variant_volumes = &theSink.volume_levels->spdif_volume;
     }
-    
+
     /* update currently routed audio sink */
     theSink.routed_audio = audio_sink;
     /* Make sure we're using correct parameters for Wired audio */
     theSink.a2dp_link_data->a2dp_audio_connect_params.mode_params = &theSink.a2dp_link_data->a2dp_audio_mode_params;
-    /* pass in the AC3 configuration */            
+    /* pass in the AC3 configuration */
     theSink.a2dp_link_data->a2dp_audio_connect_params.spdif_ac3_config = &theSink.conf2->audio_routing_data.SpdifAC3Settings;
     /* pass in target latency */
-    theSink.a2dp_link_data->a2dp_audio_connect_params.target_latency_config = &theSink.conf2->audio_routing_data.TargetLatency;            
+    theSink.a2dp_link_data->a2dp_audio_connect_params.target_latency_config = &theSink.conf2->audio_routing_data.TargetLatency;
 
 #ifdef ENABLE_SUBWOOFER
     /* set the sub woofer link type prior to passing to audio connect */
-    theSink.a2dp_link_data->a2dp_audio_connect_params.sub_woofer_type  = AUDIO_SUB_WOOFER_NONE;  
-    theSink.a2dp_link_data->a2dp_audio_connect_params.sub_sink  = NULL;  
-#endif          
+    theSink.a2dp_link_data->a2dp_audio_connect_params.sub_woofer_type  = AUDIO_SUB_WOOFER_NONE;
+    theSink.a2dp_link_data->a2dp_audio_connect_params.sub_sink  = NULL;
+#endif
 
-    WIRED_DEBUG(("WIRE: Routing (Vol %ddB)\n", theSink.volume_levels->analog_volume.main_volume));
+    LOGD("WIRE: Routing (Vol %ddB)\n", theSink.volume_levels->analog_volume.main_volume);
 
 #if defined ENABLE_PEER && defined PEER_TWS
     {
         AudioPluginFeatures PluginFeatures = theSink.conf2->audio_routing_data.PluginFeatures;
         PluginFeatures.audio_input_routing = AUDIO_ROUTE_INTERNAL_AND_RELAY;
-        
+
         switch (WIRED_RATE)
         {
         case 16000:
@@ -191,43 +189,43 @@ static void wiredAudioRoute(Sink audio_sink, AUDIO_SINK_T variant_type)
             /* Unsupported rate */
             break;
         }
-        
-        WIRED_DEBUG(("WIRE: AUDIO_ROUTE_INTERNAL_AND_RELAY\n"));
-        AudioConnect(WIRED_PLUGIN, 
-                     audio_sink, 
-                     variant_type, 
-                     theSink.codec_task, 
+
+        LOGD("WIRE: AUDIO_ROUTE_INTERNAL_AND_RELAY\n");
+        AudioConnect(WIRED_PLUGIN,
+                     audio_sink,
+                     variant_type,
+                     theSink.codec_task,
                      TonesGetToneVolumeInDb(multi_channel_group_main),
-                     WIRED_RATE, 
-                     PluginFeatures, 
-                     AUDIO_MODE_CONNECTED, 
-                     AUDIO_ROUTE_INTERNAL, 
-                     powerManagerGetLBIPM(), 
-                     &theSink.a2dp_link_data->a2dp_audio_connect_params, 
+                     WIRED_RATE,
+                     PluginFeatures,
+                     AUDIO_MODE_CONNECTED,
+                     AUDIO_ROUTE_INTERNAL,
+                     powerManagerGetLBIPM(),
+                     &theSink.a2dp_link_data->a2dp_audio_connect_params,
                      &theSink.task);
     }
 #else
-    WIRED_DEBUG(("WIRE: AUDIO_ROUTE_INTERNAL\n"));
-    
+    LOGD("WIRE: AUDIO_ROUTE_INTERNAL\n");
+
     /* connect wired audio using the a2dp_decoder_common_plugin */
-    AudioConnect(WIRED_PLUGIN, 
-                 audio_sink, 
-                 variant_type, 
-                 theSink.codec_task, 
+    AudioConnect(WIRED_PLUGIN,
+                 audio_sink,
+                 variant_type,
+                 theSink.codec_task,
                  TonesGetToneVolumeInDb(multi_channel_group_main),
-                 WIRED_RATE, 
-                 theSink.conf2->audio_routing_data.PluginFeatures, 
-                 AUDIO_MODE_CONNECTED, 
-                 AUDIO_ROUTE_INTERNAL, 
-                 powerManagerGetLBIPM(), 
-                 &theSink.a2dp_link_data->a2dp_audio_connect_params, 
+                 WIRED_RATE,
+                 theSink.conf2->audio_routing_data.PluginFeatures,
+                 AUDIO_MODE_CONNECTED,
+                 AUDIO_ROUTE_INTERNAL,
+                 powerManagerGetLBIPM(),
+                 &theSink.a2dp_link_data->a2dp_audio_connect_params,
                  &theSink.task);
 #endif
-                
+
     audioControlLowPowerCodecs (FALSE) ;
-    
+
     VolumeSetupInitialMutesAndVolumes(variant_volumes);
-    
+
 #ifdef ENABLE_PEER
     /* Update the mute state. Mutes the audio output if the peer link is changing state */
     peerUpdateMuteState();
@@ -236,48 +234,48 @@ static void wiredAudioRoute(Sink audio_sink, AUDIO_SINK_T variant_type)
 #ifdef ENABLE_SUBWOOFER
     updateSwatVolume(variant_volumes->main_volume);
 #endif
-    
-} 
+
+}
 
 /****************************************************************************
-NAME 
+NAME
     wiredAudioDisconnect
-    
+
 DESCRIPTION
     Force disconnect of wired audio
-    
+
 RETURNS
     void
-*/ 
+*/
 void wiredAudioDisconnect(void)
 {
     if((ANALOG_READY && analogAudioSinkMatch(theSink.routed_audio))||
        (SPDIF_READY && spdifAudioSinkMatch(theSink.routed_audio)))
     {
-        WIRED_DEBUG(("WIRE: Disconnect Audio\n"));
+        LOGD("WIRE: Disconnect Audio\n");
         AudioDisconnect();
         theSink.routed_audio = 0;
     }
 }
 
 /****************************************************************************
-NAME 
+NAME
     analogAudioRoute
-    
+
 DESCRIPTION
     Route analog audio stream through DSP
-    
+
 RETURNS
     void
-*/ 
+*/
 void analogAudioRoute(void)
 {
-    WIRED_DEBUG(("ANALOG: Audio "));
+    LOGD("ANALOG: Audio ");
 
     /* If config ready check PIO - Connected if low */
     if(ANALOG_READY && ANALOG_CONNECTED)
     {
-        WIRED_DEBUG(("Connected [0x%04X]\n", (uint16)ANALOG_SINK));
+        LOGD("Connected [0x%04X]\n", (u16)ANALOG_SINK);
         /* If wired audio not already connected, connect it */
         if(theSink.routed_audio != ANALOG_SINK)
         {
@@ -287,29 +285,29 @@ void analogAudioRoute(void)
     }
     else
     {
-        WIRED_DEBUG(("Disconnected\n"));
+        LOGD("Disconnected\n");
         wiredAudioDisconnect();
     }
 }
 
 /****************************************************************************
-NAME 
+NAME
     spdifAudioRoute
-    
+
 DESCRIPTION
     Route spdif audio stream through DSP
-    
+
 RETURNS
     void
-*/ 
+*/
 void spdifAudioRoute(void)
 {
-    WIRED_DEBUG(("SPDIF: Audio "));
+    LOGD("SPDIF: Audio ");
 
     /* If config ready check PIO - Connected if low */
     if(SPDIF_READY && SPDIF_CONNECTED)
     {
-        WIRED_DEBUG(("Connected [0x%04X]\n", (uint16)SPDIF_SINK));
+        LOGD("Connected [0x%04X]\n", (u16)SPDIF_SINK);
         /* If wired audio not already connected, connect it */
         if(theSink.routed_audio != SPDIF_SINK)
         {
@@ -319,21 +317,21 @@ void spdifAudioRoute(void)
     }
     else
     {
-        WIRED_DEBUG(("Disconnected\n"));
+        LOGD("Disconnected\n");
         wiredAudioDisconnect();
     }
 }
 
 /****************************************************************************
-NAME 
+NAME
     analogAudioSinkMatch
-    
+
 DESCRIPTION
     Compare sink to analog audio sink.
-    
+
 RETURNS
     TRUE if Sink matches, FALSE otherwise
-*/ 
+*/
 bool analogAudioSinkMatch(Sink sink)
 {
     if(ANALOG_READY)
@@ -342,15 +340,15 @@ bool analogAudioSinkMatch(Sink sink)
 }
 
 /****************************************************************************
-NAME 
+NAME
     spdifAudioSinkMatch
-    
+
 DESCRIPTION
     Compare sink to spdif audio sink.
-    
+
 RETURNS
     TRUE if Sink matches, FALSE otherwise
-*/ 
+*/
 bool spdifAudioSinkMatch(Sink sink)
 {
     if(SPDIF_READY)
@@ -358,21 +356,21 @@ bool spdifAudioSinkMatch(Sink sink)
     return FALSE;
 }
 
-#if defined ENABLE_PEER && defined PEER_TWS 
+#if defined ENABLE_PEER && defined PEER_TWS
 
 /****************************************************************************
-NAME 
+NAME
     wiredAudioCheckDeviceTrimVol
-    
+
 DESCRIPTION
     Adjust wired audio volume if currently being routed
-    
+
 RETURNS
     TRUE if wired audio being routed, FALSE otherwise
-*/ 
+*/
 
 bool wiredAudioCheckDeviceTrimVol(volume_direction dir, tws_device_type tws_device)
-{ 
+{
     /* if either the analog or spdif inputs are routed, adjust the appropriate volume */
     if(!analogAudioSinkMatch(theSink.routed_audio))
     {
@@ -386,17 +384,17 @@ bool wiredAudioCheckDeviceTrimVol(volume_direction dir, tws_device_type tws_devi
 }
 #endif
 
-    
+
 /****************************************************************************
-NAME 
+NAME
     analogAudioConnected
-    
+
 DESCRIPTION
     Determine if analog audio input is connected
-    
+
 RETURNS
     TRUE if connected, otherwise FALSE
-*/ 
+*/
 bool analogAudioConnected(void)
 {
     /* If Wired mode configured and ready check PIO */
@@ -410,37 +408,37 @@ bool analogAudioConnected(void)
 }
 
 /****************************************************************************
-NAME 
+NAME
     analogGetAudioSink
-    
+
 DESCRIPTION
     Check analog state and return sink if available
-    
+
 RETURNS
     Sink if available, otherwise NULL
-*/ 
+*/
 Sink analogGetAudioSink(void)
 {
     if (ANALOG_READY)
     {
         return ANALOG_SINK;
     }
-    
+
     return NULL;
 }
 
 
 /****************************************************************************
-NAME 
+NAME
     analogGetAudioRate
-    
+
 DESCRIPTION
     Obtains the current defined sample rate for wired audio
-    
+
 RETURNS
     None
-*/ 
-void analogGetAudioRate (uint16 *rate)
+*/
+void analogGetAudioRate (u16 *rate)
 {
     if (ANALOG_READY)
     {
@@ -454,15 +452,15 @@ void analogGetAudioRate (uint16 *rate)
 
 
 /****************************************************************************
-NAME 
+NAME
     spdifAudioConnected
-    
+
 DESCRIPTION
     Determine if spdif audio input is connected
-    
+
 RETURNS
     TRUE if connected, otherwise FALSE
-*/ 
+*/
 bool spdifAudioConnected(void)
 {
     /* If Wired mode configured and ready check PIO */

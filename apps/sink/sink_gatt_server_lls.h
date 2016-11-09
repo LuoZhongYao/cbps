@@ -78,7 +78,7 @@ RETURNS
     TRUE if the Link Loss server task was initialised, FALSE otherwise.
 */
 #ifdef GATT_LLS_SERVER
-bool sinkGattLinkLossServerInitialiseTask(uint16 **ptr);
+bool sinkGattLinkLossServerInitialiseTask(u16 **ptr);
 #else
 #define sinkGattLinkLossServerInitialiseTask(ptr) (TRUE)
 #endif
@@ -97,7 +97,7 @@ RETURNS
     void
 */
 #ifdef GATT_LLS_SERVER
-void sinkGattHandleLinkLossInd(uint16 cid);
+void sinkGattHandleLinkLossInd(u16 cid);
 #else
 #define sinkGattHandleLinkLossInd(cid) ((void)(0))
 #endif
@@ -116,7 +116,7 @@ RETURNS
     void
 */
 #ifdef GATT_LLS_SERVER
-void sinkGattHandleLinkUpInd(uint16 cid);
+void sinkGattHandleLinkUpInd(u16 cid);
 #else
 #define sinkGattHandleLinkUpInd(cid) ((void)(0))
 #endif

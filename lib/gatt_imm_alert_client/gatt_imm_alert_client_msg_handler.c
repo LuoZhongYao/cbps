@@ -23,7 +23,7 @@ DESCRIPTION
    Utility function to send confirmation responses to application  
 */
 static void send_imm_alert_client_cfm(GIASC_T *const imm_alert_client,
-              const uint16 cid,
+              const u16 cid,
               const gatt_imm_alert_client_status status,
               const imm_alert_cfm_mesage_type cfmType)
 {
@@ -76,7 +76,7 @@ DESCRIPTION
    Utility function to send error response 
 */
 static void send_imm_alert_client_error(GIASC_T *const imm_alert_client,
-            const uint16 cid,
+            const u16 cid,
             const gatt_status_t status,
             const imm_alert_cfm_mesage_type cfmType)
 {
@@ -111,7 +111,7 @@ static void imm_alert_client_set_alert_level(GIASC_T *const imm_alert_client,
     GattManagerWriteWithoutResponse((Task)&imm_alert_client->lib_task,
                                     imm_alert_client->alert_handle,
                                     GATT_IMM_ALERT_VALUE_LEN,
-                                    (uint8 *)&alert_level);
+                                    (u8 *)&alert_level);
 }
 
 /***************************************************************************

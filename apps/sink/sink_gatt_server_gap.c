@@ -27,27 +27,27 @@ DESCRIPTION
 #ifdef DEBUG_GATT
 #define GATT_INFO(x) DEBUG(x)
 #define GATT_ERROR(x) DEBUG(x) TOLERATED_ERROR(x)
-#else 
-#define GATT_INFO(x) 
-#define GATT_ERROR(x) 
+#else
+#define GATT_INFO(x)
+#define GATT_ERROR(x)
 #endif
 
 
 /*******************************************************************************
 NAME
     sinkGattGapServerInitialiseTask
-    
+
 DESCRIPTION
     Initialise the GAP server task.
     NOTE: This function will modify *ptr.
-    
+
 PARAMETERS
     ptr - pointer to allocated memory to store server tasks rundata.
-    
+
 RETURNS
     TRUE if the GAP server task was initialised, FALSE otherwise.
 */
-bool sinkGattGapServerInitialiseTask(uint16 **ptr)
+bool sinkGattGapServerInitialiseTask(u16 **ptr)
 {
     if (ptr)
     {
@@ -72,25 +72,25 @@ bool sinkGattGapServerInitialiseTask(uint16 **ptr)
 /*******************************************************************************
 NAME
     sinkGattGapServerHandleReadAppearanceInd
-    
+
 DESCRIPTION
-    Function to handle when a remote device wants to read the appearance 
+    Function to handle when a remote device wants to read the appearance
     characteristic of the GAP service.
-    
+
 PARAMETERS
     void
-    
+
 RETURNS
     TRUE if the initialisation request was successful, FALSE otherwise.
 */
 static bool sinkGattGapServerHandleReadAppearanceInd(void)
 {
     /* Appearance=unknown; refer to Bluetooth Sig website for appearance values */
-    uint8 appearance[2] = {0x00, 0x00};
+    u8 appearance[2] = {0x00, 0x00};
     gatt_gap_server_status_t status;
-    
+
     status = GattGapServerReadAppearanceResponse(GATT_SERVER.gap_server, GATT_SERVER.cid, 2, appearance);
-    
+
     if (status == gatt_gap_server_status_success)
     {
         return TRUE;
@@ -101,7 +101,7 @@ static bool sinkGattGapServerHandleReadAppearanceInd(void)
 
 /******************************************************************************/
 void sinkGattGapServerSendLocalNameResponse(CL_DM_LOCAL_NAME_COMPLETE_T * msg)
-{ 
+{
     gattClientGapNameReadResponse(GATT_SERVER.gap_server, msg->size_local_name, msg->local_name);
 }
 
@@ -110,7 +110,7 @@ void sinkGattGapServerSendLocalNameResponse(CL_DM_LOCAL_NAME_COMPLETE_T * msg)
 gap_msg_status_t sinkGattGapServerMsgHandler(Task task, MessageId id, Message message)
 {
     gap_msg_status_t status = gap_msg_failed;
-    
+
     switch(id)
     {
         case GATT_GAP_SERVER_READ_DEVICE_NAME_IND:
@@ -136,7 +136,7 @@ gap_msg_status_t sinkGattGapServerMsgHandler(Task task, MessageId id, Message me
             GATT_ERROR(("GATT GAP Server task unhandled msg[%x]\n", id));
         }
     }
-    
+
     return status;
 }
 

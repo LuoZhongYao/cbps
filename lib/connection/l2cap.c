@@ -23,7 +23,7 @@ NOTES
 #ifndef CL_EXCLUDE_L2CAP
 
 /*****************************************************************************/
-void ConnectionL2capRegisterRequest(Task clientTask, uint16 psm, uint16 flags)
+void ConnectionL2capRegisterRequest(Task clientTask, u16 psm, u16 flags)
 {
     MAKE_CL_MESSAGE(CL_INTERNAL_L2CAP_REGISTER_REQ);
     message->clientTask = clientTask;
@@ -35,7 +35,7 @@ void ConnectionL2capRegisterRequest(Task clientTask, uint16 psm, uint16 flags)
 
 
 /*****************************************************************************/
-void ConnectionL2capConnectRequest(Task appTask, const bdaddr *addr, uint16 psm_local, uint16 psm_remote, uint16 conftab_length, uint16* conftab)
+void ConnectionL2capConnectRequest(Task appTask, const bdaddr *addr, u16 psm_local, u16 psm_remote, u16 conftab_length, u16* conftab)
 {
 	/* Check a non null address ptr has been passed in */
 #ifdef CONNECTION_DEBUG_LIB
@@ -58,7 +58,7 @@ void ConnectionL2capConnectRequest(Task appTask, const bdaddr *addr, uint16 psm_
 }
 
 /*****************************************************************************/
-void ConnectionL2capConnectResponse(Task appTask, bool response, uint16 psm, uint16 connection_id, uint8 identifier, uint16 conftab_length, uint16* conftab)
+void ConnectionL2capConnectResponse(Task appTask, bool response, u16 psm, u16 connection_id, u8 identifier, u16 conftab_length, u16* conftab)
 {
 	/* Send an internal message */
 	MAKE_CL_MESSAGE(CL_INTERNAL_L2CAP_CONNECT_RES);
@@ -75,7 +75,7 @@ void ConnectionL2capConnectResponse(Task appTask, bool response, uint16 psm, uin
 
 
 /*****************************************************************************/
-void ConnectionL2capMapConnectionlessRequest(Task theAppTask, const bdaddr * addr, uint16 psm_local, uint16 psm_remote, l2cap_connectionless_data_type type)
+void ConnectionL2capMapConnectionlessRequest(Task theAppTask, const bdaddr * addr, u16 psm_local, u16 psm_remote, l2cap_connectionless_data_type type)
 {
     
     /* Check a non null address ptr has been passed in */
@@ -143,7 +143,7 @@ void ConnectionL2capDisconnectRequest(Task appTask, Sink sink)
 }
 
 /*****************************************************************************/
-void ConnectionL2capDisconnectResponse(uint8 identifier, Sink sink)
+void ConnectionL2capDisconnectResponse(u8 identifier, Sink sink)
 {
 	/* Send an internal message */
 	MAKE_CL_MESSAGE(CL_INTERNAL_L2CAP_DISCONNECT_RSP);

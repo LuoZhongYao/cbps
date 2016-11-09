@@ -28,8 +28,8 @@ NOTES
 
 
 /******************************************************************************/
-gatt_gap_server_status_t GattGapServerInit(GGAPS *gap_server, Task app_task, uint16 start_handle,
-                                                                       uint16 end_handle)
+gatt_gap_server_status_t GattGapServerInit(GGAPS *gap_server, Task app_task, u16 start_handle,
+                                                                       u16 end_handle)
 {
     if (gap_server && app_task)
     {

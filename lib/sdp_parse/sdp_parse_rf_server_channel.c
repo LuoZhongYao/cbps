@@ -21,7 +21,7 @@ DESCRIPTION
 
 /* Find PDL */
 
-static bool findProtocolDescriptorList(const uint8 size_service_record, const uint8* service_record, Region* protocols)
+static bool findProtocolDescriptorList(const u8 size_service_record, const u8* service_record, Region* protocols)
 {
 	ServiceDataType type;
     Region record;
@@ -39,7 +39,7 @@ static bool findProtocolDescriptorList(const uint8 size_service_record, const ui
 
 /* Find Server Channel */
 
-static bool findServerChannel(Region* protocols, uint32 channel_id, Region* value)
+static bool findServerChannel(Region* protocols, u32 channel_id, Region* value)
 {
 	bool reached_end = 0;
 	Region protocol;
@@ -84,13 +84,13 @@ static bool findServerChannel(Region* protocols, uint32 channel_id, Region* valu
 
 /* Insert RFCOMM Server Channel */
 
-bool SdpParseInsertRfcommServerChannel(const uint8 size_service_record, const uint8* service_record, uint8 chan)
+bool SdpParseInsertRfcommServerChannel(const u8 size_service_record, const u8* service_record, u8 chan)
 {
 	Region protocols,value;
     if(findProtocolDescriptorList(size_service_record, service_record, &protocols))
-    	if(findServerChannel(&protocols, (uint32) UUID_RFCOMM, &value))
+    	if(findServerChannel(&protocols, (u32) UUID_RFCOMM, &value))
 		{
-			RegionWriteUnsigned(&value, (uint32) chan);
+			RegionWriteUnsigned(&value, (u32) chan);
 			/* Inserted Successfully */
 			return TRUE;
     	}
@@ -100,13 +100,13 @@ bool SdpParseInsertRfcommServerChannel(const uint8 size_service_record, const ui
 
 /* Access All RFCOMM Server Channels */
 
-bool SdpParseGetMultipleRfcommServerChannels(uint8 size_service_record, uint8* service_record, uint8 size_chans, uint8** chans, uint8* chans_found)
+bool SdpParseGetMultipleRfcommServerChannels(u8 size_service_record, u8* service_record, u8 size_chans, u8** chans, u8* chans_found)
 {
 	Region protocols, value;
 	*chans_found = 0;
 	
 	if(findProtocolDescriptorList(size_service_record, service_record, &protocols))
-		while(findServerChannel(&protocols, (uint32) UUID_RFCOMM, &value))
+		while(findServerChannel(&protocols, (u32) UUID_RFCOMM, &value))
 		{					
 			/* reset protocols.begin so next search starts from after the channel we just found */
 			protocols.begin = value.end;
@@ -115,7 +115,7 @@ bool SdpParseGetMultipleRfcommServerChannels(uint8 size_service_record, uint8* s
 			if((*chans_found) < size_chans)
 			{
 				/* Read in found channel */
-				chans[0][*chans_found] = (uint8)RegionReadUnsigned(&value);
+				chans[0][*chans_found] = (u8)RegionReadUnsigned(&value);
 				(*chans_found)++;
 			}
 			else

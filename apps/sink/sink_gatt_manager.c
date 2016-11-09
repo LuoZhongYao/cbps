@@ -2,7 +2,7 @@
 Copyright (c) 2005 - 2015 Qualcomm Technologies International, Ltd.
 
 FILE NAME
-    sink_gatt_manager.c        
+    sink_gatt_manager.c
 
 DESCRIPTION
     Contains GATT Manager functionality.
@@ -14,7 +14,6 @@ DESCRIPTION
 #include "sink_ble_gap.h"
 #include "sink_debug.h"
 #include "sink_development.h"
-#include "sink_gaia.h"
 #include "sink_gatt_client.h"
 #include "sink_gatt_client_battery.h"
 #include "sink_gatt_client_ancs.h"
@@ -50,13 +49,13 @@ DESCRIPTION
 /*******************************************************************************
 NAME
     handleGattManagerRegistrationCfm
-    
+
 DESCRIPTION
     Handle when GATT_MANAGER_REGISTER_WITH_GATT_CFM message was received
-    
+
 PARAMETERS
     cfm Pointer to a GATT_MANAGER_REGISTER_WITH_GATT_CFM message
-    
+
 RETURNS
     TRUE if the message was handled, FALSE otherwise
 */
@@ -78,13 +77,13 @@ static bool handleGattManagerRegistrationCfm(GATT_MANAGER_REGISTER_WITH_GATT_CFM
 /*******************************************************************************
 NAME
     handleGattManagerRemoteClientConnectCfm
-    
+
 DESCRIPTION
     Handle when GATT_MANAGER_REMOTE_CLIENT_CONNECT_CFM message was received
-    
+
 PARAMETERS
     cfm Pointer to a GATT_MANAGER_REMOTE_CLIENT_CONNECT_CFM message
-    
+
 RETURNS
     TRUE if the message was handled, FALSE otherwise
 */
@@ -112,10 +111,10 @@ static bool handleGattManagerRemoteClientConnectCfm(GATT_MANAGER_REMOTE_CLIENT_C
             }
         }
     }
-    
+
     /* Send connection failed event */
     sinkBleRemoteConnectionFailEvent();
-            
+
     return FALSE;
 }
 
@@ -123,13 +122,13 @@ static bool handleGattManagerRemoteClientConnectCfm(GATT_MANAGER_REMOTE_CLIENT_C
 /*******************************************************************************
 NAME
     handleGattManagerRemoteServerConnectCfm
-    
+
 DESCRIPTION
     Handle when GATT_MANAGER_REMOTE_SERVER_CONNECT_CFM message was received
-    
+
 PARAMETERS
     cfm Pointer to a GATT_MANAGER_REMOTE_SERVER_CONNECT_CFM message
-    
+
 RETURNS
     TRUE if the message was handled, FALSE otherwise
 */
@@ -144,16 +143,16 @@ static bool handleGattManagerRemoteServerConnectCfm(GATT_MANAGER_REMOTE_SERVER_C
             if (!gattClientAdd(cfm->cid, &cfm->taddr, ble_gap_role_central))
             {
                 GATT_MANAGER_INFO(("Couldn't store client->server connection!\n"));
-                
+
                 /* Remove GATT connection if it couldn't be stored */
                 GattManagerDisconnectRequest(cfm->cid);
-                        
+
                 return FALSE;
             }
-            
+
             /* Send connection success event */
             sinkBleLocalConnectionSuccessEvent();
-            
+
             return TRUE;
         }
     }
@@ -164,13 +163,13 @@ static bool handleGattManagerRemoteServerConnectCfm(GATT_MANAGER_REMOTE_SERVER_C
 /*******************************************************************************
 NAME
     handleGattManagerDisconnectInd
-    
+
 DESCRIPTION
     Handle when GATT_MANAGER_DISCONNECT_IND message was received
-    
+
 PARAMETERS
     ind Pointer to a GATT_MANAGER_DISCONNECT_IND message
-    
+
 RETURNS
     TRUE if the message was handled, FALSE otherwise
 */
@@ -178,24 +177,24 @@ static bool handleGattManagerDisconnectInd(GATT_MANAGER_DISCONNECT_IND_T * ind)
 {
     gatt_client_connection_t *client_connection = gattClientFindByCid(ind->cid);
     bool server_connection = gattServerConnectionFindByCid(ind->cid);
-    
+
     GATT_MANAGER_INFO(("GATT_MANAGER_DISCONNECT_IND\n"));
-    
+
     if (ind)
-    {  
+    {
         if (client_connection)
         {
             GATT_MANAGER_INFO(("    Client\n"));
-            
+
             /* Remove client services */
             gattClientRemoveServices(client_connection);
-            
+
             /* Finally remove client connection */
             if (!gattClientRemove(ind->cid))
             {
                 GATT_MANAGER_ERROR(("Couldn't find client->server connection to remove!\n"));
             }
-            
+
             /* This would have been a connection made in Central role, send event to inform of disconnection */
             sinkBleCentralDisconnectionEvent();
         }
@@ -208,19 +207,19 @@ static bool handleGattManagerDisconnectInd(GATT_MANAGER_DISCONNECT_IND_T * ind)
             {
                 sinkGattHandleLinkLossInd(ind->cid);
             }
-            
+
             /* Server disconnect happened ,inform the disconnect to gaia */
             gaiaGattDisconnect(ind->cid);
 
             if (!gattServerConnectionRemove(ind->cid))
             {
                 GATT_MANAGER_ERROR(("Couldn't find server->client connection to remove!\n"));
-            }   
+            }
         }
-        
+
         /* Send an event if no connections now exist */
         sinkBleCheckNoConnectionsEvent();
-        
+
         return TRUE;
     }
     return FALSE;
@@ -229,20 +228,20 @@ static bool handleGattManagerDisconnectInd(GATT_MANAGER_DISCONNECT_IND_T * ind)
 /*******************************************************************************
 NAME
     handleGattManagerCancelRemoteClientConnectCfm
-    
+
 DESCRIPTION
     Handle when GATT_MANAGER_CANCEL_REMOTE_CLIENT_CONNECT_CFM message was received
-    
+
 PARAMETERS
     cfm Pointer to a GATT_MANAGER_CANCEL_REMOTE_CLIENT_CONNECT_CFM message
-    
+
 RETURNS
     Nothing
 */
 static void handleGattManagerCancelRemoteClientConnectCfm(GATT_MANAGER_CANCEL_REMOTE_CLIENT_CONNECT_CFM_T* cfm)
 {
     GATT_MANAGER_INFO(("GattMgr: Cancel advertising cfm status=[%x]\n", cfm->status));
-    
+
     /* Generate a cancel advertising which can restart advertising in a different mode */
     sinkBleCancelAdvertisingEvent();
 }
@@ -252,7 +251,7 @@ static void handleGattManagerCancelRemoteClientConnectCfm(GATT_MANAGER_CANCEL_RE
 void sinkGattManagerStartAdvertising(void)
 {
     GATT_MANAGER_INFO(("GattMgr: Start advertising\n"));
-    
+
     GattManagerWaitForRemoteClient(sinkGetBleTask(), NULL, gatt_connection_ble_slave_undirected);
 }
 
@@ -325,11 +324,11 @@ void sinkGattManagerMsgHandler( Task task, MessageId id, Message message )
         {
             /* No server handle exists for this access request, so just reject. */
             GattAccessResponse(((GATT_MANAGER_REMOTE_SERVER_INDICATION_IND_T*)message)->cid,
-                               ((GATT_MANAGER_REMOTE_SERVER_INDICATION_IND_T*)message)->handle, 
-                               gatt_status_request_not_supported, 
-                               0, 
+                               ((GATT_MANAGER_REMOTE_SERVER_INDICATION_IND_T*)message)->handle,
+                               gatt_status_request_not_supported,
+                               0,
                                NULL);
-            
+
             /* Inform the remote device that it has invalid handles, and should start a new discovery */
             sinkGattServerSendServiceChanged(((GATT_MANAGER_REMOTE_SERVER_INDICATION_IND_T*)message)->cid);
         }
@@ -349,7 +348,7 @@ void sinkGattManagerMsgHandler( Task task, MessageId id, Message message )
 void sinkGattManagerStartConnection(const typed_bdaddr *addr)
 {
     GATT_MANAGER_INFO(("GattMgr: Start Connection\n"));
-    
+
     GattManagerConnectToRemoteServer(sinkGetBleTask(),
                         addr,
                         gatt_connection_ble_master_directed,

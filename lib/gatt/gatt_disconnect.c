@@ -33,7 +33,7 @@ DESCRIPTION
 RETURN
 
 */
-void GattDisconnectRequest(uint16 cid)
+void GattDisconnectRequest(u16 cid)
 {
     MAKE_GATT_MESSAGE(GATT_INTERNAL_DISCONNECT_REQ);
     message->cid                = cid;

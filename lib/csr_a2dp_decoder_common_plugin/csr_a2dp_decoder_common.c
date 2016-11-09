@@ -52,10 +52,10 @@ NOTES
 static DECODER_t * DECODER = NULL ;
 
 static bool pskey_read = FALSE;
-static uint16 val_pskey_max_mismatch = 0;
-static uint16 val_clock_mismatch = 0;
+static u16 val_pskey_max_mismatch = 0;
+static u16 val_clock_mismatch = 0;
 
-static const uint16 dsp_variant[NUM_DECODER_PLUGINS] =
+static const u16 dsp_variant[NUM_DECODER_PLUGINS] =
 {
     0,
     DSP_SBC_DECODER,                /* SBC_DECODER              */
@@ -79,7 +79,7 @@ DESCRIPTION
 
     Translated VM variant id into something the DSP app understands
 */
-static uint16 getDspVariant (uint16 variant)
+static u16 getDspVariant (u16 variant)
 {
     if (variant < NUM_DECODER_PLUGINS)
     {
@@ -95,7 +95,7 @@ DESCRIPTION
 
     Sends a latency report to the application
 */
-static void sendLatencyReport (Task app_task, A2dpPluginTaskdata *audio_plugin, bool estimated, uint16 latency)
+static void sendLatencyReport (Task app_task, A2dpPluginTaskdata *audio_plugin, bool estimated, u16 latency)
 {
     MAKE_AUDIO_MESSAGE(AUDIO_PLUGIN_LATENCY_REPORT);
     PRINT(("DECODER: Latency report estimated:%u latency:%ums\n", estimated, latency));
@@ -129,7 +129,7 @@ DESCRIPTION
 
     Stores latency reported by DSP and, if required, informs application
 */
-void CsrA2dpDecoderPluginSetAudioLatency (A2dpPluginTaskdata *audio_plugin, uint16 latency)
+void CsrA2dpDecoderPluginSetAudioLatency (A2dpPluginTaskdata *audio_plugin, u16 latency)
 {
     if (DECODER != NULL)
     {
@@ -149,9 +149,9 @@ DESCRIPTION
 
     Provides an estimate of audio latency for a specific codec
 */
-static uint16 estimateLatency (A2DP_DECODER_PLUGIN_TYPE_T variant)
+static u16 estimateLatency (A2DP_DECODER_PLUGIN_TYPE_T variant)
 {
-    uint16 latency = 0;
+    u16 latency = 0;
 
     /* TODO: Temporary values atm, n.b. units are in 1/10th ms. */
     switch (variant)
@@ -190,18 +190,18 @@ static void enableLatencyReporting (A2dpPluginTaskdata *audio_plugin)
 {
     if (DECODER != NULL)
     {
-        uint16 initial_latency;
+        u16 initial_latency;
         A2dpPluginLatencyParams *latencyParams = &((A2dpPluginConnectParams *)DECODER->params)->latency;
 
         if (latencyParams->period)
         {
             if (latencyParams->last)
             {
-                initial_latency = (uint16)latencyParams->last * LATENCY_LAST_MULTIPLIER;
+                initial_latency = (u16)latencyParams->last * LATENCY_LAST_MULTIPLIER;
             }
             else if (latencyParams->target)
             {
-                initial_latency = (uint16)latencyParams->target * LATENCY_TARGET_MULTIPLIER;
+                initial_latency = (u16)latencyParams->target * LATENCY_TARGET_MULTIPLIER;
             }
             else
             {
@@ -209,9 +209,9 @@ static void enableLatencyReporting (A2dpPluginTaskdata *audio_plugin)
             }
 
             /* Convert latency configuration parameters to single millisecond resolution before sending to DSP */
-            PRINT(("DECODER: CONFIGURE_LATENCY_REPORTING Period=%ums, Change=%ums, Initial=%ums\n", (uint16)latencyParams->period * LATENCY_PERIOD_MULTIPLIER, (uint16)latencyParams->change * LATENCY_CHANGE_MULTIPLIER, initial_latency));
-            KalimbaSendMessage(CONFIGURE_LATENCY_REPORTING, 1, (uint16)latencyParams->period * LATENCY_PERIOD_MULTIPLIER, (uint16)latencyParams->change * LATENCY_CHANGE_MULTIPLIER, initial_latency);
-            /*KalimbaSendMessage(CONFIGURE_LATENCY_REPORTING, 0x8000 | ((uint16)latencyParams->target * LATENCY_TARGET_MULTIPLIER), (uint16)latencyParams->period * LATENCY_PERIOD_MULTIPLIER, (uint16)latencyParams->change * LATENCY_CHANGE_MULTIPLIER, initial_latency);*/
+            PRINT(("DECODER: CONFIGURE_LATENCY_REPORTING Period=%ums, Change=%ums, Initial=%ums\n", (u16)latencyParams->period * LATENCY_PERIOD_MULTIPLIER, (u16)latencyParams->change * LATENCY_CHANGE_MULTIPLIER, initial_latency));
+            KalimbaSendMessage(CONFIGURE_LATENCY_REPORTING, 1, (u16)latencyParams->period * LATENCY_PERIOD_MULTIPLIER, (u16)latencyParams->change * LATENCY_CHANGE_MULTIPLIER, initial_latency);
+            /*KalimbaSendMessage(CONFIGURE_LATENCY_REPORTING, 0x8000 | ((u16)latencyParams->target * LATENCY_TARGET_MULTIPLIER), (u16)latencyParams->period * LATENCY_PERIOD_MULTIPLIER, (u16)latencyParams->change * LATENCY_CHANGE_MULTIPLIER, initial_latency);*/
         }
     }
 }
@@ -227,7 +227,7 @@ DESCRIPTION
     
     A successful change will update the TWS Audio Routing mode, if appropriate
 */
-static void streamRelayModeUpdated (uint16 result)
+static void streamRelayModeUpdated (u16 result)
 {
     PRINT(("streamRelayModeUpdated  result=%u  required mode=%u\n", result, DECODER->stream_relay_mode));
     
@@ -277,7 +277,7 @@ static void streamRelayModeUpdated (uint16 result)
 DESCRIPTION
     handles messages from the dsp
 */
-static void handleInternalMessage(A2dpPluginTaskdata* task, uint16 id, Message message)
+static void handleInternalMessage(A2dpPluginTaskdata* task, u16 id, Message message)
 {
     A2dpPluginConnectParams *codecData;
     
@@ -379,7 +379,7 @@ static void handleInternalMessage(A2dpPluginTaskdata* task, uint16 id, Message m
                             MAKE_AUDIO_MESSAGE_WITH_LEN(AUDIO_PLUGIN_DSP_READY_FOR_DATA, 0);
                             PRINT(("DECODER: Send CLOCK_MISMATCH_RATE\n"));
                             message->plugin = (TaskData *)task;
-                            message->AUDIO_BUSY = (uint16)IsAudioBusy();
+                            message->AUDIO_BUSY = IsAudioBusy();
                             message->dsp_status = GetCurrentDspStatus();
                             message->media_sink = DECODER->media_sink;
                             MessageSend(DECODER->app_task, AUDIO_PLUGIN_DSP_READY_FOR_DATA, message);
@@ -485,7 +485,7 @@ static void handleInternalMessage(A2dpPluginTaskdata* task, uint16 id, Message m
                     */
 
                     {
-                        uint16 signal = m->a;
+                        u16 signal = m->a;
                         PRINT(("SIGNAL_DETECTOR_STATUS_RESP: PARAM1 %x \n", signal));
 
                         {
@@ -532,7 +532,7 @@ static void handleInternalMessage(A2dpPluginTaskdata* task, uint16 id, Message m
                    talks directly to the firmware */
                 case KALIMBA_MSG_DSP_SPDIF_EVENT_MSG:
                 {
-                    uint16 invalid = m->a;
+                    u16 invalid = m->a;
 
                     /* check whether status information is valid before processing further */
                     if(!invalid)
@@ -580,13 +580,13 @@ static void handleInternalMessage(A2dpPluginTaskdata* task, uint16 id, Message m
         case MESSAGE_FROM_KALIMBA_LONG:
         {
             /* recast message as this is a long message from the DSP */
-            const uint16 *rcv_msg = (const uint16*) message;
+            const u16 *rcv_msg = (const u16*) message;
 
             switch ( rcv_msg[0] )
             {
                 case DSP_GAIA_MSG_GET_USER_GROUP_PARAM_RESP:
                     {
-                        uint16 i;
+                        u16 i;
 
                         MAKE_AUDIO_MESSAGE_WITH_LEN(AUDIO_PLUGIN_DSP_GAIA_GROUP_EQ_MSG, rcv_msg[1]);
                         PRINT(("DECODER: User EQ Group Param from DSP: [%x][%x]...\n", rcv_msg[2],rcv_msg[3]));
@@ -682,7 +682,7 @@ DESCRIPTION
     Sends input ('CODEC') and output ('DAC') sample rate configuration messages
     to the DSP, taking into account any mismatch.
 */
-static void sendDspSampleRateMessages(uint16 mismatch)
+static void sendDspSampleRateMessages(u16 mismatch)
 {
 
     A2dpPluginConnectParams * codecData = (A2dpPluginConnectParams *) DECODER->params;
@@ -690,8 +690,8 @@ static void sendDspSampleRateMessages(uint16 mismatch)
 #ifdef ANC
     /* If using ANC then we need to give an indication of the sample rate required
        when the ANC mics are connected. */
-    uint32 anc_sample_rate = AncGetDacSampleRate();
-    uint16 anc_sample_rate_flag = DSP_ANC_SAMPLE_RATE_NONE;
+    u32 anc_sample_rate = AncGetDacSampleRate();
+    u16 anc_sample_rate_flag = DSP_ANC_SAMPLE_RATE_NONE;
 
     if (anc_sample_rate == ANC_SAMPLE_RATE_96K)
     {
@@ -765,7 +765,7 @@ static void sendDspMultiChannelMessages(void)
     /* Set the hardware type of each output */
     if (!KalimbaSendLongMessage(MESSAGE_SET_MULTI_CHANNEL_OUTPUT_TYPES,
                                 sizeof(AUDIO_PLUGIN_SET_MULTI_CHANNEL_OUTPUT_TYPES_MSG_T),
-                                (const uint16*)&message))
+                                (const u16*)&message))
     {
         PRINT(("DECODER: Message MESSAGE_SET_MULTI_CHANNEL_OUTPUT_TYPES failed!\n"));
         Panic();
@@ -796,9 +796,9 @@ DESCRIPTION
 
     The latency is reported in units of one tenth of a ms.
 */
-bool CsrA2dpDecoderPluginGetLatency (A2dpPluginTaskdata *audio_plugin, bool *estimated, uint16 *latency)
+bool CsrA2dpDecoderPluginGetLatency (A2dpPluginTaskdata *audio_plugin, bool *estimated, u16 *latency)
 {
-    PRINT(("DECODER: CsrA2dpDecoderPluginGetLatency plugin=%X ", (uint16)audio_plugin));
+    PRINT(("DECODER: CsrA2dpDecoderPluginGetLatency plugin=%X ", (u16)audio_plugin));
 
     if (audio_plugin != NULL)
     {
@@ -860,7 +860,7 @@ DESCRIPTION
     The audio routing change will be queued if the DSP is not in the appropriate 
     state to accept a request.
 */
-void csrA2dpDecoderSetTwsRoutingMode (uint16 master_routing, uint16 slave_routing)
+void csrA2dpDecoderSetTwsRoutingMode (u16 master_routing, u16 slave_routing)
 {
     PRINT(("DECODER: SetTwsRoutingMode  master=%u  slave=%u\n", master_routing, slave_routing));
     if (DECODER != NULL)
@@ -886,7 +886,7 @@ DESCRIPTION
     The SBC encoder params change will be queued if the DSP is not in the appropriate 
     state to accept a request.
 */
-void csrA2dpDecoderSetSbcEncoderParams (uint8 bitpool, uint8 format)
+void csrA2dpDecoderSetSbcEncoderParams (u8 bitpool, u8 format)
 {
     PRINT(("DECODER: csrA2dpDecoderSetSbcEncoderParams  bitpool=%u  format=0x%X\n", bitpool, format));
     if (DECODER != NULL)
@@ -913,7 +913,7 @@ DESCRIPTION
 
     If not the master, saves the trim change for later.
 */
-void csrA2dpDecoderSetTWSDeviceTrims (int16 device_trim_master, int16 device_trim_slave)
+void csrA2dpDecoderSetTWSDeviceTrims (i16 device_trim_master, i16 device_trim_slave)
 {
     PRINT(("DECODER: csrA2dpDecoderSetTWSDeviceTrims  master_trim=%i  slave_trim=%i\n", device_trim_master, device_trim_slave));
     if (DECODER != NULL)
@@ -938,7 +938,7 @@ DESCRIPTION
     Any outstanding request will cause this new one to be queued.
     
 */
-void csrA2dpDecoderSetStreamRelayMode (uint16 mode)
+void csrA2dpDecoderSetStreamRelayMode (u16 mode)
 {
     PRINT(("DECODER: SetStreamRelayMode mode=%u\n", mode));
 
@@ -1073,8 +1073,8 @@ void CsrA2dpDecoderPluginConnect( A2dpPluginTaskdata *task,
                                   Sink audio_sink ,
                                   AUDIO_SINK_T sink_type,
                                   Task codec_task ,
-                                  uint16 volume ,
-                                  uint32 rate ,
+                                  u16 volume ,
+                                  u32 rate ,
                                   AudioPluginFeatures features ,
                                   AUDIO_MODE_T mode ,
                                   const void * params,
@@ -1112,9 +1112,9 @@ void CsrA2dpDecoderPluginConnect( A2dpPluginTaskdata *task,
     DECODER->input_audio_port_mute_active = FALSE;
     
     DECODER->mode       = mode;
-    DECODER->mode_params = 0;
+    DECODER->mode_params = NULL;
     DECODER->features   = features;
-    DECODER->params     = (uint16) params;
+    DECODER->params     = params;
     DECODER->rate       = rate;
     DECODER->app_task   = app_task;
     DECODER->sink_type  = sink_type;
@@ -1140,7 +1140,7 @@ void CsrA2dpDecoderPluginConnect( A2dpPluginTaskdata *task,
     /* Only need to read the PS Key value once */
     if (!pskey_read)
     {
-        if (PsFullRetrieve(PSKEY_MAX_CLOCK_MISMATCH, &val_pskey_max_mismatch, sizeof(uint16)) == 0)
+        if (PsFullRetrieve(PSKEY_MAX_CLOCK_MISMATCH, &val_pskey_max_mismatch, sizeof(u16)) == 0)
             val_pskey_max_mismatch = 0;
         pskey_read = TRUE;
     }
@@ -1414,7 +1414,7 @@ DESCRIPTION
     Function to set the hardware volume (used to set hardware volume after
     a delay when using hybrid volume control).
 */
-static void csrA2dpSetHardwareGainDelayed(multi_channel_group_t group, int16 master_gain, uint16 delay_ms)
+static void csrA2dpSetHardwareGainDelayed(multi_channel_group_t group, i16 master_gain, u16 delay_ms)
 {
     TaskData* task = GetAudioPlugin();
     if(task)
@@ -1439,11 +1439,11 @@ static void csrA2dpDecoderSendKalimbaVolume(multi_channel_group_t group, multi_c
     /* Send the correct volume message for this output group */
     if(group == multi_channel_group_main)
     {
-        KalimbaSendLongMessage(MUSIC_VOLUME_MSG, SIZEOF_AUDIO_PLUGIN_SET_MAIN_VOLUME_MSG, (const uint16*)gain_info);
+        KalimbaSendLongMessage(MUSIC_VOLUME_MSG, SIZEOF_AUDIO_PLUGIN_SET_MAIN_VOLUME_MSG, (const u16*)gain_info);
     }
     else
     {
-        KalimbaSendLongMessage(MUSIC_VOLUME_AUX_MSG, SIZEOF_AUDIO_PLUGIN_SET_AUX_VOLUME_MSG, (const uint16*)gain_info);
+        KalimbaSendLongMessage(MUSIC_VOLUME_AUX_MSG, SIZEOF_AUDIO_PLUGIN_SET_AUX_VOLUME_MSG, (const u16*)gain_info);
     }
 }
 
@@ -1451,12 +1451,12 @@ static void csrA2dpDecoderSendKalimbaVolume(multi_channel_group_t group, multi_c
 DESCRIPTION
     Set the volume levels for a group (either main or aux, not all)
 */
-static void csrA2dpDecoderPluginSetGroupLevels(audio_plugin_mch_group_t group, int16 master, int16 tone)
+static void csrA2dpDecoderPluginSetGroupLevels(audio_plugin_mch_group_t group, i16 master, i16 tone)
 {
     multi_channel_gain_t gain_info;
     
     /* Get the previous gain for this group */
-    int16 prev_gain = (group == multi_channel_group_main) ? DECODER->volume.main.master : 
+    i16 prev_gain = (group == multi_channel_group_main) ? DECODER->volume.main.master : 
                                                             DECODER->volume.aux.master;
     
     if(DECODER->input_audio_port_mute_active)
@@ -1494,7 +1494,7 @@ static void csrA2dpDecoderPluginSetGroupLevels(audio_plugin_mch_group_t group, i
         
         case multi_channel_gain_hybrid:
         {
-            uint16 hw_delay_ms = (master >= prev_gain) ? MIXED_MODE_INCREASING_DELAY : 
+            u16 hw_delay_ms = (master >= prev_gain) ? MIXED_MODE_INCREASING_DELAY : 
                                                          MIXED_MODE_DECREASING_DELAY;
             /* Set hardware gain after a delay (delay is tuned to ensure digital and hardware gains happen simultaneously) */
             csrA2dpSetHardwareGainDelayed(group, master, hw_delay_ms);
@@ -1609,7 +1609,7 @@ static bool muteOutput(audio_plugin_mch_group_t group, AUDIO_MUTE_STATE_T state)
         mute_msg.aux.left = state;
         mute_msg.aux.right = state;
         
-        if(KalimbaSendLongMessage(MESSAGE_MULTI_CHANNEL_MUTE_AUX, sizeof(AUDIO_PLUGIN_MULTI_CHANNEL_AUX_MUTE_MSG_T), (const uint16*)&mute_msg))
+        if(KalimbaSendLongMessage(MESSAGE_MULTI_CHANNEL_MUTE_AUX, sizeof(AUDIO_PLUGIN_MULTI_CHANNEL_AUX_MUTE_MSG_T), (const u16*)&mute_msg))
         {
 			result = TRUE;
 			/* Update main mute state */
@@ -1634,7 +1634,7 @@ static bool muteOutput(audio_plugin_mch_group_t group, AUDIO_MUTE_STATE_T state)
         mute_msg.main.secondary_right = state;
         mute_msg.main.wired_sub = state;
         
-        if(KalimbaSendLongMessage(MESSAGE_MULTI_CHANNEL_MUTE_MAIN, sizeof(AUDIO_PLUGIN_MULTI_CHANNEL_MAIN_MUTE_MSG_T), (const uint16*)&mute_msg))
+        if(KalimbaSendLongMessage(MESSAGE_MULTI_CHANNEL_MUTE_MAIN, sizeof(AUDIO_PLUGIN_MULTI_CHANNEL_MAIN_MUTE_MSG_T), (const u16*)&mute_msg))
         {
         	result = TRUE;
             /* Update main mute state */
@@ -1726,7 +1726,7 @@ void CsrA2dpDecoderPluginSetMode ( AUDIO_MODE_T mode , A2dpPluginTaskdata *task 
         /* if mode parameters supplied then use these */
         mode_params = (A2dpPluginModeParams *)params;
         music_processing = mode_params->music_mode_processing;
-        DECODER->mode_params = (uint16)params;
+        DECODER->mode_params = params;
     }
     /* no operating mode params were passed in, use previous ones if available */
     else if (DECODER->mode_params)
@@ -1795,7 +1795,7 @@ void CsrA2dpDecoderPluginSetMode ( AUDIO_MODE_T mode , A2dpPluginTaskdata *task 
 DESCRIPTION
     plays a tone using the audio plugin
 */
-void CsrA2dpDecoderPluginPlayTone ( A2dpPluginTaskdata *task, ringtone_note * tone, Task codec_task, uint16 tone_volume)
+void CsrA2dpDecoderPluginPlayTone ( A2dpPluginTaskdata *task, ringtone_note * tone, Task codec_task, u16 tone_volume)
 {
     Source lSource ;
     Sink lSink ;
@@ -1874,7 +1874,7 @@ void CsrA2dpDecoderPluginToneComplete ( void )
 DESCRIPTION
     handles the internal cvc messages /  messages from the dsp
 */
-void CsrA2dpDecoderPluginInternalMessage( A2dpPluginTaskdata *task ,uint16 id , Message message )
+void CsrA2dpDecoderPluginInternalMessage( A2dpPluginTaskdata *task ,u16 id , Message message )
 {
     /* determine codec type as message id's are different */
     if(isCodecLowLatencyBackChannel())
@@ -1894,7 +1894,7 @@ void CsrA2dpDecoderPluginInternalMessage( A2dpPluginTaskdata *task ,uint16 id , 
 DESCRIPTION
     Configure content protection for a transform, and then start it.
 */
-void csrA2dpDecoderStartTransformCheckScms(Transform rtp_transform, uint8 content_protection)
+void csrA2dpDecoderStartTransformCheckScms(Transform rtp_transform, u8 content_protection)
 {
     /* Start or stop SCMS content protection */
     TransformConfigure(rtp_transform, VM_TRANSFORM_RTP_SCMS_ENABLE, content_protection);
@@ -1914,8 +1914,8 @@ void MusicConnectAudio (A2dpPluginTaskdata *task)
 {
     A2dpPluginConnectParams *codecData = (A2dpPluginConnectParams *) DECODER->params;
     A2dpPluginModeParams *mode_params = NULL;
-    uint8 content_protection;
-    uint16 mismatch = val_pskey_max_mismatch;
+    u8 content_protection;
+    u16 mismatch = val_pskey_max_mismatch;
     Source l_source = NULL;
     Source r_source = NULL;
 
@@ -2268,7 +2268,7 @@ void MusicConnectOutputSinks(void)
     PanicFalse(CsrMultiChanConnectDsp(&mch_params));
     
     /* Store adjusted sample rate returned from multi-channel plugin */
-    DECODER->dsp_resample_rate = (uint16)(mch_params.sample_rate/DSP_RESAMPLING_RATE_COEFFICIENT);
+    DECODER->dsp_resample_rate = (u16)(mch_params.sample_rate/DSP_RESAMPLING_RATE_COEFFICIENT);
 }
 
 /****************************************************************************
@@ -2319,7 +2319,7 @@ DESCRIPTION
 
     @return current sample rate
 */
-uint32 CsrA2DPGetDecoderSampleRate(void)
+u32 CsrA2DPGetDecoderSampleRate(void)
 {
     /* if a2dp plugin loaded and rate is valid */
     if((DECODER)&&(DECODER->rate))
@@ -2342,7 +2342,7 @@ DESCRIPTION
 
     @return current sample rate
 */
-uint32 CsrA2DPGetDecoderSubwooferSampleRate(void)
+u32 CsrA2DPGetDecoderSubwooferSampleRate(void)
 {
     /* Subwoofer rate is now fixed at 48KHz to prevent issues with resampling 
        I2S outputs */
@@ -2357,7 +2357,7 @@ DESCRIPTION
 
     @return void
 */
-void CsrA2dpDecoderPluginSetEqMode(uint16 operating_mode, A2DP_MUSIC_PROCESSING_T music_processing, A2dpPluginModeParams *mode_params)
+void CsrA2dpDecoderPluginSetEqMode(u16 operating_mode, A2DP_MUSIC_PROCESSING_T music_processing, A2dpPluginModeParams *mode_params)
 {
     /* determine the music processing mode requirements, set dsp music mode appropriately */
     switch (music_processing)

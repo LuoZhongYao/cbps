@@ -42,7 +42,7 @@ typedef enum
 /* Inquiry structures */
 typedef struct
 {    
-    int16 path_loss;
+    i16 path_loss;
     PROFILES_T profiles:4;
     unsigned profiles_complete:1;
 } INQUIRY_EIR_DATA_T;
@@ -50,9 +50,9 @@ typedef struct
 
 typedef struct
 {
-    uint16 read_idx;
-    uint16 write_idx;
-    uint16 search_idx;    
+    u16 read_idx;
+    u16 write_idx;
+    u16 search_idx;    
     bdaddr buffer[INQUIRY_SCAN_BUFFER_SIZE];
     INQUIRY_EIR_DATA_T eir_data[INQUIRY_SCAN_BUFFER_SIZE];
     unsigned inquiry_state_timeout:1;

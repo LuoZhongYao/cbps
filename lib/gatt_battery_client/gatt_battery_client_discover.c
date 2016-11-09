@@ -213,7 +213,7 @@ void handleDiscoverAllCharacteristicsResp(GBASC *battery_client, const GATT_MANA
 
 
 /****************************************************************************/
-void discoverAllCharacteristicDescriptors(GBASC *battery_client, uint16 start_handle, uint16 end_handle)
+void discoverAllCharacteristicDescriptors(GBASC *battery_client, u16 start_handle, u16 end_handle)
 {
     GattManagerDiscoverAllCharacteristicDescriptors(&battery_client->lib_task,
                                                    start_handle,

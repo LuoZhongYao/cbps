@@ -1383,7 +1383,7 @@ typedef struct
 {
     dm_prim_t               type;
     phandle_t               phandle;
-    uint16_t                pv_cbarg;
+    Task                    pv_cbarg;
     hci_connection_handle_t handle;
     uint8_t                 status_or_reason;
 } DM_SYNC_UPSTREAM_WITH_HANDLE_COMMON_T; /* autogen_makefile_ignore_this (DO NOT REMOVE THIS COMMENT) */
@@ -1405,7 +1405,7 @@ typedef struct
      * The Bluelab connection library uses this to store the application
      * task and routes messages accordingly.
      */
-    uint16_t                pv_cbarg;
+    Task                    pv_cbarg;
     uint16_t                flags;
 
     /* Stream sizes - only applicable if stream flag set */
@@ -1416,14 +1416,14 @@ typedef struct
 {
     dm_prim_t               type;
     phandle_t               phandle;
-    uint16_t                pv_cbarg;
+    Task                    pv_cbarg;
 } DM_SYNC_REGISTER_CFM_T;
 
 typedef struct
 {
     dm_prim_t               type;           /* Always DM_SYNC_UNREGISTER_REQ */
     phandle_t               phandle;        /* client phandle */
-    uint16_t                pv_cbarg;
+    Task                    pv_cbarg;
 } DM_SYNC_UNREGISTER_REQ_T;
 
 #define DM_SYNC_UNREGISTER_SUCCESS          ((uint8_t)0)
@@ -1433,7 +1433,7 @@ typedef struct
 {
     dm_prim_t               type;           /* Always DM_SYNC_UNREGISTER_CFM */
     phandle_t               phandle;        /* client phandle */
-    uint16_t                pv_cbarg;
+    Task                    pv_cbarg;
     uint8_t                 status;
 } DM_SYNC_UNREGISTER_CFM_T;
 
@@ -1457,7 +1457,7 @@ typedef struct
 {
     dm_prim_t               type;           /* Always DM_SYNC_CONNECT_REQ */
     phandle_t               phandle;        /* client phandle */
-    uint16_t                pv_cbarg;
+    Task                    pv_cbarg;
     BD_ADDR_T               bd_addr;        /* Bluetooth device address */
     uint16_t                length;         /* Reserved. Shall be set to zero.*/
     DM_SYNC_CONFIG_UNION_T  u;
@@ -1467,7 +1467,7 @@ typedef struct
 {
     dm_prim_t               type;           /* Always DM_SYNC_CONNECT_CFM */
     phandle_t               phandle;        /* client phandle */
-    uint16_t                pv_cbarg;
+    Task                    pv_cbarg;
     hci_connection_handle_t handle;         /* HCI Connection Handle */
     uint8_t                 status;         /* Success or failure - See Note1 */
     BD_ADDR_T               bd_addr;        /* Bluetooth device address */
@@ -1485,7 +1485,7 @@ typedef struct
 {
     dm_prim_t               type;           /* Always DM_SYNC_CONNECT_IND */
     phandle_t               phandle;        /* client phandle */
-    uint16_t                pv_cbarg;
+    Task                    pv_cbarg;
     BD_ADDR_T               bd_addr;        /* Bluetooth device address */
     uint8_t                 link_type;      /* HCI_LINK_TYPE_SCO/ESCO */
     uint24_t                dev_class;
@@ -1514,7 +1514,7 @@ typedef struct
 {
     dm_prim_t                   type;       /* Always DM_SYNC_RENEGOTIATE_IND */
     phandle_t                   phandle;    /* destination phandle */
-    uint16_t                    pv_cbarg;
+    Task                        pv_cbarg;
     hci_connection_handle_t     handle;     /* HCI Connection Handle */
     hci_return_t                status;
 
@@ -1539,7 +1539,7 @@ typedef struct
 {
     dm_prim_t                   type;           /* Always DM_SYNC_DISCONNECT_IND */
     phandle_t                   phandle;        /* destination phandle */
-    uint16_t                    pv_cbarg;
+    Task                        pv_cbarg;
     hci_connection_handle_t     handle;         /* HCI Connection Handle */
     hci_reason_t                reason;         /* reason for disconnection */
     BD_ADDR_T                   bd_addr;        /* Bluetooth device address */
@@ -1549,7 +1549,7 @@ typedef struct
 {
     dm_prim_t                   type;           /* Always DM_SYNC_DISCONNECT_CFM */
     phandle_t                   phandle;        /* destination phandle */
-    uint16_t                    pv_cbarg;
+    Task                        pv_cbarg;
     hci_connection_handle_t     handle;         /* HCI Connection Handle */
     uint8_t                     status;         /* Success or failure - See Note1 */
     BD_ADDR_T                   bd_addr;        /* Bluetooth device address */
@@ -1620,7 +1620,7 @@ typedef uint8_t dm_security_mode_t;
  *
  */
 
-typedef uint16_t dm_security_level_t;
+typedef u16 dm_security_level_t;
 #define SECL_NONE                           ((dm_security_level_t) 0x0000)
 #define SECL_IN_AUTHORISATION               ((dm_security_level_t) 0x0001)
 #define SECL_IN_AUTHENTICATION              ((dm_security_level_t) 0x0002)
@@ -1822,7 +1822,7 @@ typedef struct
 {
     dm_prim_t           type;           /* Always DM_SM_REGISTER_REQ */
     phandle_t           phandle;        /* destination phandle */
-    uint16_t            context;        /* Opaque context */
+    Task                context;        /* Opaque context */
     DM_SM_SERVICE_T     service;        /* Protocol and channel */
     bool_t              outgoing_ok;    /* TRUE if applies to outgoing */
     dm_security_level_t security_level; /* Level of security to be applied */
@@ -1845,7 +1845,7 @@ typedef struct
 {
     dm_prim_t           type;           /* Always DM_SM_REGISTER_OUTGOING_REQ */
     phandle_t           phandle;        /* destination phandle */
-    uint16_t            context;        /* Opaque context */
+    Task                context;        /* Opaque context */
     DM_CONNECTION_T     connection;     /* Protocol, channel and BD_ADDR */
     dm_security_level_t security_level; /* Level of security to be applied */
 } DM_SM_REGISTER_OUTGOING_REQ_T;
@@ -1863,7 +1863,7 @@ typedef struct
 {
     dm_prim_t           type;           /* Always DM_SM_UNREGISTER_REQ */
     phandle_t           phandle;
-    uint16_t            context;
+    Task                context;
     DM_SM_SERVICE_T     service;        /* Protocol and channel */
 } DM_SM_UNREGISTER_REQ_T;
 
@@ -1880,7 +1880,7 @@ typedef struct
 {
     dm_prim_t           type;           /* Always DM_SM_UNREGISTER_OUTGOING_REQ */
     phandle_t           phandle;
-    uint16_t            context;
+    Task                context;
     DM_CONNECTION_T     connection;     /* Protocol, channel and BD_ADDR */
 } DM_SM_UNREGISTER_OUTGOING_REQ_T;
 
@@ -1941,7 +1941,7 @@ typedef struct
     dm_prim_t               type;
     phandle_t               phandle;
     TYPED_BD_ADDR_T         addrt;
-    uint16_t                context;
+    Task                    context;
     bool_t                  verify;
     uint16_t                length;
     uint8_t                *data;
@@ -3404,9 +3404,9 @@ typedef struct
     dm_prim_t type;                 /* DM_SM_SECURITY_REQ */
     phandle_t phandle;              /* destination phandle */
     TYPED_BD_ADDR_T addrt;                  /* Peer's address */
-    uint16_t connection_flags;      /* See l2ca_conflags_t in l2cap_prim.h */
-    uint16_t context;               /* Opaque context returned in CFM */
-    uint16_t security_requirements;
+    uint16_t  connection_flags;      /* See l2ca_conflags_t in l2cap_prim.h */
+    void     *context;               /* Opaque context returned in CFM */
+    uint16_t  security_requirements;
     hci_return_t status;            /* Indication of success or failure. Shall
                                        be set to 0 in DM_SM_SECURITY_REQ. */
 } DM_SM_SECURITY_COMMON_T;  /* autogen_makefile_ignore_this (DO NOT REMOVE THIS COMMENT) */
@@ -4808,7 +4808,7 @@ typedef struct
  *      role-switch.
  *
  *      Encoding
- *      Each 'row' in the table is encoded into a single uint16.
+ *      Each 'row' in the table is encoded into a single u16.
  *      Each condition is encoded into 3 bits, giving a range of 0-7.
  *      Each action is encoded into 1 bit - setting the bit turns on the action.
  *

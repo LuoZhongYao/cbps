@@ -33,15 +33,15 @@ DESCRIPTION: CsrInitialiseI2SDevice :
 
 PARAMETERS:
     
-    uint32 sample_rate - sample rate of data coming from dsp
+    u32 sample_rate - sample rate of data coming from dsp
 
 RETURNS:
     none
 */    
-void CsrInitialiseI2SDevice_SSM2518(uint32 sample_rate)
+void CsrInitialiseI2SDevice_SSM2518(u32 sample_rate)
 {
-    uint8 i2c_data[2];
-    /*uint16 ack;*/
+    u8 i2c_data[2];
+    /*u16 ack;*/
    
     
     /* set to normal operation with external MCLK, configure for NO_BLCK, MCLK is 64 * sample rate */
@@ -98,14 +98,14 @@ DESCRIPTION: CsrSetVolumeI2SDevice
 
 PARAMETERS:
     
-    int16 volume - volume level required scaled as 0 to +1024 corresponding to 0 to -120dB
+    i16 volume - volume level required scaled as 0 to +1024 corresponding to 0 to -120dB
 
 RETURNS:
     none
 */    
-void CsrSetVolumeI2SDevice_SSM2518(int16 left_vol, int16 right_vol, bool volume_in_dB)
+void CsrSetVolumeI2SDevice_SSM2518(i16 left_vol, i16 right_vol, bool volume_in_dB)
 {
-    uint8 i2c_data[2];
+    u8 i2c_data[2];
 
     PRINT(("VP: SSM2518 SetVol L[%x] R[%x] dB[%x]\n",left_vol, right_vol,volume_in_dB));
 

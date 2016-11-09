@@ -42,7 +42,7 @@ MESSAGE RETURNED
 RETURNS
     void
 */
-void HfpDtmfRequest(hfp_link_priority priority, uint8 dtmf)
+void HfpDtmfRequest(hfp_link_priority priority, u8 dtmf)
 {
 #ifdef HFP_DEBUG_LIB
     /* Parameter check the dtmf value */

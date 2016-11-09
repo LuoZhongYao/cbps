@@ -10,6 +10,7 @@ DESCRIPTION
     The hardware has a two-wire, 3- wire FM RX on the I²C bus
 */
 #include <i2c.h>
+#include <stdlib.h>
 #include <memory.h>
 #include "fm_plugin_if.h"
 #include "fm_rx_plugin.h"
@@ -30,7 +31,7 @@ static void message_handler(Task task, MessageId id, Message message);
 const TaskData fm_rx_plugin = {message_handler};
 
 /* list of opcodes that are sent to the FM receiver chip to initialise the tuning parameters */
-static const uint16 fm_rx_opcode[(sizeof(fm_rx_config))] =
+static const u16 fm_rx_opcode[(sizeof(fm_rx_config))] =
 {
     FM_SEEK_BAND_BOTTOM, /* seek_band_bottom*//*88.1 Mhz*/
     FM_SEEK_BAND_TOP, /* seek_band_top *//*107.9  Mhz*/
@@ -122,10 +123,10 @@ DESCRIPTION
 RETURNS
     status of command operation
 */ 
-static bool fm_rx_write_command(uint8 *fm_data, uint8 size)
+static bool fm_rx_write_command(u8 *fm_data, u8 size)
 {        
-    uint16 ack;
-    uint8 Id;
+    u16 ack;
+    u8 Id;
     FM_ASSERT(fm_data);
                      
     ack = I2cTransfer(FM_RX_IIC_ADDRESS, fm_data, size, NULL, 0);
@@ -151,10 +152,10 @@ DESCRIPTION
 RETURNS
     status of write property operation
 */ 
-static bool fm_rx_write_prop(uint16 prop, uint16 value)
+static bool fm_rx_write_prop(u16 prop, u16 value)
 {        
-    uint16 ack;
-    uint8 fm_data[6];
+    u16 ack;
+    u8 fm_data[6];
 
     FMSETPROP(fm_data, prop);
     fm_data[4] = HIGHBYTE(value);
@@ -178,7 +179,7 @@ RETURNS
 */ 
 static bool fm_rx_power_up(void)
 {        
-    uint8 fm_data[FMRX_POWER_UP_LEN];
+    u8 fm_data[FMRX_POWER_UP_LEN];
 
     FM_DEBUG(("fm_rx_power_up\n"));
 
@@ -206,7 +207,7 @@ RETURNS
 */ 
 static void fm_rx_power_down(void)
 {
-    uint8 fm_data[1];
+    u8 fm_data[1];
 
     FM_DEBUG(("fm_rx_power_down \n")); 
     fm_data[0] = FMRX_POWER_DOWN;
@@ -233,8 +234,8 @@ RETURNS
 */ 
 static void fm_rx_update_volume(FM_PLUGIN_RX_UPDATE_VOLUME_MSG_T * msg)
 {    
-    uint16 prop;
-    uint16 vol=msg->volume;
+    u16 prop;
+    u16 vol=msg->volume;
     
     FM_DEBUG(("fm_rx_update_volume %d\n", vol));
 
@@ -270,9 +271,9 @@ RETURNS
 */ 
 static void fm_rx_get_rev(void)
 {        
-    uint16 ack;
-    uint8 count;
-    uint8 fm_data[1];
+    u16 ack;
+    u8 count;
+    u8 fm_data[1];
 
     FM_DEBUG(("fm_rx_get_rev\n"));
 
@@ -303,10 +304,10 @@ RETURNS
 */ 
 static void fm_rx_check_tune_status(void)
 {
-    uint8 cmd[2];
-    uint16 ack = 0;
+    u8 cmd[2];
+    u16 ack = 0;
 #ifdef DEBUG_FM
-    uint16 count = 0;
+    u16 count = 0;
 #endif
 
     FM_ASSERT(fm_rx_data);
@@ -323,7 +324,7 @@ static void fm_rx_check_tune_status(void)
     /* check the TUNE COMPLETE interrupt status bit */
     if(fm_rx_data->rx_buff[0] & 0x01) /*STCINT high*/
     {
-        uint16 tuned_freq=0;
+        u16 tuned_freq=0;
         
         cmd[0] = FMRX_FM_TUNE_STATUS;
         cmd[1] = 0x01; /*INTACK - Seek/Tune Interrupt Clear. */
@@ -425,10 +426,10 @@ DESCRIPTION
 RETURNS
     void
 */ 
-static void fm_rx_decode_program_service(uint8 *pRx_rds, fm_rds_data *pGlobal_rds)
+static void fm_rx_decode_program_service(u8 *pRx_rds, fm_rds_data *pGlobal_rds)
 {    
     /*Address type is last two bits of Response byte 7 for PS*/
-    uint8 ps_addr=(pRx_rds[BLKB_INDEX+1]&PS_ADDR_MASK);
+    u8 ps_addr=(pRx_rds[BLKB_INDEX+1]&PS_ADDR_MASK);
 
     if (ps_addr != 0xFF)
     {
@@ -494,13 +495,13 @@ RETURNS
     void
 */ 
 
-static void fm_rx_decode_radio_text(uint8 *pRx_rds, fm_rds_data *pGlobal_rds)
+static void fm_rx_decode_radio_text(u8 *pRx_rds, fm_rds_data *pGlobal_rds)
 {                    
-    uint8 bler=(pRx_rds[FMRX_MAX_RDS_BUFF_SIZE]);/*Block error rate*/
+    u8 bler=(pRx_rds[FMRX_MAX_RDS_BUFF_SIZE]);/*Block error rate*/
 
     /*BLOCK B - RESP 6 and RESP 7 processing*/    
-    uint8 addr=(pRx_rds[BLKB_INDEX+1] & RT_ADDR_MASK);/*Address type is last four bits of Response byte 7*/
-    uint8 rt_type=0;
+    u8 addr=(pRx_rds[BLKB_INDEX+1] & RT_ADDR_MASK);/*Address type is last four bits of Response byte 7*/
+    u8 rt_type=0;
     bool rt_done=FALSE;
     bool send_ind=FALSE;
 
@@ -517,7 +518,7 @@ static void fm_rx_decode_radio_text(uint8 *pRx_rds, fm_rds_data *pGlobal_rds)
 
     if (((pRx_rds[BLKB_INDEX+1] & 0x10) >> 4) != fm_rx_data->rds_data.rt_abflag)
     {
-        fm_rx_data->rds_data.rt_abflag = (uint8)((pRx_rds[BLKB_INDEX+1] & 0x10) >> 4);
+        fm_rx_data->rds_data.rt_abflag = (u8)((pRx_rds[BLKB_INDEX+1] & 0x10) >> 4);
         memset(pGlobal_rds->radio_text, 0, (MAX_RADIO_TEXT+1));
         fm_rx_data->rds_data.rt_bitmask = 0;
     }
@@ -525,9 +526,9 @@ static void fm_rx_decode_radio_text(uint8 *pRx_rds, fm_rds_data *pGlobal_rds)
     /*BLOCK C - RESP 8 and RESP 9 processing*/    
     if ((addr <= 0x0F) && ((bler&RDS_BLER_BLKC_MASK)!=RDS_BLER_UNCORRECTABLE))
     {
-        uint8 rtOffset;
-        uint8 i;
-        uint8 rt_complete = TRUE;
+        u8 rtOffset;
+        u8 i;
+        u8 rt_complete = TRUE;
 
         rtOffset = addr << (1 + rt_type);
         
@@ -585,9 +586,9 @@ static void fm_rx_decode_radio_text(uint8 *pRx_rds, fm_rds_data *pGlobal_rds)
     if ((addr <= 0x0F) && ((bler&RDS_BLER_BLKD_MASK)!=RDS_BLER_UNCORRECTABLE)
         && (!rt_done))
     {
-        uint8 rtOffset;
-        uint8 i;
-        uint8 rt_complete = TRUE;
+        u8 rtOffset;
+        u8 i;
+        u8 rt_complete = TRUE;
 
         rtOffset = (addr << (1 + rt_type)) + (rt_type << 1);
 
@@ -682,9 +683,9 @@ DESCRIPTION
 RETURNS
     void
 */ 
-static void fm_rx_decode_rds(uint8 *pRx_rds, fm_rds_data *pGlobal_rds)
+static void fm_rx_decode_rds(u8 *pRx_rds, fm_rds_data *pGlobal_rds)
 {          
-    uint8 bler=(pRx_rds[FMRX_MAX_RDS_BUFF_SIZE]);/*Block error rate*/
+    u8 bler=(pRx_rds[FMRX_MAX_RDS_BUFF_SIZE]);/*Block error rate*/
 
     FM_ASSERT(pRx_rds);
     FM_ASSERT(pGlobal_rds);
@@ -696,7 +697,7 @@ static void fm_rx_decode_rds(uint8 *pRx_rds, fm_rds_data *pGlobal_rds)
        )
     {        
         /*Program Identification code in block A*/
-        uint16 received_program_code=((pRx_rds[BLKA_INDEX]<<8)|(pRx_rds[BLKA_INDEX+1]));
+        u16 received_program_code=((pRx_rds[BLKA_INDEX]<<8)|(pRx_rds[BLKA_INDEX+1]));
         
         /*Stop RDS timeout msg as we started receiving RDS*/
         MessageCancelAll(gFmRxPlugInTask, FMRX_RDS_CANCEL_MSG);
@@ -716,11 +717,11 @@ static void fm_rx_decode_rds(uint8 *pRx_rds, fm_rds_data *pGlobal_rds)
             ((bler&RDS_BLER_BLKB_MASK)!=RDS_BLER_UNCORRECTABLE))
         {    
             /*Get the program type in block B - response 6 & 7 contains program type*/  
-            uint16 program_type=((pRx_rds[BLKB_INDEX]&PROGRAM_TYPE_MASK1)<<PROGRAM_TYPE_OFFSET1)|
+            u16 program_type=((pRx_rds[BLKB_INDEX]&PROGRAM_TYPE_MASK1)<<PROGRAM_TYPE_OFFSET1)|
                                 ((pRx_rds[BLKB_INDEX+1]&PROGRAM_TYPE_MASK2)>>PROGRAM_TYPE_OFFSET2);
             
             /*Get the group type code in block B - response 6 contains group type*/
-            uint16 group_type=(pRx_rds[BLKB_INDEX]>>3);
+            u16 group_type=(pRx_rds[BLKB_INDEX]>>3);
 
             FM_DEBUG(("NEW BLK B received\n"));
             FM_DEBUG(("program_type decoded %d \n",program_type));
@@ -739,7 +740,7 @@ static void fm_rx_decode_rds(uint8 *pRx_rds, fm_rds_data *pGlobal_rds)
                     MAKE_FM_MESSAGE_WITH_LEN(FM_PLUGIN_RDS_IND, MAX_PROGRAM_TYPE+1);
                     message->rds_type=FMRX_RDS_PROGRAM_TYPE;
                     message->data_len=MAX_PROGRAM_TYPE+1;
-                    memcpy(message->data, (uint8*)pProgramType[program_type], MAX_PROGRAM_TYPE+1);
+                    memcpy(message->data, (u8*)pProgramType[program_type], MAX_PROGRAM_TYPE+1);
                     FM_DEBUG(("RT data sent to Headset app %s \n", message->data));
                     MessageSend(fm_rx_data->app_task, FM_PLUGIN_RDS_IND, message);
                 }
@@ -784,8 +785,8 @@ RETURNS
 */ 
 static void fm_rx_check_rds_status(void)
 {
-    uint8 cmd[2];
-    uint16 ack = 0;
+    u8 cmd[2];
+    u16 ack = 0;
 
     /*It is possible that even after a power down, status for a previous request may come*/
     /*Check for null pointer*/
@@ -811,7 +812,7 @@ static void fm_rx_check_rds_status(void)
 
 #ifdef DEBUG_FM
     {
-        uint8 count;
+        u8 count;
         for(count=0; count < FMRX_MAX_RDS_BUFF_SIZE; count++)
         {
             FM_DEBUG(("RDS Byte:%d  Value:0x%x \n", count, fm_rx_data->rx_buff[count]));
@@ -923,9 +924,9 @@ DESCRIPTION
 RETURNS
     whether command was sent or not
 */
-static bool fm_rx_tune(uint16 freq)
+static bool fm_rx_tune(u16 freq)
 {
-    uint8 fm_data[FMRX_TUNE_LEN];
+    u8 fm_data[FMRX_TUNE_LEN];
     FM_DEBUG(("fm_rx_tune 0x%x\n", freq));
     
     fm_data[0] = FMRX_FM_TUNE_FREQ;
@@ -948,7 +949,7 @@ RETURNS
 */
 static bool fm_rx_seek(fm_rx_tune_state UpDn)
 {
-    uint8 fm_data[FMRX_SEEK_LEN];
+    u8 fm_data[FMRX_SEEK_LEN];
 
     if (UpDn==FMRX_SEEKUP)
     {

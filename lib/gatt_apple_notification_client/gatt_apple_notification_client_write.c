@@ -45,7 +45,7 @@ void makeAncsWriteCPCfmMsg(GANCS *ancs, gatt_ancs_status_t status)
  */
 static gatt_ancs_status_t get_ancs_error_code(gatt_status_t gatt_status)
 {
-    switch((uint8)gatt_status)
+    switch((u8)gatt_status)
     {
         case gatt_status_success: return gatt_ancs_status_success;
         case 0xa0:return gatt_ancs_status_unknown_command;
@@ -90,16 +90,16 @@ static void handleWriteControlPointResp(GANCS *ancs, const GATT_MANAGER_WRITE_CH
     makeAncsWriteCPCfmMsg(ancs,get_ancs_error_code(write_cfm->status));
 }
 
-static bool writeClientValue(GANCS *ancs, uint16 handle, uint16 size_value, uint8* value)
+static bool writeClientValue(GANCS *ancs, u16 handle, u16 size_value, u8* value)
 {
     GattManagerWriteCharacteristicValue((Task)&ancs->lib_task, handle, size_value, value);
     return TRUE;
 }
 
 /****************************************************************************/
-bool writeClientConfigNotifyValue(GANCS *ancs, bool notifications_enable, uint16 handle)
+bool writeClientConfigNotifyValue(GANCS *ancs, bool notifications_enable, u16 handle)
 {
-    uint8 value[2];
+    u8 value[2];
     
     value[1] = 0;
     value[0] = notifications_enable ? ANCS_NOTIFICATION_VALUE : 0;
@@ -108,9 +108,9 @@ bool writeClientConfigNotifyValue(GANCS *ancs, bool notifications_enable, uint16
 }
 
 /****************************************************************************/
-bool writeClientConfigIndValue(GANCS *ancs, bool notifications_enable, uint16 handle)
+bool writeClientConfigIndValue(GANCS *ancs, bool notifications_enable, u16 handle)
 {
-    uint8 value[2];
+    u8 value[2];
     
     value[0] = 0;
     value[1] = notifications_enable ? ANCS_INDICATION_VALUE : 0;
@@ -120,9 +120,9 @@ bool writeClientConfigIndValue(GANCS *ancs, bool notifications_enable, uint16 ha
 
 /****************************************************************************/
 bool ancsWriteCharValue(GANCS *ancs, const ANCS_INTERNAL_MSG_WRITE_CP_CHARACTERISTIC_T* req,
-                                                         uint16 handle)
+                                                         u16 handle)
 {
-    return writeClientValue(ancs, handle, req->size_command_data, (uint8*)req->command_data);
+    return writeClientValue(ancs, handle, req->size_command_data, (u8*)req->command_data);
 }
 
 /****************************************************************************/
@@ -159,9 +159,9 @@ Public API
 
 /****************************************************************************/
 void GattAncsGetNotificationAttributes(const GANCS *const ancs, 
-                                                                       uint32 notification_uid, 
-                                                                       uint16 size_attribute_list, 
-                                                                       uint8 *attribute_list)
+                                                                       u32 notification_uid, 
+                                                                       u16 size_attribute_list, 
+                                                                       u8 *attribute_list)
 {
     /* First find the size of attr list */
     MAKE_APPLE_NOTIFICATION_MESSAGE_WITH_LEN(ANCS_INTERNAL_MSG_WRITE_CP_CHARACTERISTIC, CALCULATE_SIZEOF_GET_NOTIFICATION_ATTRIBUTES(size_attribute_list));
@@ -178,10 +178,10 @@ void GattAncsGetNotificationAttributes(const GANCS *const ancs,
 
 /****************************************************************************/
 void GattAncsGetAppAttributes(const GANCS *const ancs, 
-                                                          uint16 size_app_id, 
-                                                          uint8 * app_id, 
-                                                          uint16 size_attribute_list, 
-                                                          uint8 *attribute_list)
+                                                          u16 size_app_id, 
+                                                          u8 * app_id, 
+                                                          u16 size_attribute_list, 
+                                                          u8 *attribute_list)
 {
     /* Only if valid app_id */
     if(size_app_id)
@@ -197,7 +197,7 @@ void GattAncsGetAppAttributes(const GANCS *const ancs,
 }
 
 void GattAncsPerformNotificationAction(const GANCS *const ancs, 
-                                                                          uint32 notification_uid, 
+                                                                          u32 notification_uid, 
                                                                           gatt_ancs_action_id action_id)
 {
     MAKE_APPLE_NOTIFICATION_MESSAGE_WITH_LEN(ANCS_INTERNAL_MSG_WRITE_CP_CHARACTERISTIC, CALCULATE_SIZEOF_PERFORM_NOTIFICATION_ACTION);

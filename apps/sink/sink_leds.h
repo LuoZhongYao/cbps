@@ -27,7 +27,7 @@ DESCRIPTION
 RETURNS
 	void
 */
-void PioSetLedPin ( uint16 pPIO , bool pOnOrOff ) ;
+void PioSetLedPin ( u16 pPIO , bool pOnOrOff ) ;
 
 /****************************************************************************
 NAME	
@@ -39,7 +39,7 @@ DESCRIPTION
 RETURNS
 	void
 */
-void PioSetDimState ( uint16 pPIO );
+void PioSetDimState ( u16 pPIO );
 
 
 
@@ -65,7 +65,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void ledsIndicateLedsPattern(LEDPattern_t *lPattern, uint8 lIndex, IndicationType_t Ind_type);
+void ledsIndicateLedsPattern(LEDPattern_t *lPattern, u8 lIndex, IndicationType_t Ind_type);
         
 
 /****************************************************************************
@@ -127,7 +127,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void LedsSetLedActivity ( LEDActivity_t * pLed , IndicationType_t pType , uint16 pIndex , uint16 pDimTime) ;
+void LedsSetLedActivity ( LEDActivity_t * pLed , IndicationType_t pType , u16 pIndex , u16 pDimTime) ;
 
 /****************************************************************************
 NAME 
@@ -152,7 +152,7 @@ DESCRIPTION
 RETURNS
     true or false
 */
-bool isOverideFilterActive ( uint8 Led );
+bool isOverideFilterActive ( u8 Led );
 
 /****************************************************************************
 NAME 
@@ -165,7 +165,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void LedsIndicateError ( const uint16 errId ) ;
+void LedsIndicateError ( const u16 errId ) ;
 
 #endif
 

@@ -33,8 +33,8 @@ DESCRIPTION
     This function is called to send a UnitInfo response.
 */
 void sendUnitInfoResponse(AVRCP *avrcp, bool accept, 
-                          avc_subunit_type unit_type, uint8 unit,
-                          uint32 company_id);
+                          avc_subunit_type unit_type, u8 unit,
+                          u32 company_id);
 
 
 /****************************************************************************
@@ -44,7 +44,7 @@ NAME
 DESCRIPTION
     This function is called to send a SubunitInfo response.
 */
-void sendSubunitInfoResponse(AVRCP *avrcp, bool accept, const uint8 *page_data);
+void sendSubunitInfoResponse(AVRCP *avrcp, bool accept, const u8 *page_data);
 
 
 /****************************************************************************
@@ -66,7 +66,7 @@ DESCRIPTION
     This function is called to send an GetCaps response.
 */
 void avrcpSendGetCapsResponse(AVRCP *avrcp, avrcp_response_type response,
-                             avrcp_capability_id caps, uint16 size_caps_list,
+                             avrcp_capability_id caps, u16 size_caps_list,
                              Source caps_list);
 
 
@@ -79,8 +79,8 @@ DESCRIPTION
     This function is called to send an GetElements response.
 */
 void sendGetElementsResponse(AVRCP *avrcp, avrcp_response_type response,
-                             uint16 number_of_attributes, 
-                             uint16 size_attributes, Source attributes);
+                             u16 number_of_attributes, 
+                             u16 size_attributes, Source attributes);
 
 
 /****************************************************************************
@@ -101,7 +101,7 @@ DESCRIPTION
     This function is called to send a PlayStatus response.
 */
 void sendPlayStatusResponse(AVRCP *avrcp, avrcp_response_type response,
-                            uint32 song_length, uint32 song_elapsed,
+                            u32 song_length, u32 song_elapsed,
                             avrcp_play_status play_status);
 
 
@@ -113,7 +113,7 @@ DESCRIPTION
     This function is called to send a ListAttribute response.
 */
 void sendListAttrResponse(AVRCP *avrcp, avrcp_response_type response,
-                         uint16 size_attributes, Source attributes);
+                         u16 size_attributes, Source attributes);
 
 
 /****************************************************************************
@@ -124,7 +124,7 @@ DESCRIPTION
     This function is called to send a ListValues response.
 */
 void sendListValuesResponse(AVRCP *avrcp, avrcp_response_type response, 
-                            uint16 size_values, Source values);
+                            u16 size_values, Source values);
 
 
 /****************************************************************************
@@ -135,7 +135,7 @@ DESCRIPTION
     This function is called to send a GetValues response.
 */
 void sendGetValuesResponse(AVRCP *avrcp, avrcp_response_type response,
-                           uint16 size_values, Source values);
+                           u16 size_values, Source values);
 
 
 /****************************************************************************
@@ -156,8 +156,8 @@ DESCRIPTION
     This function is called to send a GetAttributeText response.
 */
 void sendGetAttributeTextResponse(AVRCP *avrcp, avrcp_response_type response,
-                                  uint16 number_of_attributes, 
-                                  uint16 size_attributes, Source attributes);
+                                  u16 number_of_attributes, 
+                                  u16 size_attributes, Source attributes);
 
 
 /****************************************************************************
@@ -168,7 +168,7 @@ DESCRIPTION
     This function is called to send a GetValueText response.
 */
 void sendGetValueTextResponse(AVRCP *avrcp, avrcp_response_type response, 
-                              uint16 number_of_values, uint16 size_values, 
+                              u16 number_of_values, u16 size_values, 
                               Source values);
 
 /*************************************************************************
@@ -191,7 +191,7 @@ void avrcpSendEventResponse(AVRCP                   *avrcp,
 ****************************************************************************/
 void avrcpSendMetaDataControlResponse(AVRCP                   *avrcp,
                                       avrcp_response_type      response,
-                                      uint16                  pdu_id);
+                                      u16                  pdu_id);
 
 #endif /* !AVRCP_CT_ONLY_LIB*/
 

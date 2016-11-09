@@ -70,7 +70,7 @@ typedef struct
 {
     unsigned                unused:13;
     battery_level_source    sources:3;
-    uint16                  event;        /* Event to generate */
+    u16                  event;        /* Event to generate */
 } sink_battery_setting;
 
 typedef struct
@@ -87,8 +87,8 @@ typedef struct
 
 typedef struct
 {
-    uint16 max_battery_v;
-    uint16 min_battery_v;
+    u16 max_battery_v;
+    u16 min_battery_v;
 } sink_battery_limits;
 
 
@@ -324,7 +324,7 @@ RETURNS
     The current battery voltage
 */
 #ifdef ENABLE_BATTERY_OPERATION
-uint16 powerManagerReadVbatVoltage(void);
+u16 powerManagerReadVbatVoltage(void);
 #else
 #define powerManagerReadVbatVoltage() (0)
 #endif
@@ -341,7 +341,7 @@ RETURNS
     BATTERY_LEVEL_INVALID on invalid battery configuration.
 */
 #ifdef ENABLE_BATTERY_OPERATION
-uint16 powerManagerBatteryLevelAsPercentage(void);
+u16 powerManagerBatteryLevelAsPercentage(void);
 #else
 #define powerManagerBatteryLevelAsPercentage() (BATTERY_LEVEL_INVALID)
 #endif

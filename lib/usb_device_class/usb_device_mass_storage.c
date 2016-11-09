@@ -81,9 +81,9 @@ static void massStorageDefaultHandler(Task task, MessageId id, Message message);
 static void massStorageBulkHandler(Task task, MessageId id, Message message);
 
 
-static void send_bulk_data(uint8 *data, uint16 size_data)
+static void send_bulk_data(u8 *data, u16 size_data)
 {
-    uint8 *ptr;
+    u8 *ptr;
     Sink ep_sink = StreamUsbEndPointSink(end_point_bulk_out);
     
     /* wait for free space in Sink */
@@ -94,7 +94,7 @@ static void send_bulk_data(uint8 *data, uint16 size_data)
         MS_DEBUG(("USB: sending bulk data\n"));
         memmove(ptr, data, size_data);
         {
-            uint16 i;
+            u16 i;
             for (i = 0; i < size_data; i++)
                 MS_DEBUG(("%x ",ptr[i]));
             MS_DEBUG(("\n"));
@@ -104,26 +104,26 @@ static void send_bulk_data(uint8 *data, uint16 size_data)
     }    
 }
 
-static uint16 scsi_inquiry(uint8 *data, uint32 dataXferLen)
+static u16 scsi_inquiry(u8 *data, u32 dataXferLen)
 { 
-    uint16 allocation_length = (data[2] << 8) | data[3];
+    u16 allocation_length = (data[2] << 8) | data[3];
     
     if ((allocation_length < SIZE_INQUIRY_RESPONSE) || (dataXferLen < SIZE_INQUIRY_RESPONSE))
-        send_bulk_data((uint8 *)&inquiry_response, allocation_length < dataXferLen ? allocation_length : dataXferLen);  
+        send_bulk_data((u8 *)&inquiry_response, allocation_length < dataXferLen ? allocation_length : dataXferLen);  
     else
-        send_bulk_data((uint8 *)&inquiry_response, SIZE_INQUIRY_RESPONSE);
+        send_bulk_data((u8 *)&inquiry_response, SIZE_INQUIRY_RESPONSE);
     
     return CSW_STATUS_PASSED;
 }
 
-static uint16 scsi_request_response(uint8 *data, uint32 dataXferLen)
+static u16 scsi_request_response(u8 *data, u32 dataXferLen)
 {
-    uint16 allocation_length = data[3];
+    u16 allocation_length = data[3];
     
     if ((allocation_length < SIZE_REQUEST_SENSE_RESPONSE) || (dataXferLen < SIZE_REQUEST_SENSE_RESPONSE))
-        send_bulk_data((uint8 *)&ms->req_sense_rsp, allocation_length < dataXferLen ? allocation_length : dataXferLen);  
+        send_bulk_data((u8 *)&ms->req_sense_rsp, allocation_length < dataXferLen ? allocation_length : dataXferLen);  
     else
-        send_bulk_data((uint8 *)&ms->req_sense_rsp, SIZE_REQUEST_SENSE_RESPONSE);  
+        send_bulk_data((u8 *)&ms->req_sense_rsp, SIZE_REQUEST_SENSE_RESPONSE);  
     
     return CSW_STATUS_PASSED;
 }
@@ -137,16 +137,16 @@ static void initialise_request_sense_response(void)
     ms->req_sense_rsp.AddSenseLen[0] = 0xa; /* n-7 = SIZE_REQUEST_SENSE_RESPONSE - 1 - 7 */
 }
 
-static uint16 scsi_read(uint8 *data, uint32 dataXferLen, bytes_scsi version)
+static u16 scsi_read(u8 *data, u32 dataXferLen, bytes_scsi version)
 {
-    uint32 lba = (((uint32)data[1] << 24) & 0xff000000) | (((uint32)data[2] << 16) & 0xff0000) | (((uint32)data[3] << 8) & 0xff00) | (data[4] & 0xff);
-    uint32 transfer_length;
-    uint16 status = CSW_STATUS_PASSED;  
+    u32 lba = (((u32)data[1] << 24) & 0xff000000) | (((u32)data[2] << 16) & 0xff0000) | (((u32)data[3] << 8) & 0xff00) | (data[4] & 0xff);
+    u32 transfer_length;
+    u16 status = CSW_STATUS_PASSED;  
     
     if (version == BYTES_SCSI12)
-        transfer_length = (((uint32)data[5] << 24) & 0xff000000) | (((uint32)data[6] << 16) & 0xff0000) | (((uint32)data[7] << 8) & 0xff00) | (data[8] & 0xff);
+        transfer_length = (((u32)data[5] << 24) & 0xff000000) | (((u32)data[6] << 16) & 0xff0000) | (((u32)data[7] << 8) & 0xff00) | (data[8] & 0xff);
     else
-        transfer_length = (((uint16)data[6] << 8) & 0xff00) | (data[7] & 0xff);
+        transfer_length = (((u16)data[6] << 8) & 0xff00) | (data[7] & 0xff);
 
     if ((transfer_length * Fat16_GetBlockSize()) > dataXferLen)
     {        
@@ -165,11 +165,11 @@ static uint16 scsi_read(uint8 *data, uint32 dataXferLen, bytes_scsi version)
     return status;
 }
 
-static uint16 scsi_read_capacity10(uint8 *data, uint32 dataXferLen)
+static u16 scsi_read_capacity10(u8 *data, u32 dataXferLen)
 {
     ReadCapacity10Response response;
-    uint32 block_size = Fat16_GetBlockSize();
-    uint32 last_lba = Fat16_GetTotalBlocks() - 1;
+    u32 block_size = Fat16_GetBlockSize();
+    u32 last_lba = Fat16_GetTotalBlocks() - 1;
        
     response.LBA[0] = (last_lba & 0xff000000) >> 24;
     response.LBA[1] = (last_lba & 0xff0000) >> 16;
@@ -182,18 +182,18 @@ static uint16 scsi_read_capacity10(uint8 *data, uint32 dataXferLen)
     response.BlockLength[3] = block_size & 0xff;
     
     if (dataXferLen < SIZE_READ_CAPACITY10_RESPONSE)
-        send_bulk_data((uint8 *)&response, dataXferLen); 
+        send_bulk_data((u8 *)&response, dataXferLen); 
     else
-        send_bulk_data((uint8 *)&response, SIZE_READ_CAPACITY10_RESPONSE);  
+        send_bulk_data((u8 *)&response, SIZE_READ_CAPACITY10_RESPONSE);  
  
     return CSW_STATUS_PASSED;
 }
 
-static uint16 scsi_read_capacity16(uint8 *data, uint32 dataXferLen)
+static u16 scsi_read_capacity16(u8 *data, u32 dataXferLen)
 {
     ReadCapacity16Response response;
-    uint32 block_size = Fat16_GetBlockSize();
-    uint32 last_lba = Fat16_GetTotalBlocks() - 1;
+    u32 block_size = Fat16_GetBlockSize();
+    u32 last_lba = Fat16_GetTotalBlocks() - 1;
            
     response.LBA[0] = 0x00;
     response.LBA[1] = 0x00;
@@ -214,18 +214,18 @@ static uint16 scsi_read_capacity16(uint8 *data, uint32 dataXferLen)
     memset(&response.Reserved, 0, sizeof(response.Reserved));
     
     if (dataXferLen < SIZE_READ_CAPACITY16_RESPONSE)
-        send_bulk_data((uint8 *)&response, dataXferLen); 
+        send_bulk_data((u8 *)&response, dataXferLen); 
     else
-        send_bulk_data((uint8 *)&response, SIZE_READ_CAPACITY16_RESPONSE);  
+        send_bulk_data((u8 *)&response, SIZE_READ_CAPACITY16_RESPONSE);  
  
     return CSW_STATUS_PASSED;
 }
 
-static uint16 scsi_read_format_capacities(uint8 *data, uint32 dataXferLen)
+static u16 scsi_read_format_capacities(u8 *data, u32 dataXferLen)
 {
     ReadFormatCapacitiesResponse response;
-    uint32 block_size = Fat16_GetBlockSize();
-    uint32 total_blocks = Fat16_GetTotalBlocks();
+    u32 block_size = Fat16_GetBlockSize();
+    u32 total_blocks = Fat16_GetTotalBlocks();
     
     /* Capacity List Header */
     response.CapacityListHeader[0] = 0x00;
@@ -260,21 +260,21 @@ static uint16 scsi_read_format_capacities(uint8 *data, uint32 dataXferLen)
     response.FormattableCapacityDescriptor[7] = block_size & 0xff;
     
     if (dataXferLen < SIZE_READ_FORMAT_CAPACITIES_RESPONSE)
-        send_bulk_data((uint8 *)&response, dataXferLen); 
+        send_bulk_data((u8 *)&response, dataXferLen); 
     else
-        send_bulk_data((uint8 *)&response, SIZE_READ_FORMAT_CAPACITIES_RESPONSE); 
+        send_bulk_data((u8 *)&response, SIZE_READ_FORMAT_CAPACITIES_RESPONSE); 
     
     return CSW_STATUS_PASSED;
 }
 
-static uint16 scsi_mode_sense(uint8 *data, uint32 dataXferLen, bytes_scsi version)
+static u16 scsi_mode_sense(u8 *data, u32 dataXferLen, bytes_scsi version)
 {
-    uint8 page_code = data[1] & 0x3f;
-    uint8 response[12];
-    uint16 data_length = 0;
-    uint16 size_header = SIZE_MODE_PARAM_HEADER;
+    u8 page_code = data[1] & 0x3f;
+    u8 response[12];
+    u16 data_length = 0;
+    u16 size_header = SIZE_MODE_PARAM_HEADER;
     ModeParameterHeader header;
-    uint16 allocation_length;
+    u16 allocation_length;
     
     if (version == BYTES_SCSI10)
         allocation_length = (data[6] << 8) | data[7];
@@ -302,8 +302,8 @@ static uint16 scsi_mode_sense(uint8 *data, uint32 dataXferLen, bytes_scsi versio
             page.Reserved2[3] = 0x00;
             data_length = SIZE_PAGE_TIMER_PROTECT_RESPONSE;
             
-            memcpy(response, (uint8 *)&header, SIZE_MODE_PARAM_HEADER);
-            memcpy(response + SIZE_MODE_PARAM_HEADER, (uint8 *)&page, SIZE_PAGE_TIMER_PROTECT_RESPONSE);
+            memcpy(response, (u8 *)&header, SIZE_MODE_PARAM_HEADER);
+            memcpy(response + SIZE_MODE_PARAM_HEADER, (u8 *)&page, SIZE_PAGE_TIMER_PROTECT_RESPONSE);
             break;
         }
         case PAGE_CODE_CACHING:
@@ -316,7 +316,7 @@ static uint16 scsi_mode_sense(uint8 *data, uint32 dataXferLen, bytes_scsi versio
             
             data_length = 0;
            
-            memcpy(response, (uint8 *)&header, SIZE_MODE_PARAM_HEADER);
+            memcpy(response, (u8 *)&header, SIZE_MODE_PARAM_HEADER);
                        
             break;
         }
@@ -327,23 +327,23 @@ static uint16 scsi_mode_sense(uint8 *data, uint32 dataXferLen, bytes_scsi versio
     }
     
     if ((allocation_length < (size_header + data_length)) || (dataXferLen < (size_header + data_length)))
-        send_bulk_data((uint8 *)&response, allocation_length < dataXferLen ? allocation_length : dataXferLen);
+        send_bulk_data((u8 *)&response, allocation_length < dataXferLen ? allocation_length : dataXferLen);
     else
-        send_bulk_data((uint8 *)&response, size_header + data_length);
+        send_bulk_data((u8 *)&response, size_header + data_length);
     
     return CSW_STATUS_PASSED;
 }
 
 
-static uint16 scsi_write(uint8 *data, uint32 dataXferLen, bytes_scsi version)
+static u16 scsi_write(u8 *data, u32 dataXferLen, bytes_scsi version)
 {
-    uint32 transfer_length;
-    uint16 status = CSW_STATUS_PASSED;  
+    u32 transfer_length;
+    u16 status = CSW_STATUS_PASSED;  
     
     if (version == BYTES_SCSI12)
-        transfer_length = (((uint32)data[5] << 24) & 0xff000000) | (((uint32)data[6] << 16) & 0xff0000) | (((uint32)data[7] << 8) & 0xff00) | (data[8] & 0xff);
+        transfer_length = (((u32)data[5] << 24) & 0xff000000) | (((u32)data[6] << 16) & 0xff0000) | (((u32)data[7] << 8) & 0xff00) | (data[8] & 0xff);
     else
-        transfer_length = (((uint16)data[6] << 8) & 0xff00) | (data[7] & 0xff);
+        transfer_length = (((u16)data[6] << 8) & 0xff00) | (data[7] & 0xff);
         
     if ((transfer_length * Fat16_GetBlockSize()) > dataXferLen)
         status = CSW_STATUS_FAILED;
@@ -352,19 +352,19 @@ static uint16 scsi_write(uint8 *data, uint32 dataXferLen, bytes_scsi version)
 }
 
 
-static void process_cbw(Source req, uint16 packet_size)
+static void process_cbw(Source req, u16 packet_size)
 {
-    uint16 i;
+    u16 i;
     UsbCbwType cbw;
     UsbCswType csw;
-    uint8 res0=0;
-    uint8 res1=0;
-    uint8 res2=0;
-    uint8 res3=0;
-    const uint8 *ptr = SourceMap(req);
+    u8 res0=0;
+    u8 res1=0;
+    u8 res2=0;
+    u8 res3=0;
+    const u8 *ptr = SourceMap(req);
     bool found = FALSE;
-    uint16 status_code = CSW_STATUS_PASSED;
-    uint32 dataXferLen;
+    u16 status_code = CSW_STATUS_PASSED;
+    u32 dataXferLen;
   
     /* check for CBW */
     if (packet_size >= CBW_SIZE)
@@ -429,8 +429,8 @@ static void process_cbw(Source req, uint16 packet_size)
     
         /* the CBW has been verified so start building CSW */
         
-        dataXferLen = ((uint32)cbw.dCBWDataTransferLength[3] << 24) | 
-                        ((uint32)cbw.dCBWDataTransferLength[2] << 16) | 
+        dataXferLen = ((u32)cbw.dCBWDataTransferLength[3] << 24) | 
+                        ((u32)cbw.dCBWDataTransferLength[2] << 16) | 
                         (cbw.dCBWDataTransferLength[1] << 8) | 
                         cbw.dCBWDataTransferLength[0];
         
@@ -611,7 +611,7 @@ static void process_cbw(Source req, uint16 packet_size)
         csw.dCSWDataResidue[2] = res2;
         csw.dCSWDataResidue[3] = res3;
         csw.bCSWStatus[0] = status_code;
-        send_bulk_data((uint8 *)&csw, CSW_SIZE);             
+        send_bulk_data((u8 *)&csw, CSW_SIZE);             
 
         SourceDrop(req, CBW_SIZE);
         MS_DEBUG(("\n    discard CBW, SourceDrop:%d\n", CBW_SIZE));
@@ -626,7 +626,7 @@ static void process_cbw(Source req, uint16 packet_size)
 
 static void handleMassStorageDefaultRequest(Source req)
 {
-    uint16 packet_size;
+    u16 packet_size;
     Sink sink = StreamSinkFromSource(req);
 
     /* Check for outstanding Class requests */
@@ -661,7 +661,7 @@ static void handleMassStorageDefaultRequest(Source req)
                 MS_DEBUG(("USB: GET_MAX_LUN\n"));
                 if(usbresp.original_request.wValue == 0)
                 {
-                    uint8 *ptr = claimSink(sink, 1);
+                    u8 *ptr = claimSink(sink, 1);
                     if (ptr != 0)
                     {
                         ptr[0] = MAX_LUN - 1; /* Number of Logical Units supported - 1 */           
@@ -694,7 +694,7 @@ static void handleMassStorageDefaultRequest(Source req)
 
 static void handleMassStorageBulkRequest(Source req)
 {    
-    uint16 packet_size;
+    u16 packet_size;
   
     /* Check for outstanding Class requests */
     while ((packet_size = SourceBoundary(req)) != 0)
@@ -772,7 +772,7 @@ bool usbEnumerateMassStorage(void)
 }
 
 
-bool usbConfigureMassStorage(uint16 config, uint16 value_16, uint32 value_32, uint8 *params)
+bool usbConfigureMassStorage(u16 config, u16 value_16, u32 value_32, u8 *params)
 {
     switch (config)
     {

@@ -39,7 +39,7 @@ PARAMETERS
 RETURNS
     TRUE if the message was sent, FALSE otherwise.
 */
-bool gattServerSendReadClientConfigInd(Task task, uint16 cid, uint16  handle);
+bool gattServerSendReadClientConfigInd(Task task, u16 cid, u16  handle);
 
 
 /*******************************************************************************
@@ -58,7 +58,7 @@ PARAMETERS
 RETURNS
     TRUE if the message was sent, FALSE otherwise.
 */
-bool gattServerSendWriteClientConfigInd(Task task, uint16 cid, uint16 value);
+bool gattServerSendWriteClientConfigInd(Task task, u16 cid, u16 value);
 
 
 /*******************************************************************************
@@ -78,7 +78,7 @@ RETURNS
     TRUE if the message was sent, FALSE otherwise.
 */
 bool gattServerSendServiceChangedIndicationCfm(Task task,
-                                               uint16 cid,
+                                               u16 cid,
                                                gatt_status_t status);
 
 #endif

@@ -31,9 +31,9 @@ static const TaskData avrcpInitTask = {avrcpInitHandler};
  *  Initialize the profile settings 
  **************************************************************************/
 static void avrcpInitProfile( avrcp_device_role role,
-                             uint8 tg_features, 
-                             uint8 ct_features, 
-                             uint8 extensions )
+                             u8 tg_features, 
+                             u8 ct_features, 
+                             u8 extensions )
 {
     /* Feature bits and extensions need to be aligned only for 
        Target Category 1 or 3 */
@@ -90,7 +90,7 @@ static void avrcpInitProfile( avrcp_device_role role,
  **************************************************************************/
 void avrcpHandleInternalInitReq( const AVRCP_INTERNAL_INIT_REQ_T *req)
 {
-    uint16 psm = AVCTP_PSM;
+    u16 psm = AVCTP_PSM;
     gAvrcpDeviceSettings.app_task = req->connectionTask;
     avrcpInitProfile(req->init_params.device_type,
                     req->init_params.supported_target_features,
@@ -279,7 +279,7 @@ void avrcpResetAvbpValues(AVBP* avbp)
 ****************************************************************************/
 void avrcpInitBrowsing(AVRCP *avrcp)
 {
-    AVBP *avbp= (AVBP*) (((uint16*)avrcp) + sizeof(AVRCP));
+    AVBP *avbp= (AVBP*) (((u16*)avrcp) + sizeof(AVRCP));
 
     /* Set Browsing Channel Profile Handler */
     avbp->task.handler = avbpProfileHandler;
@@ -301,7 +301,7 @@ void avrcpInitBrowsing(AVRCP *avrcp)
 *  to the application.
 ****************************************************************************/
 void avrcpSendInitCfmToClient( avrcp_unreg_status   state,
-                               uint32             sdp_handle, 
+                               u32             sdp_handle, 
                                avrcp_status_code  status)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_INIT_CFM);

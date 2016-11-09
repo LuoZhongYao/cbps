@@ -41,7 +41,7 @@ DESCRIPTION
 ****************************************************************************/
 void MusicConnectFaststreamSource(A2dpPluginConnectParams *codecData )
 {
-    uint32 voice_rate = 16000;
+    u32 voice_rate = 16000;
     DECODER_t * DECODER = CsrA2dpDecoderGetDecoderData();
 
     /*  Initialise PCM. Output stereo at 44k1Hz or 48kHz, input from left ADC at 16kHz.  */

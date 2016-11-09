@@ -42,7 +42,7 @@ DESCRIPTION:
         If device is removed, returns TRUE
         If device was not found in list, returns FALSE
 */
-bool swatRemoveDevice(uint16 device_id);
+bool swatRemoveDevice(u16 device_id);
 
 
 /****************************************************************************

@@ -35,58 +35,58 @@ DESCRIPTION
 
 typedef struct __ble_configuration
 {
-    uint16 bonding_pairing_period_s;
-    uint16 bonding_connection_period_s;
-    uint16 scan_interval_fast;
-    uint16 scan_window_fast;
-    uint16 gap_role_switch_timer_s;
-    uint16 whitelist_scan_timeout_when_private_addr_s;
-    uint16 scan_timer_fast_s;
-    uint16 scan_interval_slow;
-    uint16 scan_window_slow;
-    uint16 adv_interval_min_fast;
-    uint16 adv_interval_max_fast;
-    uint16 adv_timer_fast_s;
-    uint16 adv_interval_min_slow;
-    uint16 adv_interval_max_slow;
+    u16 bonding_pairing_period_s;
+    u16 bonding_connection_period_s;
+    u16 scan_interval_fast;
+    u16 scan_window_fast;
+    u16 gap_role_switch_timer_s;
+    u16 whitelist_scan_timeout_when_private_addr_s;
+    u16 scan_timer_fast_s;
+    u16 scan_interval_slow;
+    u16 scan_window_slow;
+    u16 adv_interval_min_fast;
+    u16 adv_interval_max_fast;
+    u16 adv_timer_fast_s;
+    u16 adv_interval_min_slow;
+    u16 adv_interval_max_slow;
 } ble_configuration_t;
 
 
 typedef struct __ble_connection_initial_parameters
 {
-    uint16 conn_interval_min;
-    uint16 conn_interval_max;
-    uint16 conn_latency;
-    uint16 supervision_timeout;
-    uint16 conn_attempt_timeout;
-    uint16 conn_latency_max;
-    uint16 supervision_timeout_min;
-    uint16 supervision_timeout_max;
+    u16 conn_interval_min;
+    u16 conn_interval_max;
+    u16 conn_latency;
+    u16 supervision_timeout;
+    u16 conn_attempt_timeout;
+    u16 conn_latency_max;
+    u16 supervision_timeout_min;
+    u16 supervision_timeout_max;
 } ble_connection_initial_parameters_t; 
 
 
 typedef struct __ble_connection_update_parameters
 {
-    uint16 conn_interval_min;
-    uint16 conn_interval_max;
-    uint16 conn_latency;
-    uint16 supervision_timeout;
-    uint16 ce_length_min;
-    uint16 ce_length_max;
+    u16 conn_interval_min;
+    u16 conn_interval_max;
+    u16 conn_latency;
+    u16 supervision_timeout;
+    u16 ce_length_min;
+    u16 ce_length_max;
 } ble_connection_update_parameters_t;
 
 
 typedef struct __ble_advertising_parameters
 {
-    uint16 interval_min;
-    uint16 interval_max;
+    u16 interval_min;
+    u16 interval_max;
 } ble_advertising_parameters_t;
 
 
 typedef struct __ble_scanning_parameters
 {
-    uint16 interval;
-    uint16 window;
+    u16 interval;
+    u16 window;
 } ble_scanning_parameters_t;
 
 
@@ -117,12 +117,12 @@ typedef enum __ble_internal_message_id
 
 typedef struct __BLE_INTERNAL_MESSAGE_REDISCOVER_SERVER_SERVICES
 {
-    uint16 cid;
+    u16 cid;
 } BLE_INTERNAL_MESSAGE_REDISCOVER_SERVER_SERVICES_T;
 
 typedef struct __BLE_INTERNAL_MESSAGE_GATT_CLIENT_SERVICE_INITIALISED
 {
-    uint16 cid;
+    u16 cid;
 } BLE_INTERNAL_MESSAGE_GATT_CLIENT_SERVICE_INITIALISED_T;
 
 
@@ -263,7 +263,7 @@ RETURNS
     None
 */
 #ifdef GATT_ENABLED
-void sinkBleCentralConnCompleteEvent(uint16 cid);
+void sinkBleCentralConnCompleteEvent(u16 cid);
 #else
 #define sinkBleCentralConnCompleteEvent(cid) ((void)(0))
 #endif
@@ -386,7 +386,7 @@ RETURNS
     None
 */
 #ifdef GATT_ENABLED
-void sinkBleRemoteConnectionSuccessEvent(uint16 cid);
+void sinkBleRemoteConnectionSuccessEvent(u16 cid);
 #else
 #define sinkBleRemoteConnectionSuccessEvent(cid) ((void)(0))
 #endif
@@ -486,7 +486,7 @@ RETURNS
     None
 */
 #ifdef GATT_ENABLED
-void sinkBleRetryEncryptionEvent(uint16 cid);
+void sinkBleRetryEncryptionEvent(u16 cid);
 #else
 #define sinkBleRetryEncryptionEvent(cid) ((void)(0))
 #endif
@@ -565,7 +565,7 @@ RETURNS
     None.
 */
 #ifdef GATT_ENABLED
-void sinkBleSetAdvertisingParamsDefault(uint16 adv_interval_min, uint16 adv_interval_max);
+void sinkBleSetAdvertisingParamsDefault(u16 adv_interval_min, u16 adv_interval_max);
 #else
 #define sinkBleSetAdvertisingParamsDefault(adv_interval_min, adv_interval_max) ((void)(0))
 #endif
@@ -585,7 +585,7 @@ RETURNS
     None.
 */
 #ifdef GATT_ENABLED
-void sinkBleSetMasterConnectionParamsDefault(uint16 scan_interval, uint16 scan_window);
+void sinkBleSetMasterConnectionParamsDefault(u16 scan_interval, u16 scan_window);
 #else
 #define sinkBleSetMasterConnectionParamsDefault(scan_interval, scan_window) ((void)(0))
 #endif

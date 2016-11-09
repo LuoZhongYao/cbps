@@ -2,7 +2,7 @@
 Copyright (c) 2005 - 2015 Qualcomm Technologies International, Ltd.
 
 FILE NAME
-    sink_gatt.c        
+    sink_gatt.c
 
 DESCRIPTION
     Contains GATT functionality.
@@ -28,19 +28,19 @@ DESCRIPTION
 #ifdef DEBUG_GATT
 #define GATT_INFO(x) DEBUG(x)
 #define GATT_ERROR(x) DEBUG(x) TOLERATED_ERROR(x)
-#else 
-#define GATT_INFO(x) 
-#define GATT_ERROR(x) 
+#else
+#define GATT_INFO(x)
+#define GATT_ERROR(x)
 #endif
 
 
 /*******************************************************************************
 NAME
     handleGattConnectInd
-    
+
 DESCRIPTION
     Handle when GATT_CONNECT_IND message was received
-    
+
 PARAMETERS
     ind Pointer to a GATT_CONNECT_IND message
 */
@@ -55,10 +55,10 @@ static void handleGattConnectInd(const GATT_CONNECT_IND_T * ind)
 /*******************************************************************************
 NAME
     handleGattConnectCfm
-    
+
 DESCRIPTION
     Handle when GATT_CONNECT_CFM message was received
-    
+
 PARAMETERS
     cfm Pointer to a GATT_CONNECT_CFM_T message
 */
@@ -71,13 +71,13 @@ static void handleGattConnectCfm(const GATT_CONNECT_CFM_T * cfm)
 /*******************************************************************************
 NAME
     handleGattExchangeMtuInd
-    
+
 DESCRIPTION
     Handle when GATT_EXCHANGE_MTU_IND message was received
-    
+
 PARAMETERS
     ind Pointer to a GATT_EXCHANGE_MTU_IND message
-    
+
 RETURNS
     TRUE if the message was handled, FALSE otherwise
 */
@@ -93,10 +93,10 @@ static void handleGattExchangeMtuInd(const GATT_EXCHANGE_MTU_IND_T * ind)
 /*******************************************************************************
 
     handleGattExchangeMtuCfm
-            
+
 DESCRIPTION
     Handle when GATT_EXCHANGE_MTU_CFM message was received
-    
+
 PARAMETERS
     cfm Pointer to a GATT_EXCHANGE_MTU_CFM message
 */
@@ -122,28 +122,28 @@ static void handleGattExchangeMtuCfm(const GATT_EXCHANGE_MTU_CFM_T * cfm)
 /*******************************************************************************
 NAME
     handleGattDiscoverAllPrimaryServicesCfm
-    
+
 DESCRIPTION
     Handle when GATT_DISCOVER_ALL_PRIMARY_SERVICES_CFM message was received
-    
+
 PARAMETERS
     cfm Pointer to a GATT_DISCOVER_ALL_PRIMARY_SERVICES_CFM message
-    
+
 RETURNS
     void
 */
 static void handleGattDiscoverAllPrimaryServicesCfm(const GATT_DISCOVER_ALL_PRIMARY_SERVICES_CFM_T * cfm)
 {
     GATT_INFO(("GATT_DISCOVER_ALL_PRIMARY_SERVICES_CFM\n"));
-    
-    GATT_INFO(("   cid[0x%x] Start[0x%x] End[0x%x] more[%u]\n", 
+
+    GATT_INFO(("   cid[0x%x] Start[0x%x] End[0x%x] more[%u]\n",
                                                                 cfm->cid,
                                                                 cfm->handle,
                                                                 cfm->end,
                                                                 cfm->more_to_come
                                                                 ));
-    
-    gattClientStoreDiscoveredService(cfm->cid, cfm->uuid_type, (uint32*)&cfm->uuid[0], cfm->handle, cfm->end, cfm->more_to_come);
+
+    gattClientStoreDiscoveredService(cfm->cid, cfm->uuid_type, (u32*)&cfm->uuid[0], cfm->handle, cfm->end, cfm->more_to_come);
 }
 
 

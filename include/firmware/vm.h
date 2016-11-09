@@ -18,7 +18,7 @@
   @param c The character to output.
   @param channel The channel to output to.
 */
-void VmPutChar(uint16 channel, uint16 c);
+void VmPutChar(u16 channel, u16 c);
 
 /*!
   @brief Counts the maximum number of additional memory blocks which can be allocated
@@ -31,14 +31,14 @@ void VmPutChar(uint16 channel, uint16 c);
   See CS-110364-ANP "VM Memory Mapping and Memory Usage" for more
   detail.
 */
-uint16 VmGetAvailableAllocations(void);
+u16 VmGetAvailableAllocations(void);
 
 /*!
   @brief Read the current value of a 32-bit millisecond timer.
 
   Don't poll this; using MessageSendLater is much more efficient.
 */
-uint32 VmGetClock(void);
+u32 VmGetClock(void);
 
 /*!
   @brief Enables or disables deep sleep.
@@ -64,7 +64,7 @@ bool VmTransmitEnable(bool enabled);
 /*!
    @brief Allows the application to override the default specified by 
    PSKEY_LC_DEFAULT_TX_POWER.
-   @param power int16 The new default power to use in dBm.
+   @param power i16 The new default power to use in dBm.
 
    The default transmit power is used for paging, inquiry, and their responses,
    and as the initial power for new acl links. The value passed is rounded down to
@@ -74,7 +74,7 @@ bool VmTransmitEnable(bool enabled);
 
    @return TRUE on success, else FALSE.
 */
-bool VmTransmitPowerSetDefault(int16 power);
+bool VmTransmitPowerSetDefault(i16 power);
 
 /*!
    @brief Allows the application to override the maximum specified by 
@@ -91,24 +91,24 @@ bool VmTransmitPowerSetDefault(int16 power);
 
    @return TRUE on success, else FALSE.
 */
-bool VmTransmitPowerSetMaximum(int16 power);
+bool VmTransmitPowerSetMaximum(i16 power);
 
 /*!
    @brief Returns the current default power setting.
 */
-int16 VmTransmitPowerGetDefault(void);
+i16 VmTransmitPowerGetDefault(void);
 
 /*!
    @brief Returns the current maximum power setting.
 */
-int16 VmTransmitPowerGetMaximum(void);
+i16 VmTransmitPowerGetMaximum(void);
 
 /*!
   @brief Reads the internal temperature of BlueCore
 
   @return Approximate temperature in degrees Celsius, or INVALID_TEMPERATURE if it could not be read.
 */
-int16 VmGetTemperature(void);
+i16 VmGetTemperature(void);
 
 /*!
     @brief Enables the VM to set the PCM_CLK frequency when using
@@ -157,7 +157,7 @@ void VmAmuxClockEnable(bool enabled);
     provides the information that the battery library needs to adjust its
     readings appropriately.
 */
-uint16 VmReadVrefConstant(void);
+u16 VmReadVrefConstant(void);
 
 /*!
     @brief Sends an RFCOMM Bluestack primitive.
@@ -225,7 +225,7 @@ void *VmGetPointerFromHandle(void *handle);
     TSENSOR_PMU     Reads temp from PMU sensor
         xxx         All other sensor numbers return INVALID_SENSOR
 */
-int16 VmGetTemperatureBySensor(vm_temp_sensor sensor);
+i16 VmGetTemperatureBySensor(vm_temp_sensor sensor);
 
 /*!
   @brief Allows one #MESSAGE_TX_POWER_CHANGE_EVENT to be sent to the system task.
@@ -312,11 +312,11 @@ bool VmClearAdvertisingReportFilter(void);
 
   @param pattern_addr A pointer to the location where pattern data 
          is present. Each pattern data is 8bit data and no two pattern data 
-         should be packed inside uint16. BlueCore will only consider
+         should be packed inside u16. BlueCore will only consider
          lower 8 bit of each pattern data for pattern matching. If 
          pattern_addr is NULL, then no pattern matching.
 */
-bool VmAddAdvertisingReportFilter(uint16 operation,uint16 ad_type, uint16 interval, uint16 pattern_length,uint16 pattern_addr);
+bool VmAddAdvertisingReportFilter(u16 operation,u16 ad_type, u16 interval, u16 pattern_length,u16 pattern_addr);
 
 /*!
     @brief Returns a bit pattern representing the source of the voltage regulator 
@@ -334,7 +334,7 @@ bool VmAddAdvertisingReportFilter(uint16 operation,uint16 ad_type, uint16 interv
     @return  A bit pattern representing regulator enabling signals.  See the 
              #vm_power_enabler type definition.
 */
-uint16 VmGetPowerSource(void);
+u16 VmGetPowerSource(void);
 
 /*!
     @brief Retrives the tp_bdaddr value from the given CID value.
@@ -345,7 +345,7 @@ uint16 VmGetPowerSource(void);
     
     @return TRUE if an address was found for a given CID, FALSE otherwise. 
 */
-bool VmGetBdAddrtFromCid(uint16 cid, tp_bdaddr *tpaddr);
+bool VmGetBdAddrtFromCid(u16 cid, tp_bdaddr *tpaddr);
 
 /*!
   @brief By default, the VM software watchdog is disabled. Calling this trap with
@@ -430,7 +430,7 @@ bool VmGetBdAddrtFromCid(uint16 cid, tp_bdaddr *tpaddr);
     the VM must not return TRUE.
 
 */
-bool VmSoftwareWdKick(uint16 timeout);
+bool VmSoftwareWdKick(u16 timeout);
 
 /*!
     @brief Retrives public address for a given random address.

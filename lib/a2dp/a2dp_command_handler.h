@@ -56,7 +56,7 @@ void a2dpStreamStartResponse (const A2DP_INTERNAL_MEDIA_START_RES_T *res);
 void a2dpStreamRelease (const A2DP_INTERNAL_MEDIA_CLOSE_REQ_T *req);
 void a2dpStreamSuspend (const A2DP_INTERNAL_MEDIA_SUSPEND_REQ_T *req);
 void a2dpStreamReconfigure (const A2DP_INTERNAL_MEDIA_RECONFIGURE_REQ_T *req);
-void a2dpStreamDelayReport (remote_device *device, uint16 delay);
+void a2dpStreamDelayReport (remote_device *device, u16 delay);
 void a2dpStreamAbort (remote_device *device);
 void a2dpStreamReset (remote_device *device);
 

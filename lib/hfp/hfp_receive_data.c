@@ -38,7 +38,7 @@ RETURNS
 */
 void hfpHandleReceivedData(Source source)
 {
-    uint16 len;
+    u16 len;
     hfp_link_data* link = hfpGetLinkFromSink(StreamSinkFromSource(source));
     
     /* Ignore this if it's not for one of the HFP links */

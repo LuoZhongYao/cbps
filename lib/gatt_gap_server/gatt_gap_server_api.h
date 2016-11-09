@@ -38,7 +38,7 @@ PARAMETERS
 RETURNS
     TRUE if the message was sent, FALSE otherwise.
 */
-bool gattGapServerSendReadDeviceNameInd(GGAPS *gap_server, uint16 cid, uint16 offset);
+bool gattGapServerSendReadDeviceNameInd(GGAPS *gap_server, u16 cid, u16 offset);
 
 
 /*******************************************************************************
@@ -55,6 +55,6 @@ PARAMETERS
 RETURNS
     TRUE if the message was sent, FALSE otherwise.
 */
-bool gattGapServerSendReadAppearanceInd(const GGAPS *gap_server, uint16 cid);
+bool gattGapServerSendReadAppearanceInd(const GGAPS *gap_server, u16 cid);
 
 #endif

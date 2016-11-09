@@ -35,7 +35,7 @@ to set the link policy for every ACL connection
 RETURNS
 
 */
-static void setDefaultLinkPolicy(uint16_t in, uint16 out)
+static void setDefaultLinkPolicy(uint16_t in, u16 out)
 {
 	MAKE_PRIM_T(DM_SET_DEFAULT_LINK_POLICY_REQ);
 	prim->link_policy_settings_in = in;
@@ -108,9 +108,9 @@ This Function is called to initialise the Trusted Device List (if there is one).
 RETURNS
 
 */
-uint16 connectionAuthInit(void)
+u16 connectionAuthInit(void)
 {
-    uint16 noDevices = 0;
+    u16 noDevices = 0;
 
     /* Initialise the Trusted Device List.  This involves adding all devices
        in the Trusted Device List to Bluestack Security Managers' database */

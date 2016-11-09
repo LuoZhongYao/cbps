@@ -45,9 +45,9 @@ typedef struct
 void HfpHandleComplexMessage(Task task, MessageId id, Message message);
 
 
-void HfpInitTestExtra(Task theAppTask, hfp_profile supported_profile, uint16 supported_features, hfp_wbs_codec_mask supported_wbs_codecs, 
+void HfpInitTestExtra(Task theAppTask, hfp_profile supported_profile, u16 supported_features, hfp_wbs_codec_mask supported_wbs_codecs, 
                       hfp_indicator_status service, hfp_indicator_status signal_strength, hfp_indicator_status roaming_status, hfp_indicator_status battery_charge,
-                      bool disable_nrec, bool extended_errors, bool multipoint, uint16 size_extra_indicators, const uint8* extra_indicators);
+                      bool disable_nrec, bool extended_errors, bool multipoint, u16 size_extra_indicators, const u8* extra_indicators);
 
 
 void HfpInitTestExtraNull(Task theAppTask);
@@ -56,13 +56,13 @@ void HfpInitTestExtraNull(Task theAppTask);
 void HfpAudioConnectResponseTestExtraDefault(hfp_link_priority priority, bool response, sync_pkt_type packet_type);
 
 
-void HfpAudioConnectResponseTestExtraParams(hfp_link_priority priority, bool response, sync_pkt_type packet_type, uint32 bandwidth, uint16 max_latency, uint16 voice_settings, sync_retx_effort retx_effort);
+void HfpAudioConnectResponseTestExtraParams(hfp_link_priority priority, bool response, sync_pkt_type packet_type, u32 bandwidth, u16 max_latency, u16 voice_settings, sync_retx_effort retx_effort);
 
 
 void HfpAudioTransferConnectionTestExtraDefault(hfp_link_priority priority, hfp_audio_transfer_direction direction, sync_pkt_type packet_type );
 
 
-void HfpAudioTransferConnectionTestExtraParams(hfp_link_priority priority, hfp_audio_transfer_direction direction, sync_pkt_type packet_type, uint32 bandwidth, uint16 max_latency, uint16 voice_settings, sync_retx_effort retx_effort);
+void HfpAudioTransferConnectionTestExtraParams(hfp_link_priority priority, hfp_audio_transfer_direction direction, sync_pkt_type packet_type, u32 bandwidth, u16 max_latency, u16 voice_settings, sync_retx_effort retx_effort);
 
 
 void HfpRouteAudioToPcm(Sink sco_sink);

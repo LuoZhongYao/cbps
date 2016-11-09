@@ -161,14 +161,14 @@ typedef enum
 
 typedef struct
 {
-    uint16  service;
-    uint16  call;
-    uint16  call_setup;
-    uint16  extra_call_setup;
-    uint16  signal_strength;
-    uint16  roaming_status;
-    uint16  battery_charge;
-    uint16  call_hold_status;
+    u16  service;
+    u16  call;
+    u16  call_setup;
+    u16  extra_call_setup;
+    u16  signal_strength;
+    u16  roaming_status;
+    u16  battery_charge;
+    u16  call_hold_status;
 } hfp_indicators;
 
 typedef struct
@@ -177,11 +177,11 @@ typedef struct
     hfp_indicators      indicator_idxs;
     /* Dynamic array holding indexes of non-standard 
     indicators the app has requested notification of */
-    uint16              num_extra_indicator_idxs;
-    uint16              *extra_indicator_idxs;
+    u16              num_extra_indicator_idxs;
+    u16              *extra_indicator_idxs;
     /* Record of the total number of indicators the 
     AG supports (including extra) */
-    uint16              num_indicators;
+    u16              num_indicators;
 } hfp_indicator_indexes;
 
 typedef enum
@@ -221,7 +221,7 @@ typedef struct
 
 typedef struct
 {
-    uint32                      sdp_record_handle;
+    u32                      sdp_record_handle;
     unsigned                    rfc_server_channel:8;
     hfp_profile                 profile:3;
     unsigned                    busy:1;
@@ -241,7 +241,7 @@ typedef struct
     hfp_profile                 ag_profiles_to_try:3;
     unsigned                    ag_csr_features_enabled:1;
     hfp_csr_features            ag_csr_features;
-    uint16                      ag_supported_features;
+    u16                      ag_supported_features;
     hfp_indicator_indexes       ag_supported_indicators;
     
     Sink                        audio_sink;
@@ -264,7 +264,7 @@ typedef struct
 {
     TaskData                    task;                       /* The HFP profile handler                              */
     Task                        clientTask;                 /* The application/higher layer task                    */
-    uint16                      hf_supported_features;      /* The features supported by the headset                */
+    u16                      hf_supported_features;      /* The features supported by the headset                */
     hfp_csr_features            csr_features;               /* CSR2CSR features supported locally                   */
     const char *                extra_indicators;           /* Any extra indicators the client wants to know about  */
     hfp_optional_indicators     optional_indicators;        /* Optional indicators the HF may not want to receive   */
@@ -275,7 +275,7 @@ typedef struct
     unsigned                    extended_errors:1;          /* Enable extended error codes                          */
     hfp_wbs_codec_mask          wbs_codec_mask:2;           /* The HF supported codecs                              */
     unsigned                    first_incoming_call:2;      /* Holds the priority information for first call        */
-    uint8                       busy_channel;               /* Channel being registered with SDP                    */
+    u8                       busy_channel;               /* Channel being registered with SDP                    */
     hfp_link_data *             links;                      /* Pointer to array of HFP links                        */
     hfp_service_data *          services;                   /* Pointer to array of HFP services                     */
     hfp_service_data *          top;                        /* Pointer to end of hfp task data                      */    
@@ -379,21 +379,21 @@ typedef struct
 typedef struct 
 {
     hfp_link_data* link;
-    uint16         length;
-    uint8          number[1];
+    u16         length;
+    u8          number[1];
 } HFP_INTERNAL_AT_ATD_NUMBER_REQ_T;
 
 typedef struct
 {
     hfp_link_data* link;
-    uint16         length;
-    uint8          memory[1];
+    u16         length;
+    u8          memory[1];
 } HFP_INTERNAL_AT_ATD_MEMORY_REQ_T;
 
 typedef struct
 {
     hfp_link_data* link;
-    uint16         enable;
+    u16         enable;
 } HFP_INTERNAL_AT_BVRA_REQ_T;
 
 typedef struct
@@ -405,7 +405,7 @@ typedef struct
 typedef struct
 {
     hfp_link_data* link;
-    uint8          dtmf;
+    u8          dtmf;
 } HFP_INTERNAL_AT_VTS_REQ_T;
 
 typedef struct
@@ -418,7 +418,7 @@ typedef struct
 {
     hfp_link_data*  link;
     hfp_chld_action action;
-    uint16          index;
+    u16          index;
 } HFP_INTERNAL_AT_CHLD_REQ_T;
 
 typedef struct
@@ -430,7 +430,7 @@ typedef struct
 typedef struct
 {
     hfp_link_data*  link;
-    uint8           size_cmd;
+    u8           size_cmd;
     char            cmd[1];
 } HFP_INTERNAL_AT_CMD_REQ_T;
 
@@ -460,14 +460,14 @@ typedef struct
 typedef struct
 {
     hfp_link_data* link;
-    uint16         length;
-    uint8          data[1];
+    u16         length;
+    u8          data[1];
 } HFP_INTERNAL_USER_DATA_REQ_T;
 
 typedef struct
 {
     hfp_link_data* link;
-    uint16         batt_level;
+    u16         batt_level;
 } HFP_INTERNAL_CSR_BATTERY_LEVEL_REQ_T;
 
 typedef struct
@@ -485,7 +485,7 @@ typedef struct
 typedef struct
 {
     hfp_link_data* link;
-    uint16         index;
+    u16         index;
 } HFP_INTERNAL_CSR_GET_SMS_REQ_T;
 
 /* 

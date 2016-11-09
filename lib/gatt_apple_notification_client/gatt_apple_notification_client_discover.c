@@ -30,13 +30,13 @@ static void makeAncsInitCfmMsg(GANCS *ancs, gatt_ancs_status_t status)
  /*******************************************************************************
  * Helper function to get the endhandle for discovering characteristic descriptor of NS.
  */ 
-uint16 findEndHandleForCharDesc(GANCS *ancs, uint16 startHandle, uint16 endHandle, uint8 charesteristic)
+u16 findEndHandleForCharDesc(GANCS *ancs, u16 startHandle, u16 endHandle, u8 charesteristic)
  {
-    uint8 charIndex = 0;
-    uint8 charVal = 0;
-    uint8 char_report_mask = ancs->char_report_mask;
+    u8 charIndex = 0;
+    u8 charVal = 0;
+    u8 char_report_mask = ancs->char_report_mask;
 
-    uint16 retHandle = 0;
+    u16 retHandle = 0;
 
     /* if and only if there is proper characterisitc request for the descriptor */
     while( charIndex < GATT_APPLE_NOTIFICATION_MAX_CHAR )
@@ -232,8 +232,8 @@ static void nextAfterDiscoverDescriptors(GANCS *ancs)
 /****************************************************************************/
 void handleAncsDiscoverAllCharacteristicsResp(GANCS *ancs, const GATT_MANAGER_DISCOVER_ALL_CHARACTERISTICS_CFM_T *cfm)
 {
-    uint8  charIndex = 0;
-    uint8  charVal = 0;
+    u8  charIndex = 0;
+    u8  charVal = 0;
         /* char_report_mask is 8 bit value which is divided as 2 bits each for the 3 characteristic. 
         The least significant 2 bits indicates the first characteristic discovered, 
         the second significant 2 bits indicates the second characteristic discovered and so on & so forth.
@@ -289,7 +289,7 @@ void handleAncsDiscoverAllCharacteristicsResp(GANCS *ancs, const GATT_MANAGER_DI
 
 
 /****************************************************************************/
-bool ancsDiscoverAllCharacteristicDescriptors(GANCS *ancs, uint16 start_handle, uint16 end_handle)
+bool ancsDiscoverAllCharacteristicDescriptors(GANCS *ancs, u16 start_handle, u16 end_handle)
 {
     GattManagerDiscoverAllCharacteristicDescriptors(&ancs->lib_task,
                                                 start_handle,

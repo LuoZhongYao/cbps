@@ -105,7 +105,7 @@ typedef struct
 {
     Task    theAppTask;
     bdaddr  addr;
-    uint8   channel;    
+    u8   channel;    
 
 }MAPC_INT_CONNECT_REQ_T;
 
@@ -113,7 +113,7 @@ typedef struct
 {
     Task    theAppTask;
     bdaddr  addr;
-    uint8   channel;
+    u8   channel;
     bool    accept;
     Sink    sink;
 }MAPC_INT_CONNECT_RESP_T;
@@ -136,30 +136,30 @@ typedef struct{
 
 typedef struct{
     Mapc    session;    /* Mapc Session */
-    uint16  respCode;   /* OBEX Response Code */
+    u16  respCode;   /* OBEX Response Code */
 }MAPC_INT_SEND_EVENT_RESP_T;
 
 typedef struct{
     Mapc    session;
     bool    flag;
-    uint16  nameLen; 
-    uint8   name[1];
+    u16  nameLen; 
+    u8   name[1];
 } MAPC_INT_SET_FOLDER_T;
 
 typedef struct{
     Mapc    session;
-    uint16  maxListCount;
-    uint16  startOffset;
+    u16  maxListCount;
+    u16  startOffset;
 
 }MAPC_INT_GET_FOLDER_T;
 
 typedef struct{
     Mapc    session;
-    uint16  nameLen;
-    uint16  maxListCount;
-    uint16  startOffset;
-    uint8   filter;
-    uint8   name[1];
+    u16  nameLen;
+    u16  maxListCount;
+    u16  startOffset;
+    u8   filter;
+    u8   name[1];
 
 }MAPC_INT_GET_MSG_LIST_T;
 
@@ -168,8 +168,8 @@ typedef struct{
     bool    charSet;
     bool    final;
     Source  data;
-    uint16    nameLen;
-    uint8    name[1];
+    u16    nameLen;
+    u8    name[1];
 }MAPC_INT_PUT_MSG_T;
 
 typedef struct{
@@ -185,8 +185,8 @@ typedef struct{
 
 typedef struct{
     Mapc    session;
-    uint8   charSet;
-    uint8   handle[MAPC_HANDLE_LEN];
+    u8   charSet;
+    u8   handle[MAPC_HANDLE_LEN];
 }MAPC_INT_GET_MSG_T;
 
 typedef struct{
@@ -195,9 +195,9 @@ typedef struct{
 
 typedef struct{
     Mapc    session;
-    uint8   indicator;
-    uint8   value;
-    uint8   handle[MAPC_HANDLE_LEN];
+    u8   indicator;
+    u8   value;
+    u8   handle[MAPC_HANDLE_LEN];
 }MAPC_INT_SET_MSG_STATUS_T;
 
 /* SDP Registration state */
@@ -287,11 +287,11 @@ struct __MAPC
     TaskData        task;       /* The MAPC Session TaskData */
     Task            appTask;    /* The application task for this session */
     Obex            session;    /* The OBEX Session Task */
-    uint16          maxPktLen;  /* Maximum OBEX packet length */
+    u16          maxPktLen;  /* Maximum OBEX packet length */
     MapcRole        role;       /* Is it a MAS or MNS session? */
     MapcState       state;      /* Current state of the connection */
     MapcFunction    function;   /* Current on-going Map function */
-    uint16          lastAppParam;/* context app value */
+    u16          lastAppParam;/* context app value */
     Source          srcOut;     /* Saved src for outgoing multi packet
                                    Used for Uploading message */
     bool            finalPut;   /* More application data is expected to push */
@@ -322,7 +322,7 @@ void mapcMnsIntSendEventResp( MAPC_INT_SEND_EVENT_RESP_T *rsp );
 /*************************************************************************
  Downstream functions 
 *************************************************************************/
-void mapcRegisterChannel( uint8 mnsChannel );
+void mapcRegisterChannel( u8 mnsChannel );
 void mapcRegSdpRecord( void );
 void mapcIntConnectReq( MAPC_INT_CONNECT_REQ_T *req );
 void mapcMasIntSetNotification( MAPC_INT_SET_NOTIFICATION_T* message );

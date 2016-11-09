@@ -16,7 +16,7 @@
 
 
 /******************************************************************************/
-void gattBatteryInitSendInitCfm(GBASC *battery_client, uint16 handle, gatt_battery_client_status_t status)
+void gattBatteryInitSendInitCfm(GBASC *battery_client, u16 handle, gatt_battery_client_status_t status)
 {
     MAKE_BATTERY_MESSAGE(GATT_BATTERY_CLIENT_INIT_CFM);
     message->battery_client = battery_client;
@@ -30,9 +30,9 @@ void gattBatteryInitSendInitCfm(GBASC *battery_client, uint16 handle, gatt_batte
 /****************************************************************************/
 gatt_battery_client_status_t GattBatteryClientInit(GBASC *battery_client, 
                                                    Task app_task,
-                                                   uint16 cid,
-                                                   uint16 start_handle,
-                                                   uint16 end_handle,
+                                                   u16 cid,
+                                                   u16 start_handle,
+                                                   u16 end_handle,
                                                    gatt_battery_client_device_data_t * device_data)
 {
     gatt_battery_client_status_t result = gatt_battery_client_status_invalid_parameter;

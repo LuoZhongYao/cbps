@@ -67,7 +67,7 @@ DESCRIPTION
 RETURNS
     none
 */
-void sinkPartyModeTrackChangeIndication(uint16 index);
+void sinkPartyModeTrackChangeIndication(u16 index);
 
 /****************************************************************************
 NAME    

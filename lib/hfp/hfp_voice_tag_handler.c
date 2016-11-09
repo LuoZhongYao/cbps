@@ -71,7 +71,7 @@ RETURNS
 void hfpHandleDataResponse(Task link_ptr, const struct hfpHandleDataResponse *res)
 {
     hfp_link_data* link = (hfp_link_data*)link_ptr;
-    uint16 size_number  = res->num.length;
+    u16 size_number  = res->num.length;
     
     if(size_number >= HFP_MAX_ARRAY_LEN)
         size_number = HFP_MAX_ARRAY_LEN - 1;

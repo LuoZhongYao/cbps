@@ -41,9 +41,9 @@ NOTES
 #define SCMS_BITS_L_ON              (1)
 
 
-void CsrA2dpEncoderPluginConnect(A2dpEncoderPluginTaskdata *task, Task codec_task, uint16 volume, uint32 rate, AUDIO_MODE_T mode, const void *params);
+void CsrA2dpEncoderPluginConnect(A2dpEncoderPluginTaskdata *task, Task codec_task, u16 volume, u32 rate, AUDIO_MODE_T mode, const void *params);
 void CsrA2dpEncoderPluginDisconnect(Task plugin_task);
-void CsrA2dpEncoderPluginSetVolume(uint16 volume);
+void CsrA2dpEncoderPluginSetVolume(u16 volume);
 void CsrA2dpEncoderPluginSetMode(A2dpEncoderPluginTaskdata *task, AUDIO_MODE_T mode, const void *params);
 
 /****************************************************************************
@@ -53,7 +53,7 @@ FUNCTION
 DESCRIPTION
     Handle internal messages and messages from the DSP
 */
-void CsrA2dpEncoderPluginInternalMessage(A2dpEncoderPluginTaskdata *task, uint16 id, Message message);
+void CsrA2dpEncoderPluginInternalMessage(A2dpEncoderPluginTaskdata *task, u16 id, Message message);
 
 
 #endif /* _CSR_A2DP_ENCODER_COMMON_H_ */

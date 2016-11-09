@@ -47,7 +47,7 @@ MESSAGE RETURNED
 RETURNS
     void
 */
-void HfpDialMemoryRequest(hfp_link_priority priority, uint16 length, const uint8 *memory_location)
+void HfpDialMemoryRequest(hfp_link_priority priority, u16 length, const u8 *memory_location)
 {
 #ifdef HFP_DEBUG_LIB
     if (!length)

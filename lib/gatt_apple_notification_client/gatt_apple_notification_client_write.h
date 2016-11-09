@@ -27,7 +27,7 @@ NAME
 DESCRIPTION
     Write Client Configuration descriptor value by handle.
 */
-bool writeClientConfigNotifyValue(GANCS *ancs, bool notifications_enable, uint16 handle);
+bool writeClientConfigNotifyValue(GANCS *ancs, bool notifications_enable, u16 handle);
 
 /***************************************************************************
 NAME
@@ -36,7 +36,7 @@ NAME
 DESCRIPTION
     Write Client Configuration descriptor value by handle.
 */
-bool writeClientConfigIndValue(GANCS *ancs, bool notifications_enable, uint16 handle);
+bool writeClientConfigIndValue(GANCS *ancs, bool notifications_enable, u16 handle);
 
 /***************************************************************************
 NAME
@@ -46,7 +46,7 @@ DESCRIPTION
     Write Control Point Characteristic value by handle.
 */
 bool ancsWriteCharValue(GANCS *ancs, const ANCS_INTERNAL_MSG_WRITE_CP_CHARACTERISTIC_T* req,
-                                                          uint16 handle);
+                                                          u16 handle);
 
 /***************************************************************************
 NAME

@@ -40,8 +40,8 @@ DESCRIPTION
     received from a remote device.
 */
 void avrcpHandlePassthroughResponse(AVRCP *avrcp, 
-                                    const uint8 *ptr, 
-                                    uint16 packet_size);
+                                    const u8 *ptr, 
+                                    u16 packet_size);
 
 /****************************************************************************
 NAME    
@@ -51,8 +51,8 @@ DESCRIPTION
     Handle the response received from the TG.
 */
 void avrcpHandleGroupResponse(AVRCP *avrcp, 
-                              const uint8 *ptr, 
-                              uint16 packet_size);
+                              const u8 *ptr, 
+                              u16 packet_size);
 
 #endif /* !AVRCP_TG_ONLY_LIB */
 
@@ -78,8 +78,8 @@ DESCRIPTION
     received from a remote device.
 */
 void avrcpHandlePassthroughCommand(AVRCP *avrcp, 
-                                   const uint8 *ptr, 
-                                   uint16 packet_size);
+                                   const u8 *ptr, 
+                                   u16 packet_size);
 
 
 
@@ -91,8 +91,8 @@ DESCRIPTION
     Send indication of the command up to the app.
 */
 void avrcpSendGroupIndToClient(AVRCP *avrcp, 
-                               uint16 vendor_id, 
-                               uint8 transaction);
+                               u16 vendor_id, 
+                               u8 transaction);
 
 
 /****************************************************************************

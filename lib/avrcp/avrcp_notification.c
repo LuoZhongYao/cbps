@@ -77,9 +77,9 @@ void AvrcpGetPlayStatusRequest( AVRCP *avrcp )
 *****************************************************************************/
 void AvrcpRegisterNotificationRequest(AVRCP                    *avrcp, 
                                avrcp_supported_events   event_id, 
-                               uint32                   playback_interval)
+                               u32                   playback_interval)
 {
-    uint8 params[5];
+    u8 params[5];
     avrcp_status_code status;
 
     params[0] = event_id & 0xFF;
@@ -122,8 +122,8 @@ void AvrcpRegisterNotificationRequest(AVRCP                    *avrcp,
 
 void AvrcpGetPlayStatusResponse(AVRCP               *avrcp, 
                                 avrcp_response_type response, 
-                                uint32              song_length, 
-                                uint32              song_elapsed, 
+                                u32              song_length, 
+                                u32              song_elapsed, 
                                 avrcp_play_status   play_status)
 {
     /* Only send a response if the command was received. */
@@ -193,8 +193,8 @@ void AvrcpEventPlaybackStatusChangedResponse(AVRCP              *avrcp,
 
 void AvrcpEventTrackChangedResponse(AVRCP               *avrcp, 
                                     avrcp_response_type response, 
-                                    uint32              track_index_high, 
-                                    uint32              track_index_low)
+                                    u32              track_index_high, 
+                                    u32              track_index_low)
 {
     /* Only send a response if this event was registered by the CT. */
     if (isEventRegistered(avrcp, EVENT_TRACK_CHANGED))
@@ -275,7 +275,7 @@ void AvrcpEventTrackReachedStartResponse(AVRCP               *avrcp,
 
 void AvrcpEventPlaybackPosChangedResponse(AVRCP *avrcp, 
                                           avrcp_response_type response, 
-                                          uint32 playback_pos)
+                                          u32 playback_pos)
 {
     /* Only send a response if this event was registered by the CT. */
     if (isEventRegistered(avrcp, EVENT_PLAYBACK_POS_CHANGED))
@@ -382,7 +382,7 @@ void AvrcpEventSystemStatusChangedResponse(AVRCP *avrcp,
 *****************************************************************************/
 void AvrcpEventPlayerAppSettingChangedResponse(AVRCP    *avrcp, 
                                               avrcp_response_type response, 
-                                              uint16    size_attributes, 
+                                              u16    size_attributes, 
                                               Source    attributes)
 {
     /* Only send a response if this event was registered by the CT. */

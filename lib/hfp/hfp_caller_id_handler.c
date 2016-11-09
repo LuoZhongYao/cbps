@@ -28,7 +28,7 @@ NOTES
 
 
 /*****************************************************************************/
-static void sendCallerIdMsgToApp(hfp_link_data* link, uint8 type, uint16 size_name, const uint8* name, uint16 size_number, const uint8 *number)
+static void sendCallerIdMsgToApp(hfp_link_data* link, u8 type, u16 size_name, const u8* name, u16 size_number, const u8 *number)
 {
     if(size_number || size_name)
     {

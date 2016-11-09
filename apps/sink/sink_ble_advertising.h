@@ -23,7 +23,7 @@ DESCRIPTION
 
 #define MAX_AD_DATA_SIZE_IN_OCTETS  (0x1F)   /* AD Data max size = 31 octets (defined by BT spec) */
 #define AD_DATA_HEADER_SIZE         (0x02)   /* AD header{Octet[0]=length, Octet[1]=Tag} AD data{Octets[2]..[n]} */
-#define OCTETS_PER_SERVICE          (0x02)   /* 2 octets per uint16 service UUID */
+#define OCTETS_PER_SERVICE          (0x02)   /* 2 octets per u16 service UUID */
 
 
 /* Discoverable mode */
@@ -49,7 +49,7 @@ RETURN
     None
 */
 #ifdef GATT_ENABLED
-void bleSetupAdvertisingData(uint16 size_local_name, const uint8 *local_name, adv_discoverable_mode_t mode);
+void bleSetupAdvertisingData(u16 size_local_name, const u8 *local_name, adv_discoverable_mode_t mode);
 #else
 #define bleSetupAdvertisingData(size_local_name, local_name, mode) (void(0))
 #endif

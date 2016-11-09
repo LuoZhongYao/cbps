@@ -169,7 +169,7 @@ typedef enum
 typedef struct
 {
     bdaddr               bd_addr;                   /* The Bluetooth address for the remote device */
-    uint16               id;                        /* Unique ID for the device */
+    u16               id;                        /* Unique ID for the device */
     
     /* Signalling channel data */
     swatSignallingState  signalling_state;          /* Stores the state of the SWAT signalling channel for the device */
@@ -192,14 +192,14 @@ typedef struct
     unsigned    volume:8;                           /* Stores the volume level to the remote device */
     unsigned    sub_trim:8;                         /* Stores the sub trim volume level to the remote device */
     
-    uint16      sample_rate;                        /* Stores the current sample rate being used by the device */
+    u16      sample_rate;                        /* Stores the current sample rate being used by the device */
     
-    uint16      signalling_block;                   /* flag used to control the signalling message flow */
+    u16      signalling_block;                   /* flag used to control the signalling message flow */
 
     swatPSMSearchType   psm_search_type;            /* are we searching for a signalling or media remote PSM */
     
-    uint8              version_major;               /* subwoofer version number */
-    uint8              version_minor;
+    u8              version_major;               /* subwoofer version number */
+    u8              version_minor;
 } remoteDevice;
 
 
@@ -215,7 +215,7 @@ typedef struct
     const sync_config_params   *esco_config;  /* Pointer to the eSCO configuration parameters for Low Latency media connections */
     
     /* Remote device data */
-    uint16          max_remote_devs;  /* Max number of remote devices allowed */
+    u16          max_remote_devs;  /* Max number of remote devices allowed */
     remoteDevice    *remote_devs;     /* Pointer to remote device(s) data */
     
 } swatTaskData;
@@ -235,32 +235,32 @@ typedef struct
 
 typedef struct
 {
-    uint16          device_id;
+    u16          device_id;
 } SWAT_INTERNAL_SIGNALLING_DISCONNECT_REQ_T;
 
 typedef struct
 {
-    uint16          device_id;
+    u16          device_id;
     swatMediaType   media_type;
 } SWAT_INTERNAL_MEDIA_OPEN_REQ_T;
 
 typedef struct
 {
-    uint16          device_id;
+    u16          device_id;
     swatMediaType   media_type;
 } SWAT_INTERNAL_MEDIA_START_REQ_T;
 
 
 typedef struct
 {
-    uint16          device_id;
+    u16          device_id;
     swatMediaType   media_type;
 } SWAT_INTERNAL_MEDIA_SUSPEND_REQ_T;
 
 
 typedef struct
 {
-    uint16          device_id;
+    u16          device_id;
     unsigned        volume:8;
     unsigned        sub_trim:8;
 } SWAT_INTERNAL_SET_VOLUME_REQ_T;
@@ -268,7 +268,7 @@ typedef struct
 
 typedef struct
 {
-    uint16          device_id;
+    u16          device_id;
     swatMediaType   media_type;
 } SWAT_INTERNAL_MEDIA_CLOSE_REQ_T;
 
@@ -279,85 +279,85 @@ typedef struct
 typedef struct
 {
     remoteDevice *  device;
-    uint8           data[1];
+    u8           data[1];
 } SWAT_COMMAND_OPEN_T;
 
 typedef struct
 {
     remoteDevice *  device;
-    uint8           data[1];
+    u8           data[1];
 } SWAT_COMMAND_CLOSE_T;
 
 typedef struct
 {
     remoteDevice *  device;
-    uint8           data[1];
+    u8           data[1];
 } SWAT_COMMAND_START_T;
 
 typedef struct
 {
     remoteDevice *  device;
-    uint8           data[1];
+    u8           data[1];
 } SWAT_COMMAND_SUSPEND_T;
 
 typedef struct
 {
     remoteDevice *  device;
-    uint8           data[1];
+    u8           data[1];
 } SWAT_COMMAND_SET_VOLUME_T;
 
 typedef struct
 {
     remoteDevice *  device;
-    uint8           data[1];
+    u8           data[1];
 } SWAT_COMMAND_GENERAL_REJECT_T;
 
 typedef struct
 {
     remoteDevice *  device;
-    uint8           data[1];
+    u8           data[1];
 } SWAT_COMMAND_DEFAULT_T;
 
 typedef struct
 {
     remoteDevice *  device;
-    uint8           data[1];
+    u8           data[1];
 } SWAT_COMMAND_LATENCY_ADJUST_T;
 
 typedef struct
 {
     remoteDevice *  device;
-    uint8           data[1];
+    u8           data[1];
 } SWAT_COMMAND_CODEC_TYPE_T;
 
 typedef struct
 {
     remoteDevice *  device;
-    uint8           data[1];
+    u8           data[1];
 } SWAT_COMMAND_GET_STATS_T;
 
 typedef struct
 {
     remoteDevice *  device;
-    uint8           data[1];
+    u8           data[1];
 } SWAT_COMMAND_GET_VERSION_T;
 
 typedef struct
 {
     remoteDevice *  device;
-    uint8           data[1];
+    u8           data[1];
 } SWAT_COMMAND_POWER_OFF_T;
 
 typedef struct
 {
     remoteDevice *  device;
-    uint8           data[1];
+    u8           data[1];
 } SWAT_COMMAND_POWER_ON_T;
 
 typedef struct
 {
     remoteDevice *  device;
-    uint8           data[1];
+    u8           data[1];
 } SWAT_COMMAND_SAMPLE_RATE_T;
 
 #endif /* SWAT_PRIVATE_H_ */

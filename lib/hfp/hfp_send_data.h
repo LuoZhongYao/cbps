@@ -22,7 +22,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void hfpSendAtCmd(hfp_link_data* link, uint16 length, const char *at_cmd, hfp_at_cmd pending_cmd);
+void hfpSendAtCmd(hfp_link_data* link, u16 length, const char *at_cmd, hfp_at_cmd pending_cmd);
 
 
 /****************************************************************************
@@ -35,7 +35,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void hfpSendNextAtCmd(hfp_link_data* link, uint16 offset, const uint8 *data_out);
+void hfpSendNextAtCmd(hfp_link_data* link, u16 offset, const u8 *data_out);
 
 
 

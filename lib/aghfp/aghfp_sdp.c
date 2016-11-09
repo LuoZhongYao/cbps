@@ -29,7 +29,7 @@ Part of ADK 4.0
 
 
 /* Request the service handle(s) of the HSP service at the AG */
-static const uint8 HspServiceRequest [] =
+static const u8 HspServiceRequest [] =
 {
     0x35, /* type = DataElSeq */
     0x05, /* size ...5 bytes in DataElSeq */
@@ -38,7 +38,7 @@ static const uint8 HspServiceRequest [] =
 
 
 /* Request the service handle(s) of the HFP service at the AG */
-static const uint8 HfpServiceRequest [] =
+static const u8 HfpServiceRequest [] =
 {
     0x35, /* type = DataElSeq */
     0x05, /* size ...5 bytes in DataElSeq */
@@ -47,7 +47,7 @@ static const uint8 HfpServiceRequest [] =
 
 
 /* Request the service handle(s) of the AG service at the AG */
-static const uint8 AGServiceRequest [] =
+static const u8 AGServiceRequest [] =
 {
     0x35, /* type = DataElSeq */
     0x05, /* size ...3 bytes in DataElSeq */
@@ -56,7 +56,7 @@ static const uint8 AGServiceRequest [] =
 
 
 /* Request the RFCOMM channel number of the AG's service */
-static const uint8 protocolAttributeRequest [] =
+static const u8 protocolAttributeRequest [] =
 {
     0x35, /* type = DataElSeq */
     0x06, /* size ...3 bytes in DataElSeq */
@@ -66,7 +66,7 @@ static const uint8 protocolAttributeRequest [] =
 
 
 /* Request the supported features of the HFP AG */
-static const uint8 supportedFeaturesAttributeRequest [] =
+static const u8 supportedFeaturesAttributeRequest [] =
 {
     0x35,               /* 0b00110 101 type=DataElSeq */
     0x03,               /* size = 6 bytes in DataElSeq */
@@ -75,7 +75,7 @@ static const uint8 supportedFeaturesAttributeRequest [] =
 
 
 /* Find the rfcomm server channel in a service record */
-static bool findRfcommServerChannel(const uint8 *ptr, const uint8 *end, Region *value)
+static bool findRfcommServerChannel(const u8 *ptr, const u8 *end, Region *value)
 {
     ServiceDataType type;
     Region record, protocols, protocol;
@@ -91,7 +91,7 @@ static bool findRfcommServerChannel(const uint8 *ptr, const uint8 *end, Region *
 				if(type == sdtSequence
 					&& ServiceGetValue(&protocol, &type, value)
 					&& type == sdtUUID
-					&& RegionMatchesUUID32(value, (uint32) UUID_RFCOMM)
+					&& RegionMatchesUUID32(value, (u32) UUID_RFCOMM)
 					&& ServiceGetValue(&protocol, &type, value)
 					&& type == sdtUnsignedInteger)
 				{
@@ -107,13 +107,13 @@ static bool findRfcommServerChannel(const uint8 *ptr, const uint8 *end, Region *
 
 
 /* Insert the rfcomm server channel into a service record */
-static uint16 insertRfcommServerChannel(const uint8 *ptr, const uint8 *end, uint8 chan)
+static u16 insertRfcommServerChannel(const u8 *ptr, const u8 *end, u8 chan)
 {
     Region value;
 
     if(findRfcommServerChannel(ptr, end, &value) && RegionSize(&value) == 1)
     {
-		RegionWriteUnsigned(&value, (uint32) chan);
+		RegionWriteUnsigned(&value, (u32) chan);
 		return 1;
     }
 
@@ -122,13 +122,13 @@ static uint16 insertRfcommServerChannel(const uint8 *ptr, const uint8 *end, uint
 
 
 /* Retrieve the rfcomm server channel */
-static uint16 getRfcommChannelNumber(const uint8 *begin, const uint8 *end, uint16 *chan)
+static u16 getRfcommChannelNumber(const u8 *begin, const u8 *end, u16 *chan)
 {
     Region value;
 
     if(findRfcommServerChannel(begin, end, &value))
     {
-		*chan = (uint16) RegionReadUnsigned(&value);
+		*chan = (u16) RegionReadUnsigned(&value);
 		return 1;
     }
 
@@ -137,7 +137,7 @@ static uint16 getRfcommChannelNumber(const uint8 *begin, const uint8 *end, uint1
 
 
 /* Find the supported features in a service record */
-static bool findHfpSupportedFeatures(const uint8 *begin, const uint8 *end, Region *value)
+static bool findHfpSupportedFeatures(const u8 *begin, const u8 *end, Region *value)
 {
     ServiceDataType type;
 	Region record;
@@ -157,13 +157,13 @@ static bool findHfpSupportedFeatures(const uint8 *begin, const uint8 *end, Regio
 
 
 /* Insert the supported features into the HFP service record */
-static uint16 insertHfpSupportedFeatures(const uint8 *begin, const uint8 *end, uint8 features)
+static u16 insertHfpSupportedFeatures(const u8 *begin, const u8 *end, u8 features)
 {
 	Region value;
 
 	if (findHfpSupportedFeatures(begin, end, &value) && RegionSize(&value) == 2)
 	{
-		RegionWriteUnsigned(&value, (uint32) features);
+		RegionWriteUnsigned(&value, (u32) features);
 		return 1;
 	}
 
@@ -172,7 +172,7 @@ static uint16 insertHfpSupportedFeatures(const uint8 *begin, const uint8 *end, u
 
 
 /* Find the profile version in a service record */
-static bool findHfpProfileVersion(const uint8 *begin, const uint8 *end, Region *value)
+static bool findHfpProfileVersion(const u8 *begin, const u8 *end, Region *value)
 {   
     ServiceDataType type;
     Region record, profiles, profile;
@@ -188,7 +188,7 @@ static bool findHfpProfileVersion(const uint8 *begin, const uint8 *end, Region *
 				if(type == sdtSequence
 					&& ServiceGetValue(&profile, &type, value)
 					&& type == sdtUUID
-					&& RegionMatchesUUID32(value, (uint32) UUID_HANDSFREE)
+					&& RegionMatchesUUID32(value, (u32) UUID_HANDSFREE)
 					&& ServiceGetValue(&profile, &type, value)
 					&& type == sdtUnsignedInteger)
 				{
@@ -205,7 +205,7 @@ static bool findHfpProfileVersion(const uint8 *begin, const uint8 *end, Region *
 
 
 /* Insert the profile version into the HFP service record */
-static uint16 insertHfpProfile(const uint8 *begin, const uint8 *end, uint16 profile_version)
+static u16 insertHfpProfile(const u8 *begin, const u8 *end, u16 profile_version)
 {
 	Region value;
 
@@ -213,7 +213,7 @@ static uint16 insertHfpProfile(const uint8 *begin, const uint8 *end, uint16 prof
     
 	if (findHfpProfileVersion(begin, end, &value) && RegionSize(&value) == 2)
 	{
-		RegionWriteUnsigned(&value, (uint32) profile_version);
+		RegionWriteUnsigned(&value, (u32) profile_version);
 		return 1;
 	}
 
@@ -223,12 +223,12 @@ static uint16 insertHfpProfile(const uint8 *begin, const uint8 *end, uint16 prof
 
 #if 0
 /* Get the supported features from the returned attribute list */
-static uint16 getHfpAgSupportedFeatures(const uint8 *begin, const uint8 *end, uint16 *features)
+static u16 getHfpAgSupportedFeatures(const u8 *begin, const u8 *end, u16 *features)
 {
  Region value;
     if(findHfpSupportedFeatures(begin, end, &value))
     {
-  *features = (uint16) RegionReadUnsigned(&value);
+  *features = (u16) RegionReadUnsigned(&value);
   return 1;
     }
     return 0;
@@ -260,22 +260,22 @@ static void aghfpServiceSearchCheckFailed(AGHFP *aghfp, sdp_search_status status
 /****************************************************************************
  Register the service record corresponding to the specified profile
 */
-void aghfpRegisterServiceRecord(AGHFP *aghfp, aghfp_profile profile, uint8 chan)
+void aghfpRegisterServiceRecord(AGHFP *aghfp, aghfp_profile profile, u8 chan)
 {
-	uint16 length;
-	uint8 *service_record = 0;
+	u16 length;
+	u8 *service_record = 0;
 
 
 	if (supportedProfileIsHsp(profile))
 	{
 		/* Create a copy of the service record that we can modify */
 		length = sizeof(aghfp_hsp_service_record);
-		service_record = (uint8 *)PanicUnlessMalloc(length);
+		service_record = (u8 *)PanicUnlessMalloc(length);
 		memmove(service_record, aghfp_hsp_service_record, length);
 	}
 	else if (supportedProfileIsHfp(profile))
 	{
-         uint16 profile_version = 0x101;
+         u16 profile_version = 0x101;
         
         if (aghfp->supported_profile == aghfp_handsfree_15_profile)
             profile_version = 0x105;
@@ -284,7 +284,7 @@ void aghfpRegisterServiceRecord(AGHFP *aghfp, aghfp_profile profile, uint8 chan)
             
 		/* Create a copy of the service record that we can modify */
 		length = sizeof(aghfp_hfp_service_record);
-		service_record = (uint8 *)PanicUnlessMalloc(length);
+		service_record = (u8 *)PanicUnlessMalloc(length);
 		memmove(service_record, aghfp_hfp_service_record, length);
 
 		/* Insert the supported features and profile version into the service record */
@@ -412,8 +412,8 @@ void aghfpHandleSdpInternalRegisterCfm(const AGHFP_INTERNAL_SDP_REGISTER_CFM_T *
 */
 void aghfpGetProfileServerChannel(AGHFP *aghfp, const bdaddr *addr)
 {
-	uint16 sp_len;
-	uint8 *sp_ptr;
+	u16 sp_len;
+	u8 *sp_ptr;
 
 	sp_len = 0;
 	sp_ptr = 0;
@@ -422,13 +422,13 @@ void aghfpGetProfileServerChannel(AGHFP *aghfp, const bdaddr *addr)
 	if (supportedProfileIsHsp(aghfp->supported_profile))
 	{
 		/* This task supports the HSP */
-		sp_ptr = (uint8 *) HspServiceRequest;
+		sp_ptr = (u8 *) HspServiceRequest;
 		sp_len = sizeof(HspServiceRequest);
 	}
 	else if (supportedProfileIsHfp(aghfp->supported_profile))
 	{
 		/* This task supports the HFP */
-		sp_ptr = (uint8 *)HfpServiceRequest;
+		sp_ptr = (u8 *)HfpServiceRequest;
 		sp_len = sizeof(HfpServiceRequest);
 	}
 	else
@@ -459,7 +459,7 @@ void aghfpHandleServiceSearchAttributeCfm(AGHFP *aghfp, const CL_SDP_SERVICE_SEA
 	/* Check the outcome of the service search */
 	if (cfm->status == sdp_response_success)
 	{
-		uint16 sdp_data = 0;
+		u16 sdp_data = 0;
         
         if (getRfcommChannelNumber(cfm->attributes,
 			cfm->attributes + cfm->size_attributes,

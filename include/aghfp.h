@@ -263,11 +263,11 @@ typedef enum
 
 typedef struct
 {
-    uint16  id;
-    uint8   type;
-    uint8   service;
-    uint16  size_number;
-	uint8   *number;
+    u16  id;
+    u8   type;
+    u8   service;
+    u16  size_number;
+	u8   *number;
 } aghfp_subscriber_info;
 
 
@@ -342,23 +342,23 @@ typedef enum
 
 typedef struct
 {
-    uint16              idx;
+    u16              idx;
     aghfp_call_dir      dir;
     aghfp_call_state    status;
     aghfp_call_mode     mode;
     aghfp_call_mpty     mpty;
-    uint8               type;
-    uint16              size_number;
-    uint8              *number;
+    u8               type;
+    u16              size_number;
+    u8              *number;
 } aghfp_call_info;
 
 
 /*! @brief Connection parameters for setting up an eSCO/SCO connection */
 typedef struct
 {
-   uint32            bandwidth;
-   uint16            max_latency;
-   uint16            voice_settings;
+   u32            bandwidth;
+   u16            max_latency;
+   u16            voice_settings;
    sync_retx_effort  retx_effort;
    /*! Do not use WB-Speech even if available */
    bool				 override_wbs;
@@ -379,16 +379,16 @@ typedef enum
 */
 typedef struct
 {
-	uint8		num_codecs;
-	uint16		ag_codecs;
-	uint8		codec_ids[AGHFP_MAX_NUM_CODECS];
+	u8		num_codecs;
+	u16		ag_codecs;
+	u8		codec_ids[AGHFP_MAX_NUM_CODECS];
 } aghfp_codecs_info;
 
 /* Structure to hold one CSR feature as published in the AT+CSRFN command. */
 typedef struct
 {
-    uint16          indicator;
-    uint16          value;
+    u16          indicator;
+    u16          value;
 } aghfp_csr_feature_indicator;
 
 /*****************************************************************************/
@@ -581,10 +581,10 @@ typedef struct
 	sync_link_type		link_type;		/*!< Indicates whether a SCO or eSCO link was created. */
 	Sink				audio_sink;		/*!< If a SCO/eSCO connection has been created the audio_sink will be the corresponding sink
 										 	 for the SCO/eSCO data, otherwise it will be set to zero. */
-	uint32				rx_bandwidth;	/*!< Receive bandwith in bytes per second. */
-	uint32				tx_bandwidth;	/*!< Transmit bandwith in bytes per second. */
+	u32				rx_bandwidth;	/*!< Receive bandwith in bytes per second. */
+	u32				tx_bandwidth;	/*!< Transmit bandwith in bytes per second. */
 	bool				using_wbs; 		/*!< Whether the eSCO connection is using Wide Band Speech. */
-	uint8				wbs_codec; 		/*!< If using Wide Band Speech, which codec is being used. */
+	u8				wbs_codec; 		/*!< If using Wide Band Speech, which codec is being used. */
 } AGHFP_AUDIO_CONNECT_CFM_T;
 
 
@@ -638,8 +638,8 @@ typedef struct
 typedef struct
 {
 	AGHFP				*aghfp;		/*!< Pointer to the aghfp profile instance that received the AT+CHLD message. */
-	uint16				action;		/*!< The action code specified in the AT+CHLD command that was received. */
-	uint16				index;		/*!< The call index specified in the AT+CHLD command that was received. */
+	u16				action;		/*!< The action code specified in the AT+CHLD command that was received. */
+	u16				index;		/*!< The call index specified in the AT+CHLD command that was received. */
 } AGHFP_CALL_HOLD_IND_T;
 
 
@@ -647,8 +647,8 @@ typedef struct
 typedef struct
 {
     AGHFP *aghfp;   /*!< Pointer to the aghfp profile instance that received the AT+CMER message. */
-    uint16 mode;    /*!< The mode contained in the AT+CMER command. */
-    uint16 ind;     /*!< The ind contained in the AT+CMER command. */
+    u16 mode;    /*!< The mode contained in the AT+CMER command. */
+    u16 ind;     /*!< The ind contained in the AT+CMER command. */
 } AGHFP_INDICATOR_EVENTS_REPORTING_IND_T;
 
 
@@ -663,8 +663,8 @@ typedef struct
 typedef struct
 {
 	AGHFP	*aghfp;					/*!< Pointer to the aghfp profile instance that is handling the Service Level Connection. */
-	uint16	size_data;				/*!< The number of bytes pointed to by data. */
-	uint8	data[1];				/*!< The data that could not be parsed. Although the array size is specified a 1, the actual size can be much larger - ie this structure has a variable size, depending on the amount of data. If the client needs access to this data after the message has been destroyed it is the client's responsibility to copy it. */
+	u16	size_data;				/*!< The number of bytes pointed to by data. */
+	u8	data[1];				/*!< The data that could not be parsed. Although the array size is specified a 1, the actual size can be much larger - ie this structure has a variable size, depending on the amount of data. If the client needs access to this data after the message has been destroyed it is the client's responsibility to copy it. */
 } AGHFP_UNRECOGNISED_AT_CMD_IND_T;
 
 
@@ -679,8 +679,8 @@ typedef struct
 typedef struct
 {
 	AGHFP				*aghfp;		/*!< Pointer to the aghfp profile instance that received the dial message. */
-	uint16				size_number;/*!< The number of digits (and special characters like '+') in the number. */
-	uint8 				number[1];	/*!< Pointer to the number to dial. Although the array size is specified a 1, the actual size can be much larger - ie this structure has a variable size, depending on the amount of data. If the client needs access to this data after the message has been destroyed it is the client's responsibility to copy it. */
+	u16				size_number;/*!< The number of digits (and special characters like '+') in the number. */
+	u8 				number[1];	/*!< Pointer to the number to dial. Although the array size is specified a 1, the actual size can be much larger - ie this structure has a variable size, depending on the amount of data. If the client needs access to this data after the message has been destroyed it is the client's responsibility to copy it. */
 } AGHFP_DIAL_IND_T;
 
 
@@ -688,8 +688,8 @@ typedef struct
 typedef struct
 {
 	AGHFP				*aghfp;		/*!< Pointer to the aghfp profile instance that received the memory dial message. */
-	uint16				size_number;/*!< The number of digits in the slot number (and special characters like '+') in the number. */
-	uint8 				number[1];	/*!< Pointer to the slot number to dial. Although the array size is specified a 1, the actual size can be much larger - ie this structure has a variable size, depending on the amount of data. If the client needs access to this data after the message has been destroyed it is the client's responsibility to copy it. */
+	u16				size_number;/*!< The number of digits in the slot number (and special characters like '+') in the number. */
+	u8 				number[1];	/*!< Pointer to the slot number to dial. Although the array size is specified a 1, the actual size can be much larger - ie this structure has a variable size, depending on the amount of data. If the client needs access to this data after the message has been destroyed it is the client's responsibility to copy it. */
 } AGHFP_MEMORY_DIAL_IND_T;
 
 
@@ -743,7 +743,7 @@ typedef struct
 typedef struct
 {
 	AGHFP				*aghfp;		/*!< Pointer to the aghfp profile instance that received the DTMF transmit request. */
-	uint8				code;		/*!< The single character DTMF code to transmit, may be 0-9, A-D, # or * */
+	u8				code;		/*!< The single character DTMF code to transmit, may be 0-9, A-D, # or * */
 } AGHFP_TRANSMIT_DTMF_CODE_IND_T;
 
 
@@ -751,7 +751,7 @@ typedef struct
 typedef struct
 {
 	AGHFP				*aghfp;		/*!< Pointer to the aghfp profile instance that received the volume synchronistaion message. */
-	uint8				gain;		/*!< The gain value received from the HF. */
+	u8				gain;		/*!< The gain value received from the HF. */
 } AGHFP_SYNC_MICROPHONE_GAIN_IND_T;
 
 
@@ -759,7 +759,7 @@ typedef struct
 typedef struct
 {
 	AGHFP				*aghfp;		/*!< Pointer to the aghfp profile instance that received the volume synchronisation message. */
-	uint8				volume;		/*!< The gain value received from the HF. */
+	u8				volume;		/*!< The gain value received from the HF. */
 } AGHFP_SYNC_SPEAKER_VOLUME_IND_T;
 
 
@@ -779,14 +779,14 @@ typedef struct
 typedef struct
 {
 	AGHFP				*aghfp;		/*!< Pointer to the aghfp profile instance that received the volume synchronisation message. */
-	uint16              last_id;    /*!< Application specific id of last subscriber information sent - will be zero on initial request. */
+	u16              last_id;    /*!< Application specific id of last subscriber information sent - will be zero on initial request. */
 } AGHFP_SUBSCRIBER_NUMBER_IND_T;
 
 
 typedef struct
 {
 	AGHFP				*aghfp;		/*!< Pointer to the aghfp profile instance that received the volume synchronisation message. */
-	uint16              last_idx;   /*!< Index of last call information sent - will be zero on initial request. */
+	u16              last_idx;   /*!< Index of last call information sent - will be zero on initial request. */
 } AGHFP_CURRENT_CALLS_IND_T;
 
 
@@ -1056,10 +1056,10 @@ typedef struct
 	aghfp_call_create_status	status;	/*!< If data was sent successfully to the remote device, then status is set to aghfp_success. Otherwise status is set to aghfp_fail. */
     sync_link_type		link_type;		/*!< Indicates whether a SCO or eSCO link was created. */
 	Sink				audio_sink;		/*!< Sink of SCO/eSCO connection being used for the call. Will be set to NULL if no audio channel is used. */
-	uint32				rx_bandwidth;	/*!< Receive bandwith in bytes per second. */
-	uint32				tx_bandwidth;	/*!< Transmit bandwith in bytes per second. */
+	u32				rx_bandwidth;	/*!< Receive bandwith in bytes per second. */
+	u32				tx_bandwidth;	/*!< Transmit bandwith in bytes per second. */
 	bool				using_wbs; 		/*!< Whether the eSCO connection is using Wide Band Speech. */
-	uint8				wbs_codec; 		/*!< If using Wide Band Speech, which codec is being used. */
+	u8				wbs_codec; 		/*!< If using Wide Band Speech, which codec is being used. */
 } AGHFP_CALL_MGR_CREATE_CFM_T;
 
 
@@ -1084,18 +1084,18 @@ typedef struct
 	/*! Power source reporting supported by the HF. */
 	bool pwrSource;
 	/*! Bit mask of codecs supported by the HF */
-	uint16 codecs;    
+	u16 codecs;    
 	/*! Indicates if the HF published the codecs bandwidth indicator in its AT+CSRSF command. */
 	bool codec_bandwidths_present;
 	/*! Bit mask of bandwidths supported by the HF */
-	uint16 codec_bandwidths;    
+	u16 codec_bandwidths;    
 }AGHFP_CSR_SUPPORTED_FEATURES_IND_T ;
 
 
 typedef struct
 {
     AGHFP * 					aghfp ;
-    uint16                      num_csr_features;
+    u16                      num_csr_features;
     aghfp_csr_feature_indicator csr_features[2];
 }AGHFP_CSR_FEATURE_NEGOTIATION_IND_T ;
 
@@ -1118,11 +1118,11 @@ typedef struct
     
     An SLC must be fully established before calling this function.
 */
-void aghfpCsrSupportedFeaturesResponse (AGHFP *aghfp, bool callerName, bool rawText, bool smsInd, bool battLevel, bool pwrSource, uint16 codecs, bool codec_bandwidths_present, uint16 codec_bandwidths);
+void aghfpCsrSupportedFeaturesResponse (AGHFP *aghfp, bool callerName, bool rawText, bool smsInd, bool battLevel, bool pwrSource, u16 codecs, bool codec_bandwidths_present, u16 codec_bandwidths);
 
 
 /*todo*/
-void aghfpFeatureNegotiate ( AGHFP * aghfp , uint16 num_csr_features, uint16 indicator0, uint16 value0, uint16 indicator1, uint16 value1, bool sendLeadingOK );
+void aghfpFeatureNegotiate ( AGHFP * aghfp , u16 num_csr_features, u16 indicator0, u16 value0, u16 indicator1, u16 value1, bool sendLeadingOK );
  
 /*****************************************************************************/
 /* FUNCTIONS                                                                 */
@@ -1149,7 +1149,7 @@ void aghfpFeatureNegotiate ( AGHFP * aghfp , uint16 num_csr_features, uint16 ind
 
 	The application will receive an AGHFP_INIT_CFM message from the library
 	to indicate the success or otherwise of the initialisation. */
-void AghfpInit(Task theAppTask, aghfp_profile aghfp_supported_profile, uint16 supported_features);
+void AghfpInit(Task theAppTask, aghfp_profile aghfp_supported_profile, u16 supported_features);
 
 
 /*!	@brief Initiate the creation of a Service Level Connection.
@@ -1290,9 +1290,9 @@ void AghfpCallIndicatorsStatusResponse(AGHFP *aghfp, aghfp_service_availability 
                                                      aghfp_call_status call_status, \
                                                      aghfp_call_setup_status call_setup_status, \
                                                      aghfp_call_held_status call_held_status, \
-                                                     uint16 signal, \
+                                                     u16 signal, \
                                                      aghfp_roam_status roam_status, \
-                                                     uint16 batt);
+                                                     u16 batt);
 
 
 /*! @brief Send a service indicator to the HF.
@@ -1332,7 +1332,7 @@ void AghfpSendCallHeldIndicator(AGHFP *aghfp, aghfp_call_held_status status);
 
 /*! @brief Send a signal strength indicator to the HF.
 	@param aghfp A pointer to the profile instance. */
-void AghfpSendSignalIndicator(AGHFP *aghfp, uint16 level);
+void AghfpSendSignalIndicator(AGHFP *aghfp, u16 level);
 
 
 /*! @brief Send a roaming status indicator to the HF.
@@ -1342,7 +1342,7 @@ void AghfpSendRoamIndicator(AGHFP *aghfp, aghfp_roam_status status);
 
 /*! @brief Send a battery charge indicator to the HF.
 	@param aghfp A pointer to the profile instance. */
-void AghfpSendBattChgIndicator(AGHFP *aghfp, uint16 level);
+void AghfpSendBattChgIndicator(AGHFP *aghfp, u16 level);
 
 
 /*! @brief Send a ring alert to the HF.
@@ -1361,7 +1361,7 @@ void AghfpSendRingAlert(AGHFP *aghfp);
 					   128-143=Unknown format. 144-159=International number. 160-175=National number.
 					   See the description of "+CLIP" in HFP 1.5 spec for more details.
 	@param size_number The number of characters in the phone number. (Not including any null terminator)
-	@param number A uint8 array containing one digit of the phone number
+	@param number A u8 array containing one digit of the phone number
 	              per array element. The digits are in ASCII format and
 	              may include special characters such as '+'. The number
 	              should *NOT* be NULL terminated.
@@ -1373,7 +1373,7 @@ void AghfpSendRingAlert(AGHFP *aghfp);
 
 	The application will receive an AGHFP_SEND_CALLER_ID_CFM message from
 	the library to indicate the success or otherwise of the callerID send attempt. */
-void AghfpSendCallerId(AGHFP *aghfp, uint8 type_number, uint16 size_number, const uint8 *number, uint16 size_string, const uint8 *string);
+void AghfpSendCallerId(AGHFP *aghfp, u8 type_number, u16 size_number, const u8 *number, u16 size_string, const u8 *string);
 
 
 /*! @brief Tell the HF that inband ring tones have been enabled/disabled.
@@ -1393,7 +1393,7 @@ void AghfpInBandRingToneEnable(AGHFP *aghfp, bool enable);
 	@param aghfp A pointer to the profile instance.
 	@param type_number The type of number being sent. Permitted values are 128 to 175 - see HFP 1.5 spec.
 	@param size_number The number of characters in the phone number
-	@param number The phone number of the waiting call. This is a uint8
+	@param number The phone number of the waiting call. This is a u8
 				  array containing one digit of the phone number
 	              per array element. The digits are in ASCII format and
 	              may include special characters such as '+'. The number
@@ -1404,7 +1404,7 @@ void AghfpInBandRingToneEnable(AGHFP *aghfp, bool enable);
     The application will receive an AGHFP_SEND_CALL_WAITING_NOTIFICATION_CFM
     message from the library to indicate the success or otherwise of the
     notification send attempt. */
-void AghfpSendCallWaitingNotification(AGHFP *aghfp, uint8 type_number, uint16 size_number, const uint8 *number, uint16 size_string, const uint8 *string);
+void AghfpSendCallWaitingNotification(AGHFP *aghfp, u8 type_number, u16 size_number, const u8 *number, u16 size_string, const u8 *string);
 
 
 /*! @brief Tell the HF to activate/deactivate its voice recognition function.
@@ -1421,14 +1421,14 @@ void AghfpVoiceRecognitionEnable(AGHFP *aghfp, bool enable);
 
 	@param aghfp A pointer to the profile instance.
 	@param size_number The number of characters in the phone number.
-	@param number A uint8 array containing one digit of the phone number
+	@param number A u8 array containing one digit of the phone number
 	              per array element. The digits are in ASCII format and
 	              may include special characters such as '+'. The number
 	              should not be NULL terminated.
 
 	The application will receive an AGHFP_SEND_PHONE_NUMBER_FOR_VOICE_TAG_CFM
 	to indicate the success of otherwise of sending phone number. */
-void AghfpSendPhoneNumberForVoiceTag(AGHFP *aghfp, uint16 size_number, const uint8 *number);
+void AghfpSendPhoneNumberForVoiceTag(AGHFP *aghfp, u16 size_number, const u8 *number);
 
 
 /*! @brief Set microphone gain on the HF.
@@ -1438,7 +1438,7 @@ void AghfpSendPhoneNumberForVoiceTag(AGHFP *aghfp, uint16 size_number, const uin
 
 	The application will receive an AGHFP_SET_REMOTE_MICROPHONE_GAIN_CFM
 	to indicate the success of otherwise of sending the microphone gain. */
-void AghfpSetRemoteMicrophoneGain(AGHFP *aghfp, uint8 gain);
+void AghfpSetRemoteMicrophoneGain(AGHFP *aghfp, u8 gain);
 
 
 /*! @brief Set speaker gain on the HF.
@@ -1448,7 +1448,7 @@ void AghfpSetRemoteMicrophoneGain(AGHFP *aghfp, uint8 gain);
 
 	The application will receive an AGHFP_SET_REMOTE_SPEAKER_VOLUME_CFM
 	to indicate the success of otherwise of sending the speaker volume. */
-void AghfpSetRemoteSpeakerVolume(AGHFP *aghfp, uint8 volume);
+void AghfpSetRemoteSpeakerVolume(AGHFP *aghfp, u8 volume);
 
 
 /*! @brief Respond to a response and hold read current status from the HF.
@@ -1511,7 +1511,7 @@ void AghfpSendCurrentCallsComplete(AGHFP *aghfp);
 	@param
 	
 	*/
-void AghfpSendNetworkOperator(AGHFP *aghfp, uint8 mode, uint16 size_operator, uint8 *operator);
+void AghfpSendNetworkOperator(AGHFP *aghfp, u8 mode, u16 size_operator, u8 *operator);
 
 
 /*! @brief Allow the client to send an arbitrary string to the remote end.
@@ -1529,7 +1529,7 @@ void AghfpSendNetworkOperator(AGHFP *aghfp, uint8 mode, uint16 size_operator, ui
     Returns a AGHFP_USER_DATA_CFM message to the client to indicate
     whether the data was sent successfully or not.
 */
-void AghfpSendUserSpecificData(AGHFP *aghfp, uint16 size_data, uint8 *data);
+void AghfpSendUserSpecificData(AGHFP *aghfp, u16 size_data, u8 *data);
 
 
 /*! @brief Send \r\nERROR\r\n to the remote end.
@@ -1571,14 +1571,14 @@ void AghfpSetServiceState(AGHFP *aghfp, bool service_state);
 					   128-143=Unknown format. 144-159=International number. 160-175=National number.
 					   See the description of "+CLIP" in HFP 1.5 spec for more details.
 	@param size_number The number of characters in the phone number. (Not including any null terminator)
-	@param number A uint8 array containing one digit of the phone number
+	@param number A u8 array containing one digit of the phone number
 	              per array element. The digits are in ASCII format and
 	              may include special characters such as '+'. The number
 	              should *NOT* be NULL terminated.
 	@param size_string The number of characters in the string. (Not including any null terminator). Should be zero if string is NULL.
 	@param string A friendly name to go with the phone number. Maybe NULL.
 */
-void AghfpSetCallerIdDetails(AGHFP *aghfp, uint8 type_number, uint16 size_number, const uint8 *number, uint16 size_string, const uint8 *string);
+void AghfpSetCallerIdDetails(AGHFP *aghfp, u8 type_number, u16 size_number, const u8 *number, u16 size_string, const u8 *string);
 
 
 /*! @brief Configure the time interval between repeating RING indications.
@@ -1586,7 +1586,7 @@ void AghfpSetCallerIdDetails(AGHFP *aghfp, uint8 type_number, uint16 size_number
 	@param aghfp A pointer to the profile instance.
 	@param interval The time interval in milliseconds. Setting 0 disables ring indications. The default is 5000ms.
 */
-void AghfpSetRingRepeatInterval(AGHFP *aghfp, uint16 interval);
+void AghfpSetRingRepeatInterval(AGHFP *aghfp, u16 interval);
 
 
 /*! @brief Initiate/transfer a call to a HS/HF device using an existing audio connection.
@@ -1690,16 +1690,16 @@ void AghfpStartAudioAfterAppCodecNegotiation(AGHFP *aghfp, sync_pkt_type packet_
 
 /*! @brief Gets the WBS codecs supported by the connected HF.
 */
-uint8 AghfpGetHfWbsCodecsSupported(AGHFP * aghfp);
+u8 AghfpGetHfWbsCodecsSupported(AGHFP * aghfp);
 
 /*! @brief Indicates whether a Wbs has been negotiated.
 */
-bool AghfpCodecHasBeenNegotiated(AGHFP * aghfp, uint8 *wbs_codec);
+bool AghfpCodecHasBeenNegotiated(AGHFP * aghfp, u8 *wbs_codec);
 
 /*! @brief Returns the codecs supported by this instantiation of the AGHFP.
 	Return value is only valid AFTER a call to AghfpInit().
 */
-uint16 AghfpSupportedWbsCodecs(AGHFP * aghfp);
+u16 AghfpSupportedWbsCodecs(AGHFP * aghfp);
 
 /*! @brief Request AudioParams once the codec negotiation setup is successful.
 

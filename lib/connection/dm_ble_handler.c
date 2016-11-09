@@ -44,7 +44,7 @@ void connectionHandleDmBleAdvertisingReportInd(
         const DM_HCI_ULP_ADVERTISING_REPORT_IND_T *ind
         )
 {
-    uint8 *temp = (uint8 *)VmGetPointerFromHandle(ind->data);
+    u8 *temp = (u8 *)VmGetPointerFromHandle(ind->data);
     MAKE_CL_MESSAGE_WITH_LEN(
             CL_DM_BLE_ADVERTISING_REPORT_IND,ind->length_data-1
             );

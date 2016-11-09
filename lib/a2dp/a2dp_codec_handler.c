@@ -37,10 +37,10 @@ NOTES
 
 #ifndef A2DP_SBC_ONLY
 /*****************************************************************************/
-static bool isCodecCsrFaststream(const uint8 *codec_caps)
+static bool isCodecCsrFaststream(const u8 *codec_caps)
 {
-    uint32 vendor_id;
-    uint16 codec_id;
+    u32 vendor_id;
+    u16 codec_id;
 
     vendor_id = a2dpConvertUint8ValuesToUint32(&codec_caps[4]);
     codec_id = (codec_caps[8] << 8) | codec_caps[9];
@@ -54,10 +54,10 @@ static bool isCodecCsrFaststream(const uint8 *codec_caps)
 }
 
 /*****************************************************************************/
-static bool isCodecCsrAptx(const uint8 *codec_caps)
+static bool isCodecCsrAptx(const u8 *codec_caps)
 {
-    uint32 vendor_id;
-    uint16 codec_id;
+    u32 vendor_id;
+    u16 codec_id;
 
     vendor_id = a2dpConvertUint8ValuesToUint32(&codec_caps[4]);
     codec_id = (codec_caps[8] << 8) | codec_caps[9];
@@ -71,10 +71,10 @@ static bool isCodecCsrAptx(const uint8 *codec_caps)
 }
 
 /*****************************************************************************/
-static bool isCodecCsrAptxAclSprint(const uint8 *codec_caps)
+static bool isCodecCsrAptxAclSprint(const u8 *codec_caps)
 {
-    uint32 vendor_id;
-    uint16 codec_id;
+    u32 vendor_id;
+    u16 codec_id;
 
     vendor_id = a2dpConvertUint8ValuesToUint32(&codec_caps[4]);
     codec_id = (codec_caps[8] << 8) | codec_caps[9];
@@ -88,10 +88,10 @@ static bool isCodecCsrAptxAclSprint(const uint8 *codec_caps)
 }
 
 /*****************************************************************************/
-static bool isCodecCsrTwsSbc(const uint8 *codec_caps)
+static bool isCodecCsrTwsSbc(const u8 *codec_caps)
 {
-    uint32 vendor_id;
-    uint16 codec_id;
+    u32 vendor_id;
+    u16 codec_id;
 
     vendor_id = a2dpConvertUint8ValuesToUint32(&codec_caps[4]);
     codec_id = (codec_caps[8] << 8) | codec_caps[9];
@@ -105,10 +105,10 @@ static bool isCodecCsrTwsSbc(const uint8 *codec_caps)
 }
 
 /*****************************************************************************/
-static bool isCodecCsrTwsMp3(const uint8 *codec_caps)
+static bool isCodecCsrTwsMp3(const u8 *codec_caps)
 {
-    uint32 vendor_id;
-    uint16 codec_id;
+    u32 vendor_id;
+    u16 codec_id;
 
     vendor_id = a2dpConvertUint8ValuesToUint32(&codec_caps[4]);
     codec_id = (codec_caps[8] << 8) | codec_caps[9];
@@ -122,10 +122,10 @@ static bool isCodecCsrTwsMp3(const uint8 *codec_caps)
 }
 
 /*****************************************************************************/
-static bool isCodecCsrTwsAac(const uint8 *codec_caps)
+static bool isCodecCsrTwsAac(const u8 *codec_caps)
 {
-    uint32 vendor_id;
-    uint16 codec_id;
+    u32 vendor_id;
+    u16 codec_id;
 
     vendor_id = a2dpConvertUint8ValuesToUint32(&codec_caps[4]);
     codec_id = (codec_caps[8] << 8) | codec_caps[9];
@@ -139,10 +139,10 @@ static bool isCodecCsrTwsAac(const uint8 *codec_caps)
 }
 
 /*****************************************************************************/
-static bool isCodecCsrTwsAptx(const uint8 *codec_caps)
+static bool isCodecCsrTwsAptx(const u8 *codec_caps)
 {
-    uint32 vendor_id;
-    uint16 codec_id;
+    u32 vendor_id;
+    u16 codec_id;
 
     vendor_id = a2dpConvertUint8ValuesToUint32(&codec_caps[4]);
     codec_id = (codec_caps[8] << 8) | codec_caps[9];
@@ -157,7 +157,7 @@ static bool isCodecCsrTwsAptx(const uint8 *codec_caps)
 #endif /* A2DP_SBC_ONLY */
 
 
-static void clampSbcBitpool(remote_device *device, const uint8 *codec_caps, codec_data_type *codec_data)
+static void clampSbcBitpool(remote_device *device, const u8 *codec_caps, codec_data_type *codec_data)
 {
     /* As we support the full SBC range, we limit our bit pool range to the values passed by the other side. */
     /* Store configuration in SBC format */
@@ -188,13 +188,13 @@ static void clampSbcBitpool(remote_device *device, const uint8 *codec_caps, code
 
 
 /*****************************************************************************/
-bool a2dpSelectOptimalCodecSettings(remote_device *device, uint8 *remote_codec_caps)
+bool a2dpSelectOptimalCodecSettings(remote_device *device, u8 *remote_codec_caps)
 {
     const sep_config_type *sep_config = ((sep_data_type *)PanicNull( blockGetCurrent( device->device_id, data_block_sep_list ) ))->sep_config;
-    const uint8 *local_codec_caps = sep_config->caps;
+    const u8 *local_codec_caps = sep_config->caps;
 
     
-    if ( !a2dpFindCodecSpecificInformation(&local_codec_caps,0) || !a2dpFindCodecSpecificInformation((const uint8**)&remote_codec_caps, 0) )
+    if ( !a2dpFindCodecSpecificInformation(&local_codec_caps,0) || !a2dpFindCodecSpecificInformation((const u8**)&remote_codec_caps, 0) )
     {   /* Unable to locate actual start of local/remote codec service caps */
         return FALSE;
     }
@@ -374,9 +374,9 @@ bool a2dpSelectOptimalCodecSettings(remote_device *device, uint8 *remote_codec_c
 a2dp_codec_settings * a2dpGetCodecAudioParams (remote_device *device)
 {
     sep_data_type *current_sep;
-    const uint8 *codec_caps;
-    const uint8 *service_caps;
-    uint16 size_service_caps;
+    const u8 *codec_caps;
+    const u8 *service_caps;
+    u16 size_service_caps;
     a2dp_codec_settings *codec_settings;
     
     if ((codec_caps = (service_caps = blockGetBase( device->device_id, data_block_configured_service_caps ))) == NULL)

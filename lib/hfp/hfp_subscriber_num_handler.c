@@ -62,7 +62,7 @@ RETURNS
 void hfpHandleSubscriberNumber(Task link_ptr, const struct hfpHandleSubscriberNumber *ind)
 {
     hfp_link_data* link = (hfp_link_data*)link_ptr;
-    uint16 size_number = ind->number.length;
+    u16 size_number = ind->number.length;
     
     if(size_number >= HFP_MAX_ARRAY_LEN)
         size_number = HFP_MAX_ARRAY_LEN - 1;

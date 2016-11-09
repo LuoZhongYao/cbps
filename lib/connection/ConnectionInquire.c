@@ -30,7 +30,7 @@ NOTES
 #ifndef CL_EXCLUDE_INQUIRY
 
 /*****************************************************************************/
-void ConnectionInquire(Task theAppTask, uint32 inquiry_lap, uint8 max_responses, uint16 timeout, uint32 class_of_device)
+void ConnectionInquire(Task theAppTask, u32 inquiry_lap, u8 max_responses, u16 timeout, u32 class_of_device)
 {
     /* Check params are within allowed values - debug build only */
 #ifdef CONNECTION_DEBUG_LIB
@@ -60,7 +60,7 @@ void ConnectionInquire(Task theAppTask, uint32 inquiry_lap, uint8 max_responses,
 }
 
 /*****************************************************************************/
-void ConnectionInquirePeriodic(Task theAppTask, uint16 min_period, uint16 max_period, uint32 inquiry_lap, uint8 max_responses, uint16 timeout, uint32 class_of_device)
+void ConnectionInquirePeriodic(Task theAppTask, u16 min_period, u16 max_period, u32 inquiry_lap, u8 max_responses, u16 timeout, u32 class_of_device)
 {
     /* Check params are within allowed values - debug build only */
 #ifdef CONNECTION_DEBUG_LIB

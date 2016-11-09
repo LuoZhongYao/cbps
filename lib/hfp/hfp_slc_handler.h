@@ -75,7 +75,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void hfpHandleSupportedFeaturesNotification(hfp_link_data* link, uint16 features);
+void hfpHandleSupportedFeaturesNotification(hfp_link_data* link, u16 features);
 
 
 /****************************************************************************

@@ -34,6 +34,6 @@ DESCRIPTION
 RETURNS
     void
 */
-void LedsIndicateError ( const uint16 errId ) ;
+void LedsIndicateError ( const u16 errId ) ;
 
 #endif /* _SOURCE_LED_ERROR_H_ */

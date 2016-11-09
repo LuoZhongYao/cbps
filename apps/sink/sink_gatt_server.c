@@ -20,7 +20,7 @@ DESCRIPTION
 
 
 /****************************************************************************/
-bool gattServerConnectionAdd(uint16 cid)
+bool gattServerConnectionAdd(u16 cid)
 {
     /* Currently only ever one server connection */
     GATT_SERVER.cid = cid;
@@ -29,27 +29,27 @@ bool gattServerConnectionAdd(uint16 cid)
 
 
 /****************************************************************************/
-bool gattServerConnectionFindByCid(uint16 cid)
+bool gattServerConnectionFindByCid(u16 cid)
 {
     if (cid == GATT_SERVER.cid)
     {
         return TRUE;
     }
-    
+
     return FALSE;
 }
 
 
 /****************************************************************************/
-bool gattServerConnectionRemove(uint16 cid)
+bool gattServerConnectionRemove(u16 cid)
 {
     if (cid == GATT_SERVER.cid)
     {
         GATT_SERVER.cid = 0;
-        
+
         return TRUE;
     }
-    
+
     return FALSE;
 }
 
@@ -61,10 +61,10 @@ bool gattServerDisconnectAll(void)
     if (GATT_SERVER.cid)
     {
         GattManagerDisconnectRequest(GATT_SERVER.cid);
-        
+
         return TRUE;
     }
-    
+
     return FALSE;
 }
 

@@ -85,7 +85,7 @@ static bool i2sHardwareInitialise(void);
 static bool i2sOutputEnabled(multi_channel_params_t* params);
 static Sink configureSink(multi_channel_out_t mch_out,
                           multi_channel_params_t* params);
-static uint16 getDspPort(multi_channel_out_t mch_out);
+static u16 getDspPort(multi_channel_out_t mch_out);
 static audio_hardware getAudioHardwareType(multi_channel_out_t mch_out);
 static audio_instance getAudioHardwareInstance(multi_channel_out_t mch_out);
 static audio_channel getAudioHardwareChannel(multi_channel_out_t mch_out);
@@ -161,7 +161,7 @@ bool CsrMultiChanConnectDsp(multi_channel_params_t* params)
     /* Get the source for each DSP port in turn. */
     forEachOutput(mch_out)
     {
-        uint16 dsp_port;
+        u16 dsp_port;
         
         if (getAudioHardwareType(mch_out) == AUDIO_HARDWARE_NONE)
         {
@@ -232,12 +232,12 @@ bool CsrMultiChanConnectStereoSource(Source source_left,
                debugGetStringAudioType(getAudioHardwareType(mch_out_primary_left)),
                getAudioHardwareInstance(mch_out_primary_left),
                getAudioHardwareChannel(mch_out_primary_left),
-               (uint16)sources[mch_out_primary_left]));
+               (u16)sources[mch_out_primary_left]));
     PRINT(("MULTICHAN: Connecting %s_%u channel %u direct to Source 0x%04x\n",
                debugGetStringAudioType(getAudioHardwareType(mch_out_primary_right)),
                getAudioHardwareInstance(mch_out_primary_right),
                getAudioHardwareChannel(mch_out_primary_right),
-               (uint16)sources[mch_out_primary_right]));
+               (u16)sources[mch_out_primary_right]));
 
     /* Connect the sources to the primary hardware outputs. */
     success = connect(sources, params);
@@ -286,7 +286,7 @@ bool CsrMultiChanConnectSourceToMultiChannelOutput(Source source,
                    debugGetStringAudioType(getAudioHardwareType(output)),
                    getAudioHardwareInstance(output),
                    getAudioHardwareChannel(output),
-                   (uint16)sources[output]));
+                   (u16)sources[output]));
 
     success = connect(sources, params);
     free(sources);
@@ -438,7 +438,7 @@ bool CsrMultiChanI2sActive(void)
 }
 
 /******************************************************************************/
-uint32 CsrMultiChannelGetSampleRate(multi_channel_params_t* params)
+u32 CsrMultiChannelGetSampleRate(multi_channel_params_t* params)
 {
     /* If an I2S output is to be used then return the re-sampling frequency */
     if(i2sOutputEnabled(params) && !params->disable_resample)
@@ -801,9 +801,9 @@ PARAMETERS:
     mch_out     The output to get the DSP port number for.
     
 RETURNS:
-    The port number as a uint16, or DSP_OUTPUT_PORT_NONE if there was an error.
+    The port number as a u16, or DSP_OUTPUT_PORT_NONE if there was an error.
 */
-static uint16 getDspPort(multi_channel_out_t mch_out)
+static u16 getDspPort(multi_channel_out_t mch_out)
 {
     switch (mch_out)
     {

@@ -21,7 +21,7 @@ DESCRIPTION
 #ifndef __APP_FILE_IF_H__
 #define __APP_FILE_IF_H__
 
-typedef uint16 FILE_INDEX;  /*!< File index type. */
+typedef u16 FILE_INDEX;  /*!< File index type. */
 
 #define FILE_NONE 0 /*!< No such file. */
 #define FILE_ROOT 1 /*!< Root directory. */

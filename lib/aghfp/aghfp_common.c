@@ -22,7 +22,7 @@ void aghfpSetState(AGHFP *aghfp, aghfp_state state)
 	allocate them). Send the message not forgetting to set the correct 
 	message id.
 */
-void aghfpSendCommonCfmMessageToApp(uint16 message_id, AGHFP *aghfp, aghfp_lib_status status)
+void aghfpSendCommonCfmMessageToApp(u16 message_id, AGHFP *aghfp, aghfp_lib_status status)
 {
 	MAKE_AGHFP_MESSAGE(AGHFP_COMMON_CFM_MESSAGE);
 	message->status = status;

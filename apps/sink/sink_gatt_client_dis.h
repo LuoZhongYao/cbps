@@ -55,7 +55,7 @@ RETURNS
     TRUE if the Device Information Service was successfully added, FALSE otherwise.
 */
 #ifdef GATT_DIS_CLIENT
-bool sinkGattDisClientAddService(uint16 cid, uint16 start, uint16 end);
+bool sinkGattDisClientAddService(u16 cid, u16 start, u16 end);
 #else
 #define sinkGattDisClientAddService(cid, start, end) (FALSE)
 #endif
@@ -72,7 +72,7 @@ PARAMETERS
     cid             The connection ID
 */
 #ifdef GATT_DIS_CLIENT
-void sinkGattDISClientRemoveService(GDISC *gdisc, uint16 cid);
+void sinkGattDISClientRemoveService(GDISC *gdisc, u16 cid);
 #else
 #define sinkGattDISClientRemoveService(gdisc, cid) ((void)(0))
 #endif

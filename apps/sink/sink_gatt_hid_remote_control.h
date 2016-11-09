@@ -111,7 +111,7 @@ typedef struct
 */
 typedef struct
 {
-    uint16 max_remotes; /* Stores the maximum number of remote controllers supported */
+    u16 max_remotes; /* Stores the maximum number of remote controllers supported */
     gattHidRcLookupTable_t lookup_table[1]; /* Stores the lookup table configured for the BLE remote */   
 } gattHidRcConfig_t;
 
@@ -120,7 +120,7 @@ typedef struct
 */
 typedef struct
 { 
-    uint16 rc_button_mask; /* Current Button mask for the remote */
+    u16 rc_button_mask; /* Current Button mask for the remote */
     inputState_t rc_button_state:4; /* Button state of the remote */
     unsigned rc_buttons_down:4; /* Buttons down or not */
     unsigned rc_sent_down_notify:1;  /* Flag used when the DOWN notification has already sent in inputMultipleDetect state */
@@ -135,7 +135,7 @@ typedef struct
     TaskData task; /* The task that is responsible for communicating with the BLE HID RC */
     timerConfig_t *timers; /* RC timers for button presses */    
     gattHidRcConfig_t *config; /* Stores the configuration data required by the BLE remote controller task */
-    uint16 rc_lookup_size; /* Size of lookup table for Remote configuration */
+    u16 rc_lookup_size; /* Size of lookup table for Remote configuration */
 }gattHidRcTaskData_t;
 
 /*
@@ -167,8 +167,8 @@ typedef enum
 */
 typedef struct
 {
-    uint16 cid; /* Connection ID to identify the RC the button press was generated on */
-    uint16 mask; /* Identifies which of the buttons are currently pressed down */
+    u16 cid; /* Connection ID to identify the RC the button press was generated on */
+    u16 mask; /* Identifies which of the buttons are currently pressed down */
     gattHidRcTimerID_t timer; /* Identifies the button timer that has fired (Only used for BLE_HID_RC_BUTTON_TIMER_MSG) */
 } GATT_HID_RC_BUTTON_EVENT_MSG_T;
 
@@ -220,7 +220,7 @@ PARAMETERS
     cid             Connection ID of remote
 */
 #ifdef GATT_HID_REMOTE_CONTROL
-void sinkGattHidRcProcessButtonPress(uint16 size,uint8* value,uint16 cid);
+void sinkGattHidRcProcessButtonPress(u16 size,u8* value,u16 cid);
 #else
 #define sinkGattHidRcProcessButtonPress(size,vlaue,cid) ((void)(0))
 #endif
@@ -256,7 +256,7 @@ PARAMETERS
 
 */
 #ifdef GATT_HID_REMOTE_CONTROL
-void sinkGattHidRcProcessReportMapDescriptor(uint16 cid,uint16 size_data,uint8 *data,uint16 more_to_come);
+void sinkGattHidRcProcessReportMapDescriptor(u16 cid,u16 size_data,u8 *data,u16 more_to_come);
 #else
 #define sinkGattHidRcProcessReportMapDescriptor(cid,size_data,data,more_to_come)  ((void)(0))
 #endif
@@ -273,7 +273,7 @@ PARAMETERS
     cid         Connection ID for new Remote
 */
 #ifdef GATT_HID_REMOTE_CONTROL
-void sinkGattHidRcAddRemote(uint16 cid);
+void sinkGattHidRcAddRemote(u16 cid);
 #else
 #define sinkGattHidRcAddRemote(cid) ((void)(0))
 #endif
@@ -291,7 +291,7 @@ PARAMETERS
     rc_lookup_sie         Remote Control Look up table size
 */
 #ifdef GATT_HID_REMOTE_CONTROL
-void sinkGattHidRcConfigRemote(uint16 rc_lookup_sie);
+void sinkGattHidRcConfigRemote(u16 rc_lookup_sie);
 #else
 #define sinkGattHidRcConfigRemote(keyLengths) ((void)(0))
 #endif

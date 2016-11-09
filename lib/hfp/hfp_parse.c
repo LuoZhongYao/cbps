@@ -16,7 +16,7 @@
 #include <stdio.h>
 #endif
 
-typedef const uint8 *ptr;
+typedef const u8 *ptr;
 
 static __inline__ char my_toupper(char c)
 { return 'a' <= c && c <= 'z' ? c +'A'-'a' : c; }
@@ -42,7 +42,7 @@ static ptr skipOnce1(ptr s, ptr e)
 #ifdef TEST_HARNESS
 static void printString(const char *name, const struct sequence *s)
 {
-  uint16 i;
+  u16 i;
   printf(" %s='", name);
   for(i = 0; i < s->length; ++i) putchar(s->data[i]);
   printf("'");
@@ -103,8 +103,8 @@ static ptr getWildString(ptr p, ptr e, struct sequence *res)
   if(p)
   {
     ptr s = p;
-    p = (uint8*)UtilFind(0xFFFF, '\r', (const uint16*)p, 0, 1, (uint16) (e - p));
-    if (!p) p = (uint8*)UtilFind(0xFFFF, '\n', (const uint16*)p, 0, 1, e - p);
+    p = (u8*)UtilFind(0xFFFF, '\r', (const u16*)p, 0, 1, (u16) (e - p));
+    if (!p) p = (u8*)UtilFind(0xFFFF, '\n', (const u16*)p, 0, 1, e - p);
     if (!p) p = e;
     res->data = s;
     res->length = p - s;
@@ -126,7 +126,7 @@ static ptr skip2(ptr s, ptr e)
   return s;
 }
 
-struct value_hfpCsrFeaturesHandleModifyIndicatorsInd_p get_hfpCsrFeaturesHandleModifyIndicatorsInd_p(const struct region_hfpCsrFeaturesHandleModifyIndicatorsInd_p *r0, uint16 i)
+struct value_hfpCsrFeaturesHandleModifyIndicatorsInd_p get_hfpCsrFeaturesHandleModifyIndicatorsInd_p(const struct region_hfpCsrFeaturesHandleModifyIndicatorsInd_p *r0, u16 i)
 {
   struct region_hfpCsrFeaturesHandleModifyIndicatorsInd_p * r = (struct region_hfpCsrFeaturesHandleModifyIndicatorsInd_p *) r0;
   if(i < r->next)
@@ -135,7 +135,7 @@ struct value_hfpCsrFeaturesHandleModifyIndicatorsInd_p get_hfpCsrFeaturesHandleM
     r->next_s = r->s;
   }
   {
-    uint16 n = r->next;
+    u16 n = r->next;
     ptr p = r->next_s;
     ptr e = r->e;
     struct value_hfpCsrFeaturesHandleModifyIndicatorsInd_p res;
@@ -169,7 +169,7 @@ static ptr loop4(ptr p, ptr e, struct region_hfpCsrFeaturesHandleModifyIndicator
   return 1 <= n ? p : 0;
 }
 
-static ptr matchChar(ptr s, ptr e, uint8 c)
+static ptr matchChar(ptr s, ptr e, u8 c)
 { return s && s != e && my_toupper((char) *s) == (char) c ? s+1 : 0; }
 
 static ptr skip3(ptr s, ptr e)
@@ -180,7 +180,7 @@ static ptr skip3(ptr s, ptr e)
   return s;
 }
 
-struct value_hfpHandleCallHoldInfoRange_p get_hfpHandleCallHoldInfoRange_p(const struct region_hfpHandleCallHoldInfoRange_p *r0, uint16 i)
+struct value_hfpHandleCallHoldInfoRange_p get_hfpHandleCallHoldInfoRange_p(const struct region_hfpHandleCallHoldInfoRange_p *r0, u16 i)
 {
   struct region_hfpHandleCallHoldInfoRange_p * r = (struct region_hfpHandleCallHoldInfoRange_p *) r0;
   if(i < r->next)
@@ -189,7 +189,7 @@ struct value_hfpHandleCallHoldInfoRange_p get_hfpHandleCallHoldInfoRange_p(const
     r->next_s = r->s;
   }
   {
-    uint16 n = r->next;
+    u16 n = r->next;
     ptr p = r->next_s;
     ptr e = r->e;
     struct value_hfpHandleCallHoldInfoRange_p res;
@@ -223,7 +223,7 @@ static ptr loop2(ptr p, ptr e, struct region_hfpHandleCallHoldInfoRange_p *res)
   return 1 <= n ? p : 0;
 }
 
-struct value_hfpHandleCallHoldInfo_p get_hfpHandleCallHoldInfo_p(const struct region_hfpHandleCallHoldInfo_p *r0, uint16 i)
+struct value_hfpHandleCallHoldInfo_p get_hfpHandleCallHoldInfo_p(const struct region_hfpHandleCallHoldInfo_p *r0, u16 i)
 {
   struct region_hfpHandleCallHoldInfo_p * r = (struct region_hfpHandleCallHoldInfo_p *) r0;
   if(i < r->next)
@@ -232,7 +232,7 @@ struct value_hfpHandleCallHoldInfo_p get_hfpHandleCallHoldInfo_p(const struct re
     r->next_s = r->s;
   }
   {
-    uint16 n = r->next;
+    u16 n = r->next;
     ptr p = r->next_s;
     ptr e = r->e;
     struct value_hfpHandleCallHoldInfo_p res;
@@ -266,7 +266,7 @@ static ptr loop3(ptr p, ptr e, struct region_hfpHandleCallHoldInfo_p *res)
   return 1 <= n ? p : 0;
 }
 
-struct value_hfpHandleIndicatorStatus_d get_hfpHandleIndicatorStatus_d(const struct region_hfpHandleIndicatorStatus_d *r0, uint16 i)
+struct value_hfpHandleIndicatorStatus_d get_hfpHandleIndicatorStatus_d(const struct region_hfpHandleIndicatorStatus_d *r0, u16 i)
 {
   struct region_hfpHandleIndicatorStatus_d * r = (struct region_hfpHandleIndicatorStatus_d *) r0;
   if(i < r->next)
@@ -275,7 +275,7 @@ struct value_hfpHandleIndicatorStatus_d get_hfpHandleIndicatorStatus_d(const str
     r->next_s = r->s;
   }
   {
-    uint16 n = r->next;
+    u16 n = r->next;
     ptr p = r->next_s;
     ptr e = r->e;
     struct value_hfpHandleIndicatorStatus_d res;
@@ -330,7 +330,7 @@ static ptr findEndOfPacket(ptr s, ptr e)
         if(*p != '\r')
         {
 #ifndef TEST_HARNESS
-        p = (const uint8*)UtilFind(0xFFFF, '\r', (const uint16*)p, 0, 1, (uint16)(e-p));
+        p = (const u8*)UtilFind(0xFFFF, '\r', (const u16*)p, 0, 1, (u16)(e-p));
 #endif
 #ifdef TEST_HARNESS
 		   while(p != e && *p != '\r') p++;
@@ -366,14 +366,14 @@ static ptr findEndOfPacket(ptr s, ptr e)
 
 #ifndef TEST_HARNESS
 #ifdef __XAP__
-uint16 parseSource(Source rfcDataIn, Task task)
+u16 parseSource(Source rfcDataIn, Task task)
 {
   ptr s = SourceMap(rfcDataIn);
   ptr e = s + SourceSize(rfcDataIn);
   ptr p = parseData(s, e, task);
   if(p != s)
   {
-    SourceDrop(rfcDataIn, (uint16) (p - s));
+    SourceDrop(rfcDataIn, (u16) (p - s));
     return 1;
   }
   else
@@ -768,16 +768,16 @@ static const Arc *const states[111] = {
   &arcs[262],
 };
 
-static uint16 matchLiteral(ptr s, ptr e, Task task)
+static u16 matchLiteral(ptr s, ptr e, Task task)
 {
-  uint16 n = e - s;
-  uint16 h = 0;
-  uint16 i = 0;
+  u16 n = e - s;
+  u16 h = 0;
+  u16 i = 0;
   do {
-    uint16 m = n - i;
+    u16 m = n - i;
     if(m > 64)
       m = 64;
-    h = UtilHash((uint16 *) s + i, m, h);
+    h = UtilHash((u16 *) s + i, m, h);
     i += m;
   } while(i < n);
   switch(h)
@@ -785,7 +785,7 @@ static uint16 matchLiteral(ptr s, ptr e, Task task)
     case 3689:
       {
         const char *literal = "\r\n+BSIR: 0\r\n";
-        if(n == 12 && UtilCompare((uint16 *)(literal+0), (uint16 *)(s+0), 12) == 0)
+        if(n == 12 && UtilCompare((u16 *)(literal+0), (u16 *)(s+0), 12) == 0)
         {
 #ifndef TEST_HARNESS
           hfpHandleInBandRingToneDisable(task);
@@ -800,7 +800,7 @@ static uint16 matchLiteral(ptr s, ptr e, Task task)
     case 8704:
       {
         const char *literal = "\r\n+CHLD: (0,1,1x,2,2x,3,4)\r\n";
-        if(n == 28 && UtilCompare((uint16 *)(literal+0), (uint16 *)(s+0), 28) == 0)
+        if(n == 28 && UtilCompare((u16 *)(literal+0), (u16 *)(s+0), 28) == 0)
         {
 #ifndef TEST_HARNESS
           hfpHandleCallHoldInfoCommon(task);
@@ -815,7 +815,7 @@ static uint16 matchLiteral(ptr s, ptr e, Task task)
     case 14274:
       {
         const char *literal = "\r\nOK\r\n";
-        if(n == 6 && UtilCompare((uint16 *)(literal+0), (uint16 *)(s+0), 6) == 0)
+        if(n == 6 && UtilCompare((u16 *)(literal+0), (u16 *)(s+0), 6) == 0)
         {
 #ifndef TEST_HARNESS
           hfpHandleOk(task);
@@ -830,7 +830,7 @@ static uint16 matchLiteral(ptr s, ptr e, Task task)
     case 25656:
       {
         const char *literal = "\r\nERROR\r\n";
-        if(n == 9 && UtilCompare((uint16 *)(literal+0), (uint16 *)(s+0), 9) == 0)
+        if(n == 9 && UtilCompare((u16 *)(literal+0), (u16 *)(s+0), 9) == 0)
         {
 #ifndef TEST_HARNESS
           hfpHandleError(task);
@@ -845,7 +845,7 @@ static uint16 matchLiteral(ptr s, ptr e, Task task)
     case 31798:
       {
         const char *literal = "\r\nRING\r\n";
-        if(n == 8 && UtilCompare((uint16 *)(literal+0), (uint16 *)(s+0), 8) == 0)
+        if(n == 8 && UtilCompare((u16 *)(literal+0), (u16 *)(s+0), 8) == 0)
         {
 #ifndef TEST_HARNESS
           hfpHandleRing(task);
@@ -860,7 +860,7 @@ static uint16 matchLiteral(ptr s, ptr e, Task task)
     case 37456:
       {
         const char *literal = "\r\n+BSIR: 1\r\n";
-        if(n == 12 && UtilCompare((uint16 *)(literal+0), (uint16 *)(s+0), 12) == 0)
+        if(n == 12 && UtilCompare((u16 *)(literal+0), (u16 *)(s+0), 12) == 0)
         {
 #ifndef TEST_HARNESS
           hfpHandleInBandRingToneEnable(task);
@@ -955,7 +955,7 @@ ptr parseData(ptr s, ptr e, Task task)
         const Arc *a = states[state];
         const Arc *const last_a = states[state+1];
 #ifndef TEST_HARNESS
-        a = (const Arc *) (void *) UtilFind(0xFFFF, (uint16) m, (const uint16 *) (void *) &a[0].c, 0, sizeof(Arc), (uint16) (last_a - a));
+        a = (const Arc *) (void *) UtilFind(0xFFFF, (u16) m, (const u16 *) (void *) &a[0].c, 0, sizeof(Arc), (u16) (last_a - a));
 #endif
 #ifdef TEST_HARNESS
         while(a != last_a && a->c != m) a++;
@@ -1041,7 +1041,7 @@ ptr parseData(ptr s, ptr e, Task task)
 #ifdef TEST_HARNESS
             printf("Called hfpCsrFeaturesHandleModifyIndicatorsInd");
             {
-              uint16 i;
+              u16 i;
               struct region_hfpCsrFeaturesHandleModifyIndicatorsInd_p *r = &uu->hfpCsrFeaturesHandleModifyIndicatorsInd.p;
               printf(" p={");
               for(i = 0; i < r->count; ++i)
@@ -1235,7 +1235,7 @@ ptr parseData(ptr s, ptr e, Task task)
 #ifdef TEST_HARNESS
             printf("Called hfpHandleCallHoldInfoRange");
             {
-              uint16 i;
+              u16 i;
               struct region_hfpHandleCallHoldInfoRange_p *r = &uu->hfpHandleCallHoldInfoRange.p;
               printf(" p={");
               for(i = 0; i < r->count; ++i)
@@ -1260,7 +1260,7 @@ ptr parseData(ptr s, ptr e, Task task)
 #ifdef TEST_HARNESS
             printf("Called hfpHandleCallHoldInfo");
             {
-              uint16 i;
+              u16 i;
               struct region_hfpHandleCallHoldInfo_p *r = &uu->hfpHandleCallHoldInfo.p;
               printf(" p={");
               for(i = 0; i < r->count; ++i)
@@ -1301,7 +1301,7 @@ ptr parseData(ptr s, ptr e, Task task)
 #ifdef TEST_HARNESS
             printf("Called hfpHandleIndicatorStatus");
             {
-              uint16 i;
+              u16 i;
               struct region_hfpHandleIndicatorStatus_d *r = &uu->hfpHandleIndicatorStatus.d;
               printf(" d={");
               for(i = 0; i < r->count; ++i)
@@ -1613,7 +1613,7 @@ ptr parseData(ptr s, ptr e, Task task)
       */
 unrecognised:
 #ifndef TEST_HARNESS
-      handleUnrecognised(s, (uint16) (p-s), task);
+      handleUnrecognised(s, (u16) (p-s), task);
 #endif
 #ifdef TEST_HARNESS
       printf("Called handleUnrecognised\n");

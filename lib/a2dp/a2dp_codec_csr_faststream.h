@@ -35,7 +35,7 @@ DESCRIPTION
     Get the sampling rates and channel mode from the codec config settings.
 
 */
-void getCsrFastStreamConfigSettings(const uint8 *service_caps, a2dp_role_type role, a2dp_codec_settings *codec_settings);
+void getCsrFastStreamConfigSettings(const u8 *service_caps, a2dp_role_type role, a2dp_codec_settings *codec_settings);
 
 
 /*************************************************************************
@@ -47,7 +47,7 @@ DESCRIPTION
     setting a single bit in each field of the pass caps structure.
 
 */
-void selectOptimalCsrFastStreamCapsSink(const uint8 *local_caps, uint8 *remote_caps);
+void selectOptimalCsrFastStreamCapsSink(const u8 *local_caps, u8 *remote_caps);
 
 
 /*************************************************************************
@@ -59,7 +59,7 @@ DESCRIPTION
     setting a single bit in each field of the pass caps structure.
 
 */
-void selectOptimalCsrFastStreamCapsSource(const uint8 *local_caps, uint8 *remote_caps);
+void selectOptimalCsrFastStreamCapsSource(const u8 *local_caps, u8 *remote_caps);
 
 #endif  /* A2DP_SBC_ONLY */
 

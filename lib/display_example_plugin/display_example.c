@@ -32,7 +32,7 @@ NOTES
 typedef struct display_Tag
 {
 
-   uint16 volume_range;
+   u16 volume_range;
    
    Task app_task;
 
@@ -70,11 +70,11 @@ void DisplayExamplePluginSetState( DisplayExamplePluginTaskdata *task, bool stat
 
 }
 
-void DisplayExamplePluginSetText( DisplayExamplePluginTaskdata *task, char* text, uint8 text_length, uint8 line, uint8 scroll, bool flash, uint16 scroll_update, uint16 scroll_pause, uint16 display_time ) 
+void DisplayExamplePluginSetText( DisplayExamplePluginTaskdata *task, char* text, u8 text_length, u8 line, u8 scroll, bool flash, u16 scroll_update, u16 scroll_pause, u16 display_time ) 
 {
     /* configure scroll and update messages so they're sctive on the correct line number, this example is 2 lines */
-    uint8   active_line_clear_msg = (line==0)?DISP_EX_TEXTLN0_CLEAR_INT:DISP_EX_TEXTLN1_CLEAR_INT;
-    uint8   active_line_scroll_msg = (line==0)?DISP_EX_SCROLLLN0_TEXT_INT:DISP_EX_SCROLLLN1_TEXT_INT;
+    u8   active_line_clear_msg = (line==0)?DISP_EX_TEXTLN0_CLEAR_INT:DISP_EX_TEXTLN1_CLEAR_INT;
+    u8   active_line_scroll_msg = (line==0)?DISP_EX_SCROLLLN0_TEXT_INT:DISP_EX_SCROLLLN1_TEXT_INT;
 
     PRINT(("DISP: (L%u)(L%u)(F%u)(S%u,%u)(D:%u): ", line,text_length, flash,scroll_update,scroll_pause, display_time));
     PRINT(("%-.*s", text_length, text));
@@ -117,18 +117,18 @@ void DisplayExamplePluginSetText( DisplayExamplePluginTaskdata *task, char* text
 }
 
 
-void DisplayExamplePluginSetVolume( DisplayExamplePluginTaskdata *task, uint16 volume ) 
+void DisplayExamplePluginSetVolume( DisplayExamplePluginTaskdata *task, u16 volume ) 
 {
     PRINT(("DISP: Volume %u:\n", volume));
 }
 
-void DisplayExamplePluginSetIcon( DisplayExamplePluginTaskdata *task, uint8 icon, bool state ) 
+void DisplayExamplePluginSetIcon( DisplayExamplePluginTaskdata *task, u8 icon, bool state ) 
 {
     PRINT(("DISP: Icon %u(%u):\n", icon, state));
 }
 
 
-void DisplayExamplePluginSetBattery( DisplayExamplePluginTaskdata *task, uint8 battery_level ) 
+void DisplayExamplePluginSetBattery( DisplayExamplePluginTaskdata *task, u8 battery_level ) 
 {
     PRINT(("DISP: Batt %u:\n", battery_level));
 }
@@ -136,7 +136,7 @@ void DisplayExamplePluginSetBattery( DisplayExamplePluginTaskdata *task, uint8 b
 void DisplayExamplePluginScrollText( DisplayExamplePluginTaskdata *task, DispExScrollMessage_T * dispscrmsg)
 {
     /* configure scroll and update messages so they're sctive on the correct line number, this example is 2 lines */
-    uint8   active_line_scroll_msg = (dispscrmsg->line==0)?DISP_EX_SCROLLLN0_TEXT_INT:DISP_EX_SCROLLLN1_TEXT_INT;
+    u8   active_line_scroll_msg = (dispscrmsg->line==0)?DISP_EX_SCROLLLN0_TEXT_INT:DISP_EX_SCROLLLN1_TEXT_INT;
 
     PRINT(("DISP: Scroll line  %u, %u: ", dispscrmsg->line , dispscrmsg->scroll_update));
     PRINT((dispscrmsg->text));
@@ -158,10 +158,10 @@ void DisplayExamplePluginScrollText( DisplayExamplePluginTaskdata *task, DispExS
 
 }
 
-void DisplayExamplePluginClearText( DisplayExamplePluginTaskdata *task, uint8 line ) 
+void DisplayExamplePluginClearText( DisplayExamplePluginTaskdata *task, u8 line ) 
 {
     /* configure scroll and update messages so they're sctive on the correct line number, this example is 2 lines */
-    uint8   active_line_scroll_msg = (line==0)?DISP_EX_SCROLLLN0_TEXT_INT:DISP_EX_SCROLLLN1_TEXT_INT;
+    u8   active_line_scroll_msg = (line==0)?DISP_EX_SCROLLLN0_TEXT_INT:DISP_EX_SCROLLLN1_TEXT_INT;
 
     /* Cancel any scrolling on this line */
     MessageCancelAll( (TaskData*)task , active_line_scroll_msg);

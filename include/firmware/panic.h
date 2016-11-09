@@ -14,14 +14,6 @@
 These functions can be used to panic the application, forcing it to terminate abnormally.
 */
 /*!
-Panics the application if the value passed is FALSE.
-*/
-#define PanicFalse PanicZero
-/*!
-Panics the application if the value passed is zero.
-*/
-#define PanicZero(x) (unsigned int) PanicNull((void *) (x))
-/*!
 Panics the application if the value passed is not zero.
 */
 #define PanicNotZero(x) PanicNotNull((const void *) (x))
@@ -43,6 +35,16 @@ void Panic(void);
 void *PanicNull(void *);
 
 /*!
+    @brief Panics the application if the cond passed is false, otherwise returns the cond.
+*/
+bool PanicFalse(bool cond);
+
+/*!
+    @brief Panics the application if the number passed is 0, otherwise returns the number.
+*/
+unsigned PanicZero(unsigned number);
+
+/*!
     @brief Panics the application if the pointer passed is not NULL, otherwise returns.
 */
 void PanicNotNull(const void *);
@@ -52,5 +54,7 @@ void PanicNotNull(const void *);
     the memory allocation fails, the application is panicked.
 */
 void *PanicUnlessMalloc(size_t sz);
+
+
 
 #endif

@@ -26,16 +26,16 @@ Part of ADK 4.0
  us to act on this request.
 */
 /*                                                        Audio with AG               Audio with HS           */
-static const uint16 aghfpSlcConnectedAppResponse[2] = { AGHFP_HS_AUDIO_REQUEST_IND, 0                         };
-static const uint16 aghfpIncomingCallAppResponse[2] = { AGHFP_HS_CALL_ANSWER_IND  , AGHFP_HS_CALL_ANSWER_IND  };
-static const uint16 aghfpOutgoingCallAppResponse[2] = { AGHFP_HS_AUDIO_REQUEST_IND, AGHFP_HS_CALL_HANG_UP_IND };
-static const uint16 aghfpActiveCallAppResponse[2] =   { AGHFP_HS_AUDIO_REQUEST_IND, AGHFP_HS_CALL_HANG_UP_IND };
-void aghfpHandleKeypadCommand(AGHFP *aghfp, uint16 keycode)
+static const u16 aghfpSlcConnectedAppResponse[2] = { AGHFP_HS_AUDIO_REQUEST_IND, 0                         };
+static const u16 aghfpIncomingCallAppResponse[2] = { AGHFP_HS_CALL_ANSWER_IND  , AGHFP_HS_CALL_ANSWER_IND  };
+static const u16 aghfpOutgoingCallAppResponse[2] = { AGHFP_HS_AUDIO_REQUEST_IND, AGHFP_HS_CALL_HANG_UP_IND };
+static const u16 aghfpActiveCallAppResponse[2] =   { AGHFP_HS_AUDIO_REQUEST_IND, AGHFP_HS_CALL_HANG_UP_IND };
+void aghfpHandleKeypadCommand(AGHFP *aghfp, u16 keycode)
 {
 	if (keycode==200)
 	{
-		uint16 response;
-		uint16 audioLoc = (aghfp->audio_sink==0)?AUDIO_WITH_AG:AUDIO_WITH_HS;
+		u16 response;
+		u16 audioLoc = (aghfp->audio_sink==0)?AUDIO_WITH_AG:AUDIO_WITH_HS;
 		
 		/* Determine context of keypress command */
 		switch (aghfp->state)
@@ -213,7 +213,7 @@ void aghfpHandlePhoneNumberForVoiceTagReq(AGHFP *aghfp)
  AG wants to send a phone number to the HF in response to an AT+BINP request.
  Pass this on to the profile handler.
 */
-void AghfpSendPhoneNumberForVoiceTag(AGHFP *aghfp, uint16 size_number, const uint8 *number)
+void AghfpSendPhoneNumberForVoiceTag(AGHFP *aghfp, u16 size_number, const u8 *number)
 {
 	if (aghfp->supported_features & aghfp_attach_phone_number)
 	{
@@ -234,7 +234,7 @@ void AghfpSendPhoneNumberForVoiceTag(AGHFP *aghfp, uint16 size_number, const uin
  AG wants to send a phone number to the HF in response to an AT+BINP request.
  Profile handler has asked us to handle this.
 */
-void aghfpHandleSendPhoneNumberForVoiceTag(AGHFP *aghfp, uint16 size_number, uint8 *number)
+void aghfpHandleSendPhoneNumberForVoiceTag(AGHFP *aghfp, u16 size_number, u8 *number)
 {
 	aghfpAtCmdBegin(aghfp);
 	aghfpAtCmdString(aghfp, "+BINP: ");
@@ -249,7 +249,7 @@ void aghfpHandleSendPhoneNumberForVoiceTag(AGHFP *aghfp, uint16 size_number, uin
  AG wants to set microphone gain on the HF. Pass this request on to the
  profile handler.
 */
-void AghfpSetRemoteMicrophoneGain(AGHFP *aghfp, uint8 gain)
+void AghfpSetRemoteMicrophoneGain(AGHFP *aghfp, u8 gain)
 {
 	/* Is remote volume control supported in this AG, and is the specified
        gain in the range 0-15? */
@@ -270,7 +270,7 @@ void AghfpSetRemoteMicrophoneGain(AGHFP *aghfp, uint8 gain)
  AG wants to set microphone gain on the HF. Profile handler has asked us to
  handle this request.
 */
-void aghfpHandleSetRemoteMicrophoneGain(AGHFP *aghfp, uint8 gain)
+void aghfpHandleSetRemoteMicrophoneGain(AGHFP *aghfp, u8 gain)
 {
 	char buf[3];
 	/* We can be certain that "gain" won't use more than 2 chars when we
@@ -291,7 +291,7 @@ void aghfpHandleSetRemoteMicrophoneGain(AGHFP *aghfp, uint8 gain)
  AG wants to set speaker volume on the HF. Pass this request on to the
  profile handler.
 */
-void AghfpSetRemoteSpeakerVolume(AGHFP *aghfp, uint8 volume)
+void AghfpSetRemoteSpeakerVolume(AGHFP *aghfp, u8 volume)
 {
 	/* Is remote volume control supported in this AG, and is the specified
        volume in the range 0-15? */
@@ -312,7 +312,7 @@ void AghfpSetRemoteSpeakerVolume(AGHFP *aghfp, uint8 volume)
  AG wants to set speaker volume on the HF. Profile handler has asked us to
  handle this request.
 */
-void aghfpHandleSetRemoteSpeakerVolume(AGHFP *aghfp, uint8 volume)
+void aghfpHandleSetRemoteSpeakerVolume(AGHFP *aghfp, u8 volume)
 {
 	char buf[3];
 	/* We can be certain that "volume" won't use more than 2 chars when we
@@ -329,7 +329,7 @@ void aghfpHandleSetRemoteSpeakerVolume(AGHFP *aghfp, uint8 volume)
 }
 
 
-void aghfpHandleSyncMicrophoneGain(AGHFP *aghfp, uint8 gain)
+void aghfpHandleSyncMicrophoneGain(AGHFP *aghfp, u8 gain)
 {
 	MAKE_AGHFP_MESSAGE(AGHFP_SYNC_MICROPHONE_GAIN_IND);
 	message->gain = gain;
@@ -340,7 +340,7 @@ void aghfpHandleSyncMicrophoneGain(AGHFP *aghfp, uint8 gain)
 }
 
 
-void aghfpHandleSyncSpeakerVolume(AGHFP *aghfp, uint8 volume)
+void aghfpHandleSyncSpeakerVolume(AGHFP *aghfp, u8 volume)
 {
 	MAKE_AGHFP_MESSAGE(AGHFP_SYNC_SPEAKER_VOLUME_IND);
 	message->volume = volume;
@@ -351,7 +351,7 @@ void aghfpHandleSyncSpeakerVolume(AGHFP *aghfp, uint8 volume)
 }
 
 
-void aghfpHandleTransmitDtmfCode(AGHFP *aghfp, uint8 code)
+void aghfpHandleTransmitDtmfCode(AGHFP *aghfp, u8 code)
 {
 	MAKE_AGHFP_MESSAGE(AGHFP_TRANSMIT_DTMF_CODE_IND);
 	message->aghfp = aghfp;
@@ -392,7 +392,7 @@ void AghfpSendResponseHoldState(AGHFP *aghfp, aghfp_response_hold_state state)
 
 void aghfpHandleSendResponseHoldState(AGHFP *aghfp, aghfp_response_hold_state state)
 {
-	uint8 stateAsChar = (uint8)state + (uint8)'0';
+	u8 stateAsChar = (u8)state + (u8)'0';
 	
 	aghfpAtCmdBegin(aghfp);
 	aghfpAtCmdString(aghfp, "+BTRH:");
@@ -402,7 +402,7 @@ void aghfpHandleSendResponseHoldState(AGHFP *aghfp, aghfp_response_hold_state st
 	aghfpSendCommonCfmMessageToApp(AGHFP_SEND_RESPONSE_HOLD_STATE_CFM, aghfp, aghfp_success);
 }
 
-void aghfpHandleSetResponseHoldStatus(AGHFP *aghfp, uint8 cmd)
+void aghfpHandleSetResponseHoldStatus(AGHFP *aghfp, u8 cmd)
 {
     if ( supportedProfileHasHfp15Features(aghfp->supported_profile) )
     {
@@ -433,7 +433,7 @@ void AghfpConfirmResponseHoldState(AGHFP *aghfp, aghfp_response_hold_state state
 
 void aghfpHandleConfirmResponseHoldState(AGHFP *aghfp, aghfp_response_hold_state state)
 {
-	uint8 stateAsChar = (uint8)state + (uint8)'0';
+	u8 stateAsChar = (u8)state + (u8)'0';
 	
 	aghfpAtCmdBegin(aghfp);
 	aghfpAtCmdString(aghfp, "+BTRH:");
@@ -607,7 +607,7 @@ void aghfpHandleSendCurrentCallsComplete(AGHFP *aghfp)
 	aghfpSendCommonCfmMessageToApp(AGHFP_CURRENT_CALLS_CFM, aghfp, aghfp_success);
 }
 
-void aghfpHandleNetworkOperatorFormatRequest(AGHFP *aghfp, uint8 mode, uint8 format)
+void aghfpHandleNetworkOperatorFormatRequest(AGHFP *aghfp, u8 mode, u8 format)
 {
     if ( supportedProfileHasHfp15Features(aghfp->supported_profile) && mode==3 && format==0 )
     {
@@ -633,7 +633,7 @@ void aghfpHandleNetworkOperatorRequest(AGHFP *aghfp)
 	}
 }
 
-void AghfpSendNetworkOperator(AGHFP *aghfp, uint8 mode, uint16 size_operator, uint8 *operator)
+void AghfpSendNetworkOperator(AGHFP *aghfp, u8 mode, u16 size_operator, u8 *operator)
 {
 	if ( supportedProfileHasHfp15Features(aghfp->supported_profile) )
 	{
@@ -649,7 +649,7 @@ void AghfpSendNetworkOperator(AGHFP *aghfp, uint8 mode, uint16 size_operator, ui
 	}
 }
 
-void aghfpHandleSendNetworkOperator(AGHFP *aghfp, uint8 mode, uint16 size_operator, uint8* operator)
+void aghfpHandleSendNetworkOperator(AGHFP *aghfp, u8 mode, u16 size_operator, u8* operator)
 {
     char buf[2];
 	sprintf( buf, "%d", mode);

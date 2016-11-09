@@ -99,7 +99,7 @@ const A2dpPluginTaskdata csr_fm_decoder_plugin = {{message_handler}, FM_DECODER}
     Support all features and full bitpool range. Note that we trust the source
     to choose a bitpool value suitable for the Bluetooth bandwidth.
 */
-const uint8 sbc_caps_sink[16] = 
+const u8 sbc_caps_sink[16] = 
 {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
@@ -206,7 +206,7 @@ const uint8 sbc_caps_sink[16] =
     - MPF-1
     - free rate
 */
-const uint8 mp3_caps_sink[16] = 
+const u8 mp3_caps_sink[16] = 
 {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
@@ -294,7 +294,7 @@ const uint8 mp3_caps_sink[16] =
     
     Support all features.
 */
-const uint8 aac_caps_sink[18] = 
+const u8 aac_caps_sink[18] = 
 {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
@@ -352,7 +352,7 @@ const uint8 aac_caps_sink[18] =
 /*! @name Default Fastream Capabilities
     Default capabilities that an application can pass to the A2DP library during initialisation.
 */
-const uint8 faststream_caps_sink[14] = 
+const u8 faststream_caps_sink[14] = 
 {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
@@ -394,7 +394,7 @@ const uint8 faststream_caps_sink[14] =
 /*! @name Default apt-X Capabilities
     Default capabilities that an application can pass to the A2DP library during initialisation.
 */
-const uint8 aptx_caps_sink[19] = 
+const u8 aptx_caps_sink[19] = 
 {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
@@ -440,7 +440,7 @@ const uint8 aptx_caps_sink[19] =
 /*! @name Default apt-X Sprint Capabilities
     Default capabilities that an application can pass to the A2DP library during initialisation.
 */
-const uint8 aptx_acl_sprint_caps_sink[27] = 
+const u8 aptx_acl_sprint_caps_sink[27] = 
 {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
@@ -485,7 +485,7 @@ const uint8 aptx_acl_sprint_caps_sink[27] =
 /*!
     @brief The CSR True Wireless Stereo Codec ID for SBC.
 */
-const uint8 tws_sbc_caps[26] =
+const u8 tws_sbc_caps[26] =
 {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
@@ -529,7 +529,7 @@ const uint8 tws_sbc_caps[26] =
 /*!
     @brief The CSR True Wireless Stereo Codec ID for MP3.
 */
-const uint8 tws_mp3_caps[26] =
+const u8 tws_mp3_caps[26] =
 {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
@@ -576,7 +576,7 @@ const uint8 tws_mp3_caps[26] =
 /*!
     @brief The CSR True Wireless Stereo Codec ID for AAC.
 */
-const uint8 tws_aac_caps[28] = 
+const u8 tws_aac_caps[28] = 
 {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
@@ -628,7 +628,7 @@ const uint8 tws_aac_caps[28] =
 #define APTX_CHANNEL_MODE_STEREO          2
 /*@} */
 
-const uint8 tws_aptx_caps[29] =
+const u8 tws_aptx_caps[29] =
 {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
@@ -719,7 +719,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
                 message->params     = connect_message->params ;
                 message->app_task   = connect_message->app_task ;
                 
-                MessageSendConditionally ( task, AUDIO_PLUGIN_CONNECT_MSG , message , (const uint16 *)AudioBusyPtr()) ;
+                MessageSendConditionally ( task, AUDIO_PLUGIN_CONNECT_MSG , message , (const u16 *)AudioBusyPtr()) ;
             } 
             else
             {       /*connect the audio*/
@@ -742,7 +742,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
         {
             if (IsAudioBusy())
             {
-                MessageSendConditionally ( task, AUDIO_PLUGIN_DISCONNECT_MSG , 0 ,(const uint16 *)AudioBusyPtr() ) ;
+                MessageSendConditionally ( task, AUDIO_PLUGIN_DISCONNECT_MSG , 0 ,(const u16 *)AudioBusyPtr() ) ;
             }
             else
             {
@@ -779,7 +779,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
                     message->params = NULL;
                 }
         
-                MessageSendConditionally ( task, AUDIO_PLUGIN_SET_MODE_MSG , message ,(const uint16 *)AudioBusyPtr() ) ;
+                MessageSendConditionally ( task, AUDIO_PLUGIN_SET_MODE_MSG , message ,(const u16 *)AudioBusyPtr() ) ;
             }
             else
             {
@@ -800,7 +800,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
                 message->sub_woofer_type   = sub_message->sub_woofer_type ;
                 message->sub_sink = sub_message->sub_sink ;
         
-                MessageSendConditionally ( task, AUDIO_PLUGIN_SET_SUB_WOOFER_MSG , message ,(const uint16 *)AudioBusyPtr() ) ;
+                MessageSendConditionally ( task, AUDIO_PLUGIN_SET_SUB_WOOFER_MSG , message ,(const u16 *)AudioBusyPtr() ) ;
             }
             else
             {
@@ -823,7 +823,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
                 MAKE_AUDIO_MESSAGE( AUDIO_PLUGIN_SET_SOFT_MUTE_MSG );
                 memcpy(message, mute_message, sizeof(AUDIO_PLUGIN_SET_SOFT_MUTE_MSG_T));
         
-        		MessageSendConditionally ( task, AUDIO_PLUGIN_SET_SOFT_MUTE_MSG , message ,(const uint16 *)AudioBusyPtr() ) ;
+        		MessageSendConditionally ( task, AUDIO_PLUGIN_SET_SOFT_MUTE_MSG , message ,(const u16 *)AudioBusyPtr() ) ;
             }
             else
             {
@@ -863,7 +863,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
                 /* create message containing passed in volume information stucture */
                 memcpy(message, volume_message, sizeof(AUDIO_PLUGIN_SET_GROUP_VOLUME_MSG_T));       
                 
-                MessageSendConditionally ( task, AUDIO_PLUGIN_SET_GROUP_VOLUME_MSG , message ,(const uint16 *)AudioBusyPtr() ) ;
+                MessageSendConditionally ( task, AUDIO_PLUGIN_SET_GROUP_VOLUME_MSG , message ,(const u16 *)AudioBusyPtr() ) ;
             }
             else
             {
@@ -876,7 +876,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
         {
             if (IsAudioBusy())
             {
-                 MessageSendConditionally ( task, AUDIO_PLUGIN_RESET_VOLUME_MSG , 0 ,(const uint16 *)AudioBusyPtr() ) ;     
+                 MessageSendConditionally ( task, AUDIO_PLUGIN_RESET_VOLUME_MSG , 0 ,(const u16 *)AudioBusyPtr() ) ;     
             }
             else
             {
@@ -898,7 +898,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
                 
                 message->input_audio_port_mute_active =  mute_message->input_audio_port_mute_active;
                 
-                MessageSendConditionally( task, AUDIO_PLUGIN_SET_INPUT_AUDIO_MUTE_MSG , message ,(const uint16 *)AudioBusyPtr() ) ;
+                MessageSendConditionally( task, AUDIO_PLUGIN_SET_INPUT_AUDIO_MUTE_MSG , message ,(const u16 *)AudioBusyPtr() ) ;
             }
             else
             {
@@ -921,7 +921,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
                 message->forwarding_sink = fwd_msg->forwarding_sink;
                 message->content_protection = fwd_msg->content_protection;
                 message->peer_dsp_required_buffering_level = fwd_msg->peer_dsp_required_buffering_level;
-                MessageSendConditionally ( task, AUDIO_PLUGIN_START_FORWARDING_MSG, message , (const uint16 *)AudioBusyPtr());
+                MessageSendConditionally ( task, AUDIO_PLUGIN_START_FORWARDING_MSG, message , (const u16 *)AudioBusyPtr());
             }
             else
             {
@@ -934,7 +934,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
         {
             if (IsAudioBusy())
             {
-                MessageSendConditionally ( task, AUDIO_PLUGIN_STOP_FORWARDING_MSG, 0, (const uint16 *)AudioBusyPtr());
+                MessageSendConditionally ( task, AUDIO_PLUGIN_STOP_FORWARDING_MSG, 0, (const u16 *)AudioBusyPtr());
             }
             else
             {
@@ -961,7 +961,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
     
                     PRINT(("TONE:Q\n"));
                     
-                    MessageSendConditionally ( task , AUDIO_PLUGIN_PLAY_TONE_MSG, message ,(const uint16 *)AudioBusyPtr() ) ;           
+                    MessageSendConditionally ( task , AUDIO_PLUGIN_PLAY_TONE_MSG, message ,(const u16 *)AudioBusyPtr() ) ;           
                 }
             }
             else
@@ -1028,7 +1028,7 @@ static void handleInternalMessage ( Task task , MessageId id, Message message )
 DESCRIPTION
     get the current sample rate if available
 */ 
-uint32 AudioGetA2DPSampleRate(void)
+u32 AudioGetA2DPSampleRate(void)
 {
     return CsrA2DPGetDecoderSampleRate();
 }
@@ -1037,7 +1037,7 @@ uint32 AudioGetA2DPSampleRate(void)
 DESCRIPTION
     get the current subwoofer sample rate if available
 */ 
-uint32 AudioGetA2DPSubwooferSampleRate(void)
+u32 AudioGetA2DPSubwooferSampleRate(void)
 {
     return CsrA2DPGetDecoderSubwooferSampleRate();
 }     
@@ -1046,7 +1046,7 @@ uint32 AudioGetA2DPSubwooferSampleRate(void)
 DESCRIPTION
     Get current/estimated latency measurement for specified plugin
 */ 
-bool AudioGetLatency (Task audio_plugin, bool *estimated, uint16 *latency)
+bool AudioGetLatency (Task audio_plugin, bool *estimated, u16 *latency)
 {
     return CsrA2dpDecoderPluginGetLatency((A2dpPluginTaskdata *)audio_plugin, estimated, latency);
 }

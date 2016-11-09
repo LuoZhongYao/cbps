@@ -16,8 +16,8 @@
 gatt_battery_server_status_t GattBatteryServerInit(GBASS *battery_server, 
                                                    Task app_task,
                                                    const gatt_battery_server_init_params_t *init_params,
-                                                   uint16 start_handle,
-                                                   uint16 end_handle)
+                                                   u16 start_handle,
+                                                   u16 end_handle)
 {
     gatt_battery_server_status_t result = gatt_battery_server_status_invalid_parameter;
 

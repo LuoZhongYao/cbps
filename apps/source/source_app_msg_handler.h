@@ -61,7 +61,7 @@ typedef enum
 
 typedef struct
 {
-    uint16 warp[CSR_AG_AUDIO_WARP_NUMBER_VALUES];
+    u16 warp[CSR_AG_AUDIO_WARP_NUMBER_VALUES];
 } ATTRIBUTES_T;
 
 typedef struct

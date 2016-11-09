@@ -63,12 +63,12 @@ void AvrcpUnitInfoRequest(AVRCP *avrcp)
     {
         MessageSendConditionally(   &avrcp->task, 
                                     AVRCP_INTERNAL_UNITINFO_REQ, 0,
-                                    (uint16*)&avrcp->pending);
+                                    (u16*)&avrcp->pending);
     }
     else
     {
         avrcpSendUnitInfoCfmToClient(avrcp, avrcp_device_not_connected,
-                                     0, 0, (uint32) 0);
+                                     0, 0, (u32) 0);
 
     }
 }
@@ -86,7 +86,7 @@ void AvrcpUnitInfoRequest(AVRCP *avrcp)
 *                the requested   page on the target device
 *                              
 *****************************************************************************/
-void AvrcpSubUnitInfoRequest(AVRCP *avrcp, uint8 page)
+void AvrcpSubUnitInfoRequest(AVRCP *avrcp, u8 page)
 {
     
 #ifdef AVRCP_DEBUG_LIB    
@@ -102,12 +102,12 @@ void AvrcpSubUnitInfoRequest(AVRCP *avrcp, uint8 page)
         MessageSendConditionally(   &avrcp->task, 
                                     AVRCP_INTERNAL_SUBUNITINFO_REQ, 
                                     message,
-                                    (uint16*)&avrcp->pending);
+                                    (u16*)&avrcp->pending);
     }
     else
     {
         avrcpSendUnitInfoCfmToClient(avrcp, avrcp_device_not_connected,
-                                     0, 0, (uint32) 0);
+                                     0, 0, (u32) 0);
     }    
 }
 
@@ -145,8 +145,8 @@ void AvrcpSubUnitInfoRequest(AVRCP *avrcp, uint8 page)
 void AvrcpUnitInfoResponse(AVRCP *avrcp,
                            bool accept, 
                            avc_subunit_type unit_type, 
-                           uint8 unit,
-                           uint32 company_id)
+                           u8 unit,
+                           u32 company_id)
 {
     sendUnitInfoResponse(avrcp, accept, unit_type, unit, company_id);
 }
@@ -167,7 +167,7 @@ void AvrcpUnitInfoResponse(AVRCP *avrcp,
 *                the requested   page on the target device
 *                              
 *****************************************************************************/
-void AvrcpSubUnitInfoResponse(AVRCP *avrcp, bool accept, const uint8 *page_data)
+void AvrcpSubUnitInfoResponse(AVRCP *avrcp, bool accept, const u8 *page_data)
 {
     sendSubunitInfoResponse(avrcp, accept, page_data);
 }

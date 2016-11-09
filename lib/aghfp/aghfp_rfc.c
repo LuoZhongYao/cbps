@@ -195,7 +195,7 @@ void aghfpHandleRfcommServerConnectCfm(AGHFP *aghfp, CL_RFCOMM_SERVER_CONNECT_CF
 /****************************************************************************
 	Response to an incoming RFCOMM connect request.
 */
-void aghfpHandleRfcommConnectResponse(AGHFP *aghfp, bool response, Sink sink, uint8 server_channel, const rfcomm_config_params *config)
+void aghfpHandleRfcommConnectResponse(AGHFP *aghfp, bool response, Sink sink, u8 server_channel, const rfcomm_config_params *config)
 {
 	/* Issue a reject without passing this up to the app */
 	ConnectionRfcommConnectResponse(&aghfp->task, response, sink, server_channel, config);

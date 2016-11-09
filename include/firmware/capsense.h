@@ -18,7 +18,7 @@
 
     @return TRUE if successful, else FALSE.
 */
-bool CapsenseConfigure(capsense_config_key key, uint16 value);
+bool CapsenseConfigure(capsense_config_key key, u16 value);
 
 /*!
     @brief Configure pad parameters of touch sensor hardware.
@@ -28,7 +28,7 @@ bool CapsenseConfigure(capsense_config_key key, uint16 value);
 
     @return TRUE if successful, else FALSE.
 */
-bool CapsenseConfigurePad(uint16 pad, capsense_config_pad_key key, uint16 value);
+bool CapsenseConfigurePad(u16 pad, capsense_config_pad_key key, u16 value);
 
 /*!
     @brief Get the current status of the capacitive touch pads.
@@ -40,6 +40,6 @@ bool CapsenseConfigurePad(uint16 pad, capsense_config_pad_key key, uint16 value)
     The current state of each of the pads will be written to the
     corresponding element of the results array.
 */
-bool CapsensePadQuery(uint16 count, const uint16* pads, capsense_pad_state *results);
+bool CapsensePadQuery(u16 count, const u16* pads, capsense_pad_state *results);
 
 #endif

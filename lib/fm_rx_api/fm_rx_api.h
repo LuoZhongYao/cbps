@@ -81,7 +81,7 @@ DESCRIPTION
 RETURNS
     nothing
 */   
-void fmRxUpdateVolume(uint8 vol);
+void fmRxUpdateVolume(u8 vol);
 
 /****************************************************************************
 NAME    
@@ -93,6 +93,6 @@ DESCRIPTION
 RETURNS
     nothing
 */   
-void fmRxTuneFrequency(uint16 frequency);
+void fmRxTuneFrequency(u16 frequency);
 
 #endif /*_FM_RX_API_H_*/

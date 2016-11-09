@@ -22,7 +22,7 @@ NOTES
 #ifndef CL_EXCLUDE_L2CAP
 
 /*****************************************************************************/
-void ConnectionL2capUnregisterRequest(Task appTask, uint16 psm)
+void ConnectionL2capUnregisterRequest(Task appTask, u16 psm)
 {
     /* Send an internal message */
     MAKE_CL_MESSAGE(CL_INTERNAL_L2CAP_UNREGISTER_REQ);

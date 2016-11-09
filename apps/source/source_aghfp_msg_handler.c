@@ -36,7 +36,7 @@ DESCRIPTION
 
 
 /* Display unhandled states in Debug Mode */
-#define aghfp_msg_unhandled_state(inst) AGHFP_MSG_DEBUG(("AGHFP MSG Ignored; state [%d] inst[0x%x]\n", aghfp_get_state(inst), (uint16)inst));
+#define aghfp_msg_unhandled_state(inst) AGHFP_MSG_DEBUG(("AGHFP MSG Ignored; state [%d] inst[0x%x]\n", aghfp_get_state(inst), (u16)inst));
 
 
 /* AGHFP library message handling functions */
@@ -882,7 +882,7 @@ static void aghfp_msg_audio_connect_cfm(const AGHFP_AUDIO_CONNECT_CFM_T *message
             AGHFP_MSG_DEBUG(("  AGHFP Audio : cl_status:[%d] link_type[%d] audio_sink[0x%x] rx_bandwidth[0x%lx] tx_bandwidth[0x%lx] using_wbs[%d] wbs_codec[%d]\n",
                              message->cl_status,
                              message->link_type,
-                             (uint16)message->audio_sink,
+                             (u16)message->audio_sink,
                              message->rx_bandwidth,
                              message->tx_bandwidth,
                              message->using_wbs,

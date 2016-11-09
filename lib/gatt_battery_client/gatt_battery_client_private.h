@@ -12,7 +12,7 @@
 
 /* Macros for creating messages */
 #define MAKE_BATTERY_MESSAGE(TYPE) MESSAGE_MAKE(message,TYPE##_T)
-#define MAKE_BATTERY_MESSAGE_WITH_LEN(TYPE, LEN) TYPE##_T *message = (TYPE##_T *) PanicUnlessMalloc(sizeof(TYPE##_T) + LEN - sizeof(uint8))
+#define MAKE_BATTERY_MESSAGE_WITH_LEN(TYPE, LEN) TYPE##_T *message = (TYPE##_T *) PanicUnlessMalloc(sizeof(TYPE##_T) + LEN - sizeof(u8))
 
 
 typedef struct
@@ -22,7 +22,7 @@ typedef struct
 
 typedef struct
 {
-    uint16 descriptor_uuid;
+    u16 descriptor_uuid;
 } BATTERY_INTERNAL_MSG_READ_DESCRIPTOR_T;
 
 /* Enum for battery library internal message. */

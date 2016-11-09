@@ -21,12 +21,12 @@ DESCRIPTION
 /****************************************************************************
 
 */
-void AudioPromptConfigure( uint8 size_index );
+void AudioPromptConfigure( u8 size_index );
 
 /****************************************************************************
 
 */
-void AudioPromptPlay(Task plugin, uint16 id, bool can_queue, bool override);
+void AudioPromptPlay(Task plugin, u16 id, bool can_queue, bool override);
 
 /****************************************************************************
 
@@ -40,22 +40,22 @@ DESCRIPTION
     Play a numeric string using the Audio Prompt plugin
 RETURNS    
 */
-void AudioPromptPlayNumString(uint16 size_num_string, uint8* num_string);
+void AudioPromptPlayNumString(u16 size_num_string, u8* num_string);
 
 /****************************************************************************
 NAME 
     AudioPromptPlayNumber
 DESCRIPTION
-    Play a uint32 using the audio prompt plugin
+    Play a u32 using the audio prompt plugin
 RETURNS    
 */
-void AudioPromptPlayNumber(uint32 number);
+void AudioPromptPlayNumber(u32 number);
 
 /* **************************************************************************
    */
 
 
-bool AudioPromptPlayCallerNumber( const uint16 size_number, const uint8* number );
+bool AudioPromptPlayCallerNumber( const u16 size_number, const u8* number );
 
 /****************************************************************************
 NAME    
@@ -67,7 +67,7 @@ DESCRIPTION
 RETURNS
     
 */
-bool AudioPromptPlayCallerName( const uint16 size_name, const uint8* name );
+bool AudioPromptPlayCallerName( const u16 size_name, const u8* name );
    
 /****************************************************************************
 NAME    

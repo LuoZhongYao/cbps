@@ -32,7 +32,7 @@
     To keep microphones in synchronisation, IIR filter(if used) should be configured before
     ADC is turned on(i.e. before StreamConnect()).
 */
-bool CodecSetIirFilter(audio_instance instance, audio_channel channel, bool enable, uint16 *coefficients);
+bool CodecSetIirFilter(audio_instance instance, audio_channel channel, bool enable, u16 *coefficients);
 
 /*!
   @brief IIR Filter coefficients are configurable on some Bluecore variants.
@@ -56,6 +56,6 @@ bool CodecSetIirFilter(audio_instance instance, audio_channel channel, bool enab
   given set of coefficients.
 
 */
-bool CodecSetIirFilter16Bit(uint16 channel_mask, bool enable, IIR_COEFFICIENTS *iir_coefficients);
+bool CodecSetIirFilter16Bit(u16 channel_mask, bool enable, IIR_COEFFICIENTS *iir_coefficients);
 
 #endif

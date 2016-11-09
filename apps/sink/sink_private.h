@@ -69,16 +69,11 @@ DESCRIPTION
 #include "sink_partymode.h"
 #include "sink_fm.h"
 #include "sink_devicemanager.h"
-#include "sink_upgrade.h"
 
 /* BLE include */
 #include "sink_ble.h"
 #if defined(GATT_ENABLED) && defined(GATT_HID_CLIENT)
 #include "sink_gatt_hid_remote_control.h"
-#endif
-
-#ifdef ENABLE_GAIA
-#include "sink_gaia.h"
 #endif
 
 #ifdef ENABLE_PBAP
@@ -281,9 +276,9 @@ typedef struct
 typedef struct
 {
     /*-------- WORDS 1..8 ---------*/
-    uint16 ShareMeUuid[8];                      /* Custom UUID for identifying ShareMe capable devices.  Big Endian Ordering */
+    u16 ShareMeUuid[8];                      /* Custom UUID for identifying ShareMe capable devices.  Big Endian Ordering */
     /*-------- WORDS 9..16 --------*/
-    uint16 TwsUuid[8];                          /* Custom UUID for identifying TWS capable devices.  Big Endian Ordering */
+    u16 TwsUuid[8];                          /* Custom UUID for identifying TWS capable devices.  Big Endian Ordering */
 }peer_custom_uuid_type;
 
 /*!
@@ -378,18 +373,18 @@ typedef struct
 {
     input_pio_config_type   pio_inputs;
     PIO_block_t             pio_outputs;
-    uint32                  pio_invert;      /* bit mask used to invert button pios, 1 = inverted */
+    u32                  pio_invert;      /* bit mask used to invert button pios, 1 = inverted */
     const common_mic_params digital;         /* Digitial mic enables/PIOs */
-    uint32                  pio_map;         /* Pins to map (see PioSetMapPins32 in pio.h) */
+    u32                  pio_map;         /* Pins to map (see PioSetMapPins32 in pio.h) */
 }pio_config_type;
 
 /* Radio configuration data */
 typedef struct
 {
-    uint16  page_scan_interval;
-    uint16  page_scan_window;
-    uint16  inquiry_scan_interval;
-    uint16  inquiry_scan_window;
+    u16  page_scan_interval;
+    u16  page_scan_window;
+    u16  inquiry_scan_interval;
+    u16  inquiry_scan_window;
 }radio_config_type;
 
 #define HFP_ADDITIONAL_AUDIO_PARAMS_ENABLED 0x8000U
@@ -408,38 +403,38 @@ typedef struct
     /*the application timeouts / counts */
 typedef struct TimeoutsTag
 {
-    uint16 AutoSwitchOffTime_s ;
-    uint16 LimboTimeout_s ;
-    uint16 NetworkServiceIndicatorRepeatTime_s ;    
-    uint16 DisablePowerOffAfterPowerOnTime_s ;
-    uint16 PairModeTimeout_s ;
-    uint16 MuteRemindTime_s ;
-    uint16 ConnectableTimeout_s ;   
-    uint16 PairModeTimeoutIfPDL_s;
-    uint16 ReconnectionAttempts ;       /* number of times to try and reconnect before giving up */
-    uint16 EncryptionRefreshTimeout_m ;
-    uint16 InquiryTimeout_s ;
-    uint16 SecondAGConnectDelayTime_s;
-    uint16 MissedCallIndicateTime_s ;  /* The period in second between two indications */
-    uint16 MissedCallIndicateAttemps ; /* number of times to indicate before stopping indication */
-    uint16 A2dpLinkLossReconnectionTime_s; /* the amount of time in seconds to attempt to reconnect a2dp */
-    uint16 LanguageConfirmTime_s;   /* The time between EventUsrSelectAudioPromptLanguageMode and storing the language in PS */
-    uint16 SpeechRecRepeatTime_ms;  /* the between voice prompts ASR restarts */
-    uint16 StoreCurrentSinkVolumeAndSourceTimeout_s; /* The time in seconds elapsed after the last VolumeUp/Down or Source button was pressed, 
+    u16 AutoSwitchOffTime_s ;
+    u16 LimboTimeout_s ;
+    u16 NetworkServiceIndicatorRepeatTime_s ;    
+    u16 DisablePowerOffAfterPowerOnTime_s ;
+    u16 PairModeTimeout_s ;
+    u16 MuteRemindTime_s ;
+    u16 ConnectableTimeout_s ;   
+    u16 PairModeTimeoutIfPDL_s;
+    u16 ReconnectionAttempts ;       /* number of times to try and reconnect before giving up */
+    u16 EncryptionRefreshTimeout_m ;
+    u16 InquiryTimeout_s ;
+    u16 SecondAGConnectDelayTime_s;
+    u16 MissedCallIndicateTime_s ;  /* The period in second between two indications */
+    u16 MissedCallIndicateAttemps ; /* number of times to indicate before stopping indication */
+    u16 A2dpLinkLossReconnectionTime_s; /* the amount of time in seconds to attempt to reconnect a2dp */
+    u16 LanguageConfirmTime_s;   /* The time between EventUsrSelectAudioPromptLanguageMode and storing the language in PS */
+    u16 SpeechRecRepeatTime_ms;  /* the between voice prompts ASR restarts */
+    u16 StoreCurrentSinkVolumeAndSourceTimeout_s; /* The time in seconds elapsed after the last VolumeUp/Down or Source button was pressed, 
                                                                                 to store the volume information into PS Store*/
-    uint16 WiredAudioConnectedPowerOffTimeout_s; /* The time in seconds elapsed before the device is powered off after the 
+    u16 WiredAudioConnectedPowerOffTimeout_s; /* The time in seconds elapsed before the device is powered off after the 
                                                                                     wired audio is connected */   
-    uint16 StoreCurrentPEQSettingsTimeout_s; /* The time in seconds elapsed after the last GAIA command has been received to store EQ settings into PS Store */
-    uint16 DefragCheckTimer_s;  /* the interval in seconds to check the status of the PS and defragment if necessary */
-    uint16 AudioAmpPowerDownTimeoutInLimbo_s; /* The period in seconds for which the system waits before powering down audio amplifier for sound bar when in Limbo state  */
-    uint16 ImmediateAlertTimer_s; /* The period in seconds for which the system waits before palying alert tone again */
-    uint16 ImmediateAlertStopTimeout_s; /* The period in seconds for which the system waits before stoppingthe alert */
-    uint16 LinkLossTimer_s; /* The period in seconds for which the system waits before palying alert tone again */
-    uint16 LinkLossAlertStopTimeout_s; /* The period in seconds for which the system waits before stoppingthe alert */
-    uint16 AudioAmpUnmuteTime_ms;   /* Time to power up amp before unmuting (milliseconds) */
-    uint16 AudioAmpMuteTime_ms;     /* Time to mute before powering down amp (milliseconds) */
-    uint16 PartyModeMusicTimeOut_s; /* Time in seconds for a newly connected device given, to start playing a track before disconnecting it */
-    uint16 PartyModeStreamResumeTimeOut_s; /* The period in seconds after which PartyMode AG will be disconnected if it does not resume Audio streaming when Sink Un-Pauses it*/
+    u16 StoreCurrentPEQSettingsTimeout_s; /* The time in seconds elapsed after the last GAIA command has been received to store EQ settings into PS Store */
+    u16 DefragCheckTimer_s;  /* the interval in seconds to check the status of the PS and defragment if necessary */
+    u16 AudioAmpPowerDownTimeoutInLimbo_s; /* The period in seconds for which the system waits before powering down audio amplifier for sound bar when in Limbo state  */
+    u16 ImmediateAlertTimer_s; /* The period in seconds for which the system waits before palying alert tone again */
+    u16 ImmediateAlertStopTimeout_s; /* The period in seconds for which the system waits before stoppingthe alert */
+    u16 LinkLossTimer_s; /* The period in seconds for which the system waits before palying alert tone again */
+    u16 LinkLossAlertStopTimeout_s; /* The period in seconds for which the system waits before stoppingthe alert */
+    u16 AudioAmpUnmuteTime_ms;   /* Time to power up amp before unmuting (milliseconds) */
+    u16 AudioAmpMuteTime_ms;     /* Time to mute before powering down amp (milliseconds) */
+    u16 PartyModeMusicTimeOut_s; /* Time in seconds for a newly connected device given, to start playing a track before disconnecting it */
+    u16 PartyModeStreamResumeTimeOut_s; /* The period in seconds after which PartyMode AG will be disconnected if it does not resume Audio streaming when Sink Un-Pauses it*/
 }Timeouts_t ;
 
 #define MAX_POWER_TABLE_ENTRIES 8
@@ -463,9 +458,9 @@ typedef struct
 
 typedef struct
 {
-    uint16          max_remote_latency;
-    uint16          min_remote_timeout;
-    uint16          min_local_timeout;
+    u16          max_remote_latency;
+    u16          min_remote_timeout;
+    u16          min_local_timeout;
 } ssr_params;
 
 
@@ -508,7 +503,7 @@ typedef enum
 typedef struct                              /* storage of audio connection data on a per hfp isntance basis */
 {
     audio_priority      sco_priority;        /* the priority level of the sco */
-    uint32              tx_bandwidth;       
+    u32              tx_bandwidth;       
     sync_link_type      link_type:2;          /* link type may be different between AG's and needs to be stored for reorouting audio */
     hfp_wbs_codec_mask  codec_selected:6; /* audio codec being used with this profile */
     unsigned            gSMVolumeLevel:7;   /* volume level for this profile */
@@ -546,8 +541,8 @@ typedef struct
 {
     GAIA_TRANSPORT *gaia_transport;
     
-    uint32 pio_change_mask;
-    uint32 pio_old_state;
+    u32 pio_change_mask;
+    u32 pio_old_state;
     ringtone_note *alert_tone;
     
     unsigned notify_ui_event:1;
@@ -570,8 +565,8 @@ typedef struct
 #endif            
     sink_battery_limits battery_limits; 
     defrag_config          defrag;  
-    uint16                 old_state;			   /* This variable/feature is not used on VM anymore.*/
-    uint16                 connection_in_progress; /* flag used to block role switch requests until all connections are complete or abandoned */
+    u16                 old_state;			   /* This variable/feature is not used on VM anymore.*/
+    u16                 connection_in_progress; /* flag used to block role switch requests until all connections are complete or abandoned */
     
 #ifdef ENABLE_SQIFVP  
     unsigned               partitions_mounted:8;  /* mask of SQIF partitons currently mounted */
@@ -644,7 +639,7 @@ typedef struct
 
 typedef struct 
 {
-    uint16   event;
+    u16   event;
     unsigned unused:8;
     unsigned at_cmd:8;
 } at_cmd_events_t ;
@@ -725,7 +720,7 @@ typedef struct
     /* Runtime variables */
     Task                     codec_task ;
     Sink                     routed_audio;
-    uint16                   NoOfReconnectionAttempts;
+    u16                   NoOfReconnectionAttempts;
     profile_data_t           profile_data[MAX_MULTIPOINT_CONNECTIONS];
     a2dp_data                *a2dp_link_data;
 #ifdef ENABLE_AVRCP
@@ -809,7 +804,7 @@ typedef struct
     /* word 7 */
     peer_states_t            peer;
 #if defined(ENABLE_PEER) &&  defined( ENABLE_PEER_BATTERY_LEVEL)
-    uint16                   peer_battery_level;
+    u16                   peer_battery_level;
 #endif
 
     /* word 9 */

@@ -3,10 +3,10 @@ Copyright (c) 2004 - 2015 Qualcomm Technologies International, Ltd.
 
 FILE NAME
     sink_tones.c
-    
+
 DESCRIPTION
     module responsible for tone generation and playback
-    
+
 */
 
 #include "sink_private.h"
@@ -29,13 +29,11 @@ DESCRIPTION
 #define MAX_TONE_VOLUME (255)
 
 #ifdef DEBUG_TONES
-    #define TONE_DEBUG(x) DEBUG(x)
 #else
-    #define TONE_DEBUG(x) 
 #endif
 
 /****************************************************************************
-VARIABLES      
+VARIABLES
 */
 /***********************************************************************************/
 
@@ -47,11 +45,11 @@ VARIABLES
  *
  * A rest following a note will cause the note to fade out to zero over 64 samples.
  * The firmware tone generator runs at 8kHz, so 64 samples takes 8ms.
- * 
+ *
  * To avoid a 'pop' noise at the end of any notes, a rest of at least 8ms should
  * be included. Rest length should not be too long to avoid large silences after
  * the completed tones.
- * 
+ *
  * The following table shows the maximum tempo for each note duration that
  * allows at least 8ms duration. The shortest note duration, for a given tempo,
  * that is at least 8ms long should be used.
@@ -59,10 +57,10 @@ VARIABLES
  * For example: for tempo of 300, SEMIQUAVER_TRIPLET should be selected.
  *      RINGTONE_TEMPO(300),
  *      RINGTONE_NOTE(G5,   CROTCHET),
- *      RINGTONE_NOTE(A5,   CROTCHET),   
+ *      RINGTONE_NOTE(A5,   CROTCHET),
  *      RINGTONE_NOTE(REST, SEMIQUAVER_TRIPLET),  <- rest that allows fade out
- *      RINGTONE_END 
- * 
+ *      RINGTONE_END
+ *
  *  Tempo   | Duration > 8ms
  * --------------------------------------
  * <= 7500  | SEMIBREVE
@@ -80,21 +78,21 @@ VARIABLES
  * <= 78    | HEMIDEMISEMIQUAVER_TRIPLET
  *
  */
- 
+
 /****************************************************************/
 /*
     SIMPLE TONES ( B - Q )
  */
 /****************************************************************/
 
- 
+
  /*Vol Min*/
 static const ringtone_note tone_B[] =
 {
     RINGTONE_TEMPO(200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(G5,   CROTCHET), 
-    
+
+    RINGTONE_NOTE(G5,   CROTCHET),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, DEMISEMIQUAVER),
     RINGTONE_END
@@ -103,9 +101,9 @@ static const ringtone_note tone_B[] =
 static const ringtone_note tone_C[] =
 {
     RINGTONE_TEMPO(2400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(C6, SEMIBREVE), 
-    
+
+    RINGTONE_NOTE(C6, SEMIBREVE),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, MINIM_TRIPLET),
     RINGTONE_END
@@ -114,8 +112,8 @@ static const ringtone_note tone_C[] =
 static const ringtone_note tone_D[] =
 {
     RINGTONE_TEMPO(2400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(E6, SEMIBREVE), 
+
+    RINGTONE_NOTE(E6, SEMIBREVE),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, MINIM_TRIPLET),
@@ -125,20 +123,20 @@ static const ringtone_note tone_D[] =
 static const ringtone_note tone_E[] =
 {
     RINGTONE_TEMPO(2400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(G6, SEMIBREVE), 
-    
+
+    RINGTONE_NOTE(G6, SEMIBREVE),
+
     /* Tone soft stop. Duration must be > 8ms*/
-    RINGTONE_NOTE(REST, MINIM_TRIPLET),    
+    RINGTONE_NOTE(REST, MINIM_TRIPLET),
     RINGTONE_END
 };
  /*Vol 5*/
 static const ringtone_note tone_F[] =
 {
     RINGTONE_TEMPO(2400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(AS6, SEMIBREVE), 
-    
+
+    RINGTONE_NOTE(AS6, SEMIBREVE),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, MINIM_TRIPLET),
     RINGTONE_END
@@ -147,9 +145,9 @@ static const ringtone_note tone_F[] =
 static const ringtone_note tone_G[] =
 {
     RINGTONE_TEMPO(2400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(C7, SEMIBREVE), 
-    
+
+    RINGTONE_NOTE(C7, SEMIBREVE),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, MINIM_TRIPLET),
     RINGTONE_END
@@ -158,18 +156,18 @@ static const ringtone_note tone_G[] =
 static const ringtone_note tone_H[] =
 {
     RINGTONE_TEMPO(2400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(D7, SEMIBREVE), 
-    
+
+    RINGTONE_NOTE(D7, SEMIBREVE),
+
     RINGTONE_END
 };
  /*Vol 8*/
 static const ringtone_note tone_I[] =
 {
     RINGTONE_TEMPO(2400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(E7, SEMIBREVE), 
-    
+
+    RINGTONE_NOTE(E7, SEMIBREVE),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, MINIM_TRIPLET),
     RINGTONE_END
@@ -178,9 +176,9 @@ static const ringtone_note tone_I[] =
 static const ringtone_note tone_J[] =
 {
     RINGTONE_TEMPO(2400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(FS7, SEMIBREVE), 
-    
+
+    RINGTONE_NOTE(FS7, SEMIBREVE),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, MINIM_TRIPLET),
     RINGTONE_END
@@ -189,9 +187,9 @@ static const ringtone_note tone_J[] =
 static const ringtone_note tone_K[] =
 {
     RINGTONE_TEMPO(200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(GS7, CROTCHET), 
-    
+
+    RINGTONE_NOTE(GS7, CROTCHET),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, DEMISEMIQUAVER),
     RINGTONE_END
@@ -202,7 +200,7 @@ static const ringtone_note tone_K[] =
 static const ringtone_note tone_L[] =
 {
     RINGTONE_TEMPO(400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(GS4, CROTCHET),
     RINGTONE_NOTE(REST,DEMISEMIQUAVER),
     RINGTONE_NOTE(DS5, CROTCHET),
@@ -210,7 +208,7 @@ static const ringtone_note tone_L[] =
     RINGTONE_NOTE(GS5, CROTCHET),
     RINGTONE_NOTE(REST,DEMISEMIQUAVER),
     RINGTONE_NOTE(C6, CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER),
     RINGTONE_END
@@ -219,7 +217,7 @@ static const ringtone_note tone_L[] =
 static const ringtone_note tone_M[] =
 {
     RINGTONE_TEMPO(400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(C6, CROTCHET),
     RINGTONE_NOTE(REST,DEMISEMIQUAVER),
     RINGTONE_NOTE(GS5, CROTCHET),
@@ -227,20 +225,20 @@ static const ringtone_note tone_M[] =
     RINGTONE_NOTE(DS5, CROTCHET),
     RINGTONE_NOTE(REST,DEMISEMIQUAVER),
     RINGTONE_NOTE(GS4, CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER),
     RINGTONE_END
 } ;
-/*2 tone rising scale*/    
+/*2 tone rising scale*/
 static const ringtone_note tone_N[] =
 {
     RINGTONE_TEMPO(150), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(E6, QUAVER),
     RINGTONE_NOTE(REST,DEMISEMIQUAVER),
     RINGTONE_NOTE(A6, QUAVER),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, DEMISEMIQUAVER_TRIPLET),
     RINGTONE_END
@@ -249,11 +247,11 @@ static const ringtone_note tone_N[] =
 static const ringtone_note tone_O[] =
 {
     RINGTONE_TEMPO(150), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(A6, QUAVER),
     RINGTONE_NOTE(REST,DEMISEMIQUAVER),
     RINGTONE_NOTE(E6, QUAVER),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, DEMISEMIQUAVER_TRIPLET),
     RINGTONE_END
@@ -262,11 +260,11 @@ static const ringtone_note tone_O[] =
 static const ringtone_note tone_P[] =
 {
     RINGTONE_TEMPO(600), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G5, SEMIBREVE),
     RINGTONE_NOTE(REST, SEMIQUAVER),
     RINGTONE_NOTE(G7, CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER_TRIPLET),
     RINGTONE_END
@@ -275,9 +273,9 @@ static const ringtone_note tone_P[] =
 static const ringtone_note tone_Q[] =
 {
     RINGTONE_TEMPO(2400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(GS7 , SEMIBREVE),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, MINIM_TRIPLET),
     RINGTONE_END
@@ -287,7 +285,7 @@ static const ringtone_note tone_Q[] =
 static const ringtone_note tone_R[] =
 {
     RINGTONE_TEMPO(120), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(GS7 , CROTCHET),
 
     /* Tone soft stop. Duration must be > 8ms*/
@@ -300,9 +298,9 @@ static const ringtone_note tone_R[] =
 static const ringtone_note tone_S[] =
 {
     RINGTONE_TEMPO(120), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G5 , CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, DEMISEMIQUAVER_TRIPLET),
     RINGTONE_END
@@ -312,9 +310,9 @@ static const ringtone_note tone_S[] =
 static const ringtone_note tone_T[] =
 {
     RINGTONE_TEMPO(2400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G6 , SEMIBREVE),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, MINIM_TRIPLET),
     RINGTONE_END
@@ -324,9 +322,9 @@ static const ringtone_note tone_T[] =
 static const ringtone_note tone_U[] =
 {
     RINGTONE_TEMPO(150), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G6 , MINIM),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, DEMISEMIQUAVER_TRIPLET),
     RINGTONE_END
@@ -337,9 +335,9 @@ static const ringtone_note tone_U[] =
 static const ringtone_note tone_V[] =
 {
     RINGTONE_TEMPO(120), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G6 , CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, DEMISEMIQUAVER_TRIPLET),
     RINGTONE_END
@@ -349,11 +347,11 @@ static const ringtone_note tone_V[] =
 static const ringtone_note tone_W[] =
 {
     RINGTONE_TEMPO(800), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(G5 , MINIM_TRIPLET),  
+
+    RINGTONE_NOTE(G5 , MINIM_TRIPLET),
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_NOTE(G5 , MINIM_TRIPLET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_END
@@ -363,18 +361,18 @@ static const ringtone_note tone_W[] =
 static const ringtone_note tone_X[] =
 {
     RINGTONE_TEMPO(800), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(G6 , MINIM_TRIPLET),  
+
+    RINGTONE_NOTE(G6 , MINIM_TRIPLET),
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_NOTE(G6 , MINIM_TRIPLET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_END
 };
 
 
-  
+
 /****************************************************************/
 /*
     OTHER TONES
@@ -385,7 +383,7 @@ static const ringtone_note tone_X[] =
 static const ringtone_note battery_low_tone[] =
 {
     RINGTONE_TEMPO(240), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(E6, QUAVER),
     RINGTONE_NOTE(AS6, QUAVER),
     RINGTONE_NOTE(E6, QUAVER),
@@ -403,7 +401,7 @@ static const ringtone_note low_500ms_tone[] =
     RINGTONE_NOTE(REST, SEMIQUAVER),
     RINGTONE_TEMPO(120), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
     RINGTONE_NOTE(G5, CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER_TRIPLET),
     RINGTONE_END
@@ -417,7 +415,7 @@ static const ringtone_note mute_reminder_tone[] =
     RINGTONE_NOTE(G5, CROTCHET),
     RINGTONE_NOTE(REST, CROTCHET),
     RINGTONE_NOTE(G5, CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER_TRIPLET),
     RINGTONE_END
@@ -433,7 +431,7 @@ static const ringtone_note mute_reminder_tone[] =
 static const ringtone_note ring_twilight[] =
 {
     RINGTONE_TEMPO(180), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(E7, QUAVER),
     RINGTONE_NOTE(F7, QUAVER),
     RINGTONE_NOTE(E7, QUAVER),
@@ -455,7 +453,7 @@ static const ringtone_note ring_g_s_t_q[] =
 {
     RINGTONE_TEMPO(230), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
 
-    RINGTONE_NOTE  (G7, CROTCHET), 
+    RINGTONE_NOTE  (G7, CROTCHET),
     RINGTONE_NOTE  (G7, CROTCHET),
     RINGTONE_NOTE  (A7, CROTCHET),
     RINGTONE_NOTE  (FS7, CROTCHET),
@@ -473,11 +471,11 @@ static const ringtone_note ring_g_s_t_q[] =
     RINGTONE_NOTE  (G7, CROTCHET),
     RINGTONE_NOTE  (FS7, CROTCHET),
     RINGTONE_NOTE  (G7, MINIM),
-    RINGTONE_NOTE_TIE (G7, CROTCHET), 
+    RINGTONE_NOTE_TIE (G7, CROTCHET),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, DEMISEMIQUAVER),
-    RINGTONE_END 
+    RINGTONE_END
 };
 
 
@@ -486,23 +484,23 @@ static const ringtone_note ring_valkyries[] =
 {
     RINGTONE_TEMPO(240), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
 
-    RINGTONE_NOTE(E5,QUAVER),                                    
-    RINGTONE_NOTE_TIE(E5,SEMIQUAVER),                                                
-    RINGTONE_NOTE(D5,SEMIQUAVER),                                
-    RINGTONE_NOTE(E5,QUAVER),                                            
-    RINGTONE_NOTE(G5,CROTCHET),                          
-    RINGTONE_NOTE_TIE(G5,QUAVER),                                            
-    RINGTONE_NOTE(E5,CROTCHET),                          
-    RINGTONE_NOTE_TIE(E5,QUAVER),            
-    RINGTONE_NOTE(G5,QUAVER),                                    
-    RINGTONE_NOTE_TIE(G5,SEMIQUAVER),                                                
-    RINGTONE_NOTE(F5,SEMIQUAVER),                                
-    RINGTONE_NOTE(G5,QUAVER),                                            
-    RINGTONE_NOTE(B5,CROTCHET),                          
-    RINGTONE_NOTE_TIE(B5,QUAVER),                                            
-    RINGTONE_NOTE(G5,CROTCHET),                          
+    RINGTONE_NOTE(E5,QUAVER),
+    RINGTONE_NOTE_TIE(E5,SEMIQUAVER),
+    RINGTONE_NOTE(D5,SEMIQUAVER),
+    RINGTONE_NOTE(E5,QUAVER),
+    RINGTONE_NOTE(G5,CROTCHET),
     RINGTONE_NOTE_TIE(G5,QUAVER),
-    
+    RINGTONE_NOTE(E5,CROTCHET),
+    RINGTONE_NOTE_TIE(E5,QUAVER),
+    RINGTONE_NOTE(G5,QUAVER),
+    RINGTONE_NOTE_TIE(G5,SEMIQUAVER),
+    RINGTONE_NOTE(F5,SEMIQUAVER),
+    RINGTONE_NOTE(G5,QUAVER),
+    RINGTONE_NOTE(B5,CROTCHET),
+    RINGTONE_NOTE_TIE(B5,QUAVER),
+    RINGTONE_NOTE(G5,CROTCHET),
+    RINGTONE_NOTE_TIE(G5,QUAVER),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER_TRIPLET),
     RINGTONE_END
@@ -512,19 +510,19 @@ static const ringtone_note ring_valkyries[] =
 static const ringtone_note ring_greensleeves[] =
 {
     RINGTONE_TEMPO(400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-              
-    RINGTONE_NOTE(F6,CROTCHET),                                  
-    RINGTONE_NOTE(AF6,MINIM),                                            
-    RINGTONE_NOTE(BF6,CROTCHET),                         
-    RINGTONE_NOTE(C7,CROTCHET),                          
-    RINGTONE_NOTE_TIE(C7,QUAVER),                                            
-    RINGTONE_NOTE(DF7,QUAVER),                           
-    RINGTONE_NOTE(C7,CROTCHET),                                          
-    RINGTONE_NOTE(BF6,MINIM),                            
-    RINGTONE_NOTE(G6,CROTCHET),          
-    RINGTONE_NOTE(EF6,CROTCHET), 
+
+    RINGTONE_NOTE(F6,CROTCHET),
+    RINGTONE_NOTE(AF6,MINIM),
+    RINGTONE_NOTE(BF6,CROTCHET),
+    RINGTONE_NOTE(C7,CROTCHET),
+    RINGTONE_NOTE_TIE(C7,QUAVER),
+    RINGTONE_NOTE(DF7,QUAVER),
+    RINGTONE_NOTE(C7,CROTCHET),
+    RINGTONE_NOTE(BF6,MINIM),
+    RINGTONE_NOTE(G6,CROTCHET),
+    RINGTONE_NOTE(EF6,CROTCHET),
     RINGTONE_NOTE_TIE(EF6,QUAVER),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER),
     RINGTONE_END
@@ -534,19 +532,19 @@ static const ringtone_note ring_greensleeves[] =
 
 static const ringtone_note ring_two_beeps[] =
 {
-    RINGTONE_TEMPO(300), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),                
+    RINGTONE_TEMPO(300), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
 
-    RINGTONE_NOTE(B5,SEMIQUAVER),                                    
-    RINGTONE_NOTE(G5,SEMIQUAVER),                                    
-    RINGTONE_NOTE(B5,SEMIQUAVER),                                    
-    RINGTONE_NOTE(G5,SEMIQUAVER),                                    
-    RINGTONE_NOTE(B5,SEMIQUAVER),                                    
-    RINGTONE_NOTE(REST,QUAVER),                                    
-    RINGTONE_NOTE(B5,SEMIQUAVER),                                    
-    RINGTONE_NOTE(G5,SEMIQUAVER),                                    
-    RINGTONE_NOTE(B5,SEMIQUAVER),                                    
-    RINGTONE_NOTE(G5,SEMIQUAVER),                                    
-    RINGTONE_NOTE(B5,SEMIQUAVER),                                    
+    RINGTONE_NOTE(B5,SEMIQUAVER),
+    RINGTONE_NOTE(G5,SEMIQUAVER),
+    RINGTONE_NOTE(B5,SEMIQUAVER),
+    RINGTONE_NOTE(G5,SEMIQUAVER),
+    RINGTONE_NOTE(B5,SEMIQUAVER),
+    RINGTONE_NOTE(REST,QUAVER),
+    RINGTONE_NOTE(B5,SEMIQUAVER),
+    RINGTONE_NOTE(G5,SEMIQUAVER),
+    RINGTONE_NOTE(B5,SEMIQUAVER),
+    RINGTONE_NOTE(G5,SEMIQUAVER),
+    RINGTONE_NOTE(B5,SEMIQUAVER),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER_TRIPLET),
@@ -558,19 +556,19 @@ static const ringtone_note ring_two_beeps[] =
 
 static const ringtone_note ring_fairground[] =
 {
-    RINGTONE_TEMPO(300), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),            
+    RINGTONE_TEMPO(300), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
 
-    RINGTONE_NOTE(E6,CROTCHET),                                  
-    RINGTONE_NOTE(D6,CROTCHET),                                          
-    RINGTONE_NOTE(DF6,QUAVER),                           
-    RINGTONE_NOTE(D6,QUAVER),                            
-    RINGTONE_NOTE(DF6,QUAVER),                                           
-    RINGTONE_NOTE(C6,QUAVER),                            
-    RINGTONE_NOTE(DF6,CROTCHET),                                         
-    RINGTONE_NOTE(C6,CROTCHET),                          
-    RINGTONE_NOTE(B5,CROTCHET),          
-    RINGTONE_NOTE(C6,CROTCHET),  
-    
+    RINGTONE_NOTE(E6,CROTCHET),
+    RINGTONE_NOTE(D6,CROTCHET),
+    RINGTONE_NOTE(DF6,QUAVER),
+    RINGTONE_NOTE(D6,QUAVER),
+    RINGTONE_NOTE(DF6,QUAVER),
+    RINGTONE_NOTE(C6,QUAVER),
+    RINGTONE_NOTE(DF6,CROTCHET),
+    RINGTONE_NOTE(C6,CROTCHET),
+    RINGTONE_NOTE(B5,CROTCHET),
+    RINGTONE_NOTE(C6,CROTCHET),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER_TRIPLET),
     RINGTONE_END
@@ -582,14 +580,14 @@ static const ringtone_note ring_counterpoint[] =
 {
     RINGTONE_TEMPO(400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
 
-    RINGTONE_NOTE(E6,CROTCHET),                                  
-    RINGTONE_NOTE(D6,CROTCHET),                                          
-    RINGTONE_NOTE(E6,CROTCHET),                          
-    RINGTONE_NOTE(DF6,CROTCHET),                         
-    RINGTONE_NOTE(E6,CROTCHET),                                          
-    RINGTONE_NOTE(C6,CROTCHET),                          
-    RINGTONE_NOTE(E6,CROTCHET),  
-    RINGTONE_NOTE(B5,CROTCHET),                                          
+    RINGTONE_NOTE(E6,CROTCHET),
+    RINGTONE_NOTE(D6,CROTCHET),
+    RINGTONE_NOTE(E6,CROTCHET),
+    RINGTONE_NOTE(DF6,CROTCHET),
+    RINGTONE_NOTE(E6,CROTCHET),
+    RINGTONE_NOTE(C6,CROTCHET),
+    RINGTONE_NOTE(E6,CROTCHET),
+    RINGTONE_NOTE(B5,CROTCHET),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER),
@@ -601,13 +599,13 @@ static const ringtone_note ring_major_arp[] =
 {
     RINGTONE_TEMPO(220), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
 
-    RINGTONE_NOTE(E5,QUAVER),                                    
-    RINGTONE_NOTE(AF5,QUAVER),                                           
-    RINGTONE_NOTE(B5,QUAVER),                            
-    RINGTONE_NOTE(E6,QUAVER),                            
-    RINGTONE_NOTE(GS6,QUAVER),                                           
-    RINGTONE_NOTE(B6,QUAVER),                            
-    RINGTONE_NOTE(E7,QUAVER),                                            
+    RINGTONE_NOTE(E5,QUAVER),
+    RINGTONE_NOTE(AF5,QUAVER),
+    RINGTONE_NOTE(B5,QUAVER),
+    RINGTONE_NOTE(E6,QUAVER),
+    RINGTONE_NOTE(GS6,QUAVER),
+    RINGTONE_NOTE(B6,QUAVER),
+    RINGTONE_NOTE(E7,QUAVER),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, DEMISEMIQUAVER),
@@ -619,14 +617,14 @@ static const ringtone_note ring_major_scale[] =
 {
     RINGTONE_TEMPO(300), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
 
-    RINGTONE_NOTE(E6,QUAVER),                                    
-    RINGTONE_NOTE(FS6,QUAVER),                                           
-    RINGTONE_NOTE(GS6,QUAVER),                           
-    RINGTONE_NOTE(A6,QUAVER),                            
-    RINGTONE_NOTE(B6,QUAVER),                                            
-    RINGTONE_NOTE(CS7,QUAVER),                           
-    RINGTONE_NOTE(DS7,QUAVER),                                           
-    RINGTONE_NOTE(E7,QUAVER),    
+    RINGTONE_NOTE(E6,QUAVER),
+    RINGTONE_NOTE(FS6,QUAVER),
+    RINGTONE_NOTE(GS6,QUAVER),
+    RINGTONE_NOTE(A6,QUAVER),
+    RINGTONE_NOTE(B6,QUAVER),
+    RINGTONE_NOTE(CS7,QUAVER),
+    RINGTONE_NOTE(DS7,QUAVER),
+    RINGTONE_NOTE(E7,QUAVER),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER_TRIPLET),
@@ -636,14 +634,14 @@ static const ringtone_note ring_major_scale[] =
 static const ringtone_note ring_minor_arp[] =
 {
     RINGTONE_TEMPO(220), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(E5,QUAVER),                                    
-    RINGTONE_NOTE(G5,QUAVER),                                            
-    RINGTONE_NOTE(B5,QUAVER),                            
-    RINGTONE_NOTE(E6,QUAVER),                            
-    RINGTONE_NOTE(G6,QUAVER),                                            
-    RINGTONE_NOTE(B6,QUAVER),                            
-    RINGTONE_NOTE(E7,QUAVER),                                            
+
+    RINGTONE_NOTE(E5,QUAVER),
+    RINGTONE_NOTE(G5,QUAVER),
+    RINGTONE_NOTE(B5,QUAVER),
+    RINGTONE_NOTE(E6,QUAVER),
+    RINGTONE_NOTE(G6,QUAVER),
+    RINGTONE_NOTE(B6,QUAVER),
+    RINGTONE_NOTE(E7,QUAVER),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, DEMISEMIQUAVER),
@@ -657,15 +655,15 @@ static const ringtone_note ring_harmonic_minor_scale[] =
 {
     RINGTONE_TEMPO(300), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
 
-    RINGTONE_NOTE(E5,QUAVER),                                    
-    RINGTONE_NOTE(FS5,QUAVER),                                           
-    RINGTONE_NOTE(G5,QUAVER),                            
-    RINGTONE_NOTE(A5,QUAVER),                            
-    RINGTONE_NOTE(B5,QUAVER),                                            
-    RINGTONE_NOTE(C6,QUAVER),                            
-    RINGTONE_NOTE(DS6,QUAVER),                                           
-    RINGTONE_NOTE(E6,QUAVER),                            
-    
+    RINGTONE_NOTE(E5,QUAVER),
+    RINGTONE_NOTE(FS5,QUAVER),
+    RINGTONE_NOTE(G5,QUAVER),
+    RINGTONE_NOTE(A5,QUAVER),
+    RINGTONE_NOTE(B5,QUAVER),
+    RINGTONE_NOTE(C6,QUAVER),
+    RINGTONE_NOTE(DS6,QUAVER),
+    RINGTONE_NOTE(E6,QUAVER),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER_TRIPLET),
     RINGTONE_END
@@ -677,12 +675,12 @@ static const ringtone_note ring_more_than_a_feeling[] =
 {
     RINGTONE_TEMPO(200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
 
-    RINGTONE_NOTE(D6,QUAVER),                                    
-    RINGTONE_NOTE(A6,QUAVER),                                            
-    RINGTONE_NOTE(D7,QUAVER),                            
-    RINGTONE_NOTE(G7,CROTCHET),                          
-    RINGTONE_NOTE(A6,QUAVER),                            
-    RINGTONE_NOTE(FS7,CROTCHET),                                         
+    RINGTONE_NOTE(D6,QUAVER),
+    RINGTONE_NOTE(A6,QUAVER),
+    RINGTONE_NOTE(D7,QUAVER),
+    RINGTONE_NOTE(G7,CROTCHET),
+    RINGTONE_NOTE(A6,QUAVER),
+    RINGTONE_NOTE(FS7,CROTCHET),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, DEMISEMIQUAVER),
@@ -696,12 +694,12 @@ static const ringtone_note ring_eight_beeps[] =
 {
     RINGTONE_TEMPO(200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
 
-    RINGTONE_NOTE(B5,QUAVER),                                    
-    RINGTONE_NOTE(B5,QUAVER),                    
     RINGTONE_NOTE(B5,QUAVER),
     RINGTONE_NOTE(B5,QUAVER),
-    RINGTONE_NOTE(B5,QUAVER),                                    
-    RINGTONE_NOTE(B5,QUAVER),                    
+    RINGTONE_NOTE(B5,QUAVER),
+    RINGTONE_NOTE(B5,QUAVER),
+    RINGTONE_NOTE(B5,QUAVER),
+    RINGTONE_NOTE(B5,QUAVER),
     RINGTONE_NOTE(B5,QUAVER),
     RINGTONE_NOTE(B5,QUAVER),
 
@@ -715,11 +713,11 @@ static const ringtone_note ring_eight_beeps[] =
 static const ringtone_note ring_four_beeps[] =
 {
     RINGTONE_TEMPO(180), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-           
-    RINGTONE_NOTE(B5,QUAVER),                                    
-    RINGTONE_NOTE(B5,QUAVER),                    
+
     RINGTONE_NOTE(B5,QUAVER),
-    RINGTONE_NOTE(B5,QUAVER),    
+    RINGTONE_NOTE(B5,QUAVER),
+    RINGTONE_NOTE(B5,QUAVER),
+    RINGTONE_NOTE(B5,QUAVER),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, DEMISEMIQUAVER),
@@ -733,37 +731,37 @@ static const ringtone_note ring_bumble_bee[] =
 {
     RINGTONE_TEMPO(70), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
 
-    RINGTONE_NOTE(E7,DEMISEMIQUAVER),                                    
+    RINGTONE_NOTE(E7,DEMISEMIQUAVER),
 
-    RINGTONE_NOTE(EF7,DEMISEMIQUAVER),                                           
+    RINGTONE_NOTE(EF7,DEMISEMIQUAVER),
 
-    RINGTONE_NOTE(D7,DEMISEMIQUAVER),                            
+    RINGTONE_NOTE(D7,DEMISEMIQUAVER),
 
-    RINGTONE_NOTE(DF7,DEMISEMIQUAVER),                           
+    RINGTONE_NOTE(DF7,DEMISEMIQUAVER),
 
-    RINGTONE_NOTE(EF7,DEMISEMIQUAVER),                                           
+    RINGTONE_NOTE(EF7,DEMISEMIQUAVER),
 
-    RINGTONE_NOTE(D7,DEMISEMIQUAVER),                            
+    RINGTONE_NOTE(D7,DEMISEMIQUAVER),
 
-    RINGTONE_NOTE(DF7,DEMISEMIQUAVER),                                           
-
-    RINGTONE_NOTE(C7,DEMISEMIQUAVER),                            
-
-    RINGTONE_NOTE(D7,DEMISEMIQUAVER),            
-
-    RINGTONE_NOTE(DF7,DEMISEMIQUAVER),   
+    RINGTONE_NOTE(DF7,DEMISEMIQUAVER),
 
     RINGTONE_NOTE(C7,DEMISEMIQUAVER),
 
-    RINGTONE_NOTE(B6,DEMISEMIQUAVER),                                            
+    RINGTONE_NOTE(D7,DEMISEMIQUAVER),
 
-    RINGTONE_NOTE(DF7,DEMISEMIQUAVER),                           
+    RINGTONE_NOTE(DF7,DEMISEMIQUAVER),
 
-    RINGTONE_NOTE(C7,DEMISEMIQUAVER),            
+    RINGTONE_NOTE(C7,DEMISEMIQUAVER),
 
-    RINGTONE_NOTE(B6,DEMISEMIQUAVER),    
+    RINGTONE_NOTE(B6,DEMISEMIQUAVER),
 
-    RINGTONE_NOTE(BF6,DEMISEMIQUAVER),  
+    RINGTONE_NOTE(DF7,DEMISEMIQUAVER),
+
+    RINGTONE_NOTE(C7,DEMISEMIQUAVER),
+
+    RINGTONE_NOTE(B6,DEMISEMIQUAVER),
+
+    RINGTONE_NOTE(BF6,DEMISEMIQUAVER),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, HEMIDEMISEMIQUAVER_TRIPLET),
@@ -775,11 +773,11 @@ static const ringtone_note ring_aug_scale[] =
 {
     RINGTONE_TEMPO(280), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
 
-    RINGTONE_NOTE(E6,CROTCHET),                                  
-    RINGTONE_NOTE(CS7,CROTCHET),                                         
-    RINGTONE_NOTE(F7,CROTCHET),                          
-    RINGTONE_NOTE(A7,CROTCHET),                          
-    
+    RINGTONE_NOTE(E6,CROTCHET),
+    RINGTONE_NOTE(CS7,CROTCHET),
+    RINGTONE_NOTE(F7,CROTCHET),
+    RINGTONE_NOTE(A7,CROTCHET),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER_TRIPLET),
     RINGTONE_END
@@ -791,11 +789,11 @@ static const ringtone_note ring_dim_scale[] =
 {
     RINGTONE_TEMPO(280), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
 
-    RINGTONE_NOTE(E6,CROTCHET),                                  
-    RINGTONE_NOTE(G6,CROTCHET),                                          
-    RINGTONE_NOTE(AS6,CROTCHET),                         
-    RINGTONE_NOTE(DF7,CROTCHET),                         
-    
+    RINGTONE_NOTE(E6,CROTCHET),
+    RINGTONE_NOTE(G6,CROTCHET),
+    RINGTONE_NOTE(AS6,CROTCHET),
+    RINGTONE_NOTE(DF7,CROTCHET),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER_TRIPLET),
     RINGTONE_END
@@ -806,11 +804,11 @@ static const ringtone_note CustomRingTone[] =
 {
     /* A sample custom ring tone */
     RINGTONE_TEMPO(280), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    RINGTONE_NOTE(E6,CROTCHET),                                  
-    RINGTONE_NOTE(G6,CROTCHET),                                          
-    RINGTONE_NOTE(AS6,CROTCHET),                         
+    RINGTONE_NOTE(E6,CROTCHET),
+    RINGTONE_NOTE(G6,CROTCHET),
+    RINGTONE_NOTE(AS6,CROTCHET),
     RINGTONE_NOTE(DF7,CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER_TRIPLET),
     RINGTONE_END
@@ -822,7 +820,7 @@ static const ringtone_note CustomRingTone[] =
 static const ringtone_note tone_A1[] =
 {
     RINGTONE_TEMPO(1600), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G5 , CROTCHET),
     RINGTONE_NOTE(D6 , CROTCHET),
     RINGTONE_NOTE(G6 , CROTCHET),
@@ -836,7 +834,7 @@ static const ringtone_note tone_A1[] =
 static const ringtone_note tone_A2[] =
 {
     RINGTONE_TEMPO(1600), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(B5 , CROTCHET),
     RINGTONE_NOTE(G6 , CROTCHET),
     RINGTONE_NOTE(D6 , CROTCHET),
@@ -863,13 +861,13 @@ static const ringtone_note tone_A3[] =
 static const ringtone_note tone_A4[] =
 {
     RINGTONE_TEMPO(640), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(B6 , CROTCHET),
     RINGTONE_NOTE(B6 , CROTCHET),
     RINGTONE_NOTE(B6 , CROTCHET),
     RINGTONE_NOTE(B6 , CROTCHET),
     RINGTONE_NOTE(B6 , CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_END
@@ -879,11 +877,11 @@ static const ringtone_note tone_A4[] =
 static const ringtone_note tone_A5[] =
 {
     RINGTONE_TEMPO(600), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(DS7  , CROTCHET),
     RINGTONE_NOTE(REST , QUAVER),
     RINGTONE_NOTE(G7   , CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER_TRIPLET),
     RINGTONE_END
@@ -893,11 +891,11 @@ static const ringtone_note tone_A5[] =
 static const ringtone_note tone_A6[] =
 {
     RINGTONE_TEMPO(600), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G7   , CROTCHET),
     RINGTONE_NOTE(REST , QUAVER),
     RINGTONE_NOTE(DS7  , CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER_TRIPLET),
     RINGTONE_END
@@ -909,9 +907,9 @@ static const ringtone_note tone_A6[] =
 static const ringtone_note tone_S1[] =
 {
     RINGTONE_TEMPO(1200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(DS8   , CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, CROTCHET_TRIPLET),
     RINGTONE_END
@@ -921,9 +919,7 @@ static const ringtone_note tone_S1[] =
 static const ringtone_note tone_S2[] =
 {
     RINGTONE_TEMPO(1200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(B6   , CROTCHET),
-    RINGTONE_NOTE(G8   , CROTCHET),    
+
     RINGTONE_NOTE(B6   , CROTCHET),
     RINGTONE_NOTE(G8   , CROTCHET),
     RINGTONE_NOTE(B6   , CROTCHET),
@@ -934,7 +930,9 @@ static const ringtone_note tone_S2[] =
     RINGTONE_NOTE(G8   , CROTCHET),
     RINGTONE_NOTE(B6   , CROTCHET),
     RINGTONE_NOTE(G8   , CROTCHET),
-    
+    RINGTONE_NOTE(B6   , CROTCHET),
+    RINGTONE_NOTE(G8   , CROTCHET),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, CROTCHET_TRIPLET),
     RINGTONE_END
@@ -943,9 +941,9 @@ static const ringtone_note tone_S2[] =
 static const ringtone_note tone_S3[] =
 {
     RINGTONE_TEMPO(1200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(B6  , CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, CROTCHET_TRIPLET),
     RINGTONE_END
@@ -955,9 +953,6 @@ static const ringtone_note tone_S3[] =
 static const ringtone_note tone_S4[] =
 {
     RINGTONE_TEMPO(1200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(C6  , CROTCHET),
-    RINGTONE_NOTE(REST  , CROTCHET),
 
     RINGTONE_NOTE(C6  , CROTCHET),
     RINGTONE_NOTE(REST  , CROTCHET),
@@ -970,7 +965,10 @@ static const ringtone_note tone_S4[] =
 
     RINGTONE_NOTE(C6  , CROTCHET),
     RINGTONE_NOTE(REST  , CROTCHET),
-    
+
+    RINGTONE_NOTE(C6  , CROTCHET),
+    RINGTONE_NOTE(REST  , CROTCHET),
+
     /* Tone soft stop (covered by final crotchet rest). Duration must be > 8ms*/
     RINGTONE_END
 };
@@ -979,11 +977,11 @@ static const ringtone_note tone_S4[] =
 static const ringtone_note tone_S5[] =
 {
     RINGTONE_TEMPO(1200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(B6  , CROTCHET),
     RINGTONE_NOTE(REST  , CROTCHET),
     RINGTONE_NOTE(DS8  , CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, CROTCHET_TRIPLET),
     RINGTONE_END
@@ -992,11 +990,11 @@ static const ringtone_note tone_S5[] =
 static const ringtone_note tone_S6[] =
 {
     RINGTONE_TEMPO(1200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(DS8  , CROTCHET),
     RINGTONE_NOTE(REST  , CROTCHET),
     RINGTONE_NOTE(B6  , CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, CROTCHET_TRIPLET),
     RINGTONE_END
@@ -1008,9 +1006,9 @@ static const ringtone_note tone_S6[] =
 static const ringtone_note tone_Q21[] =
 {
     RINGTONE_TEMPO(400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(D6  , MINIM),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER),
     RINGTONE_END
@@ -1019,7 +1017,7 @@ static const ringtone_note tone_Q21[] =
 static const ringtone_note tone_Q22[] =
 {
     RINGTONE_TEMPO(400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G5  , CROTCHET_TRIPLET),
     RINGTONE_NOTE(REST  , SEMIQUAVER_TRIPLET),
     RINGTONE_NOTE(D6  , CROTCHET_TRIPLET),
@@ -1027,7 +1025,7 @@ static const ringtone_note tone_Q22[] =
     RINGTONE_NOTE(G6  , CROTCHET_TRIPLET),
     RINGTONE_NOTE(REST  , SEMIQUAVER_TRIPLET),
     RINGTONE_NOTE(B6  , MINIM),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER),
     RINGTONE_END
@@ -1037,7 +1035,7 @@ static const ringtone_note tone_Q22[] =
 static const ringtone_note tone_Q23[] =
 {
     RINGTONE_TEMPO(400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(B6  , CROTCHET_TRIPLET),
     RINGTONE_NOTE(REST  , SEMIQUAVER_TRIPLET),
     RINGTONE_NOTE(G6  , CROTCHET_TRIPLET),
@@ -1045,7 +1043,7 @@ static const ringtone_note tone_Q23[] =
     RINGTONE_NOTE(D6  , CROTCHET_TRIPLET),
     RINGTONE_NOTE(REST  , SEMIQUAVER_TRIPLET),
     RINGTONE_NOTE(G5  , MINIM),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER),
     RINGTONE_END
@@ -1055,7 +1053,7 @@ static const ringtone_note tone_Q23[] =
 static const ringtone_note tone_Q24[] =
 {
     RINGTONE_TEMPO(400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G6  , MINIM),
     RINGTONE_NOTE(REST  , SEMIQUAVER_TRIPLET),
     RINGTONE_NOTE(D6  , MINIM),
@@ -1071,12 +1069,12 @@ static const ringtone_note tone_Q24[] =
 static const ringtone_note tone_Q25[] =
 {
     RINGTONE_TEMPO(200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(D6  , CROTCHET),
     RINGTONE_NOTE(REST  , DEMISEMIQUAVER_TRIPLET),
     RINGTONE_NOTE(G5  , MINIM_TRIPLET),
     RINGTONE_NOTE_TIE(G5  , QUAVER_TRIPLET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, DEMISEMIQUAVER),
     RINGTONE_END
@@ -1086,11 +1084,11 @@ static const ringtone_note tone_Q25[] =
 static const ringtone_note tone_Q26[] =
 {
     RINGTONE_TEMPO(2400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(D6  , SEMIBREVE),
     RINGTONE_NOTE(REST  , CROTCHET),
     RINGTONE_NOTE(G5  , SEMIBREVE),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, MINIM_TRIPLET),
     RINGTONE_END
@@ -1100,11 +1098,11 @@ static const ringtone_note tone_Q26[] =
 static const ringtone_note tone_Q27[] =
 {
     RINGTONE_TEMPO(2400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G5  , SEMIBREVE),
     RINGTONE_NOTE(REST  , CROTCHET),
     RINGTONE_NOTE(D6  , SEMIBREVE),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, MINIM_TRIPLET),
     RINGTONE_END
@@ -1114,11 +1112,11 @@ static const ringtone_note tone_Q27[] =
 static const ringtone_note tone_Q28[] =
 {
     RINGTONE_TEMPO(480), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G5  , SEMIBREVE),
     RINGTONE_NOTE(REST  , QUAVER_TRIPLET),
     RINGTONE_NOTE(G5  , SEMIBREVE),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER_TRIPLET),
     RINGTONE_END
@@ -1128,9 +1126,9 @@ static const ringtone_note tone_Q28[] =
 static const ringtone_note tone_Q29[] =
 {
     RINGTONE_TEMPO(2400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G7  , SEMIBREVE),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, MINIM_TRIPLET),
     RINGTONE_END
@@ -1140,10 +1138,10 @@ static const ringtone_note tone_Q29[] =
 static const ringtone_note tone_Q2A[] =
 {
     RINGTONE_TEMPO(600), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(REST  , SEMIQUAVER),
     RINGTONE_NOTE(G5  , SEMIBREVE),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER_TRIPLET),
     RINGTONE_END
@@ -1153,11 +1151,11 @@ static const ringtone_note tone_Q2A[] =
 static const ringtone_note tone_Q2B[] =
 {
     RINGTONE_TEMPO(600), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G5  , MINIM),
     RINGTONE_NOTE(REST  , CROTCHET),
     RINGTONE_NOTE(G5  , MINIM),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER_TRIPLET),
     RINGTONE_END
@@ -1168,12 +1166,12 @@ static const ringtone_note tone_Q2B[] =
 static const ringtone_note tone_Q2C[] =
 {
     RINGTONE_TEMPO(600), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G6  , MINIM_TRIPLET),
     RINGTONE_NOTE(B6  , MINIM_TRIPLET),
     RINGTONE_NOTE(D7  , MINIM_TRIPLET),
     RINGTONE_NOTE(G7  , MINIM_TRIPLET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER_TRIPLET),
     RINGTONE_END
@@ -1184,12 +1182,12 @@ static const ringtone_note tone_Q2C[] =
 static const ringtone_note tone_Q2D[] =
 {
     RINGTONE_TEMPO(600), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G7  , MINIM_TRIPLET),
     RINGTONE_NOTE(D7  , MINIM_TRIPLET),
     RINGTONE_NOTE(B6  , MINIM_TRIPLET),
     RINGTONE_NOTE(G6  , MINIM_TRIPLET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER_TRIPLET),
     RINGTONE_END
@@ -1199,9 +1197,9 @@ static const ringtone_note tone_Q2D[] =
 static const ringtone_note tone_Q2E[] =
 {
     RINGTONE_TEMPO(800), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G7  , MINIM),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_END
@@ -1211,9 +1209,9 @@ static const ringtone_note tone_Q2E[] =
 static const ringtone_note tone_Q2F[] =
 {
     RINGTONE_TEMPO(800), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G5  , MINIM),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_END
@@ -1223,9 +1221,9 @@ static const ringtone_note tone_Q2F[] =
 static const ringtone_note tone_Q210[] =
 {
     RINGTONE_TEMPO(300), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G5  , CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER_TRIPLET),
     RINGTONE_END
@@ -1236,7 +1234,7 @@ static const ringtone_note tone_Q210[] =
 static const ringtone_note tone_Q211[] =
 {
     RINGTONE_TEMPO(300), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G5  , SEMIBREVE),
     RINGTONE_NOTE(REST  , SEMIBREVE),
     RINGTONE_NOTE(G7  , SEMIBREVE),
@@ -1250,7 +1248,7 @@ static const ringtone_note tone_Q211[] =
 static const ringtone_note tone_Q212[] =
 {
     RINGTONE_TEMPO(100), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G7  , DEMISEMIQUAVER_TRIPLET  ),
     RINGTONE_NOTE(G5  , DEMISEMIQUAVER_TRIPLET  ),
     RINGTONE_NOTE(G7  , DEMISEMIQUAVER_TRIPLET  ),
@@ -1276,7 +1274,7 @@ static const ringtone_note tone_Q212[] =
 static const ringtone_note tone_Q213[] =
 {
     RINGTONE_TEMPO(2400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(G5  , SEMIBREVE),
     RINGTONE_NOTE(G5  , SEMIBREVE),
     RINGTONE_NOTE(G7  , SEMIBREVE),
@@ -1290,11 +1288,11 @@ static const ringtone_note tone_Q213[] =
 static const ringtone_note tone_Q214[] =
 {
     RINGTONE_TEMPO(800), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(G6 , SEMIBREVE),  
+
+    RINGTONE_NOTE(G6 , SEMIBREVE),
     RINGTONE_NOTE(REST, MINIM_TRIPLET),
     RINGTONE_NOTE(G6 , SEMIBREVE),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_END
@@ -1304,11 +1302,11 @@ static const ringtone_note tone_Q214[] =
 static const ringtone_note tone_Q31[] =
 {
     RINGTONE_TEMPO(1200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(C6, CROTCHET),
-    RINGTONE_NOTE(D6, CROTCHET),  
+    RINGTONE_NOTE(D6, CROTCHET),
     RINGTONE_NOTE(A6, CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, CROTCHET_TRIPLET),
     RINGTONE_END
@@ -1318,11 +1316,11 @@ static const ringtone_note tone_Q31[] =
 static const ringtone_note tone_Q32[] =
 {
     RINGTONE_TEMPO(1200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(A6, CROTCHET),
-    RINGTONE_NOTE(D6, CROTCHET),  
+    RINGTONE_NOTE(D6, CROTCHET),
     RINGTONE_NOTE(C6, CROTCHET),
-    
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, CROTCHET_TRIPLET),
     RINGTONE_END
@@ -1332,10 +1330,10 @@ static const ringtone_note tone_Q32[] =
 static const ringtone_note tone_Q33[] =
 {
     RINGTONE_TEMPO(800), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(C5, CROTCHET),
-    RINGTONE_NOTE(E5, CROTCHET),  
-    
+    RINGTONE_NOTE(E5, CROTCHET),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_END
@@ -1345,11 +1343,11 @@ static const ringtone_note tone_Q33[] =
 static const ringtone_note tone_Q34[] =
 {
     RINGTONE_TEMPO(800), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(A5, CROTCHET),
-    RINGTONE_NOTE(REST, CROTCHET),  
-    RINGTONE_NOTE(A5, CROTCHET),  
-    
+    RINGTONE_NOTE(REST, CROTCHET),
+    RINGTONE_NOTE(A5, CROTCHET),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_END
@@ -1359,10 +1357,10 @@ static const ringtone_note tone_Q34[] =
 static const ringtone_note tone_Q35[] =
 {
     RINGTONE_TEMPO(480), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(E6, CROTCHET),
-    RINGTONE_NOTE(F5, CROTCHET),  
-    
+    RINGTONE_NOTE(F5, CROTCHET),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER_TRIPLET),
     RINGTONE_END
@@ -1372,23 +1370,23 @@ static const ringtone_note tone_Q35[] =
 static const ringtone_note tone_Q36[] =
 {
     RINGTONE_TEMPO(1200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(A5, CROTCHET),
-    RINGTONE_NOTE(A4, CROTCHET),  
-    
+    RINGTONE_NOTE(A4, CROTCHET),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, CROTCHET_TRIPLET),
     RINGTONE_END
 };
-         
+
 /*mute on 2 48mS A4 A5 */
 static const ringtone_note tone_Q37[] =
 {
     RINGTONE_TEMPO(1200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
+
     RINGTONE_NOTE(A4, CROTCHET),
-    RINGTONE_NOTE(A5, CROTCHET),  
-    
+    RINGTONE_NOTE(A5, CROTCHET),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, CROTCHET_TRIPLET),
     RINGTONE_END
@@ -1398,9 +1396,9 @@ static const ringtone_note tone_Q37[] =
 static const ringtone_note tone_Q38[] =
 {
     RINGTONE_TEMPO(1200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(A5, CROTCHET),  
-    
+
+    RINGTONE_NOTE(A5, CROTCHET),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, CROTCHET_TRIPLET),
     RINGTONE_END
@@ -1410,10 +1408,10 @@ static const ringtone_note tone_Q38[] =
 static const ringtone_note tone_Q39[] =
 {
     RINGTONE_TEMPO(300), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(A5, MINIM),  
-    RINGTONE_NOTE(A4, CROTCHET),  
-    
+
+    RINGTONE_NOTE(A5, MINIM),
+    RINGTONE_NOTE(A4, CROTCHET),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER_TRIPLET),
     RINGTONE_END
@@ -1423,137 +1421,137 @@ static const ringtone_note tone_Q39[] =
 static const ringtone_note tone_Q3A[] =
 {
     RINGTONE_TEMPO(1200), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(C6, CROTCHET),  
-    RINGTONE_NOTE(E6, CROTCHET),  
-    RINGTONE_NOTE(C6, CROTCHET),  
-    RINGTONE_NOTE(E6, CROTCHET),  
-    RINGTONE_NOTE(C6, CROTCHET),  
-    RINGTONE_NOTE(E6, CROTCHET),  
-    RINGTONE_NOTE(C6, CROTCHET),  
-    RINGTONE_NOTE(E6, CROTCHET),  
-    RINGTONE_NOTE(C6, CROTCHET),  
-    RINGTONE_NOTE(E6, CROTCHET),  
-    RINGTONE_NOTE(C6, CROTCHET),  
-    RINGTONE_NOTE(REST, CROTCHET),  
-    RINGTONE_NOTE(C6, CROTCHET),  
-    RINGTONE_NOTE(E6, CROTCHET),  
-    RINGTONE_NOTE(C6, CROTCHET),  
-    RINGTONE_NOTE(E6, CROTCHET),  
-    RINGTONE_NOTE(C6, CROTCHET),  
-    RINGTONE_NOTE(E6, CROTCHET),  
-    RINGTONE_NOTE(C6, CROTCHET),  
-    RINGTONE_NOTE(E6, CROTCHET),  
-    RINGTONE_NOTE(C6, CROTCHET),  
-    RINGTONE_NOTE(E6, CROTCHET),  
-    RINGTONE_NOTE(C6, CROTCHET),  
+
+    RINGTONE_NOTE(C6, CROTCHET),
+    RINGTONE_NOTE(E6, CROTCHET),
+    RINGTONE_NOTE(C6, CROTCHET),
+    RINGTONE_NOTE(E6, CROTCHET),
+    RINGTONE_NOTE(C6, CROTCHET),
+    RINGTONE_NOTE(E6, CROTCHET),
+    RINGTONE_NOTE(C6, CROTCHET),
+    RINGTONE_NOTE(E6, CROTCHET),
+    RINGTONE_NOTE(C6, CROTCHET),
+    RINGTONE_NOTE(E6, CROTCHET),
+    RINGTONE_NOTE(C6, CROTCHET),
+    RINGTONE_NOTE(REST, CROTCHET),
+    RINGTONE_NOTE(C6, CROTCHET),
+    RINGTONE_NOTE(E6, CROTCHET),
+    RINGTONE_NOTE(C6, CROTCHET),
+    RINGTONE_NOTE(E6, CROTCHET),
+    RINGTONE_NOTE(C6, CROTCHET),
+    RINGTONE_NOTE(E6, CROTCHET),
+    RINGTONE_NOTE(C6, CROTCHET),
+    RINGTONE_NOTE(E6, CROTCHET),
+    RINGTONE_NOTE(C6, CROTCHET),
+    RINGTONE_NOTE(E6, CROTCHET),
+    RINGTONE_NOTE(C6, CROTCHET),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, CROTCHET_TRIPLET),
     RINGTONE_END
 };
-         
-/*power up tone 83mS C5 10mS REST 83mS E5 10mS REST 83mS G5 10mS REST 124mS B5 498mS REST 372mS C6 */   
+
+/*power up tone 83mS C5 10mS REST 83mS E5 10mS REST 83mS G5 10mS REST 124mS B5 498mS REST 372mS C6 */
 static const ringtone_note tone_Q3B[] =
 {
     RINGTONE_TEMPO(400), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(C5   , QUAVER),  
-    RINGTONE_NOTE(REST , DEMISEMIQUAVER),  
-    RINGTONE_NOTE(E5   , QUAVER),  
-    RINGTONE_NOTE(REST , DEMISEMIQUAVER),  
-    RINGTONE_NOTE(G5   , QUAVER),  
-    RINGTONE_NOTE(REST , DEMISEMIQUAVER),  
-    RINGTONE_NOTE(B5   , CROTCHET),  
-    RINGTONE_NOTE(REST , SEMIBREVE),  
-    RINGTONE_NOTE(C6   , MINIM),  
-    RINGTONE_NOTE_TIE(C6, QUAVER),  
+
+    RINGTONE_NOTE(C5   , QUAVER),
+    RINGTONE_NOTE(REST , DEMISEMIQUAVER),
+    RINGTONE_NOTE(E5   , QUAVER),
+    RINGTONE_NOTE(REST , DEMISEMIQUAVER),
+    RINGTONE_NOTE(G5   , QUAVER),
+    RINGTONE_NOTE(REST , DEMISEMIQUAVER),
+    RINGTONE_NOTE(B5   , CROTCHET),
+    RINGTONE_NOTE(REST , SEMIBREVE),
+    RINGTONE_NOTE(C6   , MINIM),
+    RINGTONE_NOTE_TIE(C6, QUAVER),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, SEMIQUAVER),
     RINGTONE_END
 };
 
-/*vol 7/0 68mS A5 REST A5*/   
+/*vol 7/0 68mS A5 REST A5*/
 static const ringtone_note tone_Q3C[] =
 {
     RINGTONE_TEMPO(800), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(A5   , CROTCHET),  
-    RINGTONE_NOTE(REST   , CROTCHET),  
-    RINGTONE_NOTE(A5   , CROTCHET),  
+
+    RINGTONE_NOTE(A5   , CROTCHET),
+    RINGTONE_NOTE(REST   , CROTCHET),
+    RINGTONE_NOTE(A5   , CROTCHET),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_END
 };
 
-/*vol 6 68mS DS6*/   
+/*vol 6 68mS DS6*/
 static const ringtone_note tone_Q3D[] =
 {
     RINGTONE_TEMPO(800), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(DS6   , CROTCHET),  
-    
+
+    RINGTONE_NOTE(DS6   , CROTCHET),
+
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_END
 };
 
-/*vol 5 68mS D6*/   
+/*vol 5 68mS D6*/
 static const ringtone_note tone_Q3E[] =
 {
     RINGTONE_TEMPO(800), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(D6   , CROTCHET),  
+
+    RINGTONE_NOTE(D6   , CROTCHET),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_END
 };
 
-/*vol 4 68mS CS6*/   
+/*vol 4 68mS CS6*/
 static const ringtone_note tone_Q3F[] =
 {
     RINGTONE_TEMPO(800), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(CS6   , CROTCHET),  
+
+    RINGTONE_NOTE(CS6   , CROTCHET),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_END
 };
 
-/*vol 3 68mS C6 */   
+/*vol 3 68mS C6 */
 static const ringtone_note tone_Q40[] =
 {
     RINGTONE_TEMPO(800), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(C6   , CROTCHET),  
+
+    RINGTONE_NOTE(C6   , CROTCHET),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_END
 };
 
-/*vol 2 68mS B5*/   
+/*vol 2 68mS B5*/
 static const ringtone_note tone_Q41[] =
 {
     RINGTONE_TEMPO(800), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(B5   , CROTCHET),  
+
+    RINGTONE_NOTE(B5   , CROTCHET),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
     RINGTONE_END
 };
 
-/*vol 1 68mS AS5*/   
+/*vol 1 68mS AS5*/
 static const ringtone_note tone_Q42[] =
 {
     RINGTONE_TEMPO(800), RINGTONE_VOLUME(MAX_TONE_VOLUME), RINGTONE_TIMBRE(sine),
-    
-    RINGTONE_NOTE(AS5   , CROTCHET),  
+
+    RINGTONE_NOTE(AS5   , CROTCHET),
 
     /* Tone soft stop. Duration must be > 8ms*/
     RINGTONE_NOTE(REST, QUAVER),
@@ -1567,36 +1565,36 @@ static const ringtone_note tone_Q42[] =
 /*************************************************************************/
 
 /* This must make use of all of the defined tones - requires the extra space first */
-static const ringtone_note * const gFixedTones [ NUM_FIXED_TONES ] = 
+static const ringtone_note * const gFixedTones [ NUM_FIXED_TONES ] =
 {
 /*1*/    tone_B  ,  /*Vol 0*/
 /*2*/    tone_C  ,  /*Vol 1*/
 /*3*/    tone_D  ,  /*Vol 2*/
 /*4*/    tone_E  ,  /*Vol 3*/
-    
+
 /*5*/    tone_F  ,  /*Vol 4*/
 /*6*/    tone_G  ,  /*Vol 5*/
 /*7*/    tone_H  ,  /*Vol 6*/
 /*8*/    tone_I  ,  /*Vol 7*/
-    
+
 /*9*/    tone_J  ,  /*Vol 8*/
 /*A*/    tone_K  ,  /*Vol 9*/
 /*b*/    tone_L  ,  /*Vol 10*/
 /*c*/    tone_M  ,  /*4 note rise*/
-    
+
 /*d*/    tone_N  ,  /*2 note ris*/
 /*e*/    tone_O  ,  /*2 note fall*/
 /*f*/    tone_P  ,  /*long low short high*/
 /*10*/   tone_Q  ,  /*conn  */
-    
+
 /*11*/   tone_R  ,  /*power*/
 /*12*/   tone_S  ,  /*error*/
 /*13*/   tone_T  ,  /*short cfm*/
 /*14*/   tone_U  ,  /*long CFM*/
-    
+
 /*15*/   tone_V  ,  /*Low Batt*/
 /*16*/   tone_W  ,  /*pair removal*/
-/*17*/   tone_X  ,  /*double*/  
+/*17*/   tone_X  ,  /*double*/
 /*18*/   battery_low_tone    ,
 
 /*19*/   low_500ms_tone      ,
@@ -1605,10 +1603,10 @@ static const ringtone_note * const gFixedTones [ NUM_FIXED_TONES ] =
 /*1c*/   ring_g_s_t_q        ,
 
 /*1d*/   ring_valkyries      ,
-/*1e*/   ring_greensleeves   ,  
+/*1e*/   ring_greensleeves   ,
 /*1f*/   ring_two_beeps      ,
 /*20*/   ring_fairground     ,
-    
+
 /*21*/   ring_counterpoint   ,
 /*22*/   ring_major_arp      ,
 /*23*/   ring_major_scale    ,
@@ -1621,10 +1619,10 @@ static const ringtone_note * const gFixedTones [ NUM_FIXED_TONES ] =
 
 /*29*/   ring_bumble_bee ,
 /*2a*/   ring_aug_scale  ,
-/*2b*/   ring_dim_scale  , 
-           
+/*2b*/   ring_dim_scale  ,
+
 /*2c*/   CustomRingTone  , /*this is a custom ring tone that can be defined if required.*/
-/*2d*/   tone_A1         ,   /*4 low to high 38ms*/  
+/*2d*/   tone_A1         ,   /*4 low to high 38ms*/
 /*2e*/   tone_A2         ,   /*4 high to low 38ms*/
 /*2f*/   tone_A3         ,   /*880 Hz for 100ms*/
 
@@ -1667,30 +1665,30 @@ static const ringtone_note * const gFixedTones [ NUM_FIXED_TONES ] =
 /*4d*/     tone_Q31         ,   /*Connected 48mS C6 D6 A6 */
 /*4e*/     tone_Q32         ,   /*Disconnected 48mS A6 D6 C6 */
 /*4f*/     tone_Q33         ,   /*confirmation tone 68mS C5 E5 */
-         
+
 /*50*/     tone_Q34         ,   /*error tone 2 68mS A5 REST A5 */
 /*51*/     tone_Q35         ,   /*low batt 2 125mS E6 F5 */
 /*52*/     tone_Q36         ,   /*mute off 2 48mS A5 A4 */
 /*53*/     tone_Q37         ,   /*mute on 2 48mS A4 A5 */
-         
+
 /*54*/     tone_Q38         ,   /*single tone 48mS A5*/
 /*55*/     tone_Q39         ,   /*shutdown tone 408mS A5 136mS A4 */
 /*56*/     tone_Q3A         ,   /*phone ring 48mS C6 E6 C6 E6 C6 E6 C6 E6 C6 E6 C6 REST C6 E6 C6 E6 C6 E6 C6 E6 C6 E6 C6*/
-/*57*/   tone_Q3B        ,   /*power up tone 83mS C5 10mS REST 83mS E5 10mS REST 83mS G5 10mS REST 124mS B5 498mS REST 372mS C6 */          
-         
-/*58*/   tone_Q3C        ,   /*vol lev 0/7 */                 
-/*59*/   tone_Q3D        ,   /*vol lev 6 */         
-/*5a*/   tone_Q3E        ,   /*vol lev 5 */         
-/*5b*/   tone_Q3F        ,   /*vol lev 4 */         
-         
-/*5c*/   tone_Q40        ,   /*vol lev 3 */                
-/*5d*/   tone_Q41        ,   /*vol lev 2 */         
+/*57*/   tone_Q3B        ,   /*power up tone 83mS C5 10mS REST 83mS E5 10mS REST 83mS G5 10mS REST 124mS B5 498mS REST 372mS C6 */
+
+/*58*/   tone_Q3C        ,   /*vol lev 0/7 */
+/*59*/   tone_Q3D        ,   /*vol lev 6 */
+/*5a*/   tone_Q3E        ,   /*vol lev 5 */
+/*5b*/   tone_Q3F        ,   /*vol lev 4 */
+
+/*5c*/   tone_Q40        ,   /*vol lev 3 */
+/*5d*/   tone_Q41        ,   /*vol lev 2 */
 /*5e*/   tone_Q42        ,    /*vol lev 1 */
-                 
+
      } ;
 
 /****************************************************************************
-NAME 
+NAME
  TonesPlayEvent
 
 DESCRIPTION
@@ -1699,36 +1697,36 @@ DESCRIPTION
 
 RETURNS
  void
-    
+
 */
 void TonesPlayEvent ( sinkEvents_t pEvent )
-{    
-    uint16 lEvent = pEvent;
+{
+    u16 lEvent = pEvent;
     int i = 0 ;
 
     /* Don't play tone for Mute Toggle, this event is auto-converted to either EventUsrMicrophoneMuteOn or EventUsrMicrophoneMuteOff */
     if (pEvent == EventUsrMicrophoneMuteToggle)
         return;
-    
+
     if(!stateManagerIsReadyForAudio())
     {
         return;
     }
-    
+
     /* Ensure sink is not in a completely muted state, unless trying to play the mute reminder or a 'MuteOn' tone */
     if (!VolumeAllOutputsMuted() || (pEvent == EventSysMuteReminder)
                                  || (pEvent == EventUsrAuxOutMuteOn)
                                  || (pEvent == EventUsrMainOutMuteOn))
     {
-        /* If Audio Prompts are disabled go straight to tones. Otherwise if Audio Prompt is assigned to this 
+        /* If Audio Prompts are disabled go straight to tones. Otherwise if Audio Prompt is assigned to this
            event tone playback would be skipped.*/
         if(theSink.audio_prompts_enabled)
-        { 
+        {
             /* If there's a valid Audio Prompt event to play don't play any tones */
             if(AudioPromptPlayEvent( pEvent ))
                 return;
         }
-    
+
         /* scan available tones list, list end is signified by NOT_DEFINED */
         while ( theSink.conf7->gEventTones [i].tone != TONE_NOT_DEFINED )
         {
@@ -1737,61 +1735,61 @@ void TonesPlayEvent ( sinkEvents_t pEvent )
             {
                 /* turn on audio amp */
                 PioDrivePio(PIO_AUDIO_ACTIVE, TRUE);
-                /* start check to turn amp off again if required */ 
-                MessageSendLater(&theSink.task , EventSysCheckAudioAmpDrive, 0, 1000);    
-    
+                /* start check to turn amp off again if required */
+                MessageSendLater(&theSink.task , EventSysCheckAudioAmpDrive, 0, 1000);
+
                 /* check event as tone queueing not allowed on mute and ring tones */
                 switch(pEvent)
                 {
                     case EventSysMuteReminder:
                     case EventSysRingtone1:
                     case EventSysRingtone2:
-                    
+
                         /* check whether to play mute reminder tone at default volume level, never queue mute reminders to
                         protect against the case that the tone is longer than the mute reminder timer */
                         TonesPlayTone (theSink.conf7->gEventTones [ i ].tone ,FALSE, (theSink.features.MuteToneFixedVolume)) ;
                         break;
-                       
+
                     /* for all other events use the QueueEventTones feature bit setting */
                     default:
-                        
+
                         /* play tone */
                         TonesPlayTone (theSink.conf7->gEventTones [ i ].tone ,theSink.features.QueueEventTones, FALSE ) ;
-                        break;    
+                        break;
                 }
             }
             i++ ;
         }
     }
-} 
+}
 
 /****************************************************************************
-NAME    
+NAME
     TonesPlayTone
-    
+
 DESCRIPTION
       Works out the correct volume to play tones or Audio Prompts at
-    
+
 RETURNS
     void
 */
-uint16 TonesGetToneVolume(bool PlayToneAtDefaultLevel)
-{           
-    uint16 volumeIndex;
-    TONE_DEBUG(("TONE: PlayToneAtDefaultLevel : [%d]\n",PlayToneAtDefaultLevel));
-    TONE_DEBUG(("TONE: PlayTonesAtFixedVolume : [%d]\n",theSink.features.PlayTonesAtFixedVolume));
+u16 TonesGetToneVolume(bool PlayToneAtDefaultLevel)
+{
+    u16 volumeIndex;
+    LOGD("TONE: PlayToneAtDefaultLevel : [%d]\n",PlayToneAtDefaultLevel);
+    LOGD("TONE: PlayTonesAtFixedVolume : [%d]\n",theSink.features.PlayTonesAtFixedVolume);
     /* if play at fixed volume selected */
     if (theSink.features.PlayTonesAtFixedVolume)
-    {      
+    {
         /* volume level is already in raw gain units, no need to use volume mapping table */
         volumeIndex = theSink.features.FixedToneVolumeLevel ;
     }
     /* check for play tone at default level */
-    else 
-    {    
+    else
+    {
         /* default volume level unless changed by other options */
-        volumeIndex = theSink.features.DefaultVolume ;            
-        
+        volumeIndex = theSink.features.DefaultVolume ;
+
         /* is tone not being played at default volume? */
         if(PlayToneAtDefaultLevel)
         {   /* return @ the default index */
@@ -1802,71 +1800,71 @@ uint16 TonesGetToneVolume(bool PlayToneAtDefaultLevel)
             {
                 case audio_route_a2dp_primary:
                     volumeIndex = theSink.volume_levels->a2dp_volume[a2dp_primary].main_volume;
-                    TONE_DEBUG(("TONE: GetVolume : A2DP primary\n"));
+                    LOGD("TONE: GetVolume : A2DP primary\n");
                     break;
                 case audio_route_a2dp_secondary:
                     volumeIndex = theSink.volume_levels->a2dp_volume[a2dp_secondary].main_volume;
-                    TONE_DEBUG(("TONE: GetVolume : A2DP secondary\n"));
+                    LOGD("TONE: GetVolume : A2DP secondary\n");
                     break;
                 case audio_route_hfp_primary:
-                    TONE_DEBUG(("TONE: GetVolume : HFP primary\n"));
-                    volumeIndex = theSink.profile_data[PROFILE_INDEX(hfp_primary_link)].audio.gSMVolumeLevel; 
+                    LOGD("TONE: GetVolume : HFP primary\n");
+                    volumeIndex = theSink.profile_data[PROFILE_INDEX(hfp_primary_link)].audio.gSMVolumeLevel;
                     volumeIndex = sinkVolumeGetCvcVol(volumeIndex);
                     break;
                 case audio_route_hfp_secondary:
-                    TONE_DEBUG(("TONE: GetVolume : HFP secondary\n"));
-                    volumeIndex = theSink.profile_data[PROFILE_INDEX(hfp_secondary_link)].audio.gSMVolumeLevel; 
+                    LOGD("TONE: GetVolume : HFP secondary\n");
+                    volumeIndex = theSink.profile_data[PROFILE_INDEX(hfp_secondary_link)].audio.gSMVolumeLevel;
                     volumeIndex = sinkVolumeGetCvcVol(volumeIndex);
                     break;
                 case audio_route_usb:
-                    TONE_DEBUG(("TONE: GetVolume : USB\n"));
+                    LOGD("TONE: GetVolume : USB\n");
                     volumeIndex = theSink.volume_levels->usb_volume.main_volume;
                     break;
                 case audio_route_analog:
-                    TONE_DEBUG(("TONE: GetVolume : Analog\n"));
+                    LOGD("TONE: GetVolume : Analog\n");
                     volumeIndex = theSink.volume_levels->analog_volume.main_volume;
                     break;
                 case audio_route_spdif:
-                    TONE_DEBUG(("TONE: GetVolume : Spdif\n"));
+                    LOGD("TONE: GetVolume : Spdif\n");
                     volumeIndex = theSink.volume_levels->spdif_volume.main_volume;
                     break;
                 case audio_route_fm:
-                    TONE_DEBUG(("TONE: GetVolume : FM\n"));
+                    LOGD("TONE: GetVolume : FM\n");
                     volumeIndex = theSink.volume_levels->fm_volume.main_volume;
                     break;
                case audio_route_none:
                default:
-                    TONE_DEBUG(("TONE: GetVolume : nothing routed\n"));
+                    LOGD("TONE: GetVolume : nothing routed\n");
                     {
                         /* Get the link to change volume on */
                         hfp_link_priority priority = audioGetLinkPriority(TRUE);
                         /* Get current volume for this profile */
-                        uint16 lOldVol = theSink.profile_data[PROFILE_INDEX(priority)].audio.gSMVolumeLevel;
+                        u16 lOldVol = theSink.profile_data[PROFILE_INDEX(priority)].audio.gSMVolumeLevel;
                         /* Obtain current volume level */
-                        volumeIndex  = sinkVolumeGetCvcVol(lOldVol); 
+                        volumeIndex  = sinkVolumeGetCvcVol(lOldVol);
                     }
                     break;
             }
-        }  
+        }
     }
-    TONE_DEBUG(("TONE: GetVolume [%d]\n", volumeIndex));
+    LOGD("TONE: GetVolume [%d]\n", volumeIndex);
     return volumeIndex;
 }
 
 /****************************************************************************
-NAME    
+NAME
     TonesPlayTone
-    
+
 DESCRIPTION
       Plays back the tone given by the ringtone_note index
-    
+
 RETURNS
     void
 */
-void TonesPlayTone ( uint16 pTone , bool pCanQueue , bool PlayToneAtDefaultLevel)
+void TonesPlayTone ( u16 pTone , bool pCanQueue , bool PlayToneAtDefaultLevel)
 {
-    uint16 lToneVolume = TonesGetToneVolume(PlayToneAtDefaultLevel);
-    TONE_DEBUG(("TONE Play sinth [%x]\n", pTone));
+    u16 lToneVolume = TonesGetToneVolume(PlayToneAtDefaultLevel);
+    LOGD("TONE Play sinth [%x]\n", pTone);
 
     /* ensure tone is valid (non zero) before playing */
     if(pTone > 0 && pTone <= NUM_FIXED_TONES)
@@ -1875,67 +1873,67 @@ void TonesPlayTone ( uint16 pTone , bool pCanQueue , bool PlayToneAtDefaultLevel
                        pCanQueue,
                        theSink.codec_task,
                        lToneVolume,
-                       theSink.conf2->audio_routing_data.PluginFeatures ) ;   
+                       theSink.conf2->audio_routing_data.PluginFeatures ) ;
     }
     /* if the tone index is beyond that of the fixed tones, check for the prescence of
        a user defined tone, there are 8 user defineable tones available at the end of the
        fixed tones list */
     else
     {
-        TONE_DEBUG(("TONE Play sinth which is larger than 5e is [%x] - [%d]\n", pTone, pTone-1-NUM_FIXED_TONES));
-            
+        LOGD("TONE Play sinth which is larger than 5e is [%x] - [%d]\n", pTone, pTone-1-NUM_FIXED_TONES);
+
          /* check to see if there are any configured user defined tones and then check to see
             if there is a tone available at the index (0 to 7) requested */
-        if(&theSink.gConfigTones.gVariableTones[0] && 
+        if(&theSink.gConfigTones.gVariableTones[0] &&
            theSink.gConfigTones.gVariableTones[pTone-1-NUM_FIXED_TONES])
         {
 
             /* audio tone is located at 'start of data + an offset' into the array of data,
                the first 8 words of data in gVariableTones are offsets into the data array
                for user tones 0 to 7 */
-            AudioPlayTone ( (const ringtone_note *)(&theSink.gConfigTones.gVariableTones[0] + 
-                                                 (uint16)theSink.gConfigTones.gVariableTones[pTone-1-NUM_FIXED_TONES]),
+            AudioPlayTone ( (const ringtone_note *)(&theSink.gConfigTones.gVariableTones[0] +
+                                                 (uintptr_t)theSink.gConfigTones.gVariableTones[pTone-1-NUM_FIXED_TONES]),
                             pCanQueue,
                             theSink.codec_task,
                             lToneVolume,
-                            theSink.conf2->audio_routing_data.PluginFeatures ) ;  
-                              
+                            theSink.conf2->audio_routing_data.PluginFeatures ) ;
+
         }
     }
 }
 
 /****************************************************************************
-NAME    
+NAME
     ToneTerminate
-    
+
 DESCRIPTION
       function to terminate a ring tone prematurely.
-    
+
 RETURNS
-    
+
 */
 void ToneTerminate ( void )
-{  
+{
     AudioPromptCancelNumString();
     AudioStopToneAndPrompt(!theSink.features.DisableAudioPromptTerminate);
-}  
+}
 
 /****************************************************************************
 NAME
     TonesGetToneVolumeDb
-    
+
 DESCRIPTION
     Works out the correct volume to play tones or Audio Prompts at in dB/60
-    
+
 RETURNS
     Volume in dB/60
 */
-int16 TonesGetToneVolumeInDb(audio_plugin_mch_group_t group)
+i16 TonesGetToneVolumeInDb(audio_plugin_mch_group_t group)
 {
     volume_group_config_t* vol_conf = &sinkVolumeGetGroupConfig(group);
-    
-    uint16 tone_system = TonesGetToneVolume(FALSE);
-    int16  tone_steps  = (tone_system * vol_conf->no_of_steps) / VOLUME_NUM_VOICE_STEPS;
-    
+
+    u16 tone_system = TonesGetToneVolume(FALSE);
+    i16  tone_steps  = (tone_system * vol_conf->no_of_steps) / VOLUME_NUM_VOICE_STEPS;
+
     return VolumeConvertStepsToDB(tone_steps, vol_conf);
 }

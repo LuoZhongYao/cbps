@@ -58,7 +58,7 @@ typedef enum
     and pass an instance pointer to the SPP Client task created, if the 
     connection was successful.
 */
-void SppConnectRequest(Task theAppTask, const bdaddr *bd_addr, const uint16 security_channel, uint16 max_payload_size);
+void SppConnectRequest(Task theAppTask, const bdaddr *bd_addr, const u16 security_channel, u16 max_payload_size);
 
 #endif /* SPP_CLIENT_H_ */
 

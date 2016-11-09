@@ -94,7 +94,7 @@ void aghfpHandleSlcConnectIndReject(AGHFP *aghfp, const CL_RFCOMM_CONNECT_IND_T 
 	Record the supported features that the HF has just reported and send our
     supported features in response.
 */
-void aghfpHandleBrsfRequest(AGHFP *aghfp, uint16 supported_features)
+void aghfpHandleBrsfRequest(AGHFP *aghfp, u16 supported_features)
 {
 	char buf[6];
 
@@ -136,7 +136,7 @@ void aghfpHandleCindStatusRequest(AGHFP *aghfp)
 /****************************************************************************
 	Respond to AT+CMER command.
 */
-void aghfpHandleCmerRequest(AGHFP *aghfp, uint16 mode, uint16 ind)
+void aghfpHandleCmerRequest(AGHFP *aghfp, u16 mode, u16 ind)
 {
     if ((mode == 0 || mode == 3) && (ind <= 1))
     {
@@ -214,7 +214,7 @@ void aghfpHandleSlcDisconnect(AGHFP *aghfp)
 
 		/* Queue up another SLC disconnect message */
         MessageSendConditionally(&aghfp->task, AGHFP_INTERNAL_SLC_DISCONNECT_REQ,
-        						 0, (uint16 *) &aghfp->audio_sink);
+        						 0, (u16 *) &aghfp->audio_sink);
     }
     else
     {

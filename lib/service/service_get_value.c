@@ -7,8 +7,8 @@ Copyright (c) 2015 Qualcomm Technologies International, Ltd.
 
 bool ServiceGetValue(Region *r, ServiceDataType *type, Region *out)
 {
-    uint8 b;
-    uint16 size;
+    u8 b;
+    u16 size;
 
     if(RegionSize(r) < 1) return 0;
 
@@ -44,7 +44,7 @@ bool ServiceGetValue(Region *r, ServiceDataType *type, Region *out)
         break;
         case 7:
             if(RegionSize(r) < 4) return 0;
-            size = (uint16) serviceUnpack32(r->begin);
+            size = (u16) serviceUnpack32(r->begin);
             r->begin += 4;
         break;
     }

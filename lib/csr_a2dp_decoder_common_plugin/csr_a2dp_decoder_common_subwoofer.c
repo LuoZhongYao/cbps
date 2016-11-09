@@ -174,7 +174,7 @@ void CsrA2dpDecoderPluginSetSubWoofer(AUDIO_SUB_TYPE_T sub_type, Sink sub_sink)
 
             /* SUB using esco as its bt link, connect to dsp port 2 */
             case AUDIO_SUB_WOOFER_ESCO:
-                PRINT(("DECODER: connect esco dsp port 2, sub_sink = %x\n", (uint16)sub_sink ));
+                PRINT(("DECODER: connect esco dsp port 2, sub_sink = %x\n", (u16)sub_sink ));
                 /* ensure the correct ype of link is requested */
                 if(DECODER->sink_type != AUDIO_SINK_AV)
                 {               
@@ -214,7 +214,7 @@ void CsrA2dpDecoderPluginSetSubWoofer(AUDIO_SUB_TYPE_T sub_type, Sink sub_sink)
                         }
                         else
                         {
-                            PRINT(("DECODER: connect esco dsp port 2, sub_sink = %x NOT VALID\n", (uint16)sub_sink ));
+                            PRINT(("DECODER: connect esco dsp port 2, sub_sink = %x NOT VALID\n", (u16)sub_sink ));
                         }
 
                         /* determine if the subwoofer has connected after the decoder was loaded,
@@ -233,7 +233,7 @@ void CsrA2dpDecoderPluginSetSubWoofer(AUDIO_SUB_TYPE_T sub_type, Sink sub_sink)
 
             /* SUB using l2cap as its bt link, connect to dsp port 3 */
             case AUDIO_SUB_WOOFER_L2CAP:
-                PRINT(("DECODER: connect l2cap dsp port 3, sub_sink = %x\n", (uint16)sub_sink ));
+                PRINT(("DECODER: connect l2cap dsp port 3, sub_sink = %x\n", (u16)sub_sink ));
                 /* ensure the correct ype of link is requested */
                 if(DECODER->sink_type == AUDIO_SINK_AV)
                 {
@@ -274,7 +274,7 @@ void CsrA2dpDecoderPluginSetSubWoofer(AUDIO_SUB_TYPE_T sub_type, Sink sub_sink)
                         }
                         else
                         {
-                            PRINT(("DECODER: connect l2cap dsp port 3, sub_sink = %x NOT VALID\n", (uint16)sub_sink ));
+                            PRINT(("DECODER: connect l2cap dsp port 3, sub_sink = %x NOT VALID\n", (u16)sub_sink ));
                         }
                         
                         /* determine if the subwoofer has connected after the decoder was loaded,

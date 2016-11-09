@@ -57,7 +57,7 @@ NOTES
 #define USB_AUDIO_DISCONNECT_DELAY (20)
 
 /* Interface Descriptors for mono 8kHz. Do Not Modify. */
-static const uint8 interface_descriptor_control_mic_and_speaker[] =
+static const u8 interface_descriptor_control_mic_and_speaker[] =
 {
     /* Class Specific Header */
     0x0A,         /* bLength */
@@ -81,7 +81,7 @@ static const uint8 interface_descriptor_control_mic_and_speaker[] =
     0x00, 0x00,   /* wChannelConfig = mono */
     0x00,         /* iChannelName = no string */
     0x00,         /* iTerminal = same as USB product string */
-    
+
     /* Microphone Features */
     0x0b,           /*bLength*/
     0x24,           /*bDescriptorType = CS_INTERFACE */
@@ -114,7 +114,7 @@ static const uint8 interface_descriptor_control_mic_and_speaker[] =
     0x00, 0x00,   /* wChannelConfig = mono */
     0x00,         /* iChannelName = no string */
     0x00,         /* iTerminal = same as USB product string */
-    
+
     /* Speaker Features */
     0x0b,           /*bLength*/
     0x24,           /*bDescriptorType = CS_INTERFACE */
@@ -137,7 +137,7 @@ static const uint8 interface_descriptor_control_mic_and_speaker[] =
     0x00,         /* iTerminal = same as USB product string */
 };
 
-static const uint8 interface_descriptor_streaming_mic[] =
+static const u8 interface_descriptor_streaming_mic[] =
 {
     /* Class Specific AS interface descriptor */
     0x07,         /* bLength */
@@ -169,7 +169,7 @@ static const uint8 interface_descriptor_streaming_mic[] =
     0x00, 0x00     /* wLockDelay */
 };
 
-static const uint8 interface_descriptor_streaming_speaker[] =
+static const u8 interface_descriptor_streaming_speaker[] =
 {
     /* Class Specific AS interface descriptor */
     0x07,         /* bLength */
@@ -201,7 +201,7 @@ static const uint8 interface_descriptor_streaming_speaker[] =
     0x00, 0x00    /* wLockDelay */
 };
 
-static const uint8 audio_endpoint_user_data[] =
+static const u8 audio_endpoint_user_data[] =
 {
     0, /* bRefresh */
     0  /* bSyncAddress */
@@ -217,7 +217,7 @@ static const EndPointInfo epinfo_streaming_speaker[] =
         16, /* max packet size */
         1, /* poll_interval */
         audio_endpoint_user_data, /* data to be appended */
-        sizeof(audio_endpoint_user_data) /* length of data appended */      
+        sizeof(audio_endpoint_user_data) /* length of data appended */
     }
 };
 
@@ -248,7 +248,7 @@ static const usb_device_class_audio_config usb_cvc_config =
     epinfo_streaming_speaker}
 };
 
-static const uint8 interface_descriptor_streaming_mic_wb[] =
+static const u8 interface_descriptor_streaming_mic_wb[] =
 {
     /* Class Specific AS interface descriptor */
     0x07,         /* bLength */
@@ -280,7 +280,7 @@ static const uint8 interface_descriptor_streaming_mic_wb[] =
     0x00, 0x00     /* wLockDelay */
 };
 
-static const uint8 interface_descriptor_streaming_speaker_wb[] =
+static const u8 interface_descriptor_streaming_speaker_wb[] =
 {
     /* Class Specific AS interface descriptor */
     0x07,         /* bLength */
@@ -321,7 +321,7 @@ static const EndPointInfo epinfo_streaming_speaker_wb[] =
         32, /* max packet size */
         1, /* poll_interval */
         audio_endpoint_user_data, /* data to be appended */
-        sizeof(audio_endpoint_user_data) /* length of data appended */      
+        sizeof(audio_endpoint_user_data) /* length of data appended */
     }
 };
 
@@ -375,15 +375,13 @@ static const usb_plugin_info usb_plugins[] =
 #endif /* ENABLE_USB_AUDIO */
 
 #ifdef DEBUG_USB
-    #define USB_DEBUG(x) DEBUG(x)
 #else
-    #define USB_DEBUG(x)
 #endif
 
 typedef struct
 {
     FILE_INDEX  index;
-    uint32      size;
+    u32      size;
 } usb_file_info;
 
 #define USB_NAME_SIZE 8
@@ -398,7 +396,7 @@ typedef struct
 typedef struct
 {
     char  name[USB_NAME_SIZE + USB_EXT_SIZE + 1];
-    uint8 size;
+    u8 size;
 } usb_file_name_info;
 
 #define USB_CLASS_ENABLED(x)        ((bool)(theSink.usb->config.device_class & (x)))
@@ -434,13 +432,13 @@ static void usbAudioSetVolume(void);
 #endif
 
 #ifdef ENABLE_USB_AUDIO
-static void usbAudioSetSpeakerSampleRate(uint16 sample_rate);
+static void usbAudioSetSpeakerSampleRate(u16 sample_rate);
 #else
 #define usbAudioSetSpeakerSampleRate(x) ((void)0)
 #endif
 
 #ifdef ENABLE_USB_AUDIO
-static void usbAudioSetMicSampleRate(uint16 sample_rate);
+static void usbAudioSetMicSampleRate(u16 sample_rate);
 #else
 #define usbAudioSetMicSampleRate(x) ((void)0)
 #endif
@@ -460,27 +458,27 @@ static void usbSendHidEvent(usb_device_class_event event);
 #define usbMute()       usbSendHidEvent(USB_MUTE)
 
 #ifdef ENABLE_USB_AUDIO
-#define sinkUsbVolumeIsAtMinimum()  (theSink.usb->out_l_vol == (int16)(int8)((int16)SPEAKER_VOLUME_MIN >> 8))
+#define sinkUsbVolumeIsAtMinimum()  (theSink.usb->out_l_vol == (i16)(i8)((i16)SPEAKER_VOLUME_MIN >> 8))
 #else
 #define sinkUsbVolumeIsAtMinimum()  (FALSE)
 #endif
 
 #ifdef ENABLE_USB_AUDIO
-#define sinkUsbVolumeIsAtMaximum()  (theSink.usb->out_l_vol == (int16)(int8)((int16)SPEAKER_VOLUME_MAX >> 8))
+#define sinkUsbVolumeIsAtMaximum()  (theSink.usb->out_l_vol == (i16)(i8)((i16)SPEAKER_VOLUME_MAX >> 8))
 #else
 #define sinkUsbVolumeIsAtMaximum()  (FALSE)
 #endif
 
 /*************************************************************************
-NAME    
+NAME
     usbSetAudioSuspendState
-    
+
 DESCRIPTION
     Sets the audio suspend state for USB
 
 RETURNS
     None
-    
+
 **************************************************************************/
 static void usbSetAudioSuspendState (usb_audio_suspend_state state)
 {
@@ -489,7 +487,7 @@ static void usbSetAudioSuspendState (usb_audio_suspend_state state)
         theSink.usb->audio_suspend_state = state;
 #ifdef ENABLE_PEER
         peerClaimRelay(TRUE);
-#endif 
+#endif
     }
     else
     {   /* Check if we are already suspended before updating state */
@@ -498,11 +496,11 @@ static void usbSetAudioSuspendState (usb_audio_suspend_state state)
             theSink.usb->audio_suspend_state = state;
 #ifdef ENABLE_PEER
             peerClaimRelay(FALSE);
-#endif 
+#endif
         }
     }
-    
-    USB_DEBUG(("USB: Setting audio suspend_state = %d\n",theSink.usb->audio_suspend_state)); 
+
+    LOGD("USB: Setting audio suspend_state = %d\n",theSink.usb->audio_suspend_state);
 }
 
 
@@ -535,12 +533,12 @@ DESCRIPTION
 RETURNS
     void
 */
-static void usbSetLowPowerMode(uint8 delay)
+static void usbSetLowPowerMode(u8 delay)
 {
     /* Only queue low power mode if not enumerated and attached to normal host/hub */
     if(!theSink.usb->enumerated && delay && (UsbAttachedStatus() == HOST_OR_HUB))
     {
-        USB_DEBUG(("USB: Queue low power in %d sec\n", delay));
+        LOGD("USB: Queue low power in %d sec\n", delay);
         MessageSendLater(&theSink.task, EventUsrUsbLowPowerMode, 0, D_SEC(delay));
     }
 }
@@ -556,7 +554,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void usbSetBootMode(uint8 bootmode)
+void usbSetBootMode(u8 bootmode)
 {
     /* Don't change anything if battery charging disabled */
     if(!USB_CLASS_ENABLED(USB_DEVICE_CLASS_TYPE_BATTERY_CHARGING))
@@ -564,7 +562,7 @@ void usbSetBootMode(uint8 bootmode)
 
     if(BootGetMode() != bootmode)
     {
-        USB_DEBUG(("USB: Set Mode %d\n", bootmode));
+        LOGD("USB: Set Mode %d\n", bootmode);
         BootSetMode(bootmode);
     }
 }
@@ -582,12 +580,12 @@ RETURNS
 */
 void handleUsbMessage(Task task, MessageId id, Message message)
 {
-    USB_DEBUG(("USB: "));
+    LOGD("USB: ");
     switch (id)
     {
         case MESSAGE_USB_ATTACHED:
         {
-            USB_DEBUG(("MESSAGE_USB_ATTACHED\n"));
+            LOGD("MESSAGE_USB_ATTACHED\n");
             usbUpdateChargeCurrent();
             audioHandleRouting(audio_source_none);
             usbSetLowPowerMode(theSink.usb->config.attach_timeout);
@@ -605,7 +603,7 @@ void handleUsbMessage(Task task, MessageId id, Message message)
         }
         case MESSAGE_USB_DETACHED:
         {
-            USB_DEBUG(("MESSAGE_USB_DETACHED\n"));
+            LOGD("MESSAGE_USB_DETACHED\n");
             theSink.usb->enumerated = FALSE;
             theSink.usb->suspended  = FALSE;
             theSink.usb->deconfigured = FALSE;
@@ -621,7 +619,7 @@ void handleUsbMessage(Task task, MessageId id, Message message)
         }
         case MESSAGE_USB_ENUMERATED:
         {
-            USB_DEBUG(("MESSAGE_USB_ENUMERATED\n"));
+            LOGD("MESSAGE_USB_ENUMERATED\n");
             if(!theSink.usb->enumerated)
             {
                 theSink.usb->enumerated = TRUE;
@@ -634,13 +632,13 @@ void handleUsbMessage(Task task, MessageId id, Message message)
         case MESSAGE_USB_SUSPENDED:
         {
             MessageUsbSuspended* ind = (MessageUsbSuspended*)message;
-            USB_DEBUG(("MESSAGE_USB_SUSPENDED - %s\n", (ind->has_suspended ? "Suspend" : "Resume")));
+            LOGD("MESSAGE_USB_SUSPENDED - %s\n", (ind->has_suspended ? "Suspend" : "Resume"));
             if(ind->has_suspended != theSink.usb->suspended)
             {
                 theSink.usb->suspended = ind->has_suspended;
                 usbUpdateChargeCurrent();
             }
-            
+
             if (ind->has_suspended)
             {
                 usbSetAudioSuspendState(usb_audio_suspend_remote);
@@ -652,7 +650,7 @@ void handleUsbMessage(Task task, MessageId id, Message message)
         }
         case MESSAGE_USB_DECONFIGURED:
         {
-            USB_DEBUG(("MESSAGE_USB_DECONFIGURED\n"));
+            LOGD("MESSAGE_USB_DECONFIGURED\n");
             if(theSink.usb->enumerated)
             {
                 theSink.usb->enumerated = FALSE;
@@ -664,22 +662,22 @@ void handleUsbMessage(Task task, MessageId id, Message message)
         }
         case MESSAGE_USB_ALT_INTERFACE:
         {
-            uint16 interface_id;
+            u16 interface_id;
             MessageUsbAltInterface* ind = (MessageUsbAltInterface*)message;
 
-            USB_DEBUG(("MESSAGE_USB_ALT_INTERFACE %d %d\n", ind->interface, ind->altsetting));
+            LOGD("MESSAGE_USB_ALT_INTERFACE %d %d\n", ind->interface, ind->altsetting);
             UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_MIC_INTERFACE_ID, &interface_id);
             if(interface_id == ind->interface)
             {
                 theSink.usb->mic_active = (ind->altsetting ? TRUE : FALSE);
-                USB_DEBUG(("USB: Mic ID %d active %d\n", interface_id, theSink.usb->mic_active));
+                LOGD("USB: Mic ID %d active %d\n", interface_id, theSink.usb->mic_active);
             }
             UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_SPEAKER_INTERFACE_ID, &interface_id);
             if(interface_id == ind->interface)
             {
                 theSink.usb->spkr_active = (ind->altsetting ? TRUE : FALSE);
-                USB_DEBUG(("USB: Speaker ID %d active %d\n", interface_id, theSink.usb->spkr_active));
-                
+                LOGD("USB: Speaker ID %d active %d\n", interface_id, theSink.usb->spkr_active);
+
                 if (theSink.usb->spkr_active)
                 {
                     usbSetAudioSuspendState(usb_audio_suspend_none);
@@ -697,7 +695,7 @@ void handleUsbMessage(Task task, MessageId id, Message message)
             }
 #ifdef ENABLE_USB_AUDIO
             /* check for changes in required audio routing */
-            USB_DEBUG(("USB: MESSAGE_USB_ALT_INTERFACE checkAudioRouting\n"));
+            LOGD("USB: MESSAGE_USB_ALT_INTERFACE checkAudioRouting\n");
             MessageCancelFirst(&theSink.task, EventSysCheckAudioRouting);
             MessageSendLater(&theSink.task, EventSysCheckAudioRouting, 0, USB_AUDIO_DISCONNECT_DELAY);
 #endif
@@ -705,7 +703,7 @@ void handleUsbMessage(Task task, MessageId id, Message message)
         }
         case USB_DEVICE_CLASS_MSG_AUDIO_LEVELS_IND:
         {
-            USB_DEBUG(("USB_DEVICE_CLASS_MSG_AUDIO_LEVELS_IND\n"));
+            LOGD("USB_DEVICE_CLASS_MSG_AUDIO_LEVELS_IND\n");
             usbAudioSetVolume();
             break;
         }
@@ -713,7 +711,7 @@ void handleUsbMessage(Task task, MessageId id, Message message)
         /* update of speaker sample rate from usb host */
         case USB_DEVICE_CLASS_MSG_SPEAKER_SAMPLE_RATE_IND:
         {
-            USB_DEBUG(("USB_DEVICE_CLASS_MSG_SPEAKER_SAMPLE_RATE_IND: %ld\n",(uint32)((USB_DEVICE_CLASS_SAMPLE_RATE_T *)message)->sample_rate ));
+            LOGD("USB_DEVICE_CLASS_MSG_SPEAKER_SAMPLE_RATE_IND: %ld\n",(u32)((USB_DEVICE_CLASS_SAMPLE_RATE_T *)message)->sample_rate );
             usbAudioSetSpeakerSampleRate(((USB_DEVICE_CLASS_SAMPLE_RATE_T *)message)->sample_rate);
         }
         break;
@@ -721,14 +719,14 @@ void handleUsbMessage(Task task, MessageId id, Message message)
         /* update of mic sample rate from usb host */
         case USB_DEVICE_CLASS_MSG_MIC_SAMPLE_RATE_IND:
         {
-            USB_DEBUG(("USB_DEVICE_CLASS_MSG_MICR_SAMPLE_RATE_IND: %ld\n",(uint32)((USB_DEVICE_CLASS_SAMPLE_RATE_T *)message)->sample_rate ));
+            LOGD("USB_DEVICE_CLASS_MSG_MICR_SAMPLE_RATE_IND: %ld\n",(u32)((USB_DEVICE_CLASS_SAMPLE_RATE_T *)message)->sample_rate );
             usbAudioSetMicSampleRate(((USB_DEVICE_CLASS_SAMPLE_RATE_T *)message)->sample_rate);
         }
         break;
 
         default:
         {
-            USB_DEBUG(("Unhandled USB message 0x%x\n", id));
+            LOGD("Unhandled USB message 0x%x\n", id);
             break;
         }
     }
@@ -745,7 +743,7 @@ DESCRIPTION
 RETURNS
     void
 */
-static void usbFileInfo(const char* name, uint8 size_name, usb_file_info* info)
+static void usbFileInfo(const char* name, u8 size_name, usb_file_info* info)
 {
     Source source;
     info->index = FileFind(FILE_ROOT, name, size_name);
@@ -786,11 +784,11 @@ static void usbFileName(usb_file_info* root, usb_file_name_info* result)
     }
 #ifdef DEBUG_USB
     {
-    uint8 count;
-    USB_DEBUG(("USB: File Name "));
+    u8 count;
+    LOGD("USB: File Name ");
     for(count = 0; count < result->size; count++)
-        USB_DEBUG(("%c", result->name[count]));
-    USB_DEBUG(("\n"));
+        LOGD("%c", result->name[count]);
+    LOGD("\n");
     }
 #endif
 }
@@ -819,12 +817,12 @@ void usbTimeCriticalInit(void)
     usb_file_info file;
     usb_file_name_info file_name;
 
-    USB_DEBUG(("USB: Time Critical\n"));
+    LOGD("USB: Time Critical\n");
 
     /* maloc the memory for the USB configuration */
-    theSink.usb = mallocPanic( sizeof(usb_info) );    
+    theSink.usb = mallocPanic( sizeof(usb_info) );
     memset(theSink.usb, 0, sizeof (usb_info));
-    USB_DEBUG(("INIT: Malloc size usb: [%d]\n",sizeof(usb_info)));
+    LOGD("INIT: Malloc size usb: [%d]\n",sizeof(usb_info));
 
     /* Default to not configured or suspended */
     theSink.usb->ready = FALSE;
@@ -854,29 +852,29 @@ void usbTimeCriticalInit(void)
 
 #ifdef ENABLE_USB_AUDIO
     plugin = &usb_plugins[theSink.usb->config.plugin_type];
-    USB_DEBUG(("USB: Audio Plugin %d\n", theSink.usb->config.plugin_index));
+    LOGD("USB: Audio Plugin %d\n", theSink.usb->config.plugin_index);
 
-    status = UsbDeviceClassConfigure(USB_DEVICE_CLASS_CONFIG_AUDIO_INTERFACE_DESCRIPTORS, 0, 0, (const uint8*)(plugin->usb_descriptors));
-    USB_DEBUG(("USB: interface descriptors = %x\n",status));
+    status = UsbDeviceClassConfigure(USB_DEVICE_CLASS_CONFIG_AUDIO_INTERFACE_DESCRIPTORS, 0, 0, (const u8*)(plugin->usb_descriptors));
+    LOGD("USB: interface descriptors = %x\n",status);
     /* configure usb audio volume levels/steps */
-    status = UsbDeviceClassConfigure(USB_DEVICE_CLASS_CONFIG_AUDIO_VOLUMES, 0, 0, (const uint8*)(&usb_stereo_audio_volume));
-    USB_DEBUG(("USB: volume descriptors = %x\n",status));
+    status = UsbDeviceClassConfigure(USB_DEVICE_CLASS_CONFIG_AUDIO_VOLUMES, 0, 0, (const u8*)(&usb_stereo_audio_volume));
+    LOGD("USB: volume descriptors = %x\n",status);
 #else
     /* If audio not supported don't enumerate as mic or speaker */
     USB_CLASS_DISABLE(USB_DEVICE_CLASS_AUDIO);
 #endif
 
-    USB_DEBUG(("USB: Endpoint Setup [0x%04X] - ", theSink.usb->config.device_class));
+    LOGD("USB: Endpoint Setup [0x%04X] - ", theSink.usb->config.device_class);
     /* Attempt to enumerate - abort if failed */
     status = UsbDeviceClassEnumerate(&theSink.task, theSink.usb->config.device_class);
 
     if(status != usb_device_class_status_success)
     {
-        USB_DEBUG(("Error %X\n", status));
+        LOGD("Error %X\n", status);
         return;
     }
 
-    USB_DEBUG(("Success\n"));
+    LOGD("Success\n");
     /* Configure mass storage device */
     if(USB_CLASS_ENABLED(USB_DEVICE_CLASS_TYPE_MASS_STORAGE))
     {
@@ -901,7 +899,7 @@ RETURNS
 */
 void usbInit(void)
 {
-    USB_DEBUG(("USB: Init\n"));
+    LOGD("USB: Init\n");
 
     /* Abort if no device classes supported */
     if(!theSink.usb->config.device_class)
@@ -933,7 +931,7 @@ RETURNS
 */
 void usbSetVbusLevel(voltage_reading vbus)
 {
-    USB_DEBUG(("USB: VBUS %dmV [%d]\n", vbus.voltage, vbus.level));
+    LOGD("USB: VBUS %dmV [%d]\n", vbus.voltage, vbus.level);
     theSink.usb->vbus_okay = vbus.level;
 }
 
@@ -950,7 +948,7 @@ RETURNS
 */
 void usbSetVbatDead(bool dead)
 {
-    USB_DEBUG(("USB: VBAT %s\n", dead ? "Dead" : "Okay"));
+    LOGD("USB: VBAT %s\n", dead ? "Dead" : "Okay");
     theSink.usb->dead_battery = dead;
     if(!dead) MessageCancelAll(&theSink.task, EventSysUsbDeadBatteryTimeout);
 }
@@ -972,16 +970,16 @@ sink_charge_current* usbGetChargeCurrent(void)
     if(!USB_CLASS_ENABLED(USB_DEVICE_CLASS_TYPE_BATTERY_CHARGING))
         return NULL;
 
-    USB_DEBUG(("USB: Status "));
+    LOGD("USB: Status ");
 
     /* Set charge current */
     switch(UsbAttachedStatus())
     {
         case HOST_OR_HUB:
-            USB_DEBUG(("Host/Hub "));
+            LOGD("Host/Hub ");
             if(theSink.usb->suspended)
             {
-                USB_DEBUG(("Suspended (Battery %s)\n", usbDeadBatteryProvision() ? "Dead" : "Okay"));
+                LOGD("Suspended (Battery %s)\n", usbDeadBatteryProvision() ? "Dead" : "Okay");
                 if(usbDeadBatteryProvision())
                     return &theSink.usb->config.i_susp_db;
                 else
@@ -989,7 +987,7 @@ sink_charge_current* usbGetChargeCurrent(void)
             }
             else if(powerManagerIsChargerFullCurrent())
             {
-                USB_DEBUG(("%sEnumerated (Chg Full)\n", theSink.usb->enumerated ? "" : "Not "));
+                LOGD("%sEnumerated (Chg Full)\n", theSink.usb->enumerated ? "" : "Not ");
                 if(!theSink.usb->enumerated)
                     return &theSink.usb->config.i_att;
                 else
@@ -997,7 +995,7 @@ sink_charge_current* usbGetChargeCurrent(void)
             }
             else
             {
-                USB_DEBUG(("%sEnumerated (Chg Partial)\n", theSink.usb->enumerated ? "" : "Not "));
+                LOGD("%sEnumerated (Chg Partial)\n", theSink.usb->enumerated ? "" : "Not ");
                 if(!theSink.usb->enumerated)
                     return &theSink.usb->config.i_att_trickle;
                 else
@@ -1005,7 +1003,7 @@ sink_charge_current* usbGetChargeCurrent(void)
             }
 #ifdef HAVE_FULL_USB_CHARGER_DETECTION
         case DEDICATED_CHARGER:
-            USB_DEBUG(("Dedicated Charger Port%s\n", theSink.usb->vbus_okay ? "" : " Limited"));
+            LOGD("Dedicated Charger Port%s\n", theSink.usb->vbus_okay ? "" : " Limited");
             if(theSink.usb->vbus_okay)
                 return &theSink.usb->config.i_dchg;
             else
@@ -1013,7 +1011,7 @@ sink_charge_current* usbGetChargeCurrent(void)
 
         case HOST_OR_HUB_CHARGER:
         case CHARGING_PORT:
-            USB_DEBUG(("Charger Port%s\n", theSink.usb->vbus_okay ? "" : " Limited"));
+            LOGD("Charger Port%s\n", theSink.usb->vbus_okay ? "" : " Limited");
             if(theSink.usb->vbus_okay)
                 return &theSink.usb->config.i_chg;
             else
@@ -1021,7 +1019,7 @@ sink_charge_current* usbGetChargeCurrent(void)
 #endif
         case DETACHED:
         default:
-            USB_DEBUG(("Detached\n"));
+            LOGD("Detached\n");
             if(powerManagerIsChargerConnected())
                 return &theSink.usb->config.i_disc;
             else
@@ -1060,7 +1058,7 @@ RETURNS
 */
 static void usbSendHidEvent(usb_device_class_event event)
 {
-    USB_DEBUG(("USB: HID Event 0x%X\n", event));
+    LOGD("USB: HID Event 0x%X\n", event);
     if(USB_CLASS_ENABLED(USB_DEVICE_CLASS_TYPE_HID_CONSUMER_TRANSPORT_CONTROL))
         UsbDeviceClassSendEvent(event);
 }
@@ -1084,31 +1082,31 @@ bool usbAudioIsAttached(void)
                theSink.usb->mic_active,
                theSink.usb->spkr_active,
                theSink.usb->audio_suspend_state));
-    
+
     /* If USB detached or not ready - no audio */
     if (!usbIsAttached() || !theSink.usb->ready)
     {
         return FALSE;
     }
-    
+
     /* If USB attached and always on - audio */
     if (theSink.usb->config.audio_always_on)
     {
         return TRUE;
     }
-    
+
     /* If mic and speaker both inactive - no audio */
     if (!theSink.usb->mic_active && !theSink.usb->spkr_active)
     {
         return FALSE;
     }
-    
+
     /* USB speaker can be held active even though we have suspended */
     if (theSink.usb->spkr_active && theSink.usb->audio_suspend_state != usb_audio_suspend_none)
     {
         return FALSE;
     }
-    
+
     /* Mic or speaker active - audio */
     return TRUE;
 }
@@ -1124,24 +1122,24 @@ DESCRIPTION
 RETURNS
     Volume to pass to csr_usb_audio_plugin
 */
-static int16 usbGetVolume(AUDIO_MODE_T* mode, volume_direction* dir)
+static i16 usbGetVolume(AUDIO_MODE_T* mode, volume_direction* dir)
 {
-    int16 result;
+    i16 result;
     bool mic_muted;
     bool spk_muted = FALSE;
 
     /* Get vol settings from USB lib */
     usb_device_class_audio_levels levels;
-    UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_LEVELS, (uint16*)&levels);
+    UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_LEVELS, (u16*)&levels);
 
-    USB_DEBUG(("USB: RAW Gain L %X R %X\n", levels.out_l_vol, levels.out_r_vol));
+    LOGD("USB: RAW Gain L %X R %X\n", levels.out_l_vol, levels.out_r_vol);
 
     /* convert to signed 16 */
-    levels.out_l_vol = (int16)(int8)(levels.out_l_vol>>8);
-    levels.out_r_vol = (int16)(int8)(levels.out_r_vol>>8);
+    levels.out_l_vol = (i16)(i8)(levels.out_l_vol>>8);
+    levels.out_r_vol = (i16)(i8)(levels.out_r_vol>>8);
 
-    USB_DEBUG(("USB: Limited Gain L %X R %X\n", levels.out_l_vol, levels.out_r_vol));
-    USB_DEBUG(("USB: Mute M %X S %X\n", levels.in_mute, levels.out_mute));
+    LOGD("USB: Limited Gain L %X R %X\n", levels.out_l_vol, levels.out_r_vol);
+    LOGD("USB: Mute M %X S %X\n", levels.in_mute, levels.out_mute);
 
     if(theSink.usb->config.plugin_type == usb_plugin_stereo)
     {
@@ -1159,8 +1157,8 @@ static int16 usbGetVolume(AUDIO_MODE_T* mode, volume_direction* dir)
             /* set to mute */
             result = VOLUME_A2DP_MIN_LEVEL;
         }
-        
-        USB_DEBUG(("USB: Stereo Gain dB %d\n", result));
+
+        LOGD("USB: Stereo Gain dB %d\n", result);
         displayUpdateVolume((VOLUME_NUM_VOICE_STEPS * result)/sinkVolumeGetGroupConfig(multi_channel_group_main).no_of_steps);
 #ifdef ENABLE_SUBWOOFER
         updateSwatVolume(result);
@@ -1195,7 +1193,7 @@ static int16 usbGetVolume(AUDIO_MODE_T* mode, volume_direction* dir)
         else
             *mode = AUDIO_MODE_CONNECTED;
     }
-    
+
     VolumeUpdateMuteStatusMicrophone(mic_muted);
     VolumeUpdateMuteStatusAllOutputs(spk_muted);
     /* Compare with previously stored volume level and set dir as appropriate.
@@ -1210,7 +1208,7 @@ static int16 usbGetVolume(AUDIO_MODE_T* mode, volume_direction* dir)
         else
             *dir = same_volume;
     }
-    
+
     /* Store usb audio levels for use later */
     theSink.usb->out_l_vol = levels.out_l_vol;
     theSink.usb->out_mute = levels.out_mute;
@@ -1232,9 +1230,9 @@ RETURNS
 bool usbAudioSinkMatch(Sink sink)
 {
     Source usb_source = NULL;
-    UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_SOURCE, (uint16*)&usb_source);
+    UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_SOURCE, (u16*)&usb_source);
 
-    USB_DEBUG(("USB: usbAudioSinkMatch sink %x = %x, enabled = %x\n", (uint16)sink , (uint16)StreamSinkFromSource(usb_source), USB_CLASS_ENABLED(USB_DEVICE_CLASS_AUDIO) ));
+    LOGD("USB: usbAudioSinkMatch sink %x = %x, enabled = %x\n", (u16)sink , (u16)StreamSinkFromSource(usb_source), USB_CLASS_ENABLED(USB_DEVICE_CLASS_AUDIO) );
 
     return (USB_CLASS_ENABLED(USB_DEVICE_CLASS_AUDIO) && sink && (sink == StreamSinkFromSource(usb_source)));
 }
@@ -1250,7 +1248,7 @@ DESCRIPTION
 RETURNS
     TRUE if successful, otherwise FALSE
 */
-static const usb_plugin_info* usbAudioGetPluginInfo(Task* task, usb_plugin_type type, uint8 index)
+static const usb_plugin_info* usbAudioGetPluginInfo(Task* task, usb_plugin_type type, u8 index)
 {
     switch(type)
     {
@@ -1279,7 +1277,7 @@ static const usb_plugin_info* usbAudioGetPluginInfo(Task* task, usb_plugin_type 
 
 #if defined ENABLE_PEER && defined PEER_TWS
 /****************************************************************************
-NAME 
+NAME
  usbCheckDeviceTrimVol
 
 DESCRIPTION
@@ -1288,7 +1286,7 @@ DESCRIPTION
 
 RETURNS
  bool   TRUE if volume adjusted, FALSE if no streams found
-    
+
 */
 bool usbCheckDeviceTrimVol(volume_direction dir, tws_device_type tws_device)
 {
@@ -1296,10 +1294,10 @@ bool usbCheckDeviceTrimVol(volume_direction dir, tws_device_type tws_device)
     {
         return FALSE;
     }
-    
+
     VolumeModifyAndUpdateTWSDeviceTrim(dir, tws_device);
 
-    return TRUE;    
+    return TRUE;
 }
 
 #endif
@@ -1318,20 +1316,20 @@ void usbAudioRoute(void)
 {
     Sink sink;
     Source source;
-    uint16 sampleFreq;
-    UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_SOURCE, (uint16*)(&source));
-    /* Note: UsbDeviceClassGetValue uses uint16 which limits max value of sample frequency to 64k (uint 16 has range 0->65536) */
+    u16 sampleFreq;
+    UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_SOURCE, (u16*)(&source));
+    /* Note: UsbDeviceClassGetValue uses u16 which limits max value of sample frequency to 64k (uint 16 has range 0->65536) */
     UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_SPEAKER_SAMPLE_FREQ, &sampleFreq);
     sink = StreamSinkFromSource(source);
 
-    USB_DEBUG(("USB: Audio - sample rate = %u ",sampleFreq));
+    LOGD("USB: Audio - sample rate = %u ",sampleFreq);
     /* Check Audio configured (sink will be NULL if VM USB not enabled) */
     if(USB_CLASS_ENABLED(USB_DEVICE_CLASS_AUDIO) && sink)
     {
-        USB_DEBUG(("Configured "));
+        LOGD("Configured ");
         if(usbAudioIsAttached())
         {
-            USB_DEBUG(("Attached\n"));
+            LOGD("Attached\n");
             if(theSink.routed_audio != sink)
             {
                 Task plugin;
@@ -1344,14 +1342,14 @@ void usbAudioRoute(void)
 
                 /* update currently routed source */
                 theSink.routed_audio = sink;
-                UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_SINK, (uint16*)(&theSink.hfp_plugin_params.usb_params.usb_sink));
+                UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_SINK, (u16*)(&theSink.hfp_plugin_params.usb_params.usb_sink));
                 /* Make sure we're using correct parameters for USB */
                 theSink.a2dp_link_data->a2dp_audio_connect_params.mode_params = &theSink.a2dp_link_data->a2dp_audio_mode_params;
-                
+
                 /* Allow USB volume changes to generate max and min events */
                 MessageSend ( &theSink.task , EventSysAllowUSBVolEvents , 0 );
 
-                USB_DEBUG(("USB: Connect 0x%X 0x%X", (uint16)sink, (uint16)(theSink.hfp_plugin_params.usb_params.usb_sink)));
+                LOGD("USB: Connect 0x%X 0x%X", (u16)sink, (u16)(theSink.hfp_plugin_params.usb_params.usb_sink));
 
 #ifdef ENABLE_SUBWOOFER
                 /* set the sub woofer link type prior to passing to audio connect */
@@ -1390,7 +1388,7 @@ void usbAudioRoute(void)
                         break;
                     }
 
-                    USB_DEBUG(("USB: AUDIO_ROUTE_INTERNAL_AND_RELAY\n"));
+                    LOGD("USB: AUDIO_ROUTE_INTERNAL_AND_RELAY\n");
                     AudioConnect(plugin,
                                  sink,
                                  AUDIO_SINK_USB,
@@ -1436,13 +1434,13 @@ void usbAudioRoute(void)
                                  powerManagerGetLBIPM(),
                                  &theSink.hfp_plugin_params,
                                  &theSink.task);
-                    
+
                     /* Use volume interface for CVC volume */
-                    AudioSetVolume(sinkVolumeGetCvcVol(theSink.volume_levels->usb_volume.main_volume), 
-                                   TonesGetToneVolume(FALSE), 
+                    AudioSetVolume(sinkVolumeGetCvcVol(theSink.volume_levels->usb_volume.main_volume),
+                                   TonesGetToneVolume(FALSE),
                                    theSink.codec_task);
                 }
-                
+
 
 #ifdef ENABLE_PEER
                 /* Update the mute state. Mutes the audio output if the peer link is changing state */
@@ -1456,19 +1454,19 @@ void usbAudioRoute(void)
             }
         }
     }
-    USB_DEBUG(("\n"));
+    LOGD("\n");
 }
 
 /*************************************************************************
-NAME    
+NAME
     usbAudioSuspend
-    
+
 DESCRIPTION
     Issue HID consumer control command to attempt to pause current USB stream
 
 RETURNS
     None
-    
+
 **************************************************************************/
 static void usbAudioSuspend (void)
 {
@@ -1477,22 +1475,22 @@ static void usbAudioSuspend (void)
     {
         usbSetAudioSuspendState(usb_audio_suspend_local);
         UsbDeviceClassSendEvent(USB_DEVICE_CLASS_EVENT_HID_CONSUMER_TRANSPORT_PAUSE);
-        
+
         /* Ensure audio routing is kicked as we may not always get a notification that streaming has ceased via USB */
         MessageSend(&theSink.task, EventSysCheckAudioRouting, 0);
     }
 }
 
 /*************************************************************************
-NAME    
+NAME
     usbAudioResume
-    
+
 DESCRIPTION
     Issue HID consumer control command to attempt to resume current USB stream
 
 RETURNS
     None
-    
+
 **************************************************************************/
 void usbAudioResume (void)
 {
@@ -1501,7 +1499,7 @@ void usbAudioResume (void)
     {
         usbSetAudioSuspendState(usb_audio_suspend_none);
         UsbDeviceClassSendEvent(USB_DEVICE_CLASS_EVENT_HID_CONSUMER_TRANSPORT_PLAY);
-        
+
         /* Ensure audio routing is kicked as we may not always get a notification that streaming has started via USB */
         MessageSend(&theSink.task, EventSysCheckAudioRouting, 0);
     }
@@ -1521,10 +1519,10 @@ void usbAudioDisconnect(void)
 {
     if(usbAudioSinkMatch(theSink.routed_audio))
     {
-        USB_DEBUG(("USB: Disconnect 0x%X\n", (uint16)theSink.routed_audio));
+        LOGD("USB: Disconnect 0x%X\n", (u16)theSink.routed_audio);
         AudioDisconnect();
         theSink.routed_audio = 0;
-        
+
         /* If speaker is in use then pause */
         if (theSink.usb->config.pause_when_switching_source)
         {
@@ -1536,7 +1534,7 @@ void usbAudioDisconnect(void)
         	 */
         	usbAudioSuspend();
         }
-        
+
 #ifdef ENABLE_PEER
         {
             /*If the USB has disconnected then notify this to the peer device */
@@ -1565,7 +1563,7 @@ static void usbAudioSetVolume(void)
         volume_direction direction;
 
         /* Store old volume to check if we need to change mode */
-        int16 oldVolume = theSink.volume_levels->usb_volume.main_volume;
+        i16 oldVolume = theSink.volume_levels->usb_volume.main_volume;
 
         /* get usb volume in steps */
         theSink.volume_levels->usb_volume.main_volume = usbGetVolume(&mode, &direction);
@@ -1581,7 +1579,7 @@ static void usbAudioSetVolume(void)
                 sinkUsbVolumeEvent(EventSysVolumeMax);
             }
         }
-            
+
         if(theSink.usb->config.plugin_type == usb_plugin_stereo)
         {
             /* Use group volume interface for stereo volume */
@@ -1590,8 +1588,8 @@ static void usbAudioSetVolume(void)
         else
         {
             /* Use volume interface for CVC volume */
-            AudioSetVolume(sinkVolumeGetCvcVol(theSink.volume_levels->usb_volume.main_volume) , 
-                           TonesGetToneVolume(FALSE), 
+            AudioSetVolume(sinkVolumeGetCvcVol(theSink.volume_levels->usb_volume.main_volume) ,
+                           TonesGetToneVolume(FALSE),
                            theSink.codec_task);
         }
     }
@@ -1630,18 +1628,18 @@ Sink usbGetAudioSink(void)
 {
     Source usb_source = NULL;
     Sink sink = NULL;
-    UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_SOURCE, (uint16*)&usb_source);
+    UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_SOURCE, (u16*)&usb_source);
 
     /* if the usb lead is attached and the speaker is active, try to obtain the audio sink */
     if((theSink.usb->config.audio_always_on)||((usbAudioIsAttached())&&(theSink.usb->spkr_active)))
     {
         /* attempt to obtain USB audio sink */
         sink = StreamSinkFromSource(usb_source);
-        USB_DEBUG(("USB: usbGetAudioSink sink %x, enabled = %x\n", (uint16)sink , USB_CLASS_ENABLED(USB_DEVICE_CLASS_AUDIO) ));
+        LOGD("USB: usbGetAudioSink sink %x, enabled = %x\n", (u16)sink , USB_CLASS_ENABLED(USB_DEVICE_CLASS_AUDIO) );
     }
     /* USB not attached */
     else
-        USB_DEBUG(("USB: usbGetAudioSink sink %x, enabled = %x, speaker active = %x\n", (uint16)sink , USB_CLASS_ENABLED(USB_DEVICE_CLASS_AUDIO), theSink.usb->spkr_active ));
+        LOGD("USB: usbGetAudioSink sink %x, enabled = %x, speaker active = %x\n", (u16)sink , USB_CLASS_ENABLED(USB_DEVICE_CLASS_AUDIO), theSink.usb->spkr_active );
 
     return sink;
 }
@@ -1657,7 +1655,7 @@ DESCRIPTION
 RETURNS
     none
 */
-static void usbAudioSetSpeakerSampleRate(uint16 sample_rate)
+static void usbAudioSetSpeakerSampleRate(u16 sample_rate)
 {
     /* determine if the USB audio is currently being streamed by the DSP and the dsp
        is in the running state */
@@ -1665,9 +1663,9 @@ static void usbAudioSetSpeakerSampleRate(uint16 sample_rate)
        (GetAudioPlugin() == (TaskData *)&csr_sbc_decoder_plugin)&&
        (GetCurrentDspStatus() == DSP_RUNNING))
     {
-        uint32 current_sampling_rate = AudioGetA2DPSampleRate();
-        
-        USB_DEBUG(("USB: Set Spk Sample Rate - DSP running - now: %ld new: %ld\n", current_sampling_rate, (uint32)sample_rate));
+        u32 current_sampling_rate = AudioGetA2DPSampleRate();
+
+        LOGD("USB: Set Spk Sample Rate - DSP running - now: %ld new: %ld\n", current_sampling_rate, (u32)sample_rate);
 
         /* dsp is loaded and running the usb decoder, determine if the new sample
            rate is different to that currently being used by the decoder */
@@ -1675,13 +1673,13 @@ static void usbAudioSetSpeakerSampleRate(uint16 sample_rate)
         {
             if(sample_rate != current_sampling_rate)
             {
-                USB_DEBUG(("USB: Set Spk Sample Rate - DSP running - *** needs update *** - AudioDisconnect\n"));
+                LOGD("USB: Set Spk Sample Rate - DSP running - *** needs update *** - AudioDisconnect\n");
 
                 /* the sample rate is different to that currently being used, it is necessary
                    to restart the decoder to use the correct audio sample rate */
                 AudioDisconnect();
 
-                USB_DEBUG(("USB: Set Spk Sample Rate - DSP running - *** needs update *** - Switch To USB\n"));
+                LOGD("USB: Set Spk Sample Rate - DSP running - *** needs update *** - Switch To USB\n");
                 /* audio no longer routed */
                 theSink.rundata->routed_audio_source = audio_source_none;
                 theSink.routed_audio = 0;
@@ -1698,7 +1696,7 @@ static void usbAudioSetSpeakerSampleRate(uint16 sample_rate)
             message->sample_rate = sample_rate;
             MessageCancelAll (&theSink.task, USB_DEVICE_CLASS_MSG_SPEAKER_SAMPLE_RATE_IND);
             MessageSendLater(&theSink.task, USB_DEVICE_CLASS_MSG_SPEAKER_SAMPLE_RATE_IND, message, 100);
-            USB_DEBUG(("USB: Set Spk Sample Rate - DSP Loading - Reschedule\n"));
+            LOGD("USB: Set Spk Sample Rate - DSP Loading - Reschedule\n");
         }
     }
     /* check if dsp is in the process of being loaded but not currently running
@@ -1712,11 +1710,11 @@ static void usbAudioSetSpeakerSampleRate(uint16 sample_rate)
         message->sample_rate = sample_rate;
         MessageCancelAll (&theSink.task, USB_DEVICE_CLASS_MSG_SPEAKER_SAMPLE_RATE_IND);
         MessageSendLater(&theSink.task, USB_DEVICE_CLASS_MSG_SPEAKER_SAMPLE_RATE_IND, message, 100);
-        USB_DEBUG(("USB: Set Spk Sample Rate - DSP Loading - Reschedule\n"));
+        LOGD("USB: Set Spk Sample Rate - DSP Loading - Reschedule\n");
     }
     else
     {
-        USB_DEBUG(("USB: Set Spk Sample Rate - DSP NOT running\n"));
+        LOGD("USB: Set Spk Sample Rate - DSP NOT running\n");
     }
 
 }
@@ -1732,7 +1730,7 @@ DESCRIPTION
 RETURNS
     none
 */
-static void usbAudioSetMicSampleRate(uint16 sample_rate)
+static void usbAudioSetMicSampleRate(u16 sample_rate)
 {
 
 }
@@ -1744,7 +1742,7 @@ bool usbIfCurrentSinkIsUsb(void)
         return TRUE;
         }
     return FALSE;
-    }    
+    }
 
 bool usbIfUsbSinkExists(void)
     {
@@ -1796,23 +1794,23 @@ bool sinkUsbProcessEventUsb(const MessageId EventUsb)
     switch(EventUsb)
     {
         case EventUsrUsbPlayPause:
-           USB_DEBUG(("HS : EventUsrUsbPlayPause")) ;
+           LOGD("HS : EventUsrUsbPlayPause");
            usbPlayPause();
            break;
         case EventUsrUsbStop:
-           USB_DEBUG(("HS : EventUsrUsbStop\n")) ;
+           LOGD("HS : EventUsrUsbStop\n");
            usbStop();
            break;
         case EventUsrUsbFwd:
-           USB_DEBUG(("HS : EventUsrUsbFwd\n")) ;
+           LOGD("HS : EventUsrUsbFwd\n");
            usbFwd();
            break;
         case EventUsrUsbBack:
-           USB_DEBUG(("HS : EventUsrUsbBack\n")) ;
+           LOGD("HS : EventUsrUsbBack\n");
            usbBck();
            break;
         case EventUsrUsbMute:
-           USB_DEBUG(("HS : EventUsrUsbMute")) ;
+           LOGD("HS : EventUsrUsbMute");
            usbMute();
            break;
         case EventUsrUsbLowPowerMode:

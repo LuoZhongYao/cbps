@@ -48,7 +48,7 @@ void ConnectionSetRole(Task task, Sink sink, hci_role role)
 
 
 /*****************************************************************************/
-void ConnectionSetLinkSupervisionTimeout(Sink sink, uint16 timeout)
+void ConnectionSetLinkSupervisionTimeout(Sink sink, u16 timeout)
 {
     MAKE_CL_MESSAGE(CL_INTERNAL_DM_SET_LINK_SUPERVISION_TIMEOUT_REQ);
     message->sink = sink;
@@ -58,7 +58,7 @@ void ConnectionSetLinkSupervisionTimeout(Sink sink, uint16 timeout)
 
 
 /*****************************************************************************/
-void ConnectionSetLinkPolicy(Sink sink, uint16 size_power_table, lp_power_table const *power_table)
+void ConnectionSetLinkPolicy(Sink sink, u16 size_power_table, lp_power_table const *power_table)
 {
     MAKE_CL_MESSAGE(CL_INTERNAL_DM_SET_LINK_POLICY_REQ);
     message->sink = sink;
@@ -69,7 +69,7 @@ void ConnectionSetLinkPolicy(Sink sink, uint16 size_power_table, lp_power_table 
 
 
 /*****************************************************************************/
-void ConnectionSetSniffSubRatePolicy(Sink sink, uint16 max_remote_latency, uint16 min_remote_timeout, uint16 min_local_timeout)
+void ConnectionSetSniffSubRatePolicy(Sink sink, u16 max_remote_latency, u16 min_remote_timeout, u16 min_local_timeout)
 {
 #ifdef CONNECTION_DEBUG_LIB
     if (connectionGetBtVersion() < bluetooth2_1)

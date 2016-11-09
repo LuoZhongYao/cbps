@@ -46,13 +46,13 @@ typedef struct
 
 typedef struct
 {
-	uint16 volume;
+	u16 volume;
     codec_channel channel;
 } CODEC_INTERNAL_INPUT_GAIN_REQ_T;
 
 typedef struct
 {
-	uint16 volume;
+	u16 volume;
     codec_channel channel;
 } CODEC_INTERNAL_OUTPUT_GAIN_REQ_T;
 

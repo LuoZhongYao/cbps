@@ -23,7 +23,7 @@ DESCRIPTION
 	Process the codec capabilities selected.
 	
 */
-void processCodecInfo(bool accept, uint16 size_codec_service_caps, const uint8 *codec_service_caps);
+void processCodecInfo(bool accept, u16 size_codec_service_caps, const u8 *codec_service_caps);
 
 
 /****************************************************************************
@@ -34,7 +34,7 @@ DESCRIPTION
 	Select the correct capabilities depending on which codec is selected.
 		
 */
-bool a2dpSelectOptimalCodecSettings(remote_device *device, uint8 *remote_codec);
+bool a2dpSelectOptimalCodecSettings(remote_device *device, u8 *remote_codec);
 
 
 /****************************************************************************

@@ -53,7 +53,7 @@ bool obexConnectReq( Obex session, bool flush )
  *  session - OBEX session
  *  opcode - PUT or PUT_FINAL 
  **************************************************************************/
-void obexPutReq( Obex session, uint8 opcode )
+void obexPutReq( Obex session, u8 opcode )
 {
     /* Put is allowed if the session is free or already in a multi-put */
     if( !(IsObexConnected( session ) ||  IsObexInPut( session )))
@@ -102,7 +102,7 @@ void obexPutReq( Obex session, uint8 opcode )
  *  session - OBEX session
  *  opcode - GET or GET_FINAL 
  **************************************************************************/
-void obexGetReq( Obex session, uint8 opcode )
+void obexGetReq( Obex session, u8 opcode )
 {
     /* Get if accept if the session is free or in a multi-get state */
     if( !(IsObexConnected( session ) ||  IsObexInGet( session )))
@@ -183,9 +183,9 @@ void obexDisconnectReq( Obex session )
  *  session - OBEX session
  *  flags   - Setpath flags
  **************************************************************************/
-void obexSetPathReq( Obex session, uint8 flag )
+void obexSetPathReq( Obex session, u8 flag )
 {
-    uint8* pkt = SinkMap( session->sink );
+    u8* pkt = SinkMap( session->sink );
 
    /* Check the current state */
     if( !(IsObexConnected( session )))
@@ -267,11 +267,11 @@ void obexDeleteReq( Obex session )
  * RETURNS
  *  Length of unprocessed packet. 
  ***************************************************************************/
-uint16 obexHandleConnectResponse( Obex session, Source source, uint16 pktLen )
+u16 obexHandleConnectResponse( Obex session, Source source, u16 pktLen )
 {
-    const uint8* pkt = SourceMap( source );
-    uint16 maxPktLen;
-    uint8 response = pkt[0];
+    const u8* pkt = SourceMap( source );
+    u16 maxPktLen;
+    u8 response = pkt[0];
 
     /* Validate the PktLen */
     if( pktLen < OBEX_PKT_CONNECT_HDR_SIZE )
@@ -348,11 +348,11 @@ uint16 obexHandleConnectResponse( Obex session, Source source, uint16 pktLen )
  * RETURNS
  *  Length of unprocessed packet. 
  ***************************************************************************/
-uint16 obexHandleGetPutResponse( Obex session, Source source, uint16 pktLen )
+u16 obexHandleGetPutResponse( Obex session, Source source, u16 pktLen )
 {
-    const uint8* pkt = SourceMap( source );
-    uint16 hdrLen = pktLen;
-    uint8 status = pkt[0];
+    const u8* pkt = SourceMap( source );
+    u16 hdrLen = pktLen;
+    u8 status = pkt[0];
     ObexMessageId id; 
 
     /* Validation of Connection ID is not required. But just extract
@@ -414,10 +414,10 @@ void obexHandleAbortResponse( Obex session, ObexStatus status )
  * RETURNS
  *  Length of unprocessed packet
  ***************************************************************************/
-uint16 obexHandleResponse( Obex session, Source source, uint16 pktLen )
+u16 obexHandleResponse( Obex session, Source source, u16 pktLen )
 {
-    const uint8* pkt = SourceMap( source );
-    uint16  rspLen = 0;
+    const u8* pkt = SourceMap( source );
+    u16  rspLen = 0;
     ObexStatus status = pkt[0];
 
     switch( session->state )

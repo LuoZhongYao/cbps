@@ -26,8 +26,8 @@
 */
 typedef struct
 {
-    uint16 scan_interval_window_handle;
-    uint16 scan_refresh_handle;
+    u16 scan_interval_window_handle;
+    u16 scan_refresh_handle;
 } gatt_scan_params_device_data_t;
 
 /* This structure is made public to application as application is responsible for managing resources 
@@ -39,10 +39,10 @@ typedef struct _gatt_scan_params_client_t
 {
     TaskData lib_task;                  /*! Lib Task*/
     Task app_task;                      /*!Application Registered Task */
-    uint16 scan_interval_window_handle; /*! Discovered Scan Interval window handle */
-    uint16 scan_refresh_handle;         /*! Discovered Scan refresh handle */
-    uint16 scan_interval;               /* Scan Interval value */
-    uint16 scan_window;                 /* Scan window value */
+    u16 scan_interval_window_handle; /*! Discovered Scan Interval window handle */
+    u16 scan_refresh_handle;         /*! Discovered Scan refresh handle */
+    u16 scan_interval;               /* Scan Interval value */
+    u16 scan_window;                 /* Scan window value */
 }_gatt_scan_params_client_t;
 
 /*! @brief GATT SCAN PARAMS Client [GSPC]Library Instance.
@@ -74,11 +74,11 @@ typedef enum
 */
 typedef struct
 {
-     uint16 cid;                /*!Connection ID of the GATT connection on which the server side Scan Parameters service need to be accessed*/
-     uint16 start_handle;       /*! The first handle of Scan Parameter service need to be accessed*/
-     uint16 end_handle;         /*!The last handle of Scan Parameter service need to be accessed */
-     uint16 scan_interval;      /*! The application supplied scan interval to be sent to remote scan server */
-     uint16 scan_window;        /*! The application supplied scan window to be sent to remote scan server */
+     u16 cid;                /*!Connection ID of the GATT connection on which the server side Scan Parameters service need to be accessed*/
+     u16 start_handle;       /*! The first handle of Scan Parameter service need to be accessed*/
+     u16 end_handle;         /*!The last handle of Scan Parameter service need to be accessed */
+     u16 scan_interval;      /*! The application supplied scan interval to be sent to remote scan server */
+     u16 scan_window;        /*! The application supplied scan window to be sent to remote scan server */
 } GATT_SCAN_PARAMS_CLIENT_INIT_PARAMS_T;
 
 /*!
@@ -108,8 +108,8 @@ bool GattScanParamsClientInit(Task appTask ,
 typedef struct PACK_STRUCT __GATT_SCAN_PARAMS_CLIENT_INIT_CFM
 {
     const GSPC_T *scan_params_client;            /*! Reference structure for the instance */
-    uint16 scan_interval_window_handle;          /*! Scan interval window handle */
-    uint16 scan_refresh_handle;                  /*! Scan refresh handle */
+    u16 scan_interval_window_handle;          /*! Scan interval window handle */
+    u16 scan_refresh_handle;                  /*! Scan refresh handle */
     gatt_scan_params_client_status status;       /*! status as per gatt_scan_params_client_status */
 } GATT_SCAN_PARAMS_CLIENT_INIT_CFM_T;
 
@@ -128,7 +128,7 @@ typedef struct PACK_STRUCT __GATT_SCAN_PARAMS_CLIENT_INIT_CFM
 
 */
 bool GattScanParamsSetIntervalWindow(GSPC_T *scan_params_client,
-                                        uint16 scan_interval, uint16 scan_window);
+                                        u16 scan_interval, u16 scan_window);
 
 /*!
     @brief When a GATT connection is removed, the application must remove the client service instance 

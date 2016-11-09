@@ -41,7 +41,7 @@ typedef enum
     sdtURL                    
 } ServiceDataType;
 
-typedef uint16 ServiceAttributeId;    /*!< Service attribute identified type. */
+typedef u16 ServiceAttributeId;    /*!< Service attribute identified type. */
 
 /*! 
     @brief Universal attribute definitions.

@@ -11,12 +11,12 @@
 /*! @file bdaddr_.h @brief bdaddr structure*/
 /* Yet another variant of Bluetooth address to avoid pulling in bluetooth.h */
 /*! Bluetooth address structure. */
-typedef struct { uint32 lap; uint8 uap; uint16 nap; } bdaddr;
+typedef struct { u32 lap; u8 uap; u16 nap; } bdaddr;
 /*! Typed Bluetooth address structure.*/
-typedef struct { uint8   type; bdaddr  addr; } typed_bdaddr;
-#define TYPED_BDADDR_PUBLIC    ((uint8)0x00)
-#define TYPED_BDADDR_RANDOM    ((uint8)0x01)
-#define TYPED_BDADDR_INVALID   ((uint8)0xFF)
+typedef struct { u8   type; bdaddr  addr; } typed_bdaddr;
+#define TYPED_BDADDR_PUBLIC    ((u8)0x00)
+#define TYPED_BDADDR_RANDOM    ((u8)0x01)
+#define TYPED_BDADDR_INVALID   ((u8)0xFF)
 /*! ACL type logical transport. */
 typedef enum {TRANSPORT_BREDR_ACL, TRANSPORT_BLE_ACL, TRANSPORT_NONE = 0xFF} TRANSPORT_T;
 /*! Typed Bluetooth address structure with Transport */

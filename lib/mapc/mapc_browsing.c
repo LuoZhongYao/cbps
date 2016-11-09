@@ -25,8 +25,8 @@ DESCRIPTION
  **************************************************************************/
 void MapcMasSetFolderRequest( Mas masSession, 
                               bool  back,
-                              const uint8* name, 
-                              uint16 len )
+                              const u8* name, 
+                              u16 len )
 {
     MAPC_ASSERT( masSession );
     if( !name ) len = 0;
@@ -45,8 +45,8 @@ void MapcMasSetFolderRequest( Mas masSession,
  *  Refer mapc.h for details 
  *************************************************************************/
 void MapcMasGetFolderListingRequest( Mas masSession, 
-                                     uint16 maxListCount, 
-                                     uint16 listStartOffset)
+                                     u16 maxListCount, 
+                                     u16 listStartOffset)
 {
 
     MAPC_ASSERT( masSession );
@@ -67,10 +67,10 @@ void MapcMasGetFolderListingRequest( Mas masSession,
  *  Refer mapc.h for details 
  *************************************************************************/
 void MapcMasGetMessagesListingRequest( Mas masSession, 
-                                       const uint8* name,
-                                       uint16 nameLen,
-                                       uint16 maxListCount, 
-                                       uint16 listStartOffset,
+                                       const u8* name,
+                                       u16 nameLen,
+                                       u16 maxListCount, 
+                                       u16 listStartOffset,
                                        MapcMessageFilter filter)
 {
     MAPC_ASSERT( masSession );
@@ -95,8 +95,8 @@ void MapcMasGetMessagesListingRequest( Mas masSession,
  *  Refer mapc.h for details 
  *************************************************************************/
 void MapcMasPutMessageRequest( Mas masSession, 
-                               const uint8* name,
-                               uint16 nameLen,
+                               const u8* name,
+                               u16 nameLen,
                                bool native,
                                bool moreData,
                                Source message )
@@ -145,7 +145,7 @@ void MapcMasPutContinue( Mas    masSession,
  *  Refer mapc.h for details 
  *************************************************************************/
 void MapcMasGetMessageRequest( Mas masSession, 
-                               const uint8* handle,
+                               const u8* handle,
                                bool native )
 {
     MAPC_ASSERT( masSession );
@@ -217,10 +217,10 @@ void MapcMasUpdateInboxRequest( Mas masSession )
  *  Refer mapc.h for details 
  *************************************************************************/
 void  MapcMasSetMessageStatusRequest( Mas masSession,
-                                      const uint8* handle,
+                                      const u8* handle,
                                       MapcMessageStatus status )
 {
-    uint8 indicator = 0, value = 0;
+    u8 indicator = 0, value = 0;
 
     MAPC_ASSERT( masSession );
 

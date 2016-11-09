@@ -119,7 +119,7 @@ void connectionHandleInternalBleDmSecurityReq(
 
     BdaddrConvertTypedVmToBluestack(&prim->addrt, &req->taddr);
 
-    prim->context = (uint16)req->theAppTask;
+    prim->context = req->theAppTask;
 
     switch(req->security)
     {
@@ -183,7 +183,7 @@ void connectionHandleDmSmSecurityCfm(DM_SM_SECURITY_CFM_T *cfm)
 
         default:
             message->status = ble_security_fail;
-            CL_DEBUG(("ble_security_status 0x%x \n", (uint16)cfm->status));
+            CL_DEBUG(("ble_security_status 0x%x \n", (u16)cfm->status));
             break;
     }
     

@@ -16,7 +16,7 @@ DESCRIPTION
 #include "mapc_extern.h"
 
 
-const uint8 event_report[] = "x-bt/MAP-event-report";
+const u8 event_report[] = "x-bt/MAP-event-report";
 
 
 /**************************************************************************
@@ -30,17 +30,17 @@ void mapcMnsHandlePutInd( Mapc mnsTask, OBEX_PUT_IND_T* putInd )
 {
     ObexResponse response= obex_srv_unavailable;
     Source src = 0;
-    uint16 srcLen = putInd->sourceLen;
+    u16 srcLen = putInd->sourceLen;
 
 
     if( IsMapcConnected( mnsTask ) )
     {
-        uint16 len; 
+        u16 len; 
         
         if( srcLen ) src = putInd->source;
         if( IsMapcFuncFree( mnsTask ) )
         {
-            const uint8* type;
+            const u8* type;
 
             /* Get the type header to get the Message Type */
             type = ObexObjMapHdrValue( obex_type_hdr, srcLen, src, &len );
@@ -48,7 +48,7 @@ void mapcMnsHandlePutInd( Mapc mnsTask, OBEX_PUT_IND_T* putInd )
             if( ( len == sizeof(event_report) ) &&
                 ( memcmp( type, event_report, len ) ==  0 ))
             {
-                const uint8 *appParam;
+                const u8 *appParam;
  
                 /* Extract the MasInstace ID */
                 appParam = ObexObjMapHdrValue( obex_app_params, srcLen,

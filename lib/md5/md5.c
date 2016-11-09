@@ -34,38 +34,38 @@ documentation and/or software.
 
 #define min(a,b) ((a)<(b)?(a):(b))
 
-/* Unpack an array of uint32's into a little-endian array of uint8's. */
+/* Unpack an array of u32's into a little-endian array of u8's. */
 
-static void encode(uint8 *output, const uint32 *input, uint16 len)
+static void encode(u8 *output, const u32 *input, u16 len)
 {
-    uint16 j;
-    uint32 t = 0;
+    u16 j;
+    u32 t = 0;
 
     for (j = 0; j < len; ++j)
     {            
         if((j & 3) == 0) t = *input++;
-        output[j] = (uint8) (t & 0xFF);        
+        output[j] = (u8) (t & 0xFF);        
         t >>= 8;
     }
 }
 
 /* 
-   Or an array of uint8's into the specified offset of little-endian uint32's
-   Assumes that the uint32 array has previously been zeroed
+   Or an array of u8's into the specified offset of little-endian u32's
+   Assumes that the u32 array has previously been zeroed
 */
 
-static void fill(uint32 word[16], uint16 index, const uint8 *byte, uint16 bytes)
+static void fill(u32 word[16], u16 index, const u8 *byte, u16 bytes)
 {
-    uint16 i;
+    u16 i;
     for(i = 0; i < bytes; ++i, ++index)
-        word[index >> 2] |= ((uint32)(byte[i] & 0xFF)) << (8 * (index & 3));
+        word[index >> 2] |= ((u32)(byte[i] & 0xFF)) << (8 * (index & 3));
 }
 
 /* Basic MD5 transform of a single 512-bit block */
 
 static void transform(MD5_CTX *context)
 {
-    const static uint32 k[64] =
+    const static u32 k[64] =
         {
             0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
             0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
@@ -84,24 +84,24 @@ static void transform(MD5_CTX *context)
             0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
             0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
         };
-    const static uint8 r[4][4] =
+    const static u8 r[4][4] =
         {
             {  7, 12, 17, 22 },
             {  5,  9, 14, 20 },
             {  4, 11, 16, 23 },
             {  6, 10, 15, 21 }
         };
-    uint16 i;
-    uint32 a = context->state[0];
-    uint32 b = context->state[1];
-    uint32 c = context->state[2];
-    uint32 d = context->state[3];
+    u16 i;
+    u32 a = context->state[0];
+    u32 b = context->state[1];
+    u32 c = context->state[2];
+    u32 d = context->state[3];
   
     for(i = 0; i < 64; ++i)
     {
-        uint32 f;
-        uint16 g;
-        uint16 shift = r[i / 16][i & 3];
+        u32 f;
+        u16 g;
+        u16 shift = r[i / 16][i & 3];
         if(i < 16)
         {
             g = i;      
@@ -145,7 +145,7 @@ static void transform(MD5_CTX *context)
 
 void MD5Init(MD5_CTX *context)
 {
-    const static uint32 seed[4] = { 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476 };
+    const static u32 seed[4] = { 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476 };
     memset(context, 0, sizeof(*context));
     memmove(context->state, seed, sizeof(seed));
 }
@@ -157,11 +157,11 @@ void MD5Init(MD5_CTX *context)
    message block, and updating the context.
 */
 
-void MD5Update(MD5_CTX *context, const uint8 *input, uint16 len)
+void MD5Update(MD5_CTX *context, const u8 *input, u16 len)
 {
     /* Compute number of bytes mod 64 */
-    uint16 i, n;
-    uint16 index = context->bytes & 0x3F;
+    u16 i, n;
+    u16 index = context->bytes & 0x3F;
 
     context->bytes += len;
     for(i = 0; i < len; i += n)
@@ -184,10 +184,10 @@ void MD5Update(MD5_CTX *context, const uint8 *input, uint16 len)
    Ends an MD5 message-digest operation, extracting the digest.
 */
 
-void MD5Final(uint8 digest[16], MD5_CTX *context)
+void MD5Final(u8 digest[16], MD5_CTX *context)
 {
-    const uint8 pad = 0x80;
-    uint16 index = (uint16)(context->bytes & 0x3f);
+    const u8 pad = 0x80;
+    u16 index = (u16)(context->bytes & 0x3f);
 
     fill(context->buffer, index++, &pad, 1);
     if(index > 56) transform(context);

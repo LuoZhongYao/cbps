@@ -204,7 +204,7 @@ typedef struct
     /*! The profiles supported.                                         */
     hfp_profile               supported_profile;
     /*! See supported features flags.                                   */
-    uint16                    supported_features;
+    u16                    supported_features;
     /*! User configurable information regarding the HF's codecs.        */
     hfp_wbs_codec_mask        supported_wbs_codecs;
     /*! Optional indicators the HF may not wish to receive              */
@@ -230,9 +230,9 @@ typedef struct
 */
 typedef struct
 {
-   uint32            bandwidth;
-   uint16            max_latency;
-   uint16            voice_settings;
+   u32            bandwidth;
+   u16            max_latency;
+   u16            voice_settings;
    sync_retx_effort  retx_effort;
 } hfp_audio_params;
 
@@ -790,9 +790,9 @@ typedef struct
         for the SCO/eSCO data, otherwise it will be set to zero. */
     Sink                        audio_sink;
     /*! Receive bandwith in bytes per second. */
-    uint32                      rx_bandwidth;
+    u32                      rx_bandwidth;
     /*!< Transmit bandwith in bytes per second. */
-    uint32                      tx_bandwidth;
+    u32                      tx_bandwidth;
     /*! The WBS codec negotiated (CVSD if WBS not used) */
     hfp_wbs_codec_mask     codec;
 } HFP_AUDIO_CONNECT_CFM_T;
@@ -823,7 +823,7 @@ typedef struct
     /*! The priority of the AG. */
     hfp_link_priority   priority;
     /*! The new value of the service indicator.*/
-    uint16    service;
+    u16    service;
 } HFP_SERVICE_IND_T;
 
 
@@ -849,7 +849,7 @@ typedef struct
     /*! The priority of the AG. */
     hfp_link_priority   priority;
     /*!< The new value of the signal indicator.*/
-    uint16   signal;    
+    u16   signal;    
 } HFP_SIGNAL_IND_T;
 
 
@@ -862,7 +862,7 @@ typedef struct
     /*! The priority of the AG. */
     hfp_link_priority   priority;
     /*!< The new value of the roam indicator.*/
-    uint16   roam;    
+    u16   roam;    
 } HFP_ROAM_IND_T;
 
 
@@ -875,7 +875,7 @@ typedef struct
     /*! The priority of the AG. */
     hfp_link_priority   priority;
     /*!< The new value of the battchg indicator.*/
-    uint16   battchg;    
+    u16   battchg;    
 } HFP_BATTCHG_IND_T;
 
 
@@ -906,19 +906,19 @@ typedef struct
     /*! Type of number. */
     hfp_number_type     number_type;
     /*! The offset of the caller number from caller_info (in bytes). */
-    uint16              offset_number;
+    u16              offset_number;
     /*! The size of the caller number (in bytes).*/
-    uint16              size_number;
+    u16              size_number;
     /*! The offset of the caller name from caller_info (in bytes). */
-    uint16              offset_name;
+    u16              offset_name;
     /*! The size of the caller name (in bytes).*/
-    uint16              size_name;
+    u16              size_name;
     /*! Pointer to the number and name of the incoming call. The client
       should not attempt to free this pointer, the memory will be freed when
       the message is destroyed. If the client needs access to this data after
       the message has been destroyed it is the client's responsibility to copy
       it. */
-    uint8               caller_info[1];
+    u8               caller_info[1];
 } HFP_CALLER_ID_IND_T;
 
 
@@ -933,19 +933,19 @@ typedef struct
     /*! Type of number. */
     hfp_number_type     number_type;
     /*! The offset of the caller number from caller_info (in bytes). */
-    uint16              offset_number;
+    u16              offset_number;
     /*! The size of the caller number (in bytes).*/
-    uint16              size_number;
+    u16              size_number;
     /*! The offset of the caller name from caller_info (in bytes). */
-    uint16              offset_name;
+    u16              offset_name;
     /*! The size of the caller name (in bytes).*/
-    uint16              size_name;
+    u16              size_name;
     /*! Pointer to the phone number and name of the waiting call. The
       client should not attempt to free this pointer, the memory will be freed
       when the message is destroyed. If the client needs access to this data
       after the message has been destroyed it is the client's responsibility to
       copy it.*/
-    uint8               caller_info[1];
+    u8               caller_info[1];
 } HFP_CALL_WAITING_IND_T;
 
 
@@ -1023,7 +1023,7 @@ typedef struct
     hfp_link_priority priority;
     /*! The current status of the AG's voice recognition function. Enabled
       (TRUE) or disabled (FALSE).*/
-    uint16    enable;
+    u16    enable;
 } HFP_VOICE_RECOGNITION_IND_T;
 
 
@@ -1036,7 +1036,7 @@ typedef struct
     /*! The priority of the link. */
     hfp_link_priority priority;
     /*! The value from the AT indication sent by the AG.*/
-    uint16    volume_gain;
+    u16    volume_gain;
 } HFP_VOLUME_SYNC_SPEAKER_GAIN_IND_T;
 
 
@@ -1049,7 +1049,7 @@ typedef struct
     /*! The priority of the link. */
     hfp_link_priority priority;
     /*! The value from the AT indication sent by the AG.*/
-    uint16    mic_gain;
+    u16    mic_gain;
 } HFP_VOLUME_SYNC_MICROPHONE_GAIN_IND_T;
 
 
@@ -1062,12 +1062,12 @@ typedef struct
     /*! The priority of the link. */
     hfp_link_priority   priority;
     /*! The number of bytes pointed to by the number pointer.*/
-    uint16            size_phone_number;
+    u16            size_phone_number;
     /*! Pointer to the phone number. The client should not attempt to free this
       pointer, the memory will be freed when the message is destroyed. If the
       client needs access to this data after the message has been destroyed it
       is the client's responsibility to copy it.*/
-    uint8            phone_number[1];
+    u8            phone_number[1];
 } HFP_VOICE_TAG_NUMBER_IND_T;
 
 
@@ -1086,12 +1086,12 @@ typedef struct
     /*! The priority of the link. */
     hfp_link_priority   priority;
     /*! The number of bytes pointed to by data.*/
-    uint16    size_data;
+    u16    size_data;
     /*! The data that could not be parsed. The client should not attempt to
       free this pointer, the memory will be freed when the message is
       destroyed. If the client needs access to this data after the message has
       been destroyed it is the client's responsibility to copy it. */
-    uint8    data[1];
+    u8    data[1];
 } HFP_UNRECOGNISED_AT_CMD_IND_T;
 
 
@@ -1112,13 +1112,13 @@ typedef struct
     hfp_link_priority   priority;
     /*! The index of the indicator in the configuration string the application
       passed to the Hfp library on a connect request response.*/
-    uint16    indicator_register_index;
+    u16    indicator_register_index;
     /*! The index of the indicator in the CIND string returned by the AG.*/
-    uint16    indicator_index;
+    u16    indicator_index;
     /*! Minimum value allowed for this indicitor.*/
-    uint16    min_range;
+    u16    min_range;
     /*! Maximum value allowed for this indicitor.*/
-    uint16    max_range;
+    u16    max_range;
 } HFP_EXTRA_INDICATOR_INDEX_IND_T;
 
 
@@ -1140,9 +1140,9 @@ typedef struct
     hfp_link_priority   priority;
     /*! The index of the indicator as initially reported in the CIND string
       (i.e. indicator_index in the HFP_EXTRA_INDICATOR_INDEX_IND message).*/
-    uint16    index;
+    u16    index;
     /*! The new value for this indicator. */
-    uint16    value;
+    u16    value;
 } HFP_EXTRA_INDICATOR_UPDATE_IND_T;
 
 
@@ -1159,9 +1159,9 @@ typedef struct
     /*! Type of number. */
     hfp_number_type         number_type;
     /*! The number of bytes in the array containing the subscriber number.*/
-    uint16                  size_number;
+    u16                  size_number;
     /*! Array containing the subscriber number.*/
-    uint8                   number[1];
+    u8                   number[1];
 } HFP_SUBSCRIBER_NUMBER_IND_T;
 
 
@@ -1174,7 +1174,7 @@ typedef struct
     /*! The priority of the link. */
     hfp_link_priority       priority;
     /*! Index number of call e.g. for referencing with AT+CHLD commands.*/
-    uint16                  call_idx;
+    u16                  call_idx;
     /*! Indicates if the call is AG originated or not.*/
     hfp_call_direction      direction;
     /*! State of the call.*/
@@ -1186,9 +1186,9 @@ typedef struct
     /*! Type of number. */
     hfp_number_type         number_type;
     /*! Length of array, in bytes, containing the phone number.*/
-    uint16                  size_number;
+    u16                  size_number;
     /*! Array containing the phone number. */
-    uint8                   number[1];
+    u8                   number[1];
 } HFP_CURRENT_CALLS_IND_T;
 
 
@@ -1201,11 +1201,11 @@ typedef struct
     /*! The priority of the link. */
     hfp_link_priority priority;
     /*! Network operator selection mode.*/
-    uint8   mode;
+    u8   mode;
     /*! Length of operator_name, in bytes.*/
-    uint16  size_operator_name;
+    u16  size_operator_name;
     /*! Operator name string.*/
-    uint8   operator_name[1];
+    u8   operator_name[1];
 } HFP_NETWORK_OPERATOR_IND_T;
 
 
@@ -1219,13 +1219,13 @@ typedef struct
     /*! The priority of the link. */
     hfp_link_priority priority;
     /*! The number of bytes in the text string. */
-    uint16  size_text;
+    u16  size_text;
     /*! The text that needs to be presented to the user. The client
       should not attempt to free this pointer, the memory will be freed when
       the message is destroyed. If the client needs access to this data after
       the message has been destroyed it is the client's responsibility to copy
       it. */
-    uint8   text[1];
+    u8   text[1];
 } HFP_CSR_FEATURES_TEXT_IND_T;
 
 
@@ -1237,20 +1237,20 @@ typedef struct
     /*! The priority of the link. */
     hfp_link_priority priority;
     /*! SMS Index value. */
-    uint16 index;
+    u16 index;
     /*! Offset of sender number (in bytes) from sender_info.*/
-    uint16 offset_number;
+    u16 offset_number;
     /*! Size of sender number (in bytes) */
-    uint16 size_number;
+    u16 size_number;
     /*! Offset of sender name (in bytes) from sender_info.*/
-    uint16 offset_name;
+    u16 offset_name;
     /*! Size of sender name (in bytes) */
-    uint16 size_name;
+    u16 size_name;
     /*! Number and Name of the sender of the SMS message. The client should not 
         attempt to free this pointer, the memory will be freed when the message 
         is destroyed. If the client needs access to this data after the message 
         has been destroyed it is the client's responsibility to copy it. */
-    uint8 sender_info[1];
+    u8 sender_info[1];
 } HFP_CSR_FEATURES_NEW_SMS_IND_T;
 
 
@@ -1266,12 +1266,12 @@ typedef struct
     /*! Command status. */
     hfp_lib_status status;
     /*! The number of bytes in the text string. */
-    uint16  size_sms;
+    u16  size_sms;
     /*! Body of the SMS message. The client should not attempt to free this
         pointer, the memory will be freed when the message is destroyed. If
         the client needs access to this data after the message has been 
         destroyed it is the client's responsibility to copy it. */
-    uint8   sms[1];
+    u8   sms[1];
 } HFP_CSR_FEATURES_GET_SMS_CFM_T;
 
 
@@ -1720,7 +1720,7 @@ void HfpCurrentCallsRequest(hfp_link_priority priority);
     The application will receive HFP_CALL_HOLD_ACTION_CFM indicating the success
     or failure of the request
 */
-void HfpCallHoldActionRequest(hfp_link_priority priority, hfp_chld_action action, uint16 index);
+void HfpCallHoldActionRequest(hfp_link_priority priority, hfp_chld_action action, u16 index);
 
 
 /*!
@@ -1764,14 +1764,14 @@ void HfpWbsSetSupportedCodecs(hfp_wbs_codec_mask codec_mask, bool send_notificat
     hfp_primary_link and hfp_secondary_link are valid settings for this
     function
     
-    @param volume A pointer to a uint8 containing the volume to send. The
+    @param volume A pointer to a u8 containing the volume to send. The
     volume is limited to 0-15, values above 15 will result in 15 being sent
     to the AG. 
     
     This will update volume to the actual value sent and return TRUE if 
     successful, otherwise volume will be unchanged and it will return FALSE
 */
-bool HfpVolumeSyncSpeakerGainRequest(hfp_link_priority priority, uint8* volume);
+bool HfpVolumeSyncSpeakerGainRequest(hfp_link_priority priority, u8* volume);
 
 
 /*!
@@ -1781,14 +1781,14 @@ bool HfpVolumeSyncSpeakerGainRequest(hfp_link_priority priority, uint8* volume);
     hfp_primary_link and hfp_secondary_link are valid settings for this
     function
     
-    @param volume A pointer to a uint8 containing the volume to send. The
+    @param volume A pointer to a u8 containing the volume to send. The
     volume is limited to 0-15, values above 15 will result in 15 being sent
     to the AG. 
     
     This will update volume to the actual value sent and return TRUE if 
     successful, otherwise volume will be unchanged and it will return FALSE
 */
-bool HfpVolumeSyncMicrophoneGainRequest(hfp_link_priority priority, uint8* volume);
+bool HfpVolumeSyncMicrophoneGainRequest(hfp_link_priority priority, u8* volume);
 
 
 /*!
@@ -1826,7 +1826,7 @@ void HfpDialLastNumberRequest(hfp_link_priority priority);
     @param number An ASCII string containing the character representation of
     the number to call. This can include valid dial characters such as '+'.
 */
-void HfpDialNumberRequest(hfp_link_priority priority, uint16 length, const uint8 *number);
+void HfpDialNumberRequest(hfp_link_priority priority, u16 length, const u8 *number);
 
 
 /*!
@@ -1842,7 +1842,7 @@ void HfpDialNumberRequest(hfp_link_priority priority, uint16 length, const uint8
     the memory location. Interpretation of the memory location is AG implementation
     specific.
 */
-void HfpDialMemoryRequest(hfp_link_priority priority, uint16 length, const uint8 *memory_location);
+void HfpDialMemoryRequest(hfp_link_priority priority, u16 length, const u8 *memory_location);
 
 
 /*!
@@ -1892,7 +1892,7 @@ void HfpSubscriberNumbersRequest(hfp_link_priority priority);
     @param dtmf The code to send, this must be a valid DTMF code ('0'-'9', 
     'A'-'D', '#' or '*')
 */
-void HfpDtmfRequest(hfp_link_priority priority, uint8 dtmf);
+void HfpDtmfRequest(hfp_link_priority priority, u8 dtmf);
 
 
 /*!
@@ -1928,7 +1928,7 @@ void HfpAtCmdRequest(hfp_link_priority priority, const char* cmd);
     
     @param batt_level The battery level (0-9)
 */
-void HfpCsrFeaturesBatteryLevelRequest(hfp_link_priority priority, uint16 batt_level);
+void HfpCsrFeaturesBatteryLevelRequest(hfp_link_priority priority, u16 batt_level);
 
 
 /*!
@@ -1954,7 +1954,7 @@ void HfpCsrFeaturesPowerSourceRequest(hfp_link_priority priority, hfp_csr_power_
     
     @param index The SMS index (indicated in HFP_CSR_FEATURES_NEW_SMS_IND)
 */
-void HfpCsrFeaturesGetSmsRequest(hfp_link_priority priority, uint16 index);
+void HfpCsrFeaturesGetSmsRequest(hfp_link_priority priority, u16 index);
 
 
 /*!
@@ -2028,7 +2028,7 @@ bool HfpLinkGetCallState(hfp_link_priority priority, hfp_call_state* state);
     
     This will return TRUE if successful, FALSE otherwise
 */
-bool HfpLinkSetMaxConnections(uint8 max_connections);
+bool HfpLinkSetMaxConnections(u8 max_connections);
 
 
 /*!

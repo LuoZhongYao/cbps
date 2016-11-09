@@ -18,7 +18,7 @@ DESCRIPTION
 
 /* Find Profile Version */
 
-static bool findProfileVersion(const uint8 size_service_record, const uint8* service_record, const uint16 service_class, Region* value)
+static bool findProfileVersion(const u8 size_service_record, const u8* service_record, const u16 service_class, Region* value)
 {	
 	ServiceDataType type;
     Region record, protocols, protocol;
@@ -37,7 +37,7 @@ static bool findProfileVersion(const uint8 size_service_record, const uint8* ser
 				if(ServiceGetValue(&protocol, &type, value))
 				{
 					/* Move value through section elements until service class found */
-					while(!RegionMatchesUUID32(value, (uint32)service_class))
+					while(!RegionMatchesUUID32(value, (u32)service_class))
 					{
 						/* If no more values to read in - failed */
 						if(!ServiceGetValue(&protocol, &type, value))
@@ -59,12 +59,12 @@ static bool findProfileVersion(const uint8 size_service_record, const uint8* ser
 
 /* Access Profile Version */
 
-bool SdpParseGetProfileVersion(const uint8 size_service_record, const uint8* service_record, uint16 service_class, uint16* profile)
+bool SdpParseGetProfileVersion(const u8 size_service_record, const u8* service_record, u16 service_class, u16* profile)
 {
 	Region value;
     if (findProfileVersion(size_service_record, service_record, service_class, &value))
     {
-        *profile = (uint16) RegionReadUnsigned(&value);
+        *profile = (u16) RegionReadUnsigned(&value);
 		/* Accessed Successfully */
         return TRUE;
     }
@@ -74,12 +74,12 @@ bool SdpParseGetProfileVersion(const uint8 size_service_record, const uint8* ser
 
 /* Insert Profile Version */
 
-bool SdpParseInsertProfileVersion(const uint8 size_service_record, const uint8* service_record, uint16 service_class, uint16 profile)
+bool SdpParseInsertProfileVersion(const u8 size_service_record, const u8* service_record, u16 service_class, u16 profile)
 {
 	Region value;
     if (findProfileVersion(size_service_record, service_record, service_class, &value) && RegionSize(&value) == 2)
     {
-            RegionWriteUnsigned(&value, (uint32) profile);
+            RegionWriteUnsigned(&value, (u32) profile);
 			/* Inserted Successfully */
             return TRUE;
     }

@@ -64,7 +64,7 @@ RETURNS
     TRUE if the battery service was successfully added, FALSE otherwise.
 */
 #ifdef GATT_BATTERY_CLIENT
-bool gattBatteryClientAddService(uint16 cid, uint16 start, uint16 end);
+bool gattBatteryClientAddService(u16 cid, u16 start, u16 end);
 #else
 #define gattBatteryClientAddService(cid, start, end) (FALSE)
 #endif
@@ -82,7 +82,7 @@ PARAMETERS
     cid             The connection ID
 */
 #ifdef GATT_BATTERY_CLIENT
-void gattBatteryClientRemoveService(GBASC *gbasc, uint16 cid);
+void gattBatteryClientRemoveService(GBASC *gbasc, u16 cid);
 #else
 #define gattBatteryClientRemoveService(gbasc, cid) ((void)(0))
 #endif
@@ -118,7 +118,7 @@ DESCRIPTION
 
 */
 #ifdef GATT_BATTERY_CLIENT
-uint8 gattBatteryClientGetCachedLevel(void);
+u8 gattBatteryClientGetCachedLevel(void);
 #else
 #define gattBatteryClientGetCachedLevel() (BATTERY_LEVEL_INVALID)
 #endif

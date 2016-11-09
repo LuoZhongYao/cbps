@@ -11,7 +11,7 @@
 
 
 /****************************************************************************/
-gatt_client_status_t GattClientDestroy(GGATTC *const gatt_client, uint16 cid)
+gatt_client_status_t GattClientDestroy(GGATTC *const gatt_client, u16 cid)
 {
     gatt_client_status_t result = gatt_client_status_failed;
 

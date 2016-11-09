@@ -37,8 +37,8 @@ typedef enum
 
 typedef struct
 {
-    int16 main_volume;
-    int16 aux_volume;
+    i16 main_volume;
+    i16 aux_volume;
 }volume_info;
 
 #define MAX_A2DP_CONNECTIONS        2        
@@ -111,7 +111,7 @@ RETURNS
  void
     
 */
-void VolumeSetHeadsetVolume( uint16 pNewVolume , bool pPlayTone, hfp_link_priority priority );
+void VolumeSetHeadsetVolume( u16 pNewVolume , bool pPlayTone, hfp_link_priority priority );
 
 
 /****************************************************************************
@@ -126,7 +126,7 @@ RETURNS
  void
     
 */
-void VolumeSendAndSetHeadsetVolume( uint16 pNewVolume , bool pPlayTone , hfp_link_priority priority );
+void VolumeSendAndSetHeadsetVolume( u16 pNewVolume , bool pPlayTone , hfp_link_priority priority );
 
 /****************************************************************************
 NAME 
@@ -279,7 +279,7 @@ DESCRIPTION
     Set mute or unmute (mic gain of MICROPHONE_MUTE_ON - 0 is mute, all other
     gain settings unmute) of HFP mic.
 */
-void VolumeSetHfpMicrophoneGain(hfp_link_priority priority, uint8 mic_gain);
+void VolumeSetHfpMicrophoneGain(hfp_link_priority priority, u8 mic_gain);
 
 
 /****************************************************************************
@@ -287,14 +287,14 @@ DESCRIPTION
     Set mute or unmute remotely from AG if SyncMic feature bit is enabled
     (mic gain of MICROPHONE_MUTE_ON - 0 is mute, all other gain settings unmute).
 */
-void VolumeSetHfpMicrophoneGainCheckMute(hfp_link_priority priority, uint8 mic_gain);
+void VolumeSetHfpMicrophoneGainCheckMute(hfp_link_priority priority, u8 mic_gain);
 
 
 /****************************************************************************
 DESCRIPTION
     Sends the current HFP microphone volume to the AG on connection.
 */
-void VolumeSendHfpMicrophoneGain(hfp_link_priority priority, uint8 mic_gain);
+void VolumeSendHfpMicrophoneGain(hfp_link_priority priority, u8 mic_gain);
 
 
 /****************************************************************************
@@ -331,7 +331,7 @@ void storeCurrentSinkVolume( void );
     - updates display, sub and uses previous volume to update dsp
     operating mode
 */
-void VolumeSetNewMainVolume(const volume_info * const volumes, const int16 previousVolume);
+void VolumeSetNewMainVolume(const volume_info * const volumes, const i16 previousVolume);
 
 /*****************************************
     Set the mute status and volume levels.

@@ -216,7 +216,7 @@ typedef enum
     No further library functions should be called until the SWAT_INIT_CFM message has been
     received by the client task.
 */
-void SwatInit(Task clientTask, uint16 max_remote_devs, swat_role role, bool auto_handle, const uint8 *service_record, uint16 size_service_record, const sync_config_params * esco_config);
+void SwatInit(Task clientTask, u16 max_remote_devs, swat_role role, bool auto_handle, const u8 *service_record, u16 size_service_record, const sync_config_params * esco_config);
 
 
 /*!
@@ -250,7 +250,7 @@ bool SwatSignallingConnectRequest(bdaddr *addr);
     SWAT_SIGNALLING_CONNECT_CFM message will be sent to the client indicating the result of the 
     conect request.
 */
-bool SwatSignallingConnectResponse(uint16 device_id, uint16 connection_id, uint8 identifier, bool accept);
+bool SwatSignallingConnectResponse(u16 device_id, u16 connection_id, u8 identifier, bool accept);
 
 
 
@@ -265,7 +265,7 @@ bool SwatSignallingConnectResponse(uint16 device_id, uint16 connection_id, uint8
     
     SWAT_SIGNALLING_DISCONNECT_CFM message will be sent to the client indicating the result of the disconnect request
 */
-bool SwatSignallingDisconnectRequest(uint16 device_id);
+bool SwatSignallingDisconnectRequest(u16 device_id);
 
 
 
@@ -279,7 +279,7 @@ bool SwatSignallingDisconnectRequest(uint16 device_id);
     
     SWAT_MEDIA_OPEN_CFM message will be sent to the client indicating the result of the open request.
 */
-bool SwatMediaOpenRequest(uint16 device_id, swatMediaType media_type);
+bool SwatMediaOpenRequest(u16 device_id, swatMediaType media_type);
 
 
 
@@ -297,7 +297,7 @@ bool SwatMediaOpenRequest(uint16 device_id, swatMediaType media_type);
     
     SWAT_MEDIA_OPEN_CFM message will be sent to the client indicating the result of the open request.
 */
-bool SwatMediaOpenResponse(uint16 device_id, swatMediaType media_type, bool accept);
+bool SwatMediaOpenResponse(u16 device_id, swatMediaType media_type, bool accept);
 
 
 
@@ -312,7 +312,7 @@ bool SwatMediaOpenResponse(uint16 device_id, swatMediaType media_type, bool acce
     
     SWAT_MEDIA_CLOSE_CFM message will be sent to the client indicating the result of the close request.
 */
-bool SwatMediaCloseRequest(uint16 device_id, swatMediaType media_type);
+bool SwatMediaCloseRequest(u16 device_id, swatMediaType media_type);
 
 
 
@@ -330,7 +330,7 @@ bool SwatMediaCloseRequest(uint16 device_id, swatMediaType media_type);
     
     SWAT_MEDIA_CLOSE_CFM message will be sent to the client indicating the result of the open request.
 */
-bool SwatMediaCloseResponse(uint16 device_id, swatMediaType media_type, bool accept);
+bool SwatMediaCloseResponse(u16 device_id, swatMediaType media_type, bool accept);
 
 
 
@@ -345,7 +345,7 @@ bool SwatMediaCloseResponse(uint16 device_id, swatMediaType media_type, bool acc
     
     SWAT_MEDIA_START_CFM message will be sent to the client indicating the result of the start request.
 */
-bool SwatMediaStartRequest(uint16 device_id, swatMediaType media_type);
+bool SwatMediaStartRequest(u16 device_id, swatMediaType media_type);
 
 
 
@@ -363,7 +363,7 @@ bool SwatMediaStartRequest(uint16 device_id, swatMediaType media_type);
     
     SWAT_MEDIA_START_CFM message will be sent to the client indicating the result of the start request.
 */
-bool SwatMediaStartResponse(uint16 device_id, swatMediaType media_type, bool accept);
+bool SwatMediaStartResponse(u16 device_id, swatMediaType media_type, bool accept);
 
 
 
@@ -378,7 +378,7 @@ bool SwatMediaStartResponse(uint16 device_id, swatMediaType media_type, bool acc
     
     SWAT_MEDIA_SUSPEND_CFM message will be sent to the client indicating the result of the suspend request.
 */
-bool SwatMediaSuspendRequest(uint16 device_id, swatMediaType media_type);
+bool SwatMediaSuspendRequest(u16 device_id, swatMediaType media_type);
 
 
 /*!
@@ -395,7 +395,7 @@ bool SwatMediaSuspendRequest(uint16 device_id, swatMediaType media_type);
     
     SWAT_MEDIA_SUSPEND_CFM message will be sent to the client indicating the result of the start request.
 */
-bool SwatMediaSuspendResponse(uint16 device_id, swatMediaType media_type, bool accept);
+bool SwatMediaSuspendResponse(u16 device_id, swatMediaType media_type, bool accept);
 
 
 
@@ -410,7 +410,7 @@ bool SwatMediaSuspendResponse(uint16 device_id, swatMediaType media_type, bool a
     
     SWAT_SET_VOLUME_CFM message will be sent to the client indicating the result of the set volume request.
 */
-bool SwatSetVolume(uint16 device_id, uint8 volume, uint8 sub_trim);
+bool SwatSetVolume(u16 device_id, u8 volume, u8 sub_trim);
 
 
 
@@ -425,7 +425,7 @@ bool SwatSetVolume(uint16 device_id, uint8 volume, uint8 sub_trim);
     
     SWAT_SEND_SAMPLE_RATE_CFM message will be sent to the client indicating the result of the SWTA_SAMPLE_RATE_CMD
 */
-bool SwatSendSampleRateCommand(uint16 device_id, uint16 rate);
+bool SwatSendSampleRateCommand(u16 device_id, u16 rate);
 
 
 
@@ -437,7 +437,7 @@ bool SwatSendSampleRateCommand(uint16 device_id, uint16 rate);
     
     SWAT_SEND_SAMPLE_RATE_CFM message will be sent to the client indicating the result of the SWAT_SAMPLE_RATE_CMD
 */
-bool SwatSampleRateResponse(uint16 device_id, uint16 rate);
+bool SwatSampleRateResponse(u16 device_id, u16 rate);
 
 
 
@@ -446,7 +446,7 @@ bool SwatSampleRateResponse(uint16 device_id, uint16 rate);
     
     This function returns the SWAT_STANDARD_LATENCY media channel state
 */
-swatMediaState SwatGetMediaState(uint16 device_id);
+swatMediaState SwatGetMediaState(u16 device_id);
 
 
 
@@ -455,7 +455,7 @@ swatMediaState SwatGetMediaState(uint16 device_id);
     
     This function returns the SWAT_LOW_LATENCY media channel state
 */
-swatMediaState SwatGetMediaLLState(uint16 device_id);
+swatMediaState SwatGetMediaLLState(u16 device_id);
 
 
 
@@ -465,7 +465,7 @@ swatMediaState SwatGetMediaLLState(uint16 device_id);
     This function returns the sink of the active media channel, it
     will return NULL if there is no active media channel
 */
-Sink SwatGetMediaSink(uint16 device_id);
+Sink SwatGetMediaSink(u16 device_id);
 
 
 
@@ -476,7 +476,7 @@ Sink SwatGetMediaSink(uint16 device_id);
     specification states that only one media channel may be active
     at any one time.
 */
-swatMediaType SwatGetMediaType(uint16 device_id);
+swatMediaType SwatGetMediaType(u16 device_id);
 
 
 
@@ -485,7 +485,7 @@ swatMediaType SwatGetMediaType(uint16 device_id);
     
     This function returns the sink of the signalling channel
 */
-Sink SwatGetSignallingSink(uint16 device_id);
+Sink SwatGetSignallingSink(u16 device_id);
 
 
 
@@ -495,13 +495,13 @@ Sink SwatGetSignallingSink(uint16 device_id);
     This function returns the Bluetooth of the remote device that has
     the SWAT assigned id *device_id*
 */
-bdaddr * SwatGetBdaddr(uint16 device_id);
+bdaddr * SwatGetBdaddr(u16 device_id);
 
 
 /****************************************************************************/
 /* function to get Subwoofer version number */
 /****************************************************************************/
-bool SwatSendGetVersionNoCommand(uint16 device_id);
+bool SwatSendGetVersionNoCommand(u16 device_id);
 
 
 /****************************************************************************
@@ -534,13 +534,13 @@ typedef struct
 typedef struct
 {
     /*! The Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
     /*! The connection ID for the connection request */
-    uint16 connection_id;
+    u16 connection_id;
     
     /*! The identifier for the connection request */
-    uint8 identifier;
+    u8 identifier;
     
     /*! The Bluetooth address of the remote device requesting connection */
     bdaddr bd_addr;
@@ -560,7 +560,7 @@ typedef struct
     swat_status_code status;
     
     /*! The unique device ID assigned for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
     /*! The sink identifying the connection */
     Sink sink;
@@ -580,7 +580,7 @@ typedef struct
     swat_status_code status;
     
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
 } SWAT_SIGNALLING_DISCONNECT_CFM_T;
 
@@ -594,7 +594,7 @@ typedef struct
 typedef struct
 {   
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
 } SWAT_SIGNALLING_DISCONNECT_IND_T;
 
@@ -609,7 +609,7 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
     /*! Indicates which media type is being requested */
     swatMediaType media_type;
@@ -629,7 +629,7 @@ typedef struct
     swat_status_code status;
     
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
     /*! The media channel type (standard / low latency) */
     swatMediaType media_type;
@@ -649,7 +649,7 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
     /*! Indicates which media type is to be disconnected */
     swatMediaType media_type;
@@ -669,7 +669,7 @@ typedef struct
     swat_status_code status;
     
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
     /*! The media channel type (standard / low latency) */
     swatMediaType media_type;
@@ -686,7 +686,7 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
     /*! The media channel associated with the START request */
     swatMediaType media_type;
@@ -706,7 +706,7 @@ typedef struct
     swat_status_code status;
     
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
     /*! The media channel associated with the START request */
     swatMediaType media_type;
@@ -723,7 +723,7 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
     /*! The media channel associated with the START request */
     swatMediaType media_type;
@@ -743,7 +743,7 @@ typedef struct
     swat_status_code status;
     
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
     /*! The media channel associated with the SUSPEND request */
     swatMediaType media_type;
@@ -763,13 +763,13 @@ typedef struct
     swat_status_code status;
     
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
     /*! Absolute volume level that has been set */
-    uint8 volume;
+    u8 volume;
     
     /*! Subwoofer volume trim gain that has been set */
-    uint8 sub_trim;
+    u8 sub_trim;
     
 } SWAT_SET_VOLUME_CFM_T;
 
@@ -783,13 +783,13 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
     /*! Absolute volume level that has been sent */
-    uint8   volume;
+    u8   volume;
     
     /*! Subwoofer volume trim gain that has been sent */
-    uint8   sub_trim;
+    u8   sub_trim;
     
 } SWAT_SET_VOLUME_IND_T;
 
@@ -803,10 +803,10 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
     /*! Sample Rate in use */
-    uint16 sample_rate;
+    u16 sample_rate;
 
 } SWAT_SAMPLE_RATE_IND_T;
 
@@ -821,10 +821,10 @@ typedef struct
     swat_status_code status;
     
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
     /*! The sample rate that was sent to the remote device */
-    uint16 sample_rate;
+    u16 sample_rate;
     
 } SWAT_SAMPLE_RATE_CFM_T;
 
@@ -836,7 +836,7 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     
 } SWAT_GET_VERSION_IND_T;
 
@@ -849,16 +849,16 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
 
     /*! Outcome of the get version operation */
     swat_status_code status;
     
     /*! The major version number */
-    uint16 major;
+    u16 major;
     
     /*! The minor version number */
-    uint16 minor;
+    u16 minor;
     
 } SWAT_GET_VERSION_CFM_T;
 

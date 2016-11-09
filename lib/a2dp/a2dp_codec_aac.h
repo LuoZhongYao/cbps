@@ -26,7 +26,7 @@ DESCRIPTION
     design decision and not specified by the A2DP profiles.
 
 */
-void selectOptimalAacCapsSink (const uint8 *local_codec_caps, uint8 *remote_codec_caps);
+void selectOptimalAacCapsSink (const u8 *local_codec_caps, u8 *remote_codec_caps);
 
 /*************************************************************************
 NAME
@@ -40,7 +40,7 @@ DESCRIPTION
     design decision and not specified by the A2DP profiles.
 
 */
-void selectOptimalAacCapsSource (const uint8 *local_codec_caps, uint8 *remote_codec_caps);
+void selectOptimalAacCapsSource (const u8 *local_codec_caps, u8 *remote_codec_caps);
 
 /*************************************************************************
 NAME
@@ -50,7 +50,7 @@ DESCRIPTION
     Return the codec configuration settings (rate and channel mode) for the physical codec based
     on the A2DP codec negotiated settings.
 */
-void getAacConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_settings);
+void getAacConfigSettings(const u8 *service_caps, a2dp_codec_settings *codec_settings);
 
 #endif  /* A2DP_SBC_ONLY */
 

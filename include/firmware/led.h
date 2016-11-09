@@ -30,6 +30,6 @@
     However, once the led is configured/enabled, respective pin can't be used
     as PIOs until device is rebooted.
 */
-bool LedConfigure(led_id led, led_config_key key, uint16 value);
+bool LedConfigure(led_id led, led_config_key key, u16 value);
 
 #endif

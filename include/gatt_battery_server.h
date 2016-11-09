@@ -54,7 +54,7 @@ typedef enum
 typedef struct PACK_STRUCT __GATT_BATTERY_SERVER_READ_LEVEL_IND
 {
     const GBASS *battery_server;
-    uint16 cid;
+    u16 cid;
 } GATT_BATTERY_SERVER_READ_LEVEL_IND_T;
 
 /*! @brief Contents of the GATT_BATTERY_SERVER_READ_CLIENT_CONFIG_IND message that is sent by the library,
@@ -63,7 +63,7 @@ typedef struct PACK_STRUCT __GATT_BATTERY_SERVER_READ_LEVEL_IND
 typedef struct PACK_STRUCT __GATT_BATTERY_SERVER_READ_CLIENT_CONFIG_IND
 {
     const GBASS *battery_server;
-    uint16 cid;
+    u16 cid;
 } GATT_BATTERY_SERVER_READ_CLIENT_CONFIG_IND_T;
 
 /*! @brief Contents of the GATT_BATTERY_SERVER_WRITE_CLIENT_CONFIG_IND message that is sent by the library,
@@ -72,8 +72,8 @@ typedef struct PACK_STRUCT __GATT_BATTERY_SERVER_READ_CLIENT_CONFIG_IND
 typedef struct PACK_STRUCT __GATT_BATTERY_SERVER_WRITE_CLIENT_CONFIG_IND
 {
     const GBASS *battery_server;
-    uint16 cid;
-    uint16 config_value;
+    u16 cid;
+    u16 config_value;
 } GATT_BATTERY_SERVER_WRITE_CLIENT_CONFIG_IND_T;
 
 /*! @brief Contents of the GATT_BATTERY_SERVER_READ_PRESENTATION_IND message that is sent by the library,
@@ -82,7 +82,7 @@ typedef struct PACK_STRUCT __GATT_BATTERY_SERVER_WRITE_CLIENT_CONFIG_IND
 typedef struct PACK_STRUCT __GATT_BATTERY_SERVER_READ_PRESENTATION_IND
 {
     const GBASS *battery_server;
-    uint16 cid;
+    u16 cid;
 } GATT_BATTERY_SERVER_READ_PRESENTATION_IND_T;
 
 
@@ -123,8 +123,8 @@ typedef struct
 gatt_battery_server_status_t GattBatteryServerInit(GBASS *battery_server, 
                                                    Task app_task, 
                                                    const gatt_battery_server_init_params_t *init_params,
-                                                   uint16 start_handle,
-                                                   uint16 end_hanlde);
+                                                   u16 start_handle,
+                                                   u16 end_hanlde);
 
 
 /*!
@@ -138,7 +138,7 @@ gatt_battery_server_status_t GattBatteryServerInit(GBASS *battery_server,
     @return The status result of calling the API.
 
 */
-gatt_battery_server_status_t GattBatteryServerReadLevelResponse(const GBASS *battery_server, uint16 cid, uint8 battery_level);
+gatt_battery_server_status_t GattBatteryServerReadLevelResponse(const GBASS *battery_server, u16 cid, u8 battery_level);
 
 /*!
     @brief This API is used to return a battery level client configuration value to the library when a GATT_BATTERY_SERVER_READ_CLIENT_CONFIG_IND message is received.
@@ -150,7 +150,7 @@ gatt_battery_server_status_t GattBatteryServerReadLevelResponse(const GBASS *bat
     @return The status result of calling the API.
 
 */
-gatt_battery_server_status_t GattBatteryServerReadClientConfigResponse(const GBASS *battery_server, uint16 cid, uint16 client_config);
+gatt_battery_server_status_t GattBatteryServerReadClientConfigResponse(const GBASS *battery_server, u16 cid, u16 client_config);
 
 /*!
     @brief This API is used to return a battery level to the library when a GATT_BATTERY_SERVER_READ_PRESENTATION_IND message is received.
@@ -163,7 +163,7 @@ gatt_battery_server_status_t GattBatteryServerReadClientConfigResponse(const GBA
     @return The status result of calling the API.
 
 */
-gatt_battery_server_status_t GattBatteryServerReadPresentationResponse(const GBASS *battery_server, uint16 cid, uint8 name_space, uint16 description);
+gatt_battery_server_status_t GattBatteryServerReadPresentationResponse(const GBASS *battery_server, u16 cid, u8 name_space, u16 description);
 
 /*!
     @brief This API is used to notify a remote client of the battery level. 
@@ -177,7 +177,7 @@ gatt_battery_server_status_t GattBatteryServerReadPresentationResponse(const GBA
     @return The status result of calling the API.
 
 */
-gatt_battery_server_status_t GattBatteryServerSendLevelNotification(const GBASS *battery_server, uint16 number_cids, const uint16 *cids, uint8 battery_level);
+gatt_battery_server_status_t GattBatteryServerSendLevelNotification(const GBASS *battery_server, u16 number_cids, const u16 *cids, u8 battery_level);
 
 
 #endif

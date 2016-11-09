@@ -25,7 +25,7 @@ NOTES
 
 
 /*************************************************************************/
-void getAtracConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_settings)
+void getAtracConfigSettings(const u8 *service_caps, a2dp_codec_settings *codec_settings)
 {
     if (!service_caps)
     {
@@ -60,7 +60,7 @@ void getAtracConfigSettings(const uint8 *service_caps, a2dp_codec_settings *code
 
 
 /**************************************************************************/
-void selectOptimalAtracCapsSink(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalAtracCapsSink(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
     /* Assume ATRAC version has only one of the bits set, so don't process the version */
 

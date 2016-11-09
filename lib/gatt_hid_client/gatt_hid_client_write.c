@@ -35,10 +35,10 @@ DESCRIPTION
    Utility function to write without response a single byte
 */
 static void hid_client_write_without_resp_one_byte(GHIDC_T *const hid_client,
-                uint16 handle,
-                uint8 value)
+                u16 handle,
+                u8 value)
 {
-    uint8 databuff[1];
+    u8 databuff[1];
 
     databuff[0] = value;
 
@@ -108,13 +108,13 @@ DESCRIPTION
    Utility function to send set set report confirmation to resgistered application task
 */
 static void  hid_client_write_set_report_cfm(GHIDC_T *const hid_client,
-    uint16 handle,
-    uint16 cid,
+    u16 handle,
+    u16 cid,
     gatt_status_t status)
 {
     /* Convert GATT lib status to HID lib status */
     gatt_hid_client_status hid_client_status = hid_client_convert_status(status);
-    uint16 report_id = 0;
+    u16 report_id = 0;
     MAKE_HID_CLIENT_MESSAGE(GATT_HID_CLIENT_SET_REPORT_CFM);
     memset(message, 0, sizeof(GATT_HID_CLIENT_SET_REPORT_CFM_T));
     /* Fill in confirmation message parameters */
@@ -139,7 +139,7 @@ DESCRIPTION
    Utility function to send write boot  report confirmation to resgistered application task
 */
 static void hid_client_write_boot_report_cfm(GHIDC_T *const hid_client,
-    uint16 cid,
+    u16 cid,
     gatt_status_t status)
 {
     /* Convert GATT lib status to HID lib status */
@@ -275,7 +275,7 @@ void hid_client_write_set_report_request(GHIDC_T *const hid_client,
         GattManagerWriteWithoutResponse((Task)&hid_client->lib_task,
                                         msg->handle,
                                         msg->size_data,
-                                        (uint8 *)msg->data);
+                                        (u8 *)msg->data);
     }
     else
     {
@@ -283,7 +283,7 @@ void hid_client_write_set_report_request(GHIDC_T *const hid_client,
         GattManagerWriteCharacteristicValue((Task)&hid_client->lib_task,
                                             msg->handle,
                                             msg->size_data,
-                                            (uint8 *)msg->data);
+                                            (u8 *)msg->data);
     }
 
     SET_PENDING_FLAG(hid_client_write_pending_set_report,hid_client->pending_request);
@@ -299,7 +299,7 @@ void hid_client_write_boot_report_request(GHIDC_T *const hid_client,
         GattManagerWriteWithoutResponse((Task)&hid_client->lib_task,
                                         msg->handle,
                                         msg->size_data,
-                                        (uint8 *)msg->data);
+                                        (u8 *)msg->data);
     }
     else
     {
@@ -307,7 +307,7 @@ void hid_client_write_boot_report_request(GHIDC_T *const hid_client,
         GattManagerWriteCharacteristicValue((Task)&hid_client->lib_task,
                                             msg->handle,
                                             msg->size_data,
-                                            (uint8 *)msg->data);
+                                            (u8 *)msg->data);
     }
     SET_PENDING_FLAG(hid_client_write_pending_boot_report,hid_client->pending_request);
 }
@@ -379,8 +379,8 @@ gatt_hid_client_status GattHidSetReport(GHIDC_T *const hid_client,
                                 GATT_HID_CLIENT_SET_REPORT_T *hid_report_data)
 {
     gatt_hid_client_status   retval =  gatt_hid_client_status_invalid_param;
-    uint16 report_handle = 0;
-    uint16 type = 0;
+    u16 report_handle = 0;
+    u16 type = 0;
 
     /* Validate the Input Parameters */
     if(VALIDATE_INPUT_PARAM(hid_client))
@@ -397,7 +397,7 @@ gatt_hid_client_status GattHidSetReport(GHIDC_T *const hid_client,
             if(hid_client_get_report_handle_and_type_from_id(hid_client,hid_report_data->report_id,&report_handle,&type))
             {
                 MAKE_HID_CLIENT_MESSAGE_WITH_LEN( HID_CLIENT_INTERNAL_MSG_SET_REPORT,hid_report_data->report_len);
-                memset(message, 0, sizeof(HID_CLIENT_INTERNAL_MSG_SET_REPORT_T) + hid_report_data->report_len - sizeof(uint8));
+                memset(message, 0, sizeof(HID_CLIENT_INTERNAL_MSG_SET_REPORT_T) + hid_report_data->report_len - sizeof(u8));
                 message->handle = report_handle;
                 message->type = type;
                 message->size_data = hid_report_data->report_len;
@@ -415,7 +415,7 @@ gatt_hid_client_status GattHidWriteBootReport(GHIDC_T *const hid_client,
                                 GATT_HID_CLIENT_WRITE_BOOT_REPORT_T *hid_boot_report)
 {
     gatt_hid_client_status  retval =  gatt_hid_client_status_invalid_param;
-    uint16 handle = 0; 
+    u16 handle = 0; 
     /* Validate the Input Parameters */
     if(VALIDATE_INPUT_PARAM(hid_client))
     {
@@ -460,7 +460,7 @@ gatt_hid_client_status GattHidWriteBootReport(GHIDC_T *const hid_client,
             if(retval != gatt_hid_client_status_invalid_param)
             {
                 MAKE_HID_CLIENT_MESSAGE_WITH_LEN( HID_CLIENT_INTERNAL_MSG_WRITE_BOOT_REPORT,hid_boot_report->report_len);
-                memset(message, 0, sizeof(HID_CLIENT_INTERNAL_MSG_WRITE_BOOT_REPORT_T) + hid_boot_report->report_len - sizeof(uint8));
+                memset(message, 0, sizeof(HID_CLIENT_INTERNAL_MSG_WRITE_BOOT_REPORT_T) + hid_boot_report->report_len - sizeof(u8));
 
                 message->handle = handle;
                 message->type = hid_boot_report->report_type;

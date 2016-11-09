@@ -50,13 +50,13 @@ NOTES
 *
 *PARAMETRS
 *   avrcp              - Task
-*   uint16             - player ID
+*   u16             - player ID
 *
 **RETURN
 *   AVRCP_BROWSE_SET_PLAYER_CFM
 *****************************************************************************/
 void AvrcpBrowseSetPlayerRequest(AVRCP*    avrcp,   
-                          uint16    player_id)
+                          u16    player_id)
 {
     AVBP *avbp = (AVBP*)avrcp->avbp_task;
 
@@ -90,7 +90,7 @@ void AvrcpBrowseSetPlayerRequest(AVRCP*    avrcp,
 *
 *PARAMETRS
 *   avrcp                  - Task
-*   uint16                 - UID Counter
+*   u16                 - UID Counter
 *   avrcp_browse_direction - Direction of Browsing
 *   avrcp_browse_uid       - Folder UID
 *
@@ -98,7 +98,7 @@ void AvrcpBrowseSetPlayerRequest(AVRCP*    avrcp,
 *   AVRCP_BROWSE_CHANGE_PATH_CFM
 *****************************************************************************/
 void AvrcpBrowseChangePathRequest( AVRCP*                  avrcp,  
-                            uint16                  uid_counter,
+                            u16                  uid_counter,
                             avrcp_browse_direction  direction,
                             avrcp_browse_uid        folder_uid)
 {
@@ -139,8 +139,8 @@ void AvrcpBrowseChangePathRequest( AVRCP*                  avrcp,
 *   avrcp_browse_scope     - Scope in which the UID of the media element 
 *                            item or folder item is valid.
 *   avrcp_browse_uid       - The UID of the  media element item or folder item
-*   uint16                 - UID Counter
-*   uint8                  - Number of attributes requested. 0 for all and 
+*   u16                 - UID Counter
+*   u8                  - Number of attributes requested. 0 for all and 
 *                            0xFF for No attributes.
 *   Source                 - Size of source should be number of attributes * 4.
 *
@@ -150,12 +150,12 @@ void AvrcpBrowseChangePathRequest( AVRCP*                  avrcp,
 void AvrcpBrowseGetItemAttributesRequest(  AVRCP*               avrcp,
                                     avrcp_browse_scope   scope,  
                                     avrcp_browse_uid     uid,   
-                                    uint16               uid_counter, 
-                                    uint8                num_attr, 
+                                    u16               uid_counter, 
+                                    u8                num_attr, 
                                     Source               attr_list)
 {
     AVBP *avbp = (AVBP*)avrcp->avbp_task;
-    uint16 size_attr_list = num_attr * 4;
+    u16 size_attr_list = num_attr * 4;
 
     if(num_attr == 0 || num_attr == 0xFF)
     {
@@ -225,7 +225,7 @@ void AvrcpBrowseGetItemAttributesRequest(  AVRCP*               avrcp,
 *   avrcp_browse_scope     - Scope for media navigation.
 *   start                  - Start index of the item in the folder.
 *   end                    - End index of the item in the folder
-*   uint8                  - Number of attributes requested. 0 for all and 
+*   u8                  - Number of attributes requested. 0 for all and 
 *                            0xFF for No attributes.
 *   Source                 - Size of source should be number of attributes * 4.
 *
@@ -234,13 +234,13 @@ void AvrcpBrowseGetItemAttributesRequest(  AVRCP*               avrcp,
 *****************************************************************************/
 void AvrcpBrowseGetFolderItemsRequest( AVRCP*              avrcp,   
                                 avrcp_browse_scope  scope,   
-                                uint32              start,   
-                                uint32              end,      
-                                uint8               num_attr, 
+                                u32              start,   
+                                u32              end,      
+                                u8               num_attr, 
                                 Source              attr_list)
 {
     AVBP *avbp = (AVBP*)avrcp->avbp_task;
-    uint16 size_attr_list = num_attr * 4;
+    u16 size_attr_list = num_attr * 4;
 
     if(num_attr == 0 || num_attr == 0xFF)
     {
@@ -374,7 +374,7 @@ void AvrcpBrowseGetNumberOfItemsRequest( AVRCP*              avrcp,
 *****************************************************************************/
 void AvrcpBrowseSearchRequest( AVRCP*              avrcp,
                         avrcp_char_set      char_set, 
-                        uint16              str_length,
+                        u16              str_length,
                         Source              string)
 {
     AVBP *avbp = (AVBP*)avrcp->avbp_task;
@@ -437,20 +437,20 @@ void AvrcpBrowseSearchRequest( AVRCP*              avrcp,
 *PARAMETRS
 *   avrcp              - Task
 *   avrcp_response_type- response. avrcp_response_browsing_success on Success.
-*   uint16             - uid counter 
-*   uint32             - number of items
+*   u16             - uid counter 
+*   u32             - number of items
 *   avrcp_char_type    - char_type
-*   uint8              - folder_depth
-*   uint16             - size_folder_path
+*   u8              - folder_depth
+*   u16             - size_folder_path
 *   Source             - folder_path
 *****************************************************************************/
 void AvrcpBrowseSetPlayerResponse(AVRCP*                avrcp, 
                                   avrcp_response_type   response,
-                                  uint16                uid_counter,
-                                  uint32                num_items, 
+                                  u16                uid_counter,
+                                  u32                num_items, 
                                   avrcp_char_set        char_type, 
-                                  uint8                 folder_depth, 
-                                  uint16                size_folder_path,
+                                  u8                 folder_depth, 
+                                  u16                size_folder_path,
                                   Source                folder_path)
 {
     AVBP *avbp = (AVBP*)avrcp->avbp_task;
@@ -505,11 +505,11 @@ void AvrcpBrowseSetPlayerResponse(AVRCP*                avrcp,
 *PARAMETRS
 *   avrcp              - Task
 *   avrcp_response_type- response. avrcp_response_browsing_success on Success.
-*   uint32             - number of items
+*   u32             - number of items
 *****************************************************************************/
 void AvrcpBrowseChangePathResponse(AVRCP*               avrcp,
                                    avrcp_response_type  response,
-                                   uint32               num_items)
+                                   u32               num_items)
 {
     AVBP *avbp = (AVBP*)avrcp->avbp_task;
 
@@ -544,15 +544,15 @@ void AvrcpBrowseChangePathResponse(AVRCP*               avrcp,
 *PARAMETRS
 *   avrcp              - Task
 *   avrcp_response_type- response. avrcp_response_browsing_success on Success.
-*   uint8              - num_attributes
-*   uint16             - Size of attributes list in bytes
+*   u8              - num_attributes
+*   u16             - Size of attributes list in bytes
 *   Source             - List of attributes.
 *****************************************************************************/
 
 void AvrcpBrowseGetItemAttributesResponse(AVRCP*              avrcp,
                                           avrcp_response_type response,
-                                          uint8               num_attributes,
-                                          uint16              size_attr_list,
+                                          u8               num_attributes,
+                                          u16              size_attr_list,
                                           Source              attr_value_list)
 {
     AVBP *avbp = (AVBP*)avrcp->avbp_task;
@@ -607,16 +607,16 @@ void AvrcpBrowseGetItemAttributesResponse(AVRCP*              avrcp,
 *PARAMETRS
 *   avrcp              - Task
 *   avrcp_response_type- response. avrcp_response_browsing_success on Success.
-*   uint16             - UID Counter. 0 for non database aware players
-*   uint16             - number of items returned
-*   uint16             - size of the item list in bytes
+*   u16             - UID Counter. 0 for non database aware players
+*   u16             - number of items returned
+*   u16             - size of the item list in bytes
 *   Source             - item list
 *****************************************************************************/
 void AvrcpBrowseGetFolderItemsResponse( AVRCP*              avrcp,         
                                         avrcp_response_type response,     
-                                        uint16              uid_counter, 
-                                        uint16              num_items,  
-                                        uint16              item_list_size,
+                                        u16              uid_counter, 
+                                        u16              num_items,  
+                                        u16              item_list_size,
                                         Source              item_list)
 {
     AVBP *avbp = (AVBP*)avrcp->avbp_task;
@@ -677,13 +677,13 @@ void AvrcpBrowseGetFolderItemsResponse( AVRCP*              avrcp,
 *PARAMETRS
 *   avrcp              - Task
 *   avrcp_response_type- response. avrcp_response_browsing_success on Success.
-*   uint16             - UID Counter. 0 for non database aware players
-*   uint32             - number of items returned
+*   u16             - UID Counter. 0 for non database aware players
+*   u32             - number of items returned
 *****************************************************************************/
 void AvrcpBrowseGetNumberOfItemsResponse( AVRCP*              avrcp,         
                                         avrcp_response_type response,     
-                                        uint16              uid_counter, 
-                                        uint32              num_items)
+                                        u16              uid_counter, 
+                                        u32              num_items)
 {
     AVBP *avbp = (AVBP*)avrcp->avbp_task;
 
@@ -727,13 +727,13 @@ void AvrcpBrowseGetNumberOfItemsResponse( AVRCP*              avrcp,
 *PARAMETRS
 *   avrcp              - Task
 *   avrcp_response_type- response. avrcp_response_browsing_success on Success.
-*   uint16             - UID Counter
-*   uint32             - Number of matching items
+*   u16             - UID Counter
+*   u32             - Number of matching items
 *****************************************************************************/
 void AvrcpBrowseSearchResponse(AVRCP*               avrcp,         
                                avrcp_response_type  response,     
-                               uint16               uid_counter, 
-                               uint32               num_items)
+                               u16               uid_counter, 
+                               u32               num_items)
 {
     AVBP *avbp = (AVBP*)avrcp->avbp_task;
 

@@ -535,7 +535,7 @@ NAME
 */
 static void app_disconnect_req(void)
 {
-    uint16 delay = 0;
+    u16 delay = 0;
     
     APP_MSG_DEBUG(("APP_MSG: app_disconnect_req\n"));
     

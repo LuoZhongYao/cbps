@@ -24,7 +24,7 @@ DESCRIPTION
 RETURNS
     Nothing.
 */
-void connectionSmInit(cl_dm_bt_version version, connectionSmState *smState, uint8 flags);
+void connectionSmInit(cl_dm_bt_version version, connectionSmState *smState, u8 flags);
 
 
 #endif    /* CONNECTION_DM_SECURITY_INIT_H_ */

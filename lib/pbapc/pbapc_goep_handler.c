@@ -17,7 +17,7 @@ DESCRIPTION
 #include "pbapc_private.h"
 #include "pbapc_util.h"
 
-static const uint8 pbapTarget[] = 
+static const u8 pbapTarget[] = 
 {
     0x79, 0x61, 0x35, 0xf0,   
     0xf0, 0xc5,   
@@ -35,11 +35,11 @@ static const uint8 pbapTarget[] =
  *************************************************************************/
 void  pbapcGoepConnect( pbapcState *state,
                         const bdaddr *addr,
-                        uint16       channel )
+                        u16       channel )
 {
     Task appTask;
-	uint16 device_id = state->device_id;
-    uint8 repos = state->srvRepos;
+	u16 device_id = state->device_id;
+    u8 repos = state->srvRepos;
     const ObexConnParams params = { { pbapcGoepHandler }, sizeof(pbapcState),
                                     pbapTarget, sizeof(pbapTarget), FALSE };
 
@@ -163,7 +163,7 @@ static void handlevCardResp( pbapcState *state,
                              PbapcLibStatus status ) 
 {
     Source src=0;
-    uint16 objLen = 0;
+    u16 objLen = 0;
 
     if( status == pbapc_pending || status == pbapc_success )
     {
@@ -187,16 +187,16 @@ static void handlevCardResp( pbapcState *state,
 static void handlePullListResp( pbapcState *state, 
                                 MessageId  id, 
                                 PbapcLibStatus status, 
-                                uint16 len, 
+                                u16 len, 
                                 Source src )
 {
-    uint16 pbSize = 0;
-    uint8  newMissCall = 0;
-    uint16 objLen = 0;
+    u16 pbSize = 0;
+    u8  newMissCall = 0;
+    u16 objLen = 0;
 
     if( status == pbapc_pending || status == pbapc_success )
     {
-        const uint8* appParam = NULL;
+        const u8* appParam = NULL;
         ObexSeqHeaderId hdr = ( status == pbapc_pending )? obex_body_hdr: 
                                                           obex_ebody_hdr;
 
@@ -204,7 +204,7 @@ static void handlePullListResp( pbapcState *state,
 
         if( appParam )
         {
-            uint8 offset = 0;
+            u8 offset = 0;
 
             while( offset < objLen )
             {
@@ -301,7 +301,7 @@ static void handleGoepConnectCfm( pbapcState *state,
                                   OBEX_CONNECT_CFM_T *msg )
 {
     PbapcLibStatus status = pbapc_success;
-    uint16 packetSize = 0;
+    u16 packetSize = 0;
     tp_bdaddr tpaddr;
     
     status = convertObexError(msg->status);
@@ -359,8 +359,8 @@ static void handleGoepSessionCfm( pbapcState* state,
 {
     PbapcLibStatus status;
     Task theAppTask = state->theAppTask;
-    uint8 repos = state->srvRepos;
-    uint16 device_id = state->device_id;
+    u8 repos = state->srvRepos;
+    u16 device_id = state->device_id;
             
     if( msg->status ==  obex_success )
     {

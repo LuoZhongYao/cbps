@@ -25,7 +25,7 @@ NOTES
 
 /*****************************************************************************/
 
-void ConnectionSmRegisterOutgoingService(Task theAppTask, const bdaddr* bd_addr, dm_protocol_id protocol_id, uint32 channel, dm_security_out security)
+void ConnectionSmRegisterOutgoingService(Task theAppTask, const bdaddr* bd_addr, dm_protocol_id protocol_id, u32 channel, dm_security_out security)
 {
     MAKE_CL_MESSAGE(CL_INTERNAL_SM_REGISTER_OUTGOING_REQ);
 

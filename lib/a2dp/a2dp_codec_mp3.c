@@ -23,7 +23,7 @@ NOTES
 #include "a2dp_codec_mp3.h"
 
 /* Channel Mode */
-static const uint16 mp3CapsChannelMode[] =
+static const u16 mp3CapsChannelMode[] =
 {
     0x0401, 0x0401, 0x04F1, 0xFFFF,
     0x0402, 0x0402, 0x04F2, 0xFFFF,
@@ -33,7 +33,7 @@ static const uint16 mp3CapsChannelMode[] =
 };
 
 /* Sample Rate */
-static const uint16 mp3CapsSampleRate[] =
+static const u16 mp3CapsSampleRate[] =
 {
     0x0502, 0x0502, 0x05C2, 0xFFFF,
     0x0501, 0x0501, 0x05C1, 0xFFFF,
@@ -48,7 +48,7 @@ static const uint16 mp3CapsSampleRate[] =
 /* Bit Rate.                                                                                       */
 /* We try and use the rate nearest to 128kbps.  In reality the source won't encode MP3 in realtime */
 /* so it will probably only have a single bit set representing it's pre-compressed file.           */
-static const uint16 mp3CapsBitRate[] =
+static const u16 mp3CapsBitRate[] =
 {
     0x0602, 0x0602, 0x0682, 0x0700,
     0x0601, 0x0601, 0x0681, 0x0700,
@@ -67,32 +67,32 @@ static const uint16 mp3CapsBitRate[] =
     0xFFFF
 };
 
-static const uint16 *const mp3CapsTable[] =
+static const u16 *const mp3CapsTable[] =
 {
     mp3CapsChannelMode,
     mp3CapsSampleRate,
     mp3CapsBitRate,
-    (const uint16 *)0xFFFF
+    (const u16 *)0xFFFF
 };
 
 
-static void selectMp3Caps(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+static void selectMp3Caps(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
-    const uint16 **caps_table = (const uint16 **)mp3CapsTable;
+    const u16 **caps_table = (const u16 **)mp3CapsTable;
     
-    while (*caps_table != (uint16 *)0xFFFF)
+    while (*caps_table != (u16 *)0xFFFF)
     {
-        const uint16 *parse_table = *caps_table;
+        const u16 *parse_table = *caps_table;
 
         while (parse_table[0] != 0xFFFF)
         {
-            if ((remote_codec_caps[(uint8)(parse_table[0]>>8)] & (uint8)parse_table[0]) && (local_codec_caps[(uint8)(parse_table[1]>>8)] & (uint8)parse_table[1]))
+            if ((remote_codec_caps[(u8)(parse_table[0]>>8)] & (u8)parse_table[0]) && (local_codec_caps[(u8)(parse_table[1]>>8)] & (u8)parse_table[1]))
             {
-                remote_codec_caps[(uint8)(parse_table[2]>>8)] &= (uint8)parse_table[2];
+                remote_codec_caps[(u8)(parse_table[2]>>8)] &= (u8)parse_table[2];
 
                 if (parse_table[3] != 0xFFFF)
                 {   /* Dealing with bit rate caps */
-                    remote_codec_caps[(uint8)(parse_table[3]>>8)] &= (uint8)parse_table[3];
+                    remote_codec_caps[(u8)(parse_table[3]>>8)] &= (u8)parse_table[3];
                     remote_codec_caps[6] &= (local_codec_caps[6] | 0x7F);  /* VBR */
                 }
 
@@ -107,7 +107,7 @@ static void selectMp3Caps(const uint8 *local_codec_caps, uint8 *remote_codec_cap
 }
 
 /**************************************************************************/
-void selectOptimalMp3CapsSink(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalMp3CapsSink(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
     if (!local_codec_caps || !remote_codec_caps)
         return;
@@ -117,7 +117,7 @@ void selectOptimalMp3CapsSink(const uint8 *local_codec_caps, uint8 *remote_codec
 
 
 /**************************************************************************/
-void selectOptimalMp3CapsSource(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalMp3CapsSource(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
     if (!local_codec_caps || !remote_codec_caps)
         return;
@@ -127,7 +127,7 @@ void selectOptimalMp3CapsSource(const uint8 *local_codec_caps, uint8 *remote_cod
 
 
 /**************************************************************************/
-void getMp3ConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_settings)
+void getMp3ConfigSettings(const u8 *service_caps, a2dp_codec_settings *codec_settings)
 {
     if (!service_caps)
     {

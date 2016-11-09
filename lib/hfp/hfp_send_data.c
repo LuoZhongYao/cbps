@@ -35,9 +35,9 @@ NOTES
     Returns the number of bytes to flush. Iterates to the end of the next AT+ cmd 
     and returns the number of bytes counted.
 */
-static uint16 getBytesToFlush(hfp_link_data* link, const uint8 *data_ptr, const uint8 *endptr)
+static u16 getBytesToFlush(hfp_link_data* link, const u8 *data_ptr, const u8 *endptr)
 {
-    uint16 ix = 0;    
+    u16 ix = 0;    
 
     /* Return zero if the buffer is empty */
     if (data_ptr == endptr)
@@ -49,9 +49,9 @@ static uint16 getBytesToFlush(hfp_link_data* link, const uint8 *data_ptr, const 
         if (hfpMatchChar(data_ptr+ix, endptr, 'A'))
         {
             /* Extract the pending_cmd ID and put back the 'T' */
-            uint8* mod_ptr            = (uint8*)(data_ptr + ix + 1);
+            u8* mod_ptr            = (u8*)(data_ptr + ix + 1);
             link->at_cmd_resp_pending = *mod_ptr;
-            *mod_ptr                  = (uint8)'T';
+            *mod_ptr                  = (u8)'T';
             
             PRINT(("Sending AT Command 0x%X ", link->at_cmd_resp_pending));
             PRINT(("%c%c",(char)*(data_ptr+ix), (char)*(data_ptr+ix+1)));
@@ -62,7 +62,7 @@ static uint16 getBytesToFlush(hfp_link_data* link, const uint8 *data_ptr, const 
             if(link->at_cmd_resp_pending == hfpVgsCmdPending)
             {
                 /* Assumption here is that command is formatted as "AT+VGS=00" */
-                mod_ptr  = (uint8*)(data_ptr+ix+5);
+                mod_ptr  = (u8*)(data_ptr+ix+5);
                 *mod_ptr = '0' + link->at_vol_setting / 10;
                 mod_ptr += 1;
                 *mod_ptr = '0' + link->at_vol_setting % 10;
@@ -100,9 +100,9 @@ DESCRIPTION
 RETURNS
     void
 */
-void hfpSendAtCmd(hfp_link_data* link, uint16 length, const char *at_cmd, hfp_at_cmd pending_cmd)
+void hfpSendAtCmd(hfp_link_data* link, u16 length, const char *at_cmd, hfp_at_cmd pending_cmd)
 {
-    uint16 sink_slack;
+    u16 sink_slack;
     Sink sink = PanicNull(hfpGetLinkSink(link));
     
     /* Check sink is valid */
@@ -114,8 +114,8 @@ void hfpSendAtCmd(hfp_link_data* link, uint16 length, const char *at_cmd, hfp_at
         /* Make sure we have enough space for this AT cmd */
         if (sink_slack >= length)
         {
-            uint16 sink_offset = SinkClaim(sink, length);
-            uint8 *data_out = SinkMap(sink);
+            u16 sink_offset = SinkClaim(sink, length);
+            u8 *data_out = SinkMap(sink);
     
             /* Check we have a valid offset */
             if (sink_offset == 0xffff)
@@ -128,7 +128,7 @@ void hfpSendAtCmd(hfp_link_data* link, uint16 length, const char *at_cmd, hfp_at
             if (data_out)
             {
 #ifdef HFP_DEBUG_LIB
-                uint16 i;
+                u16 i;
                 PRINT(("Send AT Command 0x%X ", pending_cmd));
                 for(i=0; i<length; i++)
                     PRINT(("%c",at_cmd[i]));
@@ -172,7 +172,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void hfpSendNextAtCmd(hfp_link_data* link, uint16 offset, const uint8 *data_out)
+void hfpSendNextAtCmd(hfp_link_data* link, u16 offset, const u8 *data_out)
 {
     Sink sink = hfpGetLinkSink(link);
     
@@ -189,10 +189,10 @@ void hfpSendNextAtCmd(hfp_link_data* link, uint16 offset, const uint8 *data_out)
         if (link->at_cmd_resp_pending == hfpNoCmdPending && data_out)
         {
             /* Make sure we have an AT cmd to flush */
-            uint16 bytes = getBytesToFlush(link, data_out, data_out+offset);
+            u16 bytes = getBytesToFlush(link, data_out, data_out+offset);
     
     #ifdef BE_EVIL
-            uint16 ix = 0;
+            u16 ix = 0;
             for (ix=0; ix < bytes; ix++)
             {
                 (void) SinkFlush(sink, 1);
@@ -201,7 +201,7 @@ void hfpSendNextAtCmd(hfp_link_data* link, uint16 offset, const uint8 *data_out)
             if (bytes)
             {
                 /* Flush them. */
-                uint16 flush_result = SinkFlush(sink, bytes);
+                u16 flush_result = SinkFlush(sink, bytes);
     
                 /* Flush failed */
                 if (!flush_result)
@@ -216,7 +216,7 @@ void hfpSendNextAtCmd(hfp_link_data* link, uint16 offset, const uint8 *data_out)
                 MessageId timeout_message = hfpGetLinkTimeoutMessage(link, HFP_INTERNAL_WAIT_AT_TIMEOUT_LINK_0_IND);
                 
                 /* Set short default timeout */
-                uint32 timeout = (uint32) AT_RESPONSE_TIMEOUT_5SEC;
+                u32 timeout = (u32) AT_RESPONSE_TIMEOUT_5SEC;
                 
                 /* Cancel any existing timeout messages */
                 (void) MessageCancelAll(&theHfp->task, timeout_message);
@@ -225,10 +225,10 @@ void hfpSendNextAtCmd(hfp_link_data* link, uint16 offset, const uint8 *data_out)
                 {
                     case hfpCnumCmdPending:
                         /* Set long timeout - AT+CNUM has just been sent */
-                        timeout = (uint32) AT_RESPONSE_TIMEOUT_10SEC;
+                        timeout = (u32) AT_RESPONSE_TIMEOUT_10SEC;
                     break;
                     case hfpBinpCmdPending:
-                        timeout = (uint32) AT_RESPONSE_TIMEOUT_30SEC;
+                        timeout = (u32) AT_RESPONSE_TIMEOUT_30SEC;
                     break;
                     default:
                     break;

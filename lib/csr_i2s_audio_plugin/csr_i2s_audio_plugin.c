@@ -57,12 +57,12 @@ DESCRIPTION: CsrI2SAudioOutputConnectConfigureSink :
 PARAMETERS:
     
     Sink sink   - The Sink to configure
-    uint32 rate - Sample rate of the data coming from the DSP
+    u32 rate - Sample rate of the data coming from the DSP
 
 RETURNS:
     Nothing.
 */
-void CsrI2SAudioOutputConnectConfigureSink(Sink sink, uint32 rate)
+void CsrI2SAudioOutputConnectConfigureSink(Sink sink, u32 rate)
 {
     /* configure the I2S interface operating mode, run in master or slave mode */
     PanicFalse(SinkConfigure(sink, STREAM_I2S_MASTER_MODE, I2S_config->i2s_init_config.master_operation));
@@ -95,7 +95,7 @@ DESCRIPTION: CsrI2SAudioOutputConnect :
 
 PARAMETERS:
     
-    uint32 rate - sample rate of data coming from dsp
+    u32 rate - sample rate of data coming from dsp
     bool   stereo - indicates whether to connect left or left and right channels
     Source dsp_left_port - audio stream from dsp for the left channel audio
     Source dsp_right_port - audio stream from dsp for the left channel audio
@@ -103,7 +103,7 @@ PARAMETERS:
 RETURNS:
     none
 */
-Sink CsrI2SAudioOutputConnect(uint32 rate, bool stereo, Source left_port, Source right_port )
+Sink CsrI2SAudioOutputConnect(u32 rate, bool stereo, Source left_port, Source right_port )
 {
     Sink lSink_A;
     
@@ -210,7 +210,7 @@ PARAMETERS:
 RETURNS:
     none
 */
-void CsrI2SAudioOutputSetVolume(bool stereo, int16 left_volume, int16 right_volume, bool volume_in_dB)
+void CsrI2SAudioOutputSetVolume(bool stereo, i16 left_volume, i16 right_volume, bool volume_in_dB)
 {
 
     PRINT(("I2S: CsrI2SAudioOutputSetVolume\n"));
@@ -230,7 +230,7 @@ DESCRIPTION: CsrI2SAudioOutputConnectAdpcm :
 
 PARAMETERS:
     
-    uint32 rate - sample rate of data coming from dsp
+    u32 rate - sample rate of data coming from dsp
     bool   stereo - indicates whether to connect left or left and right channels
     Source dsp_left_port - audio stream from dsp for the left channel audio
     
@@ -238,7 +238,7 @@ PARAMETERS:
 RETURNS:
     sink
 */
-Sink CsrI2SAudioOutputConnectAdpcm(uint32 rate, bool stereo, Source left_port)
+Sink CsrI2SAudioOutputConnectAdpcm(u32 rate, bool stereo, Source left_port)
 {
     Sink lSink_A;
     
@@ -282,21 +282,21 @@ Sink CsrI2SAudioOutputConnectAdpcm(uint32 rate, bool stereo, Source left_port)
     return lSink_A;
 }
 
-static void CsrInitialiseI2SDevice_PsKey(uint32 rate)
+static void CsrInitialiseI2SDevice_PsKey(u32 rate)
 {
     /* use the configuration information retrieved from ps or constant if no ps */
     if((I2S_config->i2s_init_config.i2s_configuration_command_pskey_length)&&
        (I2S_config->i2s_init_config.number_of_initialisation_cmds))
     {
         /* configuration data available */
-        uint8 i;                
-        uint8 offset = 0;
+        u8 i;                
+        u8 offset = 0;
         
         /* cycle through the configuration messages */
         for(i = 0;i < I2S_config->i2s_init_config.number_of_initialisation_cmds; i++)
         {
 #ifdef DEBUG_PRINT_ENABLED
-            uint8 j;
+            u8 j;
 
             PRINT(("I2S: Init Msg Addr=0x%04x,",I2S_config->i2s_data_config.data[PACKET_I2C_ADDR + offset]));
             PRINT((" Write Reg=0x%02x,",I2S_config->i2s_data_config.data[PACKET_DATA + offset]));
@@ -324,12 +324,12 @@ DESCRIPTION: CsrInitialiseI2SDevice :
 
 PARAMETERS:
     
-    uint32 sample_rate - sample rate of data coming from dsp
+    u32 sample_rate - sample rate of data coming from dsp
 
 RETURNS:
     none
 */    
-void CsrInitialiseI2SDevice(uint32 rate)
+void CsrInitialiseI2SDevice(u32 rate)
 {
     switch(I2S_config->i2s_init_config.plugin_type)
     {
@@ -367,14 +367,14 @@ void CsrShutdownI2SDevice(void)
                (I2S_config->i2s_init_config.number_of_shutdown_cmds))
             {
                 /* configuration data available */
-                uint8 i;                
-                uint8 offset = I2S_config->i2s_init_config.shutdown_cmds_offset;
+                u8 i;                
+                u8 offset = I2S_config->i2s_init_config.shutdown_cmds_offset;
                 
                 /* cycle through the configuration messages */
                 for(i = 0;i < I2S_config->i2s_init_config.number_of_shutdown_cmds; i++)
                 {
 #ifdef DEBUG_PRINT_ENABLED
-                    uint8 j;
+                    u8 j;
 
                     PRINT(("I2S: Shutdown Msg Addr=0x%04x",I2S_config->i2s_data_config.data[PACKET_I2C_ADDR + offset]));
                     PRINT((" Write Reg=0x%02x,",I2S_config->i2s_data_config.data[PACKET_DATA + offset]));
@@ -412,19 +412,19 @@ DESCRIPTION: CsrSetVolumeI2SChannel
 
 PARAMETERS:
     i2s_out_t channel   The I2S device and channel to set the volume of.
-    int16 vol           The volume level required, in dB/60 or CODEC_STEPS.
+    i16 vol           The volume level required, in dB/60 or CODEC_STEPS.
     bool volume_in_dB   Set to TRUE if volume passed in dB/60, FALSE otherwise.
 
 RETURNS:
     Whether volume was successfully changed for the requested device channel.
 */
-bool CsrSetVolumeI2SChannel(i2s_out_t channel, int16 vol, bool volume_in_dB)
+bool CsrSetVolumeI2SChannel(i2s_out_t channel, i16 vol, bool volume_in_dB)
 {
-    uint8  i;
-    uint32 volume;  /* Working variable to scale and shift volume */
-    uint16 range;   /* Working variable to store volume range and remainders */
-    uint8* vol_cmd; /* Pointer to I2C command and address information from PS */
-    uint8* packet;  /* Data to send over I2C, based on PS info and scaled vol */
+    u8  i;
+    u32 volume;  /* Working variable to scale and shift volume */
+    u16 range;   /* Working variable to store volume range and remainders */
+    u8* vol_cmd; /* Pointer to I2C command and address information from PS */
+    u8* packet;  /* Data to send over I2C, based on PS info and scaled vol */
     
     bool inverted_range;
     
@@ -453,7 +453,7 @@ bool CsrSetVolumeI2SChannel(i2s_out_t channel, int16 vol, bool volume_in_dB)
     
     PRINT(("I2S: SetVol %d", vol));
     
-    /*! The input vol needs to be scaled to the I2S amp range, which is a variable calculated from the min/max (uint16) values
+    /*! The input vol needs to be scaled to the I2S amp range, which is a variable calculated from the min/max (u16) values
         in I2S_INIT_CONFIG. The scale factor is (amp range / input vol range). The amp range can be up to 16-bit, so the first
         step in the calculation (input vol * amp range) is potentially a 32-bit number. However, performing division of 32-bit
         numbers on the XAP is very stack intensive, unless the divisor is a power of 2 (in which case bit shifts can be used in
@@ -622,14 +622,14 @@ DESCRIPTION: CsrSetVolumeI2SDevice
     use in stereo mode.
 
 PARAMETERS:
-    int16 left_vol    - Volume level for primary left channel.
-    int16 right_vol   - Volume level for primary left channel.
+    i16 left_vol    - Volume level for primary left channel.
+    i16 right_vol   - Volume level for primary left channel.
     bool volume_in_dB - Whether the volume is passed in in dB or CODEC_STEPS.
 
 RETURNS:
     none
 */
-void CsrSetVolumeI2SDevice(int16 left_vol, int16 right_vol, bool volume_in_dB)
+void CsrSetVolumeI2SDevice(i16 left_vol, i16 right_vol, bool volume_in_dB)
 {
     /* determine i2s plugin type in use */
     switch(I2S_config->i2s_init_config.plugin_type)
@@ -680,14 +680,14 @@ PARAMETERS:
 RETURNS:
     frequency or 0 indicating no resampling required
 */    
-uint16 CsrI2SMusicResamplingFrequency(void)
+u16 CsrI2SMusicResamplingFrequency(void)
 {
     return I2S_config->i2s_init_config.music_resampling_frequency;
 }
 
-uint16 CsrI2SGetOutputResamplingFrequencyForI2s(const uint16 requested_rate)
+u16 CsrI2SGetOutputResamplingFrequencyForI2s(const u16 requested_rate)
 {
-    uint32 rate = CsrI2SMusicResamplingFrequency();
+    u32 rate = CsrI2SMusicResamplingFrequency();
     if(rate == I2S_NO_RESAMPLE)
     {
         rate = requested_rate;
@@ -712,7 +712,7 @@ PARAMETERS:
 RETURNS:
     frequency or 0 indicating no resampling required
 */    
-uint16 CsrI2SVoiceResamplingFrequency(void)
+u16 CsrI2SVoiceResamplingFrequency(void)
 {
     return I2S_config->i2s_init_config.voice_resampling_frequency;
 }
@@ -729,7 +729,7 @@ PARAMETERS:
 RETURNS:
     none
 */    
-void CsrI2SAudioInputConnect(uint32 rate, bool stereo, Sink left_port, Sink right_port )
+void CsrI2SAudioInputConnect(u32 rate, bool stereo, Sink left_port, Sink right_port )
 {
     Source lSource_A;  
 

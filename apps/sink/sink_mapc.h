@@ -80,9 +80,9 @@ struct __mapcState
     /* The Mapc Mns Session */
     Mns             mnsHandle;
     /* The Mns rfcomm Channel for the MNS Service */
-    uint8           mnsChannel;
+    u8           mnsChannel;
     /* The Mas rfcomm Channel for the MAS Service */
-    uint8           masChannel;
+    u8           masChannel;
     /* Device id for mapc connection */
     mapc_state      device_state;
 };
@@ -94,7 +94,7 @@ struct __mapcData
     mapcState       state[MAX_MAPC_CONNECTIONS];
     
     /* The SDP record handle of the MNS Service */
-    uint32          sdpHandle;
+    u32          sdpHandle;
     
     /* The Mns rfcomm Channel for the MNS Service */
     unsigned        mnsChannel:8;
@@ -121,7 +121,7 @@ typedef enum
 
 typedef struct{
     bdaddr   bdAddr;
-    uint16   device_id;
+    u16   device_id;
 }MAPC_APP_MAS_CONNECT_T;
 
 typedef struct{

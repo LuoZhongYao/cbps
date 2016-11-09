@@ -24,7 +24,7 @@ NOTES
 
 
 /**************************************************************************/
-void selectOptimalCsrFastStreamCapsSink(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalCsrFastStreamCapsSink(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
     /* Choose what is supported at both sides */
     remote_codec_caps[10] = (remote_codec_caps[10] & (FASTSTREAM_MUSIC | FASTSTREAM_VOICE)) & (local_codec_caps[10] & (FASTSTREAM_MUSIC | FASTSTREAM_VOICE));
@@ -36,7 +36,7 @@ void selectOptimalCsrFastStreamCapsSink(const uint8 *local_codec_caps, uint8 *re
 
 
 /**************************************************************************/
-void selectOptimalCsrFastStreamCapsSource(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalCsrFastStreamCapsSource(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
     /* Choose what is supported at both sides */
     remote_codec_caps[10] = (remote_codec_caps[10] & (FASTSTREAM_MUSIC | FASTSTREAM_VOICE)) & (local_codec_caps[10] & (FASTSTREAM_MUSIC | FASTSTREAM_VOICE));
@@ -49,7 +49,7 @@ void selectOptimalCsrFastStreamCapsSource(const uint8 *local_codec_caps, uint8 *
 
 
 /**************************************************************************/
-void getCsrFastStreamConfigSettings(const uint8 *service_caps, a2dp_role_type role, a2dp_codec_settings *codec_settings)
+void getCsrFastStreamConfigSettings(const u8 *service_caps, a2dp_role_type role, a2dp_codec_settings *codec_settings)
 {
     if (service_caps[10] & FASTSTREAM_MUSIC)
     {

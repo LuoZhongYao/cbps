@@ -35,7 +35,7 @@ NOTES
 
 
 /* Request the service handle(s) of the HSP service at the AG */
-static const uint8 HspServiceRequest [] =
+static const u8 HspServiceRequest [] =
 {
     0x35, /* type = DataElSeq */
     0x05, /* size ...5 bytes in DataElSeq */
@@ -44,7 +44,7 @@ static const uint8 HspServiceRequest [] =
 
 
 /* Request the service handle(s) of the HFP service at the AG */
-static const uint8 HfpServiceRequest [] =
+static const u8 HfpServiceRequest [] =
 {
     0x35, /* type = DataElSeq */
     0x05, /* size ...5 bytes in DataElSeq */
@@ -53,7 +53,7 @@ static const uint8 HfpServiceRequest [] =
 
 
 /* Request the RFCOMM channel number of the AG's service */
-static const uint8 protocolAttributeRequest [] =
+static const u8 protocolAttributeRequest [] =
 {
     0x35, /* type = DataElSeq */
     0x03, /* size ...3 bytes in DataElSeq */
@@ -62,7 +62,7 @@ static const uint8 protocolAttributeRequest [] =
 
 
 /* Request the supported features of the HFP AG */
-static const uint8 supportedFeaturesAttributeRequest [] =
+static const u8 supportedFeaturesAttributeRequest [] =
 {
     0x35,               /* 0b00110 101 type=DataElSeq */
     0x03,               /* size = 6 bytes in DataElSeq */        
@@ -71,7 +71,7 @@ static const uint8 supportedFeaturesAttributeRequest [] =
 
 
 /* Request the profile descriptor list of the HFP AG */
-static const uint8 profileDescriptorRequest [] =
+static const u8 profileDescriptorRequest [] =
 {
     0x35,               /* 0b00110 101 type=DataElSeq */
     0x03,               /* size = 3 bytes in DataElSeq */        
@@ -80,7 +80,7 @@ static const uint8 profileDescriptorRequest [] =
 
 
 /* Find the rfcomm server channel in a service record */
-static bool findRfcommServerChannel(const uint8 *ptr, const uint8 *end, Region *value)
+static bool findRfcommServerChannel(const u8 *ptr, const u8 *end, Region *value)
 {
     ServiceDataType type;
     Region record, protocols, protocol;
@@ -92,7 +92,7 @@ static bool findRfcommServerChannel(const uint8 *ptr, const uint8 *end, Region *
             if(type == sdtSequence
                && ServiceGetValue(&protocol, &type, value) 
                && type == sdtUUID
-               && RegionMatchesUUID32(value, (uint32) UUID_RFCOMM)
+               && RegionMatchesUUID32(value, (u32) UUID_RFCOMM)
                && ServiceGetValue(&protocol, &type, value)
                && type == sdtUnsignedInteger)
             {
@@ -105,12 +105,12 @@ static bool findRfcommServerChannel(const uint8 *ptr, const uint8 *end, Region *
 
 
 /* Retrieve the rfcomm server channel */
-static uint16 getRfcommChannelNumber(const uint8 *begin, const uint8 *end, uint16 *chan)
+static u16 getRfcommChannelNumber(const u8 *begin, const u8 *end, u16 *chan)
 {
     Region value;
     if(findRfcommServerChannel(begin, end, &value))
     {
-        *chan = (uint16) RegionReadUnsigned(&value);
+        *chan = (u16) RegionReadUnsigned(&value);
         return 1;
     }
     return 0;
@@ -118,7 +118,7 @@ static uint16 getRfcommChannelNumber(const uint8 *begin, const uint8 *end, uint1
 
 
 /* Find the supported features in a service record */
-static bool findHfpSupportedFeatures(const uint8 *begin, const uint8 *end, Region *value)
+static bool findHfpSupportedFeatures(const u8 *begin, const u8 *end, Region *value)
 {
     ServiceDataType type;
     Region record;
@@ -135,12 +135,12 @@ static bool findHfpSupportedFeatures(const uint8 *begin, const uint8 *end, Regio
 
 
 /* Get the supported features from the returned attribute list */
-static uint16 getHfpAgSupportedFeatures(const uint8 *begin, const uint8 *end, uint16 *features)
+static u16 getHfpAgSupportedFeatures(const u8 *begin, const u8 *end, u16 *features)
 {
     Region value;
     if(findHfpSupportedFeatures(begin, end, &value))
     {
-        *features = (uint16) RegionReadUnsigned(&value);
+        *features = (u16) RegionReadUnsigned(&value);
         return 1;
     }
     return 0;
@@ -148,21 +148,21 @@ static uint16 getHfpAgSupportedFeatures(const uint8 *begin, const uint8 *end, ui
 
 
 /* Create a dynamic SDP record for HSP */
-static const uint8* hfpSdpHspRecordCreate(uint8 channel)
+static const u8* hfpSdpHspRecordCreate(u8 channel)
 {
-    uint8* service_record = PanicUnlessMalloc(sizeof(hsp_service_record));
+    u8* service_record = PanicUnlessMalloc(sizeof(hsp_service_record));
     memmove(service_record, hsp_service_record, sizeof(hsp_service_record));
     
     /* Insert RFCOMM channel */
     service_record[HSP_RFCOMM_IDX] = theHfp->busy_channel;
-    return (const uint8*)service_record; 
+    return (const u8*)service_record; 
 }
 
 
 /* Create a dynamic SDP record for HFP */
-static const uint8* hfpSdpRecordCreate(uint8 channel, uint16 version, uint16 features)
+static const u8* hfpSdpRecordCreate(u8 channel, u16 version, u16 features)
 {
-    uint8* service_record = PanicUnlessMalloc(sizeof(hfp_service_record));
+    u8* service_record = PanicUnlessMalloc(sizeof(hfp_service_record));
     memmove(service_record, hfp_service_record, sizeof(hfp_service_record));
     
     /* Insert RFCOMM channel */
@@ -176,7 +176,7 @@ static const uint8* hfpSdpRecordCreate(uint8 channel, uint16 version, uint16 fea
     service_record[HFP_FEATURES_MSB_IDX] = features >> 8;
     service_record[HFP_FEATURES_LSB_IDX] = features &  0xFF;
     
-    return (const uint8*)service_record;
+    return (const u8*)service_record;
 }
 
 
@@ -197,8 +197,8 @@ void hfpRegisterServiceRecord(hfp_service_data* service)
     {
         if(!theHfp->busy_channel)
         {
-            const uint8* service_record      = NULL;
-            uint16       size_service_record = 0;
+            const u8* service_record      = NULL;
+            u16       size_service_record = 0;
             
             theHfp->busy_channel  = service->rfc_server_channel;
             
@@ -217,8 +217,8 @@ void hfpRegisterServiceRecord(hfp_service_data* service)
             }
             else if (supportedProfileIsHfp(service->profile))
             {
-                uint16 features = BRSF_BITMAP_TO_SDP_BITMAP(theHfp->hf_supported_features);
-                uint16 version = supportedProfileIsHfp106(service->profile) ? HFP_1_6_VERSION_NUMBER : HFP_1_5_VERSION_NUMBER;
+                u16 features = BRSF_BITMAP_TO_SDP_BITMAP(theHfp->hf_supported_features);
+                u16 version = supportedProfileIsHfp106(service->profile) ? HFP_1_6_VERSION_NUMBER : HFP_1_5_VERSION_NUMBER;
                 
                 size_service_record = sizeof(hfp_service_record);
                 
@@ -250,7 +250,7 @@ void hfpRegisterServiceRecord(hfp_service_data* service)
             /* Queue registering this service */
             MAKE_HFP_MESSAGE(HFP_INTERNAL_SDP_REGISTER_REQ);
             message->service = service;
-            MessageSendConditionally(&theHfp->task, HFP_INTERNAL_SDP_REGISTER_REQ, message, (uint16*)&theHfp->busy_channel);
+            MessageSendConditionally(&theHfp->task, HFP_INTERNAL_SDP_REGISTER_REQ, message, (u16*)&theHfp->busy_channel);
         }
     }
     else if(!theHfp->initialised && service == HFP_SERVICE_TOP)
@@ -366,8 +366,8 @@ RETURNS
 void hfpGetProfileServerChannel(hfp_link_data* link, hfp_service_data* service, const bdaddr *bd_addr)
 {
     /* Default to HFP search */
-    uint16 sp_len = sizeof(HfpServiceRequest);
-    uint8* sp_ptr = (uint8 *) HfpServiceRequest;
+    u16 sp_len = sizeof(HfpServiceRequest);
+    u8* sp_ptr = (u8 *) HfpServiceRequest;
 
     /* Set up the link data */
     hfpLinkSetup(link, service, bd_addr, NULL, hfp_slc_searching);
@@ -375,7 +375,7 @@ void hfpGetProfileServerChannel(hfp_link_data* link, hfp_service_data* service, 
     /* Check if we're searching for HSP */
     if (hfpLinkIsHsp(link))
     {
-        sp_ptr = (uint8 *) HspServiceRequest;
+        sp_ptr = (u8 *) HspServiceRequest;
         sp_len = sizeof(HspServiceRequest);
     }
 
@@ -433,7 +433,7 @@ void hfpHandleServiceSearchAttributeCfm(const CL_SDP_SERVICE_SEARCH_ATTRIBUTE_CF
         /* Check the outcome of the service search */
         if (cfm->status == sdp_response_success)
         {
-            uint16 sdp_data  =  0;
+            u16 sdp_data  =  0;
             
             if(link->ag_slc_state == hfp_slc_searching)
             {
@@ -519,7 +519,7 @@ void hfpGetAgSupportedFeatures(hfp_link_data* link)
             if the remote end returns this many bytes we still have a block big enough to
             copy the data into. 
         */
-        ConnectionSdpServiceSearchAttributeRequest(&theHfp->task, &link_addr, 0x32, sizeof(HfpServiceRequest), (uint8 *) HfpServiceRequest, sizeof(supportedFeaturesAttributeRequest), supportedFeaturesAttributeRequest);
+        ConnectionSdpServiceSearchAttributeRequest(&theHfp->task, &link_addr, 0x32, sizeof(HfpServiceRequest), (u8 *) HfpServiceRequest, sizeof(supportedFeaturesAttributeRequest), supportedFeaturesAttributeRequest);
     }
     else
     {

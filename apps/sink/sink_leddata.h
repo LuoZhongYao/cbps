@@ -29,8 +29,8 @@ Types
 #define NO_STATE_OR_EVENT 0xff
 
 /* Macros for the max number of LED events and filter patterns, capped at 20 each */
-#define LM_MAX_NUM_PATTERNS ((uint16)(theSink.theLEDTask->gEventPatternsAllocated>20 ? 20:theSink.theLEDTask->gEventPatternsAllocated))  
-#define LM_NUM_FILTER_EVENTS ((uint16)(theSink.theLEDTask->gLMNumFiltersUsed>20 ? 20:theSink.theLEDTask->gLMNumFiltersUsed))  
+#define LM_MAX_NUM_PATTERNS ((u16)(theSink.theLEDTask->gEventPatternsAllocated>20 ? 20:theSink.theLEDTask->gEventPatternsAllocated))  
+#define LM_NUM_FILTER_EVENTS ((u16)(theSink.theLEDTask->gLMNumFiltersUsed>20 ? 20:theSink.theLEDTask->gLMNumFiltersUsed))  
 
 
 typedef enum LEDSpeedActionTag
@@ -61,7 +61,7 @@ typedef enum LEDFilterTypeTag
 
 typedef struct LedFilterTag
 {
-    uint16              Event;      /*The event to action the filter upon*/    
+    u16              Event;      /*The event to action the filter upon*/    
     
     unsigned            FilterType:3;
     unsigned            Colour:3 ;     /*Force LED to this colour pattern no matter what is defined in the state pattern*/    
@@ -98,7 +98,7 @@ typedef struct LEDPatternStateTag
     /*the led pattern type */
 typedef struct LEDPatternStateEventTag
 {
-    uint16            StateOrEvent; /*State or Event ID*/
+    u16            StateOrEvent; /*State or Event ID*/
     
     LEDPatternState_t pattern;      /*LED pattern associated with this event*/
 }LEDPattern_t ;
@@ -133,7 +133,7 @@ typedef struct LEDActivityTag
     /*the event message sent on completion of an event */
 typedef struct 
 {
-    uint16 Event ;  
+    u16 Event ;  
     bool PatternCompleted ;
     
 } LMEndMessage_t;
@@ -154,7 +154,7 @@ typedef struct PioTriColLedsTag
 /* LED information structure */
 typedef struct LEDInfo
 {
-    unsigned led:8; /* LED and PIOs are uint16, though we aren't going to have more than 256 for each */
+    unsigned led:8; /* LED and PIOs are u16, though we aren't going to have more than 256 for each */
     unsigned OnOff:1; /* On Off state */
     unsigned is_led:1; /* 1:LED, 0:PIO */
     unsigned unused:6;
@@ -212,12 +212,12 @@ typedef struct
     LEDpPIOInfo_t           gpPIOInfo ; /* structure to be used by functions that require translation of pPIO to HW */
 } LedTaskData;  
 
-#define LED_SCALE_ON_OFF_TIME(x) (uint16)((x * 10) << theSink.features.LedTimeMultiplier )
-#define LED_SCALE_REPEAT_TIME(x) (uint16)((x * 50) << theSink.features.LedTimeMultiplier )
-#define FILTER_SCALE_DELAY_TIME(x) (uint16)(x << theSink.features.LedTimeMultiplier )
+#define LED_SCALE_ON_OFF_TIME(x) (u16)((x * 10) << theSink.features.LedTimeMultiplier )
+#define LED_SCALE_REPEAT_TIME(x) (u16)((x * 50) << theSink.features.LedTimeMultiplier )
+#define FILTER_SCALE_DELAY_TIME(x) (u16)(x << theSink.features.LedTimeMultiplier )
 
-#define LED_GETACTIVEFILTERS() (uint32)(((uint32)theSink.theLEDTask->gTheActiveFiltersH<<16) | theSink.theLEDTask->gTheActiveFiltersL)
-#define LED_SETACTIVEFILTERS(x) {theSink.theLEDTask->gTheActiveFiltersH = ((uint32)x>>16) & 0xF ;\
+#define LED_GETACTIVEFILTERS() (u32)(((u32)theSink.theLEDTask->gTheActiveFiltersH<<16) | theSink.theLEDTask->gTheActiveFiltersL)
+#define LED_SETACTIVEFILTERS(x) {theSink.theLEDTask->gTheActiveFiltersH = ((u32)x>>16) & 0xF ;\
                                  theSink.theLEDTask->gTheActiveFiltersL = x & 0xffff;}
 
 #endif

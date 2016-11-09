@@ -22,8 +22,8 @@ DESCRIPTION
 void sendInitCfmToApp(Task codecTask, 
 					  Task clientTask, 
 					  codec_status_code status, 
-					  uint16 inputGainRange, 
-					  uint16 outputGainRange);
+					  u16 inputGainRange, 
+					  u16 outputGainRange);
 	
 
 #endif /* CODEC_INIT_HANDLER_H */

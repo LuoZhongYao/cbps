@@ -384,7 +384,7 @@ static void avrcpHandleUnhandledMessages(AVRCP *avrcp,
 
         case AVRCP_INTERNAL_UNITINFO_REQ:
             avrcpSendUnitInfoCfmToClient(avrcp, 
-                                 avrcp_device_not_connected, 0, 0, (uint32) 0);
+                                 avrcp_device_not_connected, 0, 0, (u32) 0);
             break;
 
         case AVRCP_INTERNAL_SUBUNITINFO_REQ:

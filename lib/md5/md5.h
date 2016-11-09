@@ -47,9 +47,9 @@ memory consumption on BlueCore.
 
 typedef struct
 {
-    uint32 buffer[16];
-    uint32 state[4];
-    uint32 bytes;
+    u32 buffer[16];
+    u32 state[4];
+    u32 bytes;
 } MD5_CTX;
 
 /*!
@@ -65,13 +65,13 @@ void MD5Init(MD5_CTX *);
    Continues an MD5 message-digest operation, processing another
    message block, and updating the context.
 */
-void MD5Update(MD5_CTX *, const uint8 *bytes, uint16 len);
+void MD5Update(MD5_CTX *, const u8 *bytes, u16 len);
 
 /*! 
    @brief Extract the digest from the MD5_CTX.
 
    Ends an MD5 message-digest operation, extracting the digest.
 */
-void MD5Final(uint8 digest[16], MD5_CTX *);
+void MD5Final(u8 digest[16], MD5_CTX *);
 
 #endif /* MD5_H_ */

@@ -17,12 +17,12 @@ void aghfpHandleSendCallIndicator(AGHFP *aghfp, aghfp_call_status);
 void aghfpSendCallSetupIndicator(AGHFP *aghfp, aghfp_call_setup_status);
 void aghfpHandleSendCallSetupIndicator(AGHFP *aghfp, aghfp_call_setup_status);
 void aghfpHandleSendCallHeldIndicator(AGHFP *aghfp, aghfp_call_held_status status);
-void aghfpHandleSendSignalIndicator(AGHFP *aghfp, uint16 level);
+void aghfpHandleSendSignalIndicator(AGHFP *aghfp, u16 level);
 void aghfpHandleSendRoamIndicator(AGHFP *aghfp, aghfp_roam_status status);
-void aghfpHandleSendBattChgIndicator(AGHFP *aghfp, uint16 level);
+void aghfpHandleSendBattChgIndicator(AGHFP *aghfp, u16 level);
 void aghfpHandleCallerIdSetupReq(AGHFP *aghfp, bool enable);
 void aghfpHandleCallWaitingSetupReq(AGHFP *aghfp, bool enable);
-void aghfpHandleSendCallWaitingNotification(AGHFP *aghfp, uint8 type, uint16 size_number, uint8 *number, uint16 size_string, uint8 *string);
+void aghfpHandleSendCallWaitingNotification(AGHFP *aghfp, u8 type, u16 size_number, u8 *number, u16 size_string, u8 *string);
 void aghfpHandleSetServiceState(AGHFP *aghfp, bool service_state);
 void aghfpHandleIndicatorsActivationRequest(AGHFP * aghfp, AGHFP_INTERNAL_INDICATORS_ACTIVATION_REQ_T* req);
 

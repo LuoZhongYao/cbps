@@ -89,7 +89,7 @@ Transform TransformFromSink(Sink sink);
   @param value Valid values depend on the transform.
   @return Returns FALSE if the key was unrecognised, or if the value was out of bounds.
 */
-bool TransformConfigure(Transform transform, vm_transform_config_key key, uint16 value);
+bool TransformConfigure(Transform transform, vm_transform_config_key key, u16 value);
 
 /*!
   @brief Create a transform between the specified source and sink. 

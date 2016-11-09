@@ -15,15 +15,15 @@ NOTES
 #define _CSR_AG_AUDIO_H_
 
 /*plugin functions*/
-void CsrAgAudioPluginConnect( CsrAgAudioPluginTaskData *task, Sink audio_sink ,AUDIO_SINK_T sink_type , Task codec_task , uint16 volume , uint32 rate , bool stereo , AUDIO_MODE_T mode , const void * params , Task app_task) ;
+void CsrAgAudioPluginConnect( CsrAgAudioPluginTaskData *task, Sink audio_sink ,AUDIO_SINK_T sink_type , Task codec_task , u16 volume , u32 rate , bool stereo , AUDIO_MODE_T mode , const void * params , Task app_task) ;
 void CsrAgAudioPluginDisconnect(CsrAgAudioPluginTaskData *task) ;
-void CsrAgAudioPluginSetVolume( CsrAgAudioPluginTaskData *task, uint16 volume ) ;
+void CsrAgAudioPluginSetVolume( CsrAgAudioPluginTaskData *task, u16 volume ) ;
 void CsrAgAudioPluginSetMode ( CsrAgAudioPluginTaskData *task, AUDIO_MODE_T mode , const void * params ) ;
-void CsrAgAudioPluginPlayTone (CsrAgAudioPluginTaskData *task, ringtone_note * tone , Task codec_task , uint16 tone_volume) ;
+void CsrAgAudioPluginPlayTone (CsrAgAudioPluginTaskData *task, ringtone_note * tone , Task codec_task , u16 tone_volume) ;
 void CsrAgAudioPluginStopTone (  void) ;
 
 /*internal plugin message functions*/
-void CsrAgAudioPluginInternalMessage( CsrAgAudioPluginTaskData *task ,uint16 id , Message message ) ;
+void CsrAgAudioPluginInternalMessage( CsrAgAudioPluginTaskData *task ,u16 id , Message message ) ;
 
 void CsrAgAudioPluginToneComplete (CsrAgAudioPluginTaskData *task) ;
 #endif

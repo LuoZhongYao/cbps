@@ -22,10 +22,10 @@ Copyright (c) 2010 - 2015 Qualcomm Technologies International, Ltd.
 device_class_state *device;
 
 /* helper function for allocating space in Sink */
-uint8 *claimSink(Sink sink, uint16 size)
+u8 *claimSink(Sink sink, u16 size)
 {
-    uint8 *dest = SinkMap(sink);
-    uint16 claim_result = SinkClaim(sink, size);
+    u8 *dest = SinkMap(sink);
+    u16 claim_result = SinkClaim(sink, size);
     if (claim_result == 0xffff)
     {
         return 0;
@@ -35,13 +35,13 @@ uint8 *claimSink(Sink sink, uint16 size)
 }
 
 
-usb_device_class_status UsbDeviceClassConfigure(usb_device_class_config config, uint16 value_16, uint32 value_32, const uint8 *params)
+usb_device_class_status UsbDeviceClassConfigure(usb_device_class_config config, u16 value_16, u32 value_32, const u8 *params)
 {
 #ifndef USB_DEVICE_CLASS_REMOVE_MASS_STORAGE    
     if (device && (device->usb_classes & USB_DEVICE_CLASS_TYPE_MASS_STORAGE))
     {
         /* Return success if this is a mass storage config request */
-        if(usbConfigureMassStorage(config, value_16, value_32, (uint8 *)params))
+        if(usbConfigureMassStorage(config, value_16, value_32, (u8 *)params))
             return usb_device_class_status_success;
     }
 #endif   
@@ -68,7 +68,7 @@ usb_device_class_status UsbDeviceClassConfigure(usb_device_class_config config, 
 }
 
 
-usb_device_class_status UsbDeviceClassEnumerate(Task app_task, uint16 usb_device_class)
+usb_device_class_status UsbDeviceClassEnumerate(Task app_task, u16 usb_device_class)
 {
     usb_device_class_status status = usb_device_class_status_invalid_param_value;
     
@@ -122,19 +122,19 @@ usb_device_class_status UsbDeviceClassEnumerate(Task app_task, uint16 usb_device
 }
 
 
-usb_device_class_status UsbDeviceClassGetValue(usb_device_class_get_value id, uint16 *value)
+usb_device_class_status UsbDeviceClassGetValue(usb_device_class_get_value id, void *value)
 {
     switch (id)
     {
 #ifndef USB_DEVICE_CLASS_REMOVE_AUDIO 
         case USB_DEVICE_CLASS_GET_VALUE_AUDIO_SOURCE:
         {
-            *value = (uint16)usbAudioSpeakerSource();
+            *((Source*)value) = usbAudioSpeakerSource();
             return usb_device_class_status_success;
         }
         case USB_DEVICE_CLASS_GET_VALUE_AUDIO_SINK:
         {
-            *value = (uint16)usbAudioMicSink();
+            *((Sink*)value) = usbAudioMicSink();
             return usb_device_class_status_success;
         }
         case USB_DEVICE_CLASS_GET_VALUE_AUDIO_LEVELS:
@@ -146,29 +146,29 @@ usb_device_class_status UsbDeviceClassGetValue(usb_device_class_get_value id, ui
         case USB_DEVICE_CLASS_GET_MIC_INTERFACE_ID:
         case USB_DEVICE_CLASS_GET_SPEAKER_INTERFACE_ID:
         {
-            *value = usbAudioGetInterfaceId(id);
+            *(UsbInterface*)value = usbAudioGetInterfaceId(id);
             return usb_device_class_status_success;
         }
         case USB_DEVICE_CLASS_GET_VALUE_SPEAKER_SAMPLE_FREQ:
         {
-            *value = (uint16)usbAudioGetSpeakerSampleFreq();
+            *(u32*)value = usbAudioGetSpeakerSampleFreq();
             return usb_device_class_status_success;
         }
         case USB_DEVICE_CLASS_GET_VALUE_MIC_SAMPLE_FREQ:
         {
-            *value = (uint16)usbAudioGetMicSampleFreq();
+            *(u32*)value = usbAudioGetMicSampleFreq();
             return usb_device_class_status_success;
         }
 #endif
 #ifndef USB_DEVICE_CLASS_REMOVE_MASS_STORAGE
         case USB_DEVICE_CLASS_GET_VALUE_MASS_STORAGE_SOURCE:
         {
-            *value = (uint16)usbMassStorageSource();
+            *(Source*)value = usbMassStorageSource();
             return usb_device_class_status_success;
         }
         case USB_DEVICE_CLASS_GET_VALUE_MASS_STORAGE_SINK:
         {
-            *value = (uint16)usbMassStorageSink();
+            *(Sink*)value = usbMassStorageSink();
             return usb_device_class_status_success;
         }
 #endif
@@ -202,7 +202,7 @@ usb_device_class_status UsbDeviceClassSendEvent(usb_device_class_event event)
 }
 
 
-usb_device_class_status UsbDeviceClassSendReport(usb_device_class_type class_type, uint16 report_id, uint16 size_report, uint8 *report)
+usb_device_class_status UsbDeviceClassSendReport(usb_device_class_type class_type, u16 report_id, u16 size_report, u8 *report)
 {
 #ifndef USB_DEVICE_CLASS_REMOVE_HID
     if ((class_type == USB_DEVICE_CLASS_TYPE_HID_CONSUMER_TRANSPORT_CONTROL) &&

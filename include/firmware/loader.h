@@ -54,6 +54,6 @@ void LoaderModeEnter(void);
   without any impact.
 
 */
-void LoaderPerformDfuFromSqif(uint16 partition);
+void LoaderPerformDfuFromSqif(u16 partition);
 
 #endif

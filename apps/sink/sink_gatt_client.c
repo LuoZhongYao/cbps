@@ -34,16 +34,14 @@ DESCRIPTION
 #ifdef GATT_ENABLED
 
 #ifdef DEBUG_GATT_CLIENT
-#define GATT_CLIENT_DEBUG(x) DEBUG(x)
 #else
-#define GATT_CLIENT_DEBUG(x) 
 #endif
 
 
 #define GATT_CLIENT_DISCOVERY_ALLOC_MEM(ptr) \
 { \
     ptr = calloc(1, sizeof(gatt_client_discovery_t) * MAX_GATT_CLIENT_SERVICES); \
-    GATT_CLIENT_DEBUG(("Mem Alloc (Gatt Client - Discovery): size[%u] addr[%p]\n", \
+    GATT_LOGD("Mem Alloc (Gatt Client - Discovery;: size[%u] addr[%p]\n", \
                        sizeof(gatt_client_discovery_t) * MAX_GATT_CLIENT_SERVICES, \
                        (void *)ptr)); \
 }
@@ -51,14 +49,14 @@ DESCRIPTION
 #define GATT_CLIENT_SERVICES_ALLOC_MEM(ptr) \
 { \
     ptr = calloc(1, sizeof(gatt_client_services_t)); \
-    GATT_CLIENT_DEBUG(("Mem Alloc (Gatt Client - Services): size[%u] addr[%p]\n", \
+    GATT_LOGD("Mem Alloc (Gatt Client - Services;: size[%u] addr[%p]\n", \
                        sizeof(gatt_client_services_t), \
                        (void *)ptr)); \
 }
 
 #define GATT_CLIENT_FREE_MEM(ptr) \
 { \
-    GATT_CLIENT_DEBUG(("Mem Free (Gatt Client): addr[%p]\n", \
+    GATT_LOGD("Mem Free (Gatt Client;: addr[%p]\n", \
                        (void *)ptr)); \
     free(ptr); \
     ptr = NULL; \
@@ -66,9 +64,9 @@ DESCRIPTION
 
 /* Find the maximum number of central mode connections */
 #ifdef GATT_HID_REMOTE_CONTROL
-#define CENTRAL_ROLE_MAX_CONNECTIONS (uint16)(GATT_HID_RC_MAX_REMOTE_SUPORTED)
+#define CENTRAL_ROLE_MAX_CONNECTIONS (u16)(GATT_HID_RC_MAX_REMOTE_SUPORTED)
 #else
-#define CENTRAL_ROLE_MAX_CONNECTIONS (uint16)(0)
+#define CENTRAL_ROLE_MAX_CONNECTIONS (u16)(0)
 #endif
 
 /* Check security required for current connection */
@@ -77,15 +75,15 @@ DESCRIPTION
 
 
 /***************************************************************************
-NAME    
+NAME
     gattClientHasMaxClients
-    
+
 DESCRIPTION
     Utility function called to check if maximum gatt client connection is reached.
-    
+
 PARAMETERS
     None
-    
+
 NOTE
     TRUE if reached else FALSE.
 */
@@ -95,15 +93,15 @@ static bool gattClientHasMaxClients(void)
 }
 
 /****************************************************************************
-NAME    
+NAME
     gattClientDiscoveryComplete
-    
+
 DESCRIPTION
     Called when discovery is complete.
-    
+
 PARAMETERS
     connection  The GATT connection
-    
+
 NOTE
     This function MUST be called with a non-NULL *connection argument.
 */
@@ -113,14 +111,14 @@ static void gattClientDiscoveryComplete(gatt_client_connection_t *connection)
 
     /* Panic if Connection is NULL */
     PanicNull(connection);
-    
-    GATT_CLIENT_DEBUG(("GATT Client Discovery Complete\n"));
-    
+
+    GATT_LOGD("GATT Client Discovery Complete\n");
+
     if (data)
     {
         GATT_CLIENT_FREE_MEM(data->discovery);
     }
-    
+
     if(connection->role == ble_gap_role_central)
     {
         /* Connection is now complete after setting security */
@@ -130,13 +128,13 @@ static void gattClientDiscoveryComplete(gatt_client_connection_t *connection)
 
 
 /****************************************************************************
-NAME    
+NAME
     initialiseGattClientService
-    
+
 DESCRIPTION
     Called to initialise the GATT service before all other services.
     This is so Service Changed indications can be captured.
-    
+
 PARAMETERS
     connection  The connection pointer
 
@@ -145,7 +143,7 @@ static void initialiseGattClientService(gatt_client_connection_t *connection)
 {
     gatt_client_discovery_t *discover = gattClientGetDiscoveredServices(connection);
     gatt_client_services_t *data = gattClientGetServiceData(connection);
-    uint16 service_count = 0;
+    u16 service_count = 0;
     bool gatt_service_found = FALSE;
 
     if (discover && data)
@@ -155,9 +153,9 @@ static void initialiseGattClientService(gatt_client_connection_t *connection)
             if ((discover) && (discover->service == gatt_client_gatt))
             {
                 gatt_service_found = sinkGattClientServiceAdd(connection->cid, discover->start_handle, discover->end_handle);
-                GATT_CLIENT_DEBUG(("Add gatt client service; success[%u] cid[0x%x] start[0x%x] end[0x%x]\n", 
+                GATT_CLIENT_DEBUG(("Add gatt client service; success[%u] cid[0x%x] start[0x%x] end[0x%x]\n",
                                    gatt_service_found,
-                                   connection->cid, 
+                                   connection->cid,
                                    discover->start_handle,
                                    discover->end_handle));
                 break;
@@ -176,18 +174,18 @@ static void initialiseGattClientService(gatt_client_connection_t *connection)
 
 
 /****************************************************************************
-NAME    
+NAME
     gattClientBdAddrtIsBonded
-    
+
 DESCRIPTION
     Determines if the typed Bluetooth address of the client device is in the paired device list.
-    
+
 PARAMETERS
     client_taddr  The typed Bluetooth address of the client device.
     public_taddr  If the public address is found it will be returned in the
                   location pointed at by this value.
-    
-RETURNS    
+
+RETURNS
     TRUE if the cient address was found in the paired device list, FALSE otherwise.
 
 */
@@ -196,53 +194,53 @@ static bool gattClientBdAddrtIsBonded(const typed_bdaddr *client_taddr, typed_bd
     tp_bdaddr tp_addr;
     tp_bdaddr tr_addr;
     bool address_ok = FALSE;
-    
-    GATT_CLIENT_DEBUG(("gattClientBdAddrtIsBonded\n")); 
-    
+
+    GATT_LOGD("gattClientBdAddrtIsBonded\n");
+
     if (client_taddr->type == TYPED_BDADDR_RANDOM)
     {
         /* Resolve random address to a public one */
-        tr_addr.taddr = *client_taddr; 
+        tr_addr.taddr = *client_taddr;
         tr_addr.transport = TRANSPORT_BLE_ACL;
         address_ok = VmGetPublicAddress(&tr_addr, &tp_addr);
-        GATT_CLIENT_DEBUG((" Random Addr\n"));
+        GATT_LOGD(" Random Addr\n");
     }
     else if (client_taddr->type == TYPED_BDADDR_PUBLIC)
     {
         /* Already a Public address */
         tp_addr.taddr = *client_taddr;
         address_ok = TRUE;
-        GATT_CLIENT_DEBUG((" Public Addr\n"));
+        GATT_LOGD(" Public Addr\n");
     }
-    
+
     if (address_ok)
     {
         /* Return public address of the client */
         *public_taddr = tp_addr.taddr;
         /* Find if public address is in PDL */
         address_ok = ConnectionSmGetAttributeNow(0, &public_taddr->addr, 0, NULL);
-        
+
         GATT_CLIENT_DEBUG((" Public Addr[%x:%x:%lx]\n",
                                public_taddr->addr.nap,
                                public_taddr->addr.uap,
                                public_taddr->addr.lap
                                ));
     }
-        
-    GATT_CLIENT_DEBUG((" Bonded=[%u]\n", address_ok)); 
-    
+
+    GATT_LOGD(" Bonded=[%u]\n", address_ok);
+
     return address_ok;
 }
 
 
 
 /****************************************************************************
-NAME    
+NAME
     gattDiscoverPrimaryServices
-    
+
 DESCRIPTION
     Discovers GATT primary services supported on the remote device.
-    
+
 PARAMETERS
     connection             The GATT connection
 
@@ -256,17 +254,17 @@ void gattDiscoverPrimaryServices(gatt_client_connection_t *connection)
 gatt_client_discovery_t *gattClientGetDiscoveredServices(gatt_client_connection_t *connection)
 {
     gatt_client_services_t *service = NULL;
-    
+
     if (connection)
     {
         service = gattClientGetServiceData(connection);
-        
+
         if (service)
         {
             return service->discovery;
         }
     }
-    
+
     return NULL;
 }
 
@@ -283,9 +281,9 @@ void gattClientInitialiseDiscoveredServices(gatt_client_connection_t *connection
         discover += data->current_discovered_service;
         if(discover)
         {
-            GATT_CLIENT_DEBUG(("GATT Discovered Service: cid[0x%x] index[%u]\n", connection->cid, data->current_discovered_service));
-            
-            GATT_CLIENT_DEBUG(("    service[%u] start[0x%x] end[0x%x]\n", discover->service, discover->start_handle, discover->end_handle));
+            GATT_LOGD("GATT Discovered Service: cid[0x%x] index[%u]\n", connection->cid, data->current_discovered_service);
+
+            GATT_LOGD("    service[%u] start[0x%x] end[0x%x]\n", discover->service, discover->start_handle, discover->end_handle);
             switch (discover->service)
             {
                 case gatt_client_battery:
@@ -337,7 +335,7 @@ void gattClientInitialiseDiscoveredServices(gatt_client_connection_t *connection
                     }
                 }
                 break;
-                
+
                 case gatt_client_gatt:
                 {
                     /* Gatt service will already have been initialised before other services.
@@ -350,13 +348,13 @@ void gattClientInitialiseDiscoveredServices(gatt_client_connection_t *connection
                 break;
                 default:
                 {
-                    GATT_CLIENT_DEBUG(("GATT unknown discovered service\n"));
+                    GATT_LOGD("GATT unknown discovered service\n");
                 }
                 break;
             }
         }
     }
-    
+
     if (error_flag)
     {
         gattClientDiscoveryError(connection);
@@ -365,30 +363,30 @@ void gattClientInitialiseDiscoveredServices(gatt_client_connection_t *connection
 
 
 /****************************************************************************/
-bool gattClientAdd(uint16 cid, const typed_bdaddr *client_taddr, ble_gap_role_t client_gap_role)
+bool gattClientAdd(u16 cid, const typed_bdaddr *client_taddr, ble_gap_role_t client_gap_role)
 {
     gatt_client_connection_t *connection = NULL;
     gatt_client_services_t *services = NULL;
     sink_attributes attributes;
     typed_bdaddr public_taddr;
-    
+
     if (gattClientHasMaxClients())
     {
         /* Cannot store more connections, maximum reached */
         return FALSE;
     }
-    
+
     connection = &(GATT_CLIENT.connection[GATT_CLIENT.number_connections]);
     GATT_CLIENT_SERVICES_ALLOC_MEM(services);
-                
+
     if (services)
-    {   
+    {
         /* Record details of the services */
         connection->data = services;
 
         /* Store the GATT Connection ID */
         connection->cid = cid;
-        
+
         /* Set client service configuration to default value */
         memset(&connection->client_config, 0, sizeof(gatt_client_attributes_t));
 
@@ -422,12 +420,12 @@ bool gattClientAdd(uint16 cid, const typed_bdaddr *client_taddr, ble_gap_role_t 
 
         /* Set the connection role */
         connection->role = client_gap_role;
-        
+
         /* Increase number of active connections */
         GATT_CLIENT.number_connections++;
-        
+
         GATT_CLIENT_DISCOVERY_ALLOC_MEM(services->discovery);
-        
+
         if (services->discovery)
         {
             /* Set MTU and kick off discovery once MTU configured */
@@ -439,16 +437,16 @@ bool gattClientAdd(uint16 cid, const typed_bdaddr *client_taddr, ble_gap_role_t 
             GATT_CLIENT_FREE_MEM(services);
         }
     }
-    
+
     return FALSE;
 }
 
 
 /****************************************************************************/
-gatt_client_connection_t *gattClientFindByCid(uint16 cid)
+gatt_client_connection_t *gattClientFindByCid(u16 cid)
 {
-    uint16 i = 0;
-    
+    u16 i = 0;
+
     for (i = 0; i < GATT_CLIENT.number_connections; i++)
     {
         if (GATT_CLIENT.connection[i].cid && (GATT_CLIENT.connection[i].cid == cid))
@@ -456,15 +454,15 @@ gatt_client_connection_t *gattClientFindByCid(uint16 cid)
             return &(GATT_CLIENT.connection[i]);
         }
     }
-    
+
     return NULL;
 }
 
 /****************************************************************************/
-bool gattClientRemove(uint16 cid)
+bool gattClientRemove(u16 cid)
 {
     gatt_client_connection_t *connection = gattClientFindByCid(cid);
-  
+
     if (connection && GATT_CLIENT.number_connections)
     {
         connection->cid = 0;
@@ -479,33 +477,33 @@ bool gattClientRemove(uint16 cid)
             GATT_CLIENT_FREE_MEM(connection->data);
         }
         GATT_CLIENT.number_connections--;
-        
+
         return TRUE;
     }
-    
+
     return FALSE;
 }
 
 
 /****************************************************************************/
-uint16 *gattClientAddService(gatt_client_connection_t *connection, uint16 size_service)
+u16 *gattClientAddService(gatt_client_connection_t *connection, u16 size_service)
 {
     if (connection)
     {
         gatt_client_services_t *services = connection->data;
-        uint16 size_client_data = sizeof(gatt_client_services_t) + services->size_client_data + size_service;
+        u16 size_client_data = sizeof(gatt_client_services_t) + services->size_client_data + size_service;
         gatt_client_services_t *data = realloc(connection->data, size_client_data);
-        
+
         if (data)
         {
-            uint16 *end = data->client_data + services->size_client_data;
+            u16 *end = data->client_data + services->size_client_data;
             data->size_client_data = size_client_data - sizeof(gatt_client_services_t);
             connection->data = data;
-            
+
             return end;
-        }   
+        }
     }
-    
+
     return NULL;
 }
 
@@ -513,14 +511,14 @@ uint16 *gattClientAddService(gatt_client_connection_t *connection, uint16 size_s
  * NOTE: This utility function should be called only in case initialization of client library fails. If called in
  * other situation then the entire client_data shall be corrupted.
 *****************************************************************************/
-static void gattClientDeleteLastService(gatt_client_connection_t *connection, uint16 size_service)
+static void gattClientDeleteLastService(gatt_client_connection_t *connection, u16 size_service)
 {
     if (connection)
     {
         gatt_client_services_t *services = connection->data;
-        uint16 size_client_data = sizeof(gatt_client_services_t) + services->size_client_data - size_service;
+        u16 size_client_data = sizeof(gatt_client_services_t) + services->size_client_data - size_service;
         gatt_client_services_t *data = realloc(connection->data, size_client_data);
-        
+
         if (data)
         {
             data->size_client_data = size_client_data - sizeof(gatt_client_services_t);
@@ -530,13 +528,13 @@ static void gattClientDeleteLastService(gatt_client_connection_t *connection, ui
 }
 
 /****************************************************************************/
-void gattClientStoreDiscoveredService(uint16 cid, uint16 uuid_type, uint32 *uuid, uint16 start, uint16 end, bool more)
+void gattClientStoreDiscoveredService(u16 cid, u16 uuid_type, u32 *uuid, u16 start, u16 end, bool more)
 {
     gatt_client_connection_t *connection = gattClientFindByCid(cid);
     gatt_client_discovery_t *discover = NULL;
     gatt_client_services_t *data = gattClientGetServiceData(connection);
     bool error_flag = TRUE;
-    GATT_CLIENT_DEBUG(("Gatt Client Store Discovered Service \n"));
+    GATT_LOGD("Gatt Client Store Discovered Service \n");
 
     if (connection && data)
     {
@@ -553,17 +551,17 @@ void gattClientStoreDiscoveredService(uint16 cid, uint16 uuid_type, uint32 *uuid
                     {
                         case GATT_SERVICE_UUID_BATTERY_SERVICE:
                         {
-                            /* As per CS-326396-DD connection spec, in peripheral role, 
+                            /* As per CS-326396-DD connection spec, in peripheral role,
                                 app should initialize only ANCS and IAS client */
                             if ((sinkGattBatteryClientEnabled()) && (ble_gap_role_central == connection->role))
                             {
-                                GATT_CLIENT_DEBUG(("Gatt Client Storing Battery service handles\n"));
+                                GATT_LOGD("Gatt Client Storing Battery service handles\n");
 
                                 /* Store discovered battery service */
                                 discover->service = gatt_client_battery;
                                 discover->start_handle = start;
                                 discover->end_handle = end;
-                                
+
                                 data->number_discovered_services++;
                             }
                         }
@@ -577,75 +575,75 @@ void gattClientStoreDiscoveredService(uint16 cid, uint16 uuid_type, uint32 *uuid
                                 discover->service = gatt_client_hid;
                                 discover->start_handle = start;
                                 discover->end_handle = end;
-                                
+
                                 data->number_discovered_services++;
                             }
                         }
                         break;
-                        
+
                         case GATT_SERVICE_UUID_IMMEDIATE_ALERT:
-                        {               
+                        {
                             if (sinkGattIasClientEnabled())
                             {
-                                GATT_CLIENT_DEBUG(("Gatt Client Storing Imm Alert service handles\n"));
+                                GATT_LOGD("Gatt Client Storing Imm Alert service handles\n");
 
                                 /* Store discovered Imm Alert service */
                                 discover->service = gatt_client_ias;
                                 discover->start_handle = start;
                                 discover->end_handle = end;
-                                
+
                                 data->number_discovered_services++;
                             }
                         }
                         break;
 
                         case GATT_SERVICE_UUID_DEVICE_INFORMATION:
-                        {                   
+                        {
                             if (sinkGattDisClientEnabled())
                             {
-                                GATT_CLIENT_DEBUG(("Gatt Client Storing Device Info service handles\n"));
+                                GATT_LOGD("Gatt Client Storing Device Info service handles\n");
 
                                 /* Store discovered Device Info service */
                                 discover->service = gatt_client_dis;
                                 discover->start_handle = start;
                                 discover->end_handle = end;
-                                
+
                                 data->number_discovered_services++;
                             }
                         }
                         break;
-                        
+
                         case GATT_SERVICE_UUID_GENERIC_ATTRIBUTE:
-                        {            
-                            GATT_CLIENT_DEBUG(("Gatt Client Storing GATT service handles\n"));
+                        {
+                            GATT_LOGD("Gatt Client Storing GATT service handles\n");
 
                             /* Store discovered GATT service */
                             discover->service = gatt_client_gatt;
                             discover->start_handle = start;
                             discover->end_handle = end;
-                            
+
                             data->number_discovered_services++;
                         }
                         break;
 
                         case GATT_SERVICE_UUID_SCAN_PARAMETERS:
-                        {             
+                        {
                             if (sinkGattSpClientEnabled())
                             {
-                                GATT_CLIENT_DEBUG(("Gatt Client Storing Scan params service handles\n"));
+                                GATT_LOGD("Gatt Client Storing Scan params service handles\n");
 
                                 /* Store discovered Scan params service */
                                 discover->service = gatt_client_spc;
                                 discover->start_handle = start;
                                 discover->end_handle = end;
-                                
+
                                 data->number_discovered_services++;
                             }
                         }
                         break;
-                        
+
                         /* Handle other services that client is interested in */
-                        
+
                         default:
                         {
                             /* Ignore unknown services */
@@ -661,7 +659,7 @@ void gattClientStoreDiscoveredService(uint16 cid, uint16 uuid_type, uint32 *uuid
                         discover->service = gatt_client_ancs;
                         discover->start_handle = start;
                         discover->end_handle = end;
-                        
+
                         data->number_discovered_services++;
                     }
                 }
@@ -670,7 +668,7 @@ void gattClientStoreDiscoveredService(uint16 cid, uint16 uuid_type, uint32 *uuid
                 {
                     /* We are done with getting the primary service */
                     sinkBleGapSetDiscoveryInProgress(FALSE);
-                    
+
                     if (data->number_discovered_services)
                     {
                         /* Initialise GATT service first to handle any Service Changed indications */
@@ -696,7 +694,7 @@ void gattClientStoreDiscoveredService(uint16 cid, uint16 uuid_type, uint32 *uuid
             }
         }
     }
-    
+
     if (error_flag)
     {
         gattClientDiscoveryError(connection);
@@ -711,7 +709,7 @@ gatt_client_services_t *gattClientGetServiceData(gatt_client_connection_t *conne
     {
         return connection->data;
     }
-    
+
     return NULL;
 }
 
@@ -720,7 +718,7 @@ gatt_client_services_t *gattClientGetServiceData(gatt_client_connection_t *conne
 void gattClientDiscoveredServiceInitialised(gatt_client_connection_t *connection)
 {
     gatt_client_services_t *data = gattClientGetServiceData(connection);
-    
+
     if (connection && connection->service_changed)
     {
         if (data)
@@ -728,17 +726,17 @@ void gattClientDiscoveredServiceInitialised(gatt_client_connection_t *connection
             GATT_CLIENT_FREE_MEM(data->discovery);
         }
         gattClientServiceChanged(connection->cid);
-        
+
         /* Return early as discovery will be restarted */
         return;
     }
-    
+
     if (data)
     {
         data->current_discovered_service++;
         if (data->current_discovered_service >= data->number_discovered_services)
         {
-            GATT_CLIENT_DEBUG(("GATT Primary Services Initialised\n"));
+            GATT_LOGD("GATT Primary Services Initialised\n");
             /* Discovery of primary services is now complete */
             gattClientDiscoveryComplete(connection);
         }
@@ -755,7 +753,7 @@ void gattClientDiscoveredServiceInitialised(gatt_client_connection_t *connection
 
 
 /****************************************************************************/
-bool gattClientRemoveDiscoveredService(gatt_client_connection_t *connection, 
+bool gattClientRemoveDiscoveredService(gatt_client_connection_t *connection,
                                        gatt_client_tasks_t service)
 {
     bool retVal = FALSE;
@@ -803,7 +801,7 @@ bool gattClientRemoveDiscoveredService(gatt_client_connection_t *connection,
 }
 
 /****************************************************************************/
-void gattClientDisconnect(uint16 cid)
+void gattClientDisconnect(u16 cid)
 {
     if (gattClientFindByCid(cid))
     {
@@ -815,9 +813,9 @@ void gattClientDisconnect(uint16 cid)
 /****************************************************************************/
 bool gattClientDisconnectAll(void)
 {
-    uint16 i = 0;
+    u16 i = 0;
     bool disconnect_request = FALSE;
-    
+
     for (i = 0; i < GATT_CLIENT.number_connections; i++)
     {
         if (GATT_CLIENT.connection[i].cid)
@@ -826,7 +824,7 @@ bool gattClientDisconnectAll(void)
             disconnect_request = TRUE;
         }
     }
-    
+
     return disconnect_request;
 }
 
@@ -834,11 +832,11 @@ bool gattClientDisconnectAll(void)
 /***************************************************************************/
 void gattClientDiscoveryError(gatt_client_connection_t *connection)
 {
-    GATT_CLIENT_DEBUG(("GATT Client Discovery Error!\n"));
+    GATT_LOGD("GATT Client Discovery Error!\n");
 
     /* Reset the primary service discovery flag */
     sinkBleGapSetDiscoveryInProgress(FALSE);
-    
+
     if (connection)
     {
         gattClientDiscoveryComplete(connection);
@@ -846,10 +844,10 @@ void gattClientDiscoveryError(gatt_client_connection_t *connection)
 }
 
 /***************************************************************************/
-static uint16 gattClientGetNumberOfCentralConnected(void)
+static u16 gattClientGetNumberOfCentralConnected(void)
 {
-    uint16 central_conn = 0;
-    uint16 conn = 0;
+    u16 central_conn = 0;
+    u16 conn = 0;
     /* Find the number of central device connected */
     while(conn < MAX_GATT_CLIENT_CONNECTIONS)
     {
@@ -889,7 +887,7 @@ bool gattClientHasNoClients(void)
 void gattClientRemoveServices(gatt_client_connection_t *client_connection)
 {
     gatt_client_services_t *services = gattClientGetServiceData(client_connection);
-    
+
     /* Remove services if used */
     if (services)
     {
@@ -926,20 +924,20 @@ void gattClientRemoveServices(gatt_client_connection_t *client_connection)
             sinkGattSpClientRemoveService(services->spc);
         }
         /* Remove more services here */
-    }            
+    }
 }
 
 
 /***************************************************************************/
-void gattClientServiceChanged(uint16 cid)
+void gattClientServiceChanged(u16 cid)
 {
     gatt_client_connection_t *connection = gattClientFindByCid(cid);
     gatt_client_services_t *services = gattClientGetServiceData(connection);
-    
+
     if (connection)
     {
         connection->service_changed = TRUE;
-        
+
         /* If service discovery is in progress then wait for discovery to complete
            before re-discovering services.
            Otherwise re-discover services immediately.
@@ -947,11 +945,11 @@ void gattClientServiceChanged(uint16 cid)
         if (services && (services->discovery == NULL))
         {
             MESSAGE_MAKE(message, BLE_INTERNAL_MESSAGE_REDISCOVER_SERVER_SERVICES_T);
-            
+
             /* Remove all services from client */
             gattClientRemoveServices(connection);
             GATT_CLIENT_FREE_MEM(connection->data);
-            
+
             /* Send message to discover services again */
             message->cid = cid;
             MessageCancelFirst(sinkGetBleTask(), BLE_INTERNAL_MESSAGE_REDISCOVER_SERVER_SERVICES);
@@ -962,25 +960,25 @@ void gattClientServiceChanged(uint16 cid)
 
 
 /***************************************************************************/
-void gattClientRediscoverServices(uint16 cid)
+void gattClientRediscoverServices(u16 cid)
 {
     gatt_client_connection_t *connection = gattClientFindByCid(cid);
     gatt_client_services_t *services = NULL;
     bool error_flag = TRUE;
-    
+
     if (connection == NULL)
         return;
-    
+
     GATT_CLIENT_SERVICES_ALLOC_MEM(services);
-    
+
     if (services)
     {
         /* Record details of the services */
         connection->data = services;
-        
+
         /* Discover services again for this connection */
         GATT_CLIENT_DISCOVERY_ALLOC_MEM(services->discovery);
-            
+
         if (services->discovery)
         {
             /* Discover primary services on this connection */
@@ -988,13 +986,13 @@ void gattClientRediscoverServices(uint16 cid)
             error_flag = FALSE;
         }
     }
-    
+
     if (error_flag)
     {
         /* Disconnect on error condition */
         gattClientDisconnect(cid);
     }
-    
+
     connection->service_changed = FALSE;
 }
 
@@ -1003,14 +1001,14 @@ void gattClientRediscoverServices(uint16 cid)
 void gattClientProcessSecurityRequirements(gatt_client_connection_t *connection, gatt_client_services_t *data)
 {
    tp_bdaddr current_bd_addr;
-   uint16 service_count= 0;
+   u16 service_count= 0;
    bool is_security_required = FALSE;
    gatt_client_discovery_t *discover = gattClientGetDiscoveredServices(connection);
 
 
     /* Here only pairing or encryption in case of central role is taken care and
     in case of peripheral role wait for bonding timeout to occur there by allowing
-    for remote central device to pair and if remote device does not pair within the timeout 
+    for remote central device to pair and if remote device does not pair within the timeout
     initiate encryption */
 
     for (service_count = 0 ; service_count < data->number_discovered_services ; service_count++)
@@ -1024,7 +1022,7 @@ void gattClientProcessSecurityRequirements(gatt_client_connection_t *connection,
         /* Get the next discovered service */
         discover+=1;
     }
-     GATT_CLIENT_DEBUG(("gattClientProcessSecurityRequirements: is_security_required = %d\n", is_security_required));
+     GATT_LOGD("gattClientProcessSecurityRequirements: is_security_required = %d\n", is_security_required);
     if(is_security_required)
     {
         if(connection->role == ble_gap_role_central)
@@ -1032,10 +1030,10 @@ void gattClientProcessSecurityRequirements(gatt_client_connection_t *connection,
             if(VmGetBdAddrtFromCid(connection->cid, &current_bd_addr))
             {
                 /* Initiate Encryption request */
-                GATT_CLIENT_DEBUG(("Gatt Initiate Encryption request \n"));
-                
-                ConnectionDmBleSecurityReq(sinkGetBleTask(), 
-                                            (const typed_bdaddr *)&current_bd_addr.taddr, 
+                GATT_LOGD("Gatt Initiate Encryption request \n");
+
+                ConnectionDmBleSecurityReq(sinkGetBleTask(),
+                                            (const typed_bdaddr *)&current_bd_addr.taddr,
                                             ble_security_encrypted_bonded,
                                             ble_connection_master_directed
                                             );
@@ -1051,7 +1049,7 @@ void gattClientProcessSecurityRequirements(gatt_client_connection_t *connection,
     }
     else
     {
-        /* If no security required i.e. discovered service does not require encryption 
+        /* If no security required i.e. discovered service does not require encryption
             initialize discovered services?
         */
         gattClientInitialiseDiscoveredServices(connection);
@@ -1060,14 +1058,14 @@ void gattClientProcessSecurityRequirements(gatt_client_connection_t *connection,
 
 
 /***************************************************************************/
-void gattClientStoreConfigAttributes(uint16 cid, gatt_attribute_service_t client_service)
+void gattClientStoreConfigAttributes(u16 cid, gatt_attribute_service_t client_service)
 {
     gatt_client_connection_t *connection = gattClientFindByCid(cid);
     sink_attributes attributes;
     tp_bdaddr tpaddr;
     typed_bdaddr public_taddr;
     bool attr_changed = FALSE;
-   
+
     /* Store client configuration to PS */
     if (connection && VmGetBdAddrtFromCid(cid, &tpaddr))
     {
@@ -1118,9 +1116,9 @@ void gattClientStoreConfigAttributes(uint16 cid, gatt_attribute_service_t client
                     /* No client config attributes handled for this service */
                     break;
             }
-            
-            GATT_CLIENT_DEBUG(("GATT Client: Update client config; service[%u] changed[%u]\n", client_service, attr_changed));
-                               
+
+            GATT_LOGD("GATT Client: Update client config; service[%u] changed[%u]\n", client_service, attr_changed);
+
             if (attr_changed)
             {
                 deviceManagerStoreAttributes(&attributes, &public_taddr.addr);
@@ -1140,28 +1138,28 @@ void gattClientStoreConfigAttributes(uint16 cid, gatt_attribute_service_t client
 
 
 /***************************************************************************/
-bool gattClientGapNameReadRequested(uint16 cid, uint16 offset)
+bool gattClientGapNameReadRequested(u16 cid, u16 offset)
 {
     gatt_client_connection_t *connection = gattClientFindByCid(cid);
     if (connection)
     {
-        GATT_CLIENT_DEBUG(("GATT Client: Read GAP name request cid[0x%x] offset[0x%x]\n", cid, offset));
+        GATT_LOGD("GATT Client: Read GAP name request cid[0x%x] offset[0x%x]\n", cid, offset);
         /* Store the data to use for the response */
         connection->gap_read_name.requested = TRUE;
         connection->gap_read_name.offset = offset;
         return TRUE;
     }
-    
+
     return FALSE;
 }
 
 
 /***************************************************************************/
-void gattClientGapNameReadResponse(GGAPS *gap_server, uint16 size_local_name, uint8 *local_name)
+void gattClientGapNameReadResponse(GGAPS *gap_server, u16 size_local_name, u8 *local_name)
 {
-    uint16 i = 0;
+    u16 i = 0;
     gatt_client_connection_t *connection = NULL;
-    
+
     for (i = 0; i < GATT_CLIENT.number_connections; i++)
     {
         connection = &GATT_CLIENT.connection[i];
@@ -1171,7 +1169,7 @@ void gattClientGapNameReadResponse(GGAPS *gap_server, uint16 size_local_name, ui
             {
                 if (connection->gap_read_name.offset >= size_local_name)
                 {
-                    GATT_CLIENT_DEBUG(("GATT Client: Read GAP name response Invalid cid[0x%x]\n", connection->cid));
+                    GATT_LOGD("GATT Client: Read GAP name response Invalid cid[0x%x]\n", connection->cid);
                     GattGapServerReadDeviceNameResponse(gap_server,
                                                          connection->cid,
                                                          0,
@@ -1179,7 +1177,7 @@ void gattClientGapNameReadResponse(GGAPS *gap_server, uint16 size_local_name, ui
                 }
                 else
                 {
-                    GATT_CLIENT_DEBUG(("GATT Client: Read GAP name response cid[0x%x] size[0x%x] offset[0x%x]\n", 
+                    GATT_CLIENT_DEBUG(("GATT Client: Read GAP name response cid[0x%x] size[0x%x] offset[0x%x]\n",
                                        connection->cid,
                                        size_local_name,
                                        connection->gap_read_name.offset));

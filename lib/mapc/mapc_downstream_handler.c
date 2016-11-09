@@ -17,7 +17,7 @@ DESCRIPTION
 #include "mapc_private.h"
 
 /* Default Service Record for MNS Service */
-static const uint8 serviceRecord[] = 
+static const u8 serviceRecord[] = 
 {
     0x09, 0x00, 0x01,           /* Service Class ID  */
     0x35, 0x03,
@@ -45,7 +45,7 @@ static const uint8 serviceRecord[] =
 };
 
 /* Static data structures for SDP Attribute Request to MSE */
-static const uint8 attrRequest[] =
+static const u8 attrRequest[] =
 {
     0x35,0x0C,                 
         0x09, 0x00, 0x04,       /* Protocol Descriptor List */
@@ -56,14 +56,14 @@ static const uint8 attrRequest[] =
 
  
 /* Static data structures for SDP Search Request */
-static const uint8 serviceRequest[] =
+static const u8 serviceRequest[] =
 {
     0x35, 0x03,                 
         0x19, 0x11, 0x32      /* Message Access Server UUID */
 };
 
 /* MAS Target */
-static const uint8 masTarget[] = 
+static const u8 masTarget[] = 
 {
     0xbb, 0x58, 0x2b, 0x40, 
     0x42, 0x0c, 
@@ -73,7 +73,7 @@ static const uint8 masTarget[] =
 };
 
 /* MNS Target */
-static const uint8 mnsTarget[] = 
+static const u8 mnsTarget[] = 
 {
     0xbb, 0x58, 0x2b, 0x41,
     0x42, 0x0c,
@@ -89,7 +89,7 @@ static const uint8 mnsTarget[] =
  * DESCRIPTION 
  *  Register the RFCOMM Channel for accepting incoming connections 
  ************************************************************************/
-void mapcRegisterChannel( uint8 mnsChannel )
+void mapcRegisterChannel( u8 mnsChannel )
 {
    /* If the request is to populate a default SDP record, override
       the application proposed MNS channel with the default one */

@@ -68,7 +68,7 @@ static const ble_configuration_t ble_config = {
                                 128,    /* Fast scan interval */
                                 12,     /* Fast scan window */
                                 120,    /* Gap mode switch timer */
-                                10,     /* Time to scan for whitelist devices before reverting to general scanning, 
+                                10,     /* Time to scan for whitelist devices before reverting to general scanning,
                                             if a private device has been paired with */
                                 30,     /* Fast scan timer */
                                 2048,   /* Slow scan interval */
@@ -78,7 +78,7 @@ static const ble_configuration_t ble_config = {
                                 30,     /* Fast adv timer */
                                 1000,   /* Slow adv interval min */
                                 1200    /* Slow adv interval max */
-                                
+
 };
 
 
@@ -121,13 +121,13 @@ static const ble_connection_update_parameters_t ble_slave_update_conn_params = {
 /*******************************************************************************
 NAME
     handleInitComplete
-    
+
 DESCRIPTION
     Handle when BLE_INTERNAL_MESSAGE_INIT_COMPLETE message was received
-    
+
 PARAMETERS
     None
-    
+
 RETURNS
     None
 */
@@ -137,20 +137,20 @@ static void handleInitComplete(void)
     if (sinkBleIsActiveOnPowerOff() || DEVICE_IS_ON)
     {
         /* Power on BLE */
-        sinkBlePowerOnEvent();     
+        sinkBlePowerOnEvent();
     }
 }
 
 /*******************************************************************************
 NAME
     handleEncryptionRetry
-    
+
 DESCRIPTION
     Handle when BLE_INTERNAL_MESSAGE_ENCRYPTION_RETRY_TIMER message was received
-    
+
 PARAMETERS
     payload The message payload
-    
+
 RETURNS
     None
 */
@@ -158,14 +158,14 @@ static void handleEncryptionRetry(Message message)
 {
     ble_gap_event_t event;
     ble_gap_event_args_t args;
-    uint16 cid = *(uint16 *) message;
+    u16 cid = *(u16 *) message;
     tp_bdaddr tpaddrt;
     bool active_conn = FALSE;
 
     /* Send GAP event to retry encryption */
     if (cid != 0)
         active_conn = VmGetBdAddrtFromCid(cid, &tpaddrt);
-    
+
     if (active_conn)
     {
         event.id = ble_gap_event_retry_encryption;
@@ -178,15 +178,15 @@ static void handleEncryptionRetry(Message message)
 /*******************************************************************************
 NAME
     sinkBleHandleCLMessage
-    
+
 DESCRIPTION
     Connection library messages that are sent to the BLE message handler.
-    
+
 PARAMETERS
     task    The task the message is delivered
     id      The ID for the GATT message
     payload The message payload
-    
+
 RETURNS
     None
 */
@@ -221,35 +221,35 @@ static void sinkBleHandleCLMessage(Task task, MessageId id, Message message)
 /*******************************************************************************
 NAME
     bleInternalMsgHandler
-    
+
 DESCRIPTION
     Internal BLE messages that are sent to this message handler.
-    
+
 PARAMETERS
     task    The task the message is delivered
     id      The ID for the GATT message
     payload The message payload
-    
+
 RETURNS
     None
 */
 static void bleInternalMsgHandler(Task task, MessageId id, Message message)
 {
     ble_gap_event_t event;
-    
+
     switch (id)
     {
         case BLE_INTERNAL_MESSAGE_INIT_COMPLETE:
         {
             BLE_INFO(("BLE_INTERNAL_MESSAGE_INIT_COMPLETE\n"));
-            
+
             handleInitComplete();
         }
         break;
         case BLE_INTERNAL_MESSAGE_EVENT_NO_CONNECTIONS:
         {
             BLE_INFO(("BLE_INTERNAL_MESSAGE_EVENT_NO_CONNECTIONS\n"));
-        
+
             /* Send GAP event to indicate there are no BLE connections */
             event.id = ble_gap_event_no_connections;
             event.args = NULL;
@@ -259,7 +259,7 @@ static void bleInternalMsgHandler(Task task, MessageId id, Message message)
         case BLE_INTERNAL_MESSAGE_WHITELIST_TIMER:
         {
             BLE_INFO(("BLE_INTERNAL_MESSAGE_WHITELIST_TIMER\n"));
-            
+
             /* Send GAP event to indicate whitelist timer */
             event.id = ble_gap_event_whitelist_timeout;
             event.args = NULL;
@@ -269,7 +269,7 @@ static void bleInternalMsgHandler(Task task, MessageId id, Message message)
         case BLE_INTERNAL_MESSAGE_FAST_SCAN_TIMER:
         {
             BLE_INFO(("BLE_INTERNAL_MESSAGE_FAST_SCAN_TIMER\n"));
-            
+
             /* Send GAP event to indicate the fast scan has timed out */
             event.id = ble_gap_event_fast_scan_timeout;
             event.args = NULL;
@@ -279,7 +279,7 @@ static void bleInternalMsgHandler(Task task, MessageId id, Message message)
         case BLE_INTERNAL_MESSAGE_FAST_ADV_TIMER:
         {
             BLE_INFO(("BLE_INTERNAL_MESSAGE_FAST_ADV_TIMER\n"));
-            
+
             /* Send GAP event to indicate the fast scan has timed out */
             event.id = ble_gap_event_fast_adv_timeout;
             event.args = NULL;
@@ -324,22 +324,22 @@ void sinkBleInitialiseDevice(void)
 {
     ble_gap_role_t gap_role = sinkBleGetGapDefaultRole();
     bool persistent_role = sinkBleGapIsPersistentRole();
-            
+
     BLE_INFO(("Initialise BLE...\n"));
-    
+
     /* Setup BLE Message handler */
     memset(&BLE, 0, sizeof(ble_data_t));
     BLE.task.handler = sinkBleMsgHandler;
-    
+
     /* Setup whitelist from Paired Device List on initialisation */
     ConnectionDmBleAddTdlDevicesToWhiteListReq(TRUE);
-    
+
     /* Initialise GATT */
     if (!sinkGattInitInitialiseDevice())
     {
         FATAL_ERROR(("GATT failed to initialise!\n"));
     }
-    
+
     if ((persistent_role && sinkBleGapIsRoleUnknown(gap_role)) || !persistent_role)
     {
         /* Set initial GAP role */
@@ -354,7 +354,7 @@ void sinkBleInitialiseDevice(void)
             gap_role = ble_gap_role_peripheral;
         }
     }
-    
+
     /* Initialise GAP */
     sinkBleGapInitialise(gap_role);
 
@@ -391,7 +391,7 @@ void sinkBleMsgHandler(Task task, MessageId id, Message message)
 {
     if ( (id >= CL_MESSAGE_BASE) && (id < CL_MESSAGE_TOP) )
     {
-        sinkBleHandleCLMessage(task, id,  message); 
+        sinkBleHandleCLMessage(task, id,  message);
     }
     else if ( (id >= GATT_MESSAGE_BASE) && (id < GATT_MESSAGE_TOP))
     {
@@ -435,7 +435,7 @@ void sinkBleMsgHandler(Task task, MessageId id, Message message)
     else if( (id >= GATT_ANCS_MESSAGE_BASE) && (id < GATT_ANCS_MESSAGE_TOP))
     {
         sinkGattAncsClientMsgHandler(task, id, message);
-    }    
+    }
     else if((id >= GATT_HID_CLIENT_MESSAGE_BASE) && (id < GATT_HID_CLIENT_MESSAGE_TOP))
     {
         sinkGattHidClientMsgHandler(task, id, message);
@@ -467,7 +467,7 @@ void sinkBleMsgHandler(Task task, MessageId id, Message message)
 void sinkBleBondableEvent(void)
 {
     ble_gap_event_t event;
-        
+
     /* Send GAP event to become bondable */
     event.id = ble_gap_event_bondable;
     event.args = NULL;
@@ -479,7 +479,7 @@ void sinkBleBondableEvent(void)
 void sinkBleBondablePairingTimeoutEvent(void)
 {
     ble_gap_event_t event;
-        
+
     /* Send GAP event to exit bondable mode */
     event.id = ble_gap_event_bondable_pairing_timeout;
     event.args = NULL;
@@ -490,7 +490,7 @@ void sinkBleBondablePairingTimeoutEvent(void)
 void sinkBleBondableConnectionTimeoutEvent(void)
 {
     ble_gap_event_t event;
-        
+
     /* Send GAP event to exit bondable connection mode */
     event.id = ble_gap_event_bondable_connection_timeout;
     event.args = NULL;
@@ -499,7 +499,7 @@ void sinkBleBondableConnectionTimeoutEvent(void)
 
 
 /******************************************************************************/
-void sinkBleCentralConnCompleteEvent(uint16 cid)
+void sinkBleCentralConnCompleteEvent(u16 cid)
 {
     gatt_client_connection_t *connection = NULL;
     ble_gap_event_t event;
@@ -508,10 +508,10 @@ void sinkBleCentralConnCompleteEvent(uint16 cid)
     bool active_conn = FALSE;
 
     connection = gattClientFindByCid(cid);
-    
+
     if (connection != NULL)
         active_conn = VmGetBdAddrtFromCid(cid, &tpaddrt);
-    
+
     /* Send GAP event when central connection has complete, which can be used to restart scanning */
     event.id = ble_gap_event_central_conn_complete;
     if (!active_conn)
@@ -530,7 +530,7 @@ void sinkBleCentralConnCompleteEvent(uint16 cid)
 void sinkBlePairingCompleteEvent (void)
 {
     ble_gap_event_t event;
-        
+
     /* Send GAP event when central connection has complete while in peripheral role */
     event.id = ble_gap_event_pairing_complete;
     event.args = NULL;
@@ -541,7 +541,7 @@ void sinkBlePairingCompleteEvent (void)
 void sinkBleSwitchPeripheralEvent(void)
 {
     ble_gap_event_t event;
-        
+
     /* Send GAP event when user switches to peripheral mode */
     event.id = ble_gap_event_switch_peripheral;
     event.args = NULL;
@@ -553,7 +553,7 @@ void sinkBleSwitchPeripheralEvent(void)
 void sinkBleSwitchCentralEvent(void)
 {
     ble_gap_event_t event;
-        
+
     /* Send GAP event when user switches to central mode */
     event.id = ble_gap_event_switch_central;
     event.args = NULL;
@@ -565,7 +565,7 @@ void sinkBleSwitchCentralEvent(void)
 void sinkBleCentralDisconnectionEvent(void)
 {
     ble_gap_event_t event;
-        
+
     /* Send GAP event for disconnection linked to central role */
     event.id = ble_gap_event_central_disconn;
     event.args = NULL;
@@ -577,7 +577,7 @@ void sinkBleCentralDisconnectionEvent(void)
 void sinkBleCancelAdvertisingEvent(void)
 {
     ble_gap_event_t event;
-        
+
     /* Send GAP event when advertising is cancelled */
     event.id = ble_gap_event_cancel_advertising;
     event.args = NULL;
@@ -586,22 +586,22 @@ void sinkBleCancelAdvertisingEvent(void)
 
 
 /******************************************************************************/
-void sinkBleRemoteConnectionSuccessEvent(uint16 cid)
+void sinkBleRemoteConnectionSuccessEvent(u16 cid)
 {
     ble_gap_event_t event;
     ble_gap_event_args_t args;
     tp_bdaddr tpaddrt;
     bool active_conn = FALSE;
-    
+
     /* Remove no connections message from queue, it no longer applies */
     MessageCancelFirst(sinkGetBleTask(), BLE_INTERNAL_MESSAGE_EVENT_NO_CONNECTIONS);
-        
+
     if (cid != 0)
         active_conn = VmGetBdAddrtFromCid(cid, &tpaddrt);
-    
+
     /* Send GAP event when remote connection succeeded */
     event.id = ble_gap_event_remote_conn_success;
-    
+
     if (!active_conn)
     {
         event.args = NULL;
@@ -619,7 +619,7 @@ void sinkBleRemoteConnectionSuccessEvent(uint16 cid)
 void sinkBleRemoteConnectionFailEvent(void)
 {
     ble_gap_event_t event;
-        
+
     /* Send GAP event when connect failed in peripheral role */
     event.id = ble_gap_event_remote_conn_fail;
     event.args = NULL;
@@ -631,10 +631,10 @@ void sinkBleRemoteConnectionFailEvent(void)
 void sinkBleLocalConnectionSuccessEvent(void)
 {
     ble_gap_event_t event;
-    
+
     /* Remove no connections message from queue, it no longer applies */
     MessageCancelFirst(sinkGetBleTask(), BLE_INTERNAL_MESSAGE_EVENT_NO_CONNECTIONS);
-        
+
     /* Send GAP event when local connection succeeded */
     event.id = ble_gap_event_local_conn_success;
     event.args = NULL;
@@ -646,7 +646,7 @@ void sinkBleLocalConnectionSuccessEvent(void)
 void sinkBleRoleTimeoutEvent(void)
 {
     ble_gap_event_t event;
-        
+
     /* Send GAP event when role times out */
     event.id = ble_gap_event_switch_timeout;
     event.args = NULL;
@@ -661,7 +661,7 @@ void sinkBleCheckNoConnectionsEvent(void)
     {
         /* If no connections exist, send an event to report this.
            Add in a delay to allow the ACL to close before reporting it.
-           This is used for the scenario where a user switches from Central<->Peripheral 
+           This is used for the scenario where a user switches from Central<->Peripheral
            role with devices currently connected.
            The ACL must be closed before the application can start advertising/scanning.
         */
@@ -671,11 +671,11 @@ void sinkBleCheckNoConnectionsEvent(void)
 }
 
 /******************************************************************************/
-void sinkBleRetryEncryptionEvent(uint16 cid)
+void sinkBleRetryEncryptionEvent(u16 cid)
 {
-    /* If there is pairing in progress then encryption request needs to be retried as Bluestack returns host busy status 
+    /* If there is pairing in progress then encryption request needs to be retried as Bluestack returns host busy status
     */
-    uint16 *message = PanicUnlessNew(uint16);
+    u16 *message = PanicUnlessNew(u16);
     MessageCancelFirst(sinkGetBleTask(), BLE_INTERNAL_MESSAGE_ENCRYPTION_RETRY_TIMER);
     *message = cid;
     MessageSendLater(sinkGetBleTask(), BLE_INTERNAL_MESSAGE_ENCRYPTION_RETRY_TIMER, message, ENCRYPTION_RETRY_EVENT_DELAY_MS);
@@ -685,11 +685,11 @@ void sinkBleRetryEncryptionEvent(uint16 cid)
 void sinkBlePowerOnEvent(void)
 {
     ble_gap_event_t event;
-        
+
     /* Send GAP event to power on */
     event.id = ble_gap_event_power_on;
     event.args = NULL;
-    sinkBleGapEvent(event);    
+    sinkBleGapEvent(event);
 }
 
 
@@ -712,7 +712,7 @@ const ble_configuration_t *sinkBleGetConfiguration(void)
 }
 
 /******************************************************************************/
-void sinkBleSetAdvertisingParamsDefault(uint16 adv_interval_min, uint16 adv_interval_max)
+void sinkBleSetAdvertisingParamsDefault(u16 adv_interval_min, u16 adv_interval_max)
 {
     ble_adv_params_t params;
 
@@ -726,7 +726,7 @@ void sinkBleSetAdvertisingParamsDefault(uint16 adv_interval_min, uint16 adv_inte
 }
 
 /******************************************************************************/
-void sinkBleSetMasterConnectionParamsDefault(uint16 scan_interval, uint16 scan_window)
+void sinkBleSetMasterConnectionParamsDefault(u16 scan_interval, u16 scan_window)
 {
     ble_connection_params params;
 
@@ -741,9 +741,9 @@ void sinkBleSetMasterConnectionParamsDefault(uint16 scan_interval, uint16 scan_w
     params.supervision_timeout_min = ble_master_initial_conn_params.supervision_timeout_min;
     params.supervision_timeout_max = ble_master_initial_conn_params.supervision_timeout_max;
     params.own_address_type = TYPED_BDADDR_PUBLIC;
-    
+
     BLE_INFO(("Set BLE Default Connection Params\n"));
-    
+
     ConnectionDmBleSetConnectionParametersReq(&params);
 }
 
@@ -752,7 +752,7 @@ void sinkBleSetMasterConnectionParamsDefault(uint16 scan_interval, uint16 scan_w
 void sinkBleSetMasterConnectionParamsUpdate(typed_bdaddr *taddr)
 {
     BLE_INFO(("Set BLE Updated Master Connection Params\n"));
-    
+
     ConnectionDmBleConnectionParametersUpdateReq(
                 sinkGetBleTask(),
                 taddr,
@@ -770,7 +770,7 @@ void sinkBleSetMasterConnectionParamsUpdate(typed_bdaddr *taddr)
 void sinkBleSetSlaveConnectionParamsUpdate(typed_bdaddr *taddr)
 {
     BLE_INFO(("Set BLE Updated Slave Connection Params\n"));
-    
+
     ConnectionDmBleConnectionParametersUpdateReq(
                 sinkGetBleTask(),
                 taddr,
@@ -833,7 +833,7 @@ void sinkBleDeleteMarkedDevices(void)
 /******************************************************************************/
 void sinkBleSimplePairingCompleteInd(const CL_SM_BLE_SIMPLE_PAIRING_COMPLETE_IND_T *ind)
 {
-    uint16 cid = GattGetCidForBdaddr(&ind->tpaddr.taddr);
+    u16 cid = GattGetCidForBdaddr(&ind->tpaddr.taddr);
 
     /* A client might have written Client Characteristic Configuration data before bonding.
        If the device is now bonded, this configuration should persist for future connections. */
@@ -842,7 +842,7 @@ void sinkBleSimplePairingCompleteInd(const CL_SM_BLE_SIMPLE_PAIRING_COMPLETE_IND
         gattClientStoreConfigAttributes(cid, gatt_attr_service_all);
 
         /* Make sure that priority devices are looked after in the PDL.*/
-        deviceManagerUpdatePriorityDevices();        
+        deviceManagerUpdatePriorityDevices();
     }
 }
 

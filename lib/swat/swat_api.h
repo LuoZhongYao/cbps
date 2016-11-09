@@ -35,7 +35,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_SIGNALLING_CONNECT_IND message to the client task
 */
-void swatSendSignallingConnectIndToClient(uint16 device_id, uint16 connection_id, uint8 identifier, bdaddr bd_addr);
+void swatSendSignallingConnectIndToClient(u16 device_id, u16 connection_id, u8 identifier, bdaddr bd_addr);
 
 
 /*****************************************************************************
@@ -45,7 +45,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_SIGNALLING_CONNECT_CFM message to the client task
 */
-void swatSendSignallingConnectCfmToClient(swat_status_code status, uint16 device_id, Sink sink);
+void swatSendSignallingConnectCfmToClient(swat_status_code status, u16 device_id, Sink sink);
 
 
 /*****************************************************************************
@@ -55,7 +55,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_SIGNALLING_DISCONNECT_IND message to the client task
 */
-void swatSendSignallingDisconnectIndToClient(swat_status_code status, uint16 device_id);
+void swatSendSignallingDisconnectIndToClient(swat_status_code status, u16 device_id);
 
 
 /*****************************************************************************
@@ -65,7 +65,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_SIGNALLING_DISCONNECT_CFM message to the client task
 */
-void swatSendSignallingDisconnectCfmToClient(swat_status_code status, uint16 device_id);
+void swatSendSignallingDisconnectCfmToClient(swat_status_code status, u16 device_id);
 
 
 /*****************************************************************************
@@ -75,7 +75,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_MEDIA_OPEN_IND message to the client task
 */
-void swatSendMediaOpenIndToClient(uint16 device_id, swatMediaType media_type);
+void swatSendMediaOpenIndToClient(u16 device_id, swatMediaType media_type);
 
 
 /*****************************************************************************
@@ -85,7 +85,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_MEDIA_OPEN_CFM message to the client task
 */
-void swatSendMediaOpenCfmToClient(swat_status_code status, uint16 id, swatMediaType type, Sink sink);
+void swatSendMediaOpenCfmToClient(swat_status_code status, u16 id, swatMediaType type, Sink sink);
 
 
 /*****************************************************************************
@@ -95,7 +95,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_MEDIA_CLOSE_IND message to the client task
 */
-void swatSendMediaCloseIndToClient(uint16 id, swatMediaType type);
+void swatSendMediaCloseIndToClient(u16 id, swatMediaType type);
 
 
 /*****************************************************************************
@@ -105,7 +105,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_MEDIA_CLOSE_CFM message to the client task
 */
-void swatSendMediaCloseCfmToClient(swat_status_code status, uint16 id, swatMediaType type);
+void swatSendMediaCloseCfmToClient(swat_status_code status, u16 id, swatMediaType type);
 
 
 /*****************************************************************************
@@ -115,7 +115,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_MEDIA_START_IND message to the client task
 */
-void swatSendMediaStartIndToClient(uint16 id, swatMediaType type);
+void swatSendMediaStartIndToClient(u16 id, swatMediaType type);
 
 
 /*****************************************************************************
@@ -125,7 +125,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_MEDIA_START_CFM message to the client task
 */
-void swatSendMediaStartCfmToClient(swat_status_code status, uint16 id, swatMediaType type);
+void swatSendMediaStartCfmToClient(swat_status_code status, u16 id, swatMediaType type);
 
 
 /*****************************************************************************
@@ -135,7 +135,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_MEDIA_SUSPEND_IND message to the client task
 */
-void swatSendMediaSuspendIndToClient(uint16 id, swatMediaType type);
+void swatSendMediaSuspendIndToClient(u16 id, swatMediaType type);
 
 
 /*****************************************************************************
@@ -145,7 +145,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_MEDIA_SUSPEND_CFM message to the client task
 */
-void swatSendMediaSuspendCfmToClient(swat_status_code status, uint16 id, swatMediaType type);
+void swatSendMediaSuspendCfmToClient(swat_status_code status, u16 id, swatMediaType type);
 
 
 /*****************************************************************************
@@ -155,7 +155,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_SET_VOLUME_IND message to the client task
 */
-void swatSendVolumeIndToClient(uint16 id, uint8 volume, uint8 sub_trim);
+void swatSendVolumeIndToClient(u16 id, u8 volume, u8 sub_trim);
 
 
 /*****************************************************************************
@@ -165,7 +165,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_SET_VOLUME_CFM message to the client task
 */
-void swatSendVolumeCfmToClient(swat_status_code status, uint16 id, uint8 volume, uint8 sub_trim);
+void swatSendVolumeCfmToClient(swat_status_code status, u16 id, u8 volume, u8 sub_trim);
 
 
 /*****************************************************************************
@@ -175,7 +175,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_SAMPLE_RATE_IND message to the client task
 */
-void swatSendSampleRateIndToClient(uint16 id, uint16 rate);
+void swatSendSampleRateIndToClient(u16 id, u16 rate);
 
 
 /*****************************************************************************
@@ -185,7 +185,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send SWAT_SAMPLE_RATE_CFM message to the client task
 */
-void swatSendSampleRateCfmToClient(swat_status_code status, uint16 id, uint16 rate);
+void swatSendSampleRateCfmToClient(swat_status_code status, u16 id, u16 rate);
 
 /*****************************************************************************
 FUNCTION:
@@ -194,7 +194,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send sub version no message to the client task
 */
-void swatSendVersionNoIndToClient(uint16 id);
+void swatSendVersionNoIndToClient(u16 id);
 
 /*****************************************************************************
 FUNCTION:
@@ -203,7 +203,7 @@ FUNCTION:
 DESCRIPTION:
     Function to send sub version no message to the client task
 */
-void swatSendVersionNoCfmToClient(swat_status_code status, uint16 id, uint16 major, uint16 minor);
+void swatSendVersionNoCfmToClient(swat_status_code status, u16 id, u16 major, u16 minor);
 
 
 #endif

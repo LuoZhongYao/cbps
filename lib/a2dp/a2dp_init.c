@@ -37,7 +37,7 @@ A2DP *a2dp = 0;  /* Pointer located in global space */
 /*
   SDP Service Record generated from a2dp_sink.sdp by sdpgen.pl
 */
-static const uint8 a2dp_sink_service_record[] =
+static const u8 a2dp_sink_service_record[] =
 {
   0x09,     /* ServiceClassIDList(0x0001) */
     0x00,
@@ -57,7 +57,7 @@ static const uint8 a2dp_sink_service_record[] =
       0x19, /* uuid L2CAP(0x0100) */
       0x01,
       0x00,
-      0x09, /* uint16 0x0019 */
+      0x09, /* u16 0x0019 */
         0x00,
         0x19,
     0x35,   /* DataElSeq 6 bytes */
@@ -65,7 +65,7 @@ static const uint8 a2dp_sink_service_record[] =
       0x19, /* uuid AVDTP(0x0019) */
       0x00,
       0x19,
-      0x09, /* uint16 0x0103 */
+      0x09, /* u16 0x0103 */
         0x01,
         0x03,
   0x09,     /* BluetoothProfileDescriptorList(0x0009) */
@@ -78,13 +78,13 @@ static const uint8 a2dp_sink_service_record[] =
       0x19, /* uuid AdvancedAudioDistribution(0x110d) */
       0x11,
       0x0d,
-      0x09, /* uint16 0x0103 */
+      0x09, /* u16 0x0103 */
         0x01,
         0x03,
   0x09,     /* SupportedFeatures(0x0311) = "0x0001" */
     0x03,
     0x11,
-  0x09,     /* uint16 0x0001 */
+  0x09,     /* u16 0x0001 */
     0x00,
     0x01,
 }; /* 48 bytes */
@@ -93,7 +93,7 @@ static const uint8 a2dp_sink_service_record[] =
 /*
   SDP Service Record generated from a2dp_source.sdp by sdpgen.pl
 */
-static const uint8 a2dp_source_service_record[] =
+static const u8 a2dp_source_service_record[] =
 {
   0x09,     /* ServiceClassIDList(0x0001) */
     0x00,
@@ -113,7 +113,7 @@ static const uint8 a2dp_source_service_record[] =
       0x19, /* uuid L2CAP(0x0100) */
       0x01,
       0x00,
-      0x09, /* uint16 0x0019 */
+      0x09, /* u16 0x0019 */
         0x00,
         0x19,
     0x35,   /* DataElSeq 6 bytes */
@@ -121,7 +121,7 @@ static const uint8 a2dp_source_service_record[] =
       0x19, /* uuid AVDTP(0x0019) */
       0x00,
       0x19,
-      0x09, /* uint16 0x0103 */
+      0x09, /* u16 0x0103 */
         0x01,
         0x03,
   0x09,     /* BluetoothProfileDescriptorList(0x0009) */
@@ -134,13 +134,13 @@ static const uint8 a2dp_source_service_record[] =
       0x19, /* uuid AdvancedAudioDistribution(0x110d) */
       0x11,
       0x0d,
-      0x09, /* uint16 0x0103 */
+      0x09, /* u16 0x0103 */
         0x01,
         0x03,
   0x09,     /* SupportedFeatures(0x0311) = "0x0001" */
     0x03,
     0x11,
-  0x09,     /* uint16 0x0001 */
+  0x09,     /* u16 0x0001 */
     0x00,
     0x01,
 }; /* 48 bytes */
@@ -151,7 +151,7 @@ static const uint8 a2dp_source_service_record[] =
 /*
   SDP Service Record generated from a2dp_sink.sdp by sdpgen.pl
 */
-static const uint8 a2dp_sink_service_record[] =
+static const u8 a2dp_sink_service_record[] =
 {
   0x09,     /* ServiceClassIDList(0x0001) */
     0x00,
@@ -171,7 +171,7 @@ static const uint8 a2dp_sink_service_record[] =
       0x19, /* uuid L2CAP(0x0100) */
       0x01,
       0x00,
-      0x09, /* uint16 0x0019 */
+      0x09, /* u16 0x0019 */
         0x00,
         0x19,
     0x35,   /* DataElSeq 6 bytes */
@@ -179,7 +179,7 @@ static const uint8 a2dp_sink_service_record[] =
       0x19, /* uuid AVDTP(0x0019) */
       0x00,
       0x19,
-      0x09, /* uint16 0x0102 */
+      0x09, /* u16 0x0102 */
         0x01,
         0x02,
   0x09,     /* BluetoothProfileDescriptorList(0x0009) */
@@ -192,13 +192,13 @@ static const uint8 a2dp_sink_service_record[] =
       0x19, /* uuid AdvancedAudioDistribution(0x110d) */
       0x11,
       0x0d,
-      0x09, /* uint16 0x0102 */
+      0x09, /* u16 0x0102 */
         0x01,
         0x02,
   0x09,     /* SupportedFeatures(0x0311) = "0x0001" */
     0x03,
     0x11,
-  0x09,     /* uint16 0x0001 */
+  0x09,     /* u16 0x0001 */
     0x00,
     0x01,
 }; /* 48 bytes */
@@ -207,7 +207,7 @@ static const uint8 a2dp_sink_service_record[] =
 /*
   SDP Service Record generated from a2dp_source.sdp by sdpgen.pl
 */
-static const uint8 a2dp_source_service_record[] =
+static const u8 a2dp_source_service_record[] =
 {
   0x09,     /* ServiceClassIDList(0x0001) */
     0x00,
@@ -227,7 +227,7 @@ static const uint8 a2dp_source_service_record[] =
       0x19, /* uuid L2CAP(0x0100) */
       0x01,
       0x00,
-      0x09, /* uint16 0x0019 */
+      0x09, /* u16 0x0019 */
         0x00,
         0x19,
     0x35,   /* DataElSeq 6 bytes */
@@ -235,7 +235,7 @@ static const uint8 a2dp_source_service_record[] =
       0x19, /* uuid AVDTP(0x0019) */
       0x00,
       0x19,
-      0x09, /* uint16 0x0102 */
+      0x09, /* u16 0x0102 */
         0x01,
         0x02,
   0x09,     /* BluetoothProfileDescriptorList(0x0009) */
@@ -248,13 +248,13 @@ static const uint8 a2dp_source_service_record[] =
       0x19, /* uuid AdvancedAudioDistribution(0x110d) */
       0x11,
       0x0d,
-      0x09, /* uint16 0x0102 */
+      0x09, /* u16 0x0102 */
         0x01,
         0x02,
   0x09,     /* SupportedFeatures(0x0311) = "0x0001" */
     0x03,
     0x11,
-  0x09,     /* uint16 0x0001 */
+  0x09,     /* u16 0x0001 */
     0x00,
     0x01,
 }; /* 48 bytes */
@@ -262,9 +262,9 @@ static const uint8 a2dp_source_service_record[] =
 #endif /*A2DP_1_2*/
 
 /****************************************************************************/
-static bool validateSeps(sep_data_type *seps, uint16 size_seps)
+static bool validateSeps(sep_data_type *seps, u16 size_seps)
 {
-    uint16 i, j;
+    u16 i, j;
 
     for (i = 0; i < size_seps; i++)
     {
@@ -318,12 +318,12 @@ void a2dpSendInitCfmToClient(a2dp_status_code status)
 
 
 /****************************************************************************/
-void A2dpInit(Task clientTask, uint16 role, service_record_type *service_records, uint16 size_seps, sep_data_type *seps, uint16 linkloss_timeout)
+void A2dpInit(Task clientTask, u16 role, service_record_type *service_records, u16 size_seps, sep_data_type *seps, u16 linkloss_timeout)
 {
     /* Initialise the task data */
     if ( !a2dp )
     {
-        uint8 device_id;
+        u8 device_id;
         
         a2dp = PanicUnlessNew(A2DP);
         memset( a2dp, 0, sizeof(A2DP) );
@@ -404,7 +404,7 @@ void A2dpInit(Task clientTask, uint16 role, service_record_type *service_records
     }
 }
 
-void a2dpInitialiseRemoteDevice(remote_device *device, uint8 device_id)
+void a2dpInitialiseRemoteDevice(remote_device *device, u8 device_id)
 {
     memset( device, 0, sizeof(remote_device) );  /* Enumerated type defaults
                                                     are zero in value */

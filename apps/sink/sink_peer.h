@@ -137,7 +137,7 @@ DESCRIPTION
 RETURNS
     None
 **************************************************************************/
-void peerSetRemoteSupportedCodecsFromServiceRecord (const uint8 *attr_data, uint16 attr_data_size);
+void peerSetRemoteSupportedCodecsFromServiceRecord (const u8 *attr_data, u16 attr_data_size);
 
 /*************************************************************************
 NAME    
@@ -151,7 +151,7 @@ RETURNS
     present in SDP record
     
 **************************************************************************/
-uint16 peerGetRemoteVersionFromServiceRecord (const uint8 *attr_data, uint16 attr_data_size);
+u16 peerGetRemoteVersionFromServiceRecord (const u8 *attr_data, u16 attr_data_size);
 
 /*************************************************************************
 NAME    
@@ -165,7 +165,7 @@ RETURNS
     present in SDP record
     
 **************************************************************************/
-remote_features peerGetRemoteSupportedFeaturesFromServiceRecord (const uint8 *attr_data, uint16 attr_data_size);
+remote_features peerGetRemoteSupportedFeaturesFromServiceRecord (const u8 *attr_data, u16 attr_data_size);
 
 /*************************************************************************
 NAME    
@@ -183,7 +183,7 @@ RETURNS
     The compatible set of features of the connected Peer
     
 **************************************************************************/
-remote_features peerDetermineCompatibleRemoteFeatures (remote_features supported_features, uint16 version);
+remote_features peerDetermineCompatibleRemoteFeatures (remote_features supported_features, u16 version);
 
 /*************************************************************************
 NAME    
@@ -196,7 +196,7 @@ RETURNS
     TRUE if device is deemed compatible, FALSE otherwise
     
 **************************************************************************/
-bool peerIsCompatibleDevice (uint16 version);
+bool peerIsCompatibleDevice (u16 version);
 
 /*************************************************************************
 NAME    
@@ -360,7 +360,7 @@ RETURNS
     None
     
 **************************************************************************/
-void peerHandleVolumeCmd (uint8 volume);
+void peerHandleVolumeCmd (u8 volume);
 
 /*************************************************************************
 NAME    
@@ -451,7 +451,7 @@ RETURNS
     None
     
 **************************************************************************/
-PeerPairingMode peerObtainPairingMode (uint16 peer_id);
+PeerPairingMode peerObtainPairingMode (u16 peer_id);
 
 /*************************************************************************
 NAME    
@@ -464,7 +464,7 @@ RETURNS
     None
     
 **************************************************************************/
-void peerUpdatePairing (uint16 peer_id, void *peer_attributes);
+void peerUpdatePairing (u16 peer_id, void *peer_attributes);
 
 /*************************************************************************
 NAME    
@@ -546,7 +546,7 @@ RETURNS
 
 **************************************************************************/
 #ifdef ENABLE_PEER_BATTERY_LEVEL
-bool peerUpdateBatteryLevel(uint16 battery_level);
+bool peerUpdateBatteryLevel(u16 battery_level);
 #else
 #define peerUpdateBatteryLevel(x) (FALSE)
 #endif
@@ -566,7 +566,7 @@ RETURNS
 
 **************************************************************************/
 #ifdef ENABLE_PEER_BATTERY_LEVEL
-uint16 peerGetBatteryLevel(void);
+u16 peerGetBatteryLevel(void);
 #else
 #define peerGetBatteryLevel() (BATTERY_LEVEL_INVALID)
 #endif
@@ -596,7 +596,7 @@ RETURNS
     TRUE if the list is present othewise FALSE
     
 **************************************************************************/
-bool peerGetLocalSupportedCodecs(uint16 *codecs);
+bool peerGetLocalSupportedCodecs(u16 *codecs);
 
 /*************************************************************************
 NAME    
@@ -610,7 +610,7 @@ RETURNS
 
     
 **************************************************************************/
-bool peerGetRemoteSupportedCodecs(uint16 *codecs);
+bool peerGetRemoteSupportedCodecs(u16 *codecs);
 
 /*************************************************************************
 NAME    
@@ -623,7 +623,7 @@ RETURNS
     None
     
 **************************************************************************/
-void peerSetLocalSupportedCodecs(uint16 codecs);
+void peerSetLocalSupportedCodecs(u16 codecs);
 
 /*************************************************************************
 NAME    
@@ -636,7 +636,7 @@ RETURNS
     None
     
 **************************************************************************/
-void peerSetRemoteSupportedCodecs(uint16 codecs);
+void peerSetRemoteSupportedCodecs(u16 codecs);
 
 /****************************************************************************
 NAME    
@@ -717,7 +717,7 @@ DESCRIPTION
 RETURNS
 	peer_buffer_level enum 250 or 350ms 
 */
-peer_buffer_level getPeerDSPBufferingRequired(uint16 remote_peer_version);
+peer_buffer_level getPeerDSPBufferingRequired(u16 remote_peer_version);
 
 
 #endif

@@ -22,12 +22,10 @@ DESCRIPTION
 
 #ifdef GATT_IAS_CLIENT
 
-static const uint8 ias_ble_advertising_filter[] = {GATT_SERVICE_UUID_IMMEDIATE_ALERT & 0xFF, GATT_SERVICE_UUID_IMMEDIATE_ALERT >> 8};
+static const u8 ias_ble_advertising_filter[] = {GATT_SERVICE_UUID_IMMEDIATE_ALERT & 0xFF, GATT_SERVICE_UUID_IMMEDIATE_ALERT >> 8};
 
 #ifdef DEBUG_GATT_IAS_CLIENT
-#define GATT_IAS_CLIENT_DEBUG(x) DEBUG(x)
 #else
-#define GATT_IAS_CLIENT_DEBUG(x)
 #endif
 
 /* During alerting the phone, we are the peripheral device. Hence only IAS client is checked */
@@ -62,7 +60,7 @@ RETURNS
 */
 static gatt_client_connection_t *gattIasClientFindConnection(const GIASC_T *giasc)
 {
-    uint16 index = 0;
+    u16 index = 0;
     gatt_client_services_t *data = NULL;
 
     if (giasc == NULL)
@@ -114,9 +112,9 @@ PARAMETERS
     level    The alert level to cache
 
 */
-static void gattIasClientSetCachedLevel(uint8 level)
+static void gattIasClientSetCachedLevel(u8 level)
 {
-    GATT_IAS_CLIENT_DEBUG(("GATT Set IAS alert level cache=[%u]\n", level));
+    GATT_IAS_LOGD("GATT Set IAS alert level cache=[%u]\n", level);
     GATT_CLIENT.cache.iasc_alert_level = level;
 }
 
@@ -132,7 +130,7 @@ PARAMETERS
 */
 static void gattIasClientInitCfm(const GATT_IMM_ALERT_CLIENT_INIT_CFM_T *cfm)
 {
-    GATT_IAS_CLIENT_DEBUG(("GATT_IMM_ALERT_CLIENT_INIT_CFM status[%u] cid=[0x%x] \n", cfm->status, cfm->cid));
+    GATT_IAS_LOGD("GATT_IMM_ALERT_CLIENT_INIT_CFM status[%u] cid=[0x%x] \n", cfm->status, cfm->cid);
 
     /* The service initialisation is complete */
     gattIasClientServiceInitialised(cfm->imm_alert_client);
@@ -143,12 +141,12 @@ static void gattIasClientInitCfm(const GATT_IMM_ALERT_CLIENT_INIT_CFM_T *cfm)
         /* Initialisation - Set alert level */
         if (sinkGattIasClientGetCachedLevel() == IASC_INVALID_ALERT_LEVEL)
         {
-            GATT_IAS_CLIENT_DEBUG(("IAS Client Initialisation done\n"));
+            GATT_IAS_LOGD("IAS Client Initialisation done\n");
         }
         else  /* Case where remote client (eg phone) wants to alert remote peripheral (eg remote control) - Set alert level */
                 /* Case where user triggers alert on Soundbar and remote is not connected*/
         {
-            GATT_IAS_CLIENT_DEBUG(("IAS Client Remote alert \n"));
+            GATT_IAS_LOGD("IAS Client Remote alert \n");
 
             /* The cached alert must be stopped after timeout */
             MessageSendLater(&theSink.task, EventSysImmAlertTimeout, 0, D_SEC(theSink.conf1->timeouts.ImmediateAlertStopTimeout_s));
@@ -187,19 +185,19 @@ static void gattIasClientSetAlertCfm(const GATT_IMM_ALERT_CLIENT_SET_ALERT_CFM_T
 void sinkGattIasClientSetupAdvertisingFilter(void)
 {
 
-    GATT_IAS_CLIENT_DEBUG(("GattIas: Add IAS scan filter\n"));
+    GATT_IAS_LOGD("GattIas: Add IAS scan filter\n");
     ConnectionBleAddAdvertisingReportFilter(ble_ad_type_more_uuid16, sizeof(ias_ble_advertising_filter), sizeof(ias_ble_advertising_filter), ias_ble_advertising_filter);
     ConnectionBleAddAdvertisingReportFilter(ble_ad_type_complete_uuid16, sizeof(ias_ble_advertising_filter), sizeof(ias_ble_advertising_filter), ias_ble_advertising_filter);
 }
 
 /****************************************************************************/
-bool sinkGattIasClientAddService(uint16 cid, uint16 start, uint16 end)
+bool sinkGattIasClientAddService(u16 cid, u16 start, u16 end)
 {
     gatt_client_services_t *client_services = NULL;
     gatt_client_connection_t *connection = gattClientFindByCid(cid);
-    uint16 *service = gattClientAddService(connection, sizeof(GIASC_T));
+    u16 *service = gattClientAddService(connection, sizeof(GIASC_T));
 
-    GATT_IAS_CLIENT_DEBUG(("Add Imm Alert Client Service cid=[0x%x] \n", cid));
+    GATT_IAS_LOGD("Add Imm Alert Client Service cid=[0x%x] \n", cid);
 
     if (service)
     {
@@ -224,7 +222,7 @@ bool sinkGattIasClientAddService(uint16 cid, uint16 start, uint16 end)
 }
 
 /****************************************************************************/
-void sinkGattIasClientRemoveService(GIASC_T *giasc, uint16 cid)
+void sinkGattIasClientRemoveService(GIASC_T *giasc, u16 cid)
 {
     GattImmAlertClientDestroy(giasc, cid);
 }
@@ -232,16 +230,16 @@ void sinkGattIasClientRemoveService(GIASC_T *giasc, uint16 cid)
 /****************************************************************************/
 void sinkGattIasClientInit(void)
 {
-    GATT_IAS_CLIENT_DEBUG(("GATT Immediate Alert Client Service initialised \n"));
+    GATT_IAS_LOGD("GATT Immediate Alert Client Service initialised \n");
 
     /* Initialise cached values */
     GATT_CLIENT.cache.iasc_alert_level = IASC_INVALID_ALERT_LEVEL;
 }
 
 /****************************************************************************/
-uint16 sinkGattIasClientGetCachedLevel(void)
+u16 sinkGattIasClientGetCachedLevel(void)
 {
-    GATT_IAS_CLIENT_DEBUG(("GATT Get IAS alert level cache=[%u]\n", GATT_CLIENT.cache.iasc_alert_level));
+    GATT_IAS_LOGD("GATT Get IAS alert level cache=[%u]\n", GATT_CLIENT.cache.iasc_alert_level);
 
     return GATT_CLIENT.cache.iasc_alert_level;
 }
@@ -252,9 +250,9 @@ void sinkGattIasClientSetAlert(gatt_imm_alert_set_level alert_level, sink_gatt_i
     gatt_client_services_t *client_services = NULL;
     gatt_client_connection_t *connection = NULL;
     bool alert_sent = FALSE;
-    uint16 id = 0;
+    u16 id = 0;
 
-    GATT_IAS_CLIENT_DEBUG(("Set Alert level on remote device \n"));
+    GATT_IAS_LOGD("Set Alert level on remote device \n");
 
     /*Check if the remote device is connected*/
     for (id = 0; id < GATT_CLIENT.number_connections; id++)
@@ -274,7 +272,7 @@ void sinkGattIasClientSetAlert(gatt_imm_alert_set_level alert_level, sink_gatt_i
                 {
                     MessageCancelAll(&theSink.task, EventSysImmAlertTimeout);
 
-                    GATT_IAS_CLIENT_DEBUG(("IASC Set Alert \n"));
+                    GATT_IAS_LOGD("IASC Set Alert \n");
                     /* Set Alert Level */
                     GattImmAlertClientSetAlertLevel((GIASC_T *)client_services->iasc, alert_level);
 
@@ -292,7 +290,7 @@ void sinkGattIasClientSetAlert(gatt_imm_alert_set_level alert_level, sink_gatt_i
     /* In case the remote device is not connected Switch to appropriate mode if the device type is known */
     if ((alert_sent == FALSE) && (dev_type != sink_gatt_ias_alert_none))
     {
-        sinkGattIasClientSwitchMode((uint8)alert_level, dev_type);
+        sinkGattIasClientSwitchMode((u8)alert_level, dev_type);
     }
 }
 
@@ -315,7 +313,7 @@ PARAMETERS
 RETURNS
     ias_alert_status_t
 */
-ias_alert_status_t sinkGattIasClientSwitchMode(uint8 alert_level, sink_gatt_ias_dev_type dev_type)
+ias_alert_status_t sinkGattIasClientSwitchMode(u8 alert_level, sink_gatt_ias_dev_type dev_type)
 {
 
     if(!sinkGattHidClientEnabled())
@@ -364,7 +362,7 @@ void sinkGattIasClientMsgHandler(Task task, MessageId id, Message message)
         break;
         default:
         {
-            GATT_IAS_CLIENT_DEBUG(("Unhandled IAS Client msg[%x]\n", id));
+            GATT_IAS_LOGD("Unhandled IAS Client msg[%x]\n", id);
         }
         break;
     }

@@ -30,7 +30,7 @@ NOTE
    be called when the application requests notifications for a particular
    report_id.
 */
-void hid_client_set_notifications_for_report_id(GHIDC_T *const hid_client, uint16 report_id, bool enable);
+void hid_client_set_notifications_for_report_id(GHIDC_T *const hid_client, u16 report_id, bool enable);
 
 /***************************************************************************
 NAME
@@ -44,7 +44,7 @@ RETURNS
     TRUE if notifications are enabled for report_id
     FALSE if notifications are disabled or report_id wasn't found
 */
-bool hid_client_get_notifications_for_report_id(GHIDC_T *const hid_client, uint16 report_id);
+bool hid_client_get_notifications_for_report_id(GHIDC_T *const hid_client, u16 report_id);
 
 /***************************************************************************
 NAME
@@ -55,9 +55,9 @@ DESCRIPTION
    return TRUE for success and FALSE for failure
 */
 bool  hid_client_get_report_handle_and_type_from_id(GHIDC_T *const hid_client,
-          uint16 report_id,
-          uint16 *report_handle,
-          uint16 *type);
+          u16 report_id,
+          u16 *report_handle,
+          u16 *type);
 
 /***************************************************************************
 NAME
@@ -68,8 +68,8 @@ DESCRIPTION
    return TRUE for success and FALSE for failure
 */
 bool hid_client_get_report_id_from_handle(GHIDC_T *const hid_client,
-     uint16 report_handle,
-     uint16 *report_id);
+     u16 report_handle,
+     u16 *report_id);
 
 /***************************************************************************
 NAME
@@ -80,8 +80,8 @@ DESCRIPTION
    hid handle then it returns a valid report_it
 */
 bool hid_client_validate_notifitcaion_handle(GHIDC_T *const hid_client,
-     uint16 handle,
-     uint16 *report_id);
+     u16 handle,
+     u16 *report_id);
 
 #endif /* GATT_HID_CLIENT_UTILS_H_ */
 

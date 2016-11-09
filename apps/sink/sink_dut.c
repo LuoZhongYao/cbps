@@ -41,9 +41,7 @@ NOTES
 #endif
 
 #ifdef DEBUG_DUT
-#define DUT_DEBUG(x) DEBUG(x)
 #else
-#define DUT_DEBUG(x) 
 #endif
 
 
@@ -55,11 +53,11 @@ NOTES
 
     typedef struct
     {
-        uint16 id;
-        uint16 a;
-        uint16 b;
-        uint16 c;
-        uint16 d;
+        u16 id;
+        u16 a;
+        u16 b;
+        u16 c;
+        u16 d;
     } DSP_REGISTER_T;
 #endif
 
@@ -67,8 +65,8 @@ NOTES
 #define TX_START_TEST_MODE_LO_FREQ  (2441)
 #define TX_START_TEST_MODE_LEVEL    (63)
 #define TX_START_TEST_MODE_MOD_FREQ (0)
-    
-    
+
+
 /* Sine Tone: 1000Hz */
 static const ringtone_note sine_tone[] =
 {
@@ -77,14 +75,14 @@ static const ringtone_note sine_tone[] =
 	RINGTONE_NOTE(E4  , SEMIBREVE),
 
     /* Tone soft stop. Duration must be > 8ms*/
-    RINGTONE_NOTE(REST, HEMIDEMISEMIQUAVER_TRIPLET),    
+    RINGTONE_NOTE(REST, HEMIDEMISEMIQUAVER_TRIPLET),
     RINGTONE_END
-};    
+};
 
 
 typedef enum
 {
-    dut_test_invalid,    
+    dut_test_invalid,
     dut_test_audio,
     dut_test_keys,
     dut_test_service,
@@ -151,7 +149,7 @@ static void setDUTMode(dut_test_mode mode)
         AudioStopToneAndPrompt( TRUE );
         AudioDisconnect();
     }
-    dut.mode = mode;   
+    dut.mode = mode;
 }
 
 
@@ -171,10 +169,10 @@ DESCRIPTION
 */
 static void setDUTLed(key_test_led_state led)
 {
-    dut.led = led;   
+    dut.led = led;
 }
-        
-        
+
+
 /****************************************************************************
 DESCRIPTION
     Makes sure the device is powered on, eg. correct PIOs are enabled for DUT mode.
@@ -182,7 +180,7 @@ DESCRIPTION
 static void enterDUTPowerOn(void)
 {
     PioSetPowerPin(TRUE);
-    
+
     PioSetPio(PIO_POWER_ON, pio_drive, TRUE);
 }
 
@@ -192,7 +190,7 @@ DESCRIPTION
     Display current LED and then store next LED in the sequence
 */
 static void switchDUTLed(void)
-{   
+{
     switch (getDUTLed())
    {
         case key_test_led0_off:
@@ -210,7 +208,7 @@ static void switchDUTLed(void)
             setDUTLed(key_test_led1_off);
         }
         break;
-        
+
         case key_test_led1_off:
         {
             LedConfigure(LED_1, LED_ENABLE, FALSE);
@@ -218,7 +216,7 @@ static void switchDUTLed(void)
             setDUTLed(key_test_led0_on);
         }
         break;
-        
+
         case key_test_led0_on:
         default:
         {
@@ -239,7 +237,7 @@ void enterDutMode(void)
 {
     /* set test mode */
     setDUTMode(dut_test_dut);
-    
+
     ConnectionEnterDutMode();
 }
 
@@ -251,7 +249,7 @@ void enterTxContinuousTestMode ( void )
 {
     /* set test mode */
     setDUTMode(dut_test_tx);
-    
+
     TestTxStart (TX_START_TEST_MODE_LO_FREQ,
                  TX_START_TEST_MODE_LEVEL,
                  TX_START_TEST_MODE_MOD_FREQ) ;
@@ -282,7 +280,7 @@ void enterServiceMode( void )
 {
     /* set test mode */
     setDUTMode(dut_test_service);
-    
+
     /* Reset pair devices list */
     deviceManagerRemoveAllDevices();
 
@@ -320,8 +318,8 @@ void DutHandleLocalAddr(CL_DM_LOCAL_BD_ADDR_CFM_T *cfm)
 {
     char new_name[32];
 
-    uint16 sw_version[SINK_DEVICE_ID_SW_VERSION_SIZE];
-    uint16 i = 0;
+    u16 sw_version[SINK_DEVICE_ID_SW_VERSION_SIZE];
+    u16 i = 0;
 
     new_name[i++] = hex((cfm->bd_addr.nap & 0xF000) >> 12);
     new_name[i++] = hex((cfm->bd_addr.nap & 0x0F00) >> 8);
@@ -346,7 +344,7 @@ void DutHandleLocalAddr(CL_DM_LOCAL_BD_ADDR_CFM_T *cfm)
     new_name[i++] = hex((sw_version[0] & 0x0F00) >> 8 ) ;
     new_name[i++] = hex((sw_version[0] & 0x00F0) >> 4 ) ;
     new_name[i++] = hex((sw_version[0] & 0x000F) >> 0 ) ;
-    
+
     new_name[i++] = hex((sw_version[1] & 0xF000) >> 12) ;
     new_name[i++] = hex((sw_version[1] & 0x0F00) >> 8 ) ;
     new_name[i++] = ' ' ;
@@ -373,7 +371,7 @@ void DutHandleLocalAddr(CL_DM_LOCAL_BD_ADDR_CFM_T *cfm)
         /*terminate the string*/
     new_name[i] = 0;
 
-    ConnectionChangeLocalName(i, (uint8 *)new_name);
+    ConnectionChangeLocalName(i, (u8 *)new_name);
 }
 
 
@@ -386,21 +384,21 @@ DESCRIPTION
 void cvcProductionTestEnter ( void )
 {
     /* check to see if license key checking is enabled */
-    uint16 * buffer = mallocPanic( sizeof(uint16) * sizeof(feature_config_type));
+    u16 * buffer = mallocPanic( sizeof(u16) * sizeof(feature_config_type));
     char* kap_file = NULL;
-    uint16 audio_plugin;
-    uint16 a2dp_optional_codecs_enabled;
+    u16 audio_plugin;
+    u16 a2dp_optional_codecs_enabled;
 
-    ConfigRetrieve(CONFIG_FEATURE_BLOCK, buffer, sizeof(feature_config_type)) ; 	
-             
+    ConfigRetrieve(CONFIG_FEATURE_BLOCK, buffer, sizeof(feature_config_type)) ;
+
     audio_plugin = (buffer[3] >> 8) & 0x0F;
-    DUT_DEBUG(("CVCPT:buffer[3] = [%x]\n", buffer[3]));
-    DUT_DEBUG(("CVCPT:audio_plugin = [%x]\n", audio_plugin));
-    
+    LOGD("buffer[3] = [%x]\n", buffer[3]);
+    LOGD("audio_plugin = [%x]\n", audio_plugin);
+
     a2dp_optional_codecs_enabled = (buffer[5] >> 5) &  0xf;
-    DUT_DEBUG(("CVCPT:buffer[5] = [%x]\n", buffer[5]));
-    DUT_DEBUG(("CVCPT:a2dp_optional_codecs_enabled = [%x]\n", a2dp_optional_codecs_enabled));
-    
+    LOGD("buffer[5] = [%x]\n", buffer[5]);
+    LOGD("a2dp_optional_codecs_enabled = [%x]\n", a2dp_optional_codecs_enabled);
+
     switch (audio_plugin)
     {
         case 1:
@@ -439,9 +437,9 @@ void cvcProductionTestEnter ( void )
             /* no dsp */
             /* pass thru */
             /* default */
-            
+
             /* check to see if Apt-X codec is enabled */
-            
+
 #ifdef USE_MULTI_DECODER
             /* ROM device may have Apt-X enabled, select multi-decoder kap file*/
             if (a2dp_optional_codecs_enabled & 0x8)
@@ -450,8 +448,8 @@ void cvcProductionTestEnter ( void )
                 test_type = test_aptx;
                 break;
             }
-#else            
-#ifdef INCLUDE_APTX            
+#else
+#ifdef INCLUDE_APTX
             /* may need to add extra code for Apt-X sprint decoder */
             if (a2dp_optional_codecs_enabled & 0x8)
             {
@@ -459,58 +457,58 @@ void cvcProductionTestEnter ( void )
                 test_type = test_aptx;
                 break;
             }
-        
+
 #endif
-#endif /*USE_MULTI_DECODER */     
-            
-#ifdef ENABLE_GAIA                
+#endif /*USE_MULTI_DECODER */
+
+#ifdef ENABLE_GAIA
             /* Initialise Gaia with a concurrent connection limit of 1 */
-            GAIA_DEBUG(("GaiaInit\n"));
+            LOGD("GaiaInit\n");
             GaiaInit(&theSink.task, 1);
             test_type = test_gaia;
             break;
 #else
-            DUT_DEBUG(("CVC_PRODTEST_NO_CHECK\n"));
+            LOGD("CVC_PRODTEST_NO_CHECK\n");
             freePanic(buffer);
             exit(CVC_PRODTEST_NO_CHECK);
             break;
 #endif /*ENABLE_GAIA */
     }
-        
+
     /* don't attempt to load kalimba file if we are testing Gaia */
     if (test_type != test_gaia)
     {
         MessageKalimbaTask(&theSink.task);
-            
+
         if (FileFind(FILE_ROOT,(const char *) kap_file ,strlen(kap_file)) == FILE_NONE)
         {
-            DUT_DEBUG(("CVCPT: CVC_PRODTEST_FILE_NOT_FOUND\n"));
+            LOGD("CVC_PRODTEST_FILE_NOT_FOUND\n");
             freePanic(buffer);
             exit(CVC_PRODTEST_FILE_NOT_FOUND);
         }
         else
         {
-            DUT_DEBUG(("CVCPT: KalimbaLoad [%s]\n", kap_file));
+            LOGD("KalimbaLoad [%s]\n", kap_file);
             KalimbaLoad(FileFind(FILE_ROOT,(const char *) kap_file ,strlen(kap_file)));
         }
-            
-        DUT_DEBUG(("CVCPT:StreamConnect\n"));
+
+        LOGD("StreamConnect\n");
         StreamConnect(StreamKalimbaSource(0), StreamHostSink(0));
-    }           
+    }
     freePanic(buffer);
-               
+
 }
 
 /*************************************************************************
 DESCRIPTION
-    Handle the response from Kalimba to figure out if the CVC licence key exists    
+    Handle the response from Kalimba to figure out if the CVC licence key exists
 */
 void cvcProductionTestKalimbaMessage ( Task task, MessageId id, Message message )
 {
     const DSP_REGISTER_T *m = (const DSP_REGISTER_T *) message;
     const AUDIO_PLUGIN_SET_MULTI_CHANNEL_OUTPUT_TYPES_MSG_T msgMultiChOut = {{0, 0, 0, 0, 0, 0, 0}};
-	DUT_DEBUG(("CVCPT: CVC: msg id[%x] a[%x] b[%x] c[%x] d[%x]\n", m->id, m->a, m->b, m->c, m->d));
-    DUT_DEBUG(("CVCPT: test type = %x\n", test_type));
+	LOGD("CVC: msg id[%x] a[%x] b[%x] c[%x] d[%x]\n", m->id, m->a, m->b, m->c, m->d);
+    LOGD("test type = %x\n", test_type);
 
     switch (test_type)
     {
@@ -519,93 +517,93 @@ void cvcProductionTestKalimbaMessage ( Task task, MessageId id, Message message 
             switch (m->id)
             {
                 case 0x1000:
-                    DUT_DEBUG(("CVCPT: CVC_READY\n"));
+                    LOGD("CVC_READY\n");
                     /*CVC_LOADPARAMS_MSG, CVC_PS_BASE*/
                     KalimbaSendMessage(0x1012, 0x2280, 0, 0, 0);
                     break;
-            
+
                 case 0x1006:
-                    DUT_DEBUG(("CVCPT: CVC_CODEC_MSG\n"));
+                    LOGD("CVC_CODEC_MSG\n");
                     /*MESSAGE_SCO_CONFIG, sco_encoder, sco_config*/
                     KalimbaSendMessage(0x2000, 0, 3, 0, 0);
                     break;
-        
+
                 case 0x100c:
-                    DUT_DEBUG (("CVCPT: CVC_SECPASSED_MSG\n"));
+                    LOGD("CVC_SECPASSED_MSG\n");
                     exit(CVC_PRODTEST_PASS);
                     break;
-            
+
                 case 0x1013:
-                    DUT_DEBUG (("CVCPT: CVC_SECFAILD_MSG\n"));
+                    LOGD("CVC_SECFAILD_MSG\n");
                     exit(CVC_PRODTEST_FAIL);
                     break;
-            
+
                 default:
-                    DUT_DEBUG(("CVCPT: m->id [%x]\n", m->id));
-                    break;    
+                    LOGD("m->id [%x]\n", m->id);
+                    break;
              }
             break;
         }
-        
+
         case test_aptx:
         {
             switch (m->id)
             {
                 case 0x1000:
-                    DUT_DEBUG(("CVCPT: MUSIC_READY_MSG\n"));
+                    LOGD("MUSIC_READY_MSG\n");
                     /*MUSIC_LOADPARAMS_MSG, MUSIC_PS_BASE*/
                     KalimbaSendMessage(0x1012, 0x8822, 0, 0, 0);
                     break;
-            
+
                 case 0x1015:
-                    DUT_DEBUG(("CVCPT: MUSIC_PARAMS_LOADED_MSG\n"));
+                    LOGD("MUSIC_PARAMS_LOADED_MSG\n");
 
                     /* New multichannel plugins EXPECT this long message regardless
                        if we are assigning outputs or not. Here we don't but we send it.*/
                     KalimbaSendLongMessage(MESSAGE_SET_MULTI_CHANNEL_OUTPUT_TYPES,
                                 sizeof(AUDIO_PLUGIN_SET_MULTI_CHANNEL_OUTPUT_TYPES_MSG_T),
-                                (const uint16*)&msgMultiChOut);
-                    
+                                (const u16*)&msgMultiChOut);
+
                     /*APTX_PARAMS_MSG, rate, channel_mode*/
                     KalimbaSendMessage(0x1016, 0xac44, 0x2, 0, 0);
-                    
+
                     /*MUSIC_SET_PLUGIN_MSG, variant*/
                     KalimbaSendMessage(0x1020, 0x6, 0, 0, 0);
-                    
+
                     /*MESSAGE_SET_DAC_SAMPLE_RATE, rate, mismatch, clock_mismatch*/
                     KalimbaSendMessage(0x1070,0x113A, 0, 0, 0);
-                    
+
                     /*MESSAGE_SET_CODEC_SAMPLE_RATE, rate, mismatch, clock_mismatch*/
                     KalimbaSendMessage(0x1071,0x113A, 0, 0, 0);
-                    
+
                     /*KALIMBA_MSG_GO*/
                     KalimbaSendMessage(0x7000, 0, 0, 0, 0);
                     break;
-        
+
                 case 0x100c:
-                    DUT_DEBUG (("CVCPT: APTX_SECPASSED_MSG\n"));
+                    LOGD("APTX_SECPASSED_MSG\n");
                     exit(CVC_PRODTEST_PASS);
                     break;
-            
+
                 case 0x1013:
-                    DUT_DEBUG (("CVCPT: APTX_SECFAILED_MSG\n"));
+                    LOGD("APTX_SECFAILED_MSG\n");
                     exit(CVC_PRODTEST_FAIL);
                     break;
-            
+
                 default:
-                    DUT_DEBUG(("CVCPT: m->id [%x]\n", m->id));
-                    break;    
+                    LOGD("m->id [%x]\n", m->id);
+                    break;
              }
             break;
         }
-        
+
         default:
         {
-            DUT_DEBUG (("CVCPT: cvcProductionTestKalimbaMessage unknown test_type\n"));
+            LOGD("cvcProductionTestKalimbaMessage unknown test_type\n");
             break;
         }
     }
-            
+
 }
 
 #endif
@@ -613,7 +611,7 @@ void cvcProductionTestKalimbaMessage ( Task task, MessageId id, Message message 
 
 /*************************************************************************
 DESCRIPTION
-    Audio Test Mode    
+    Audio Test Mode
 */
 void enterAudioTestMode(void)
 {
@@ -624,17 +622,17 @@ void enterAudioTestMode(void)
     /* remove current audio */
     AudioDisconnect();
     /* use DUT audio plugin to route audio from mic to speaker */
-    AudioConnect((TaskData *)&csr_dut_audio_plugin, 
-                 0, 
-                 AUDIO_SINK_INVALID, 
-                 theSink.codec_task, 
-                 theSink.features.DefaultVolume, 
-                 8000, 
-                 theSink.conf2->audio_routing_data.PluginFeatures, 
-                 AUDIO_MODE_CONNECTED, 
-                 0, 
-                 powerManagerGetLBIPM(), 
-                 &theSink.conf6->PIOIO.digital, 
+    AudioConnect((TaskData *)&csr_dut_audio_plugin,
+                 0,
+                 AUDIO_SINK_INVALID,
+                 theSink.codec_task,
+                 theSink.features.DefaultVolume,
+                 8000,
+                 theSink.conf2->audio_routing_data.PluginFeatures,
+                 AUDIO_MODE_CONNECTED,
+                 0,
+                 powerManagerGetLBIPM(),
+                 &theSink.conf6->PIOIO.digital,
                  &theSink.task);
 }
 
@@ -652,19 +650,19 @@ void enterToneTestMode(void)
     /* remove current audio */
     AudioDisconnect();
     /* use DUT audio plugin to route audio from mic to speaker */
-    AudioConnect((TaskData *)&csr_dut_audio_plugin, 
-                 0, 
-                 AUDIO_SINK_INVALID, 
-                 theSink.codec_task, 
-                 theSink.features.DefaultVolume,                 
+    AudioConnect((TaskData *)&csr_dut_audio_plugin,
+                 0,
+                 AUDIO_SINK_INVALID,
+                 theSink.codec_task,
+                 theSink.features.DefaultVolume,
                  48000,
-                 theSink.conf2->audio_routing_data.PluginFeatures, 
-                 AUDIO_MODE_MUTE_BOTH, 
-                 0, 
-                 powerManagerGetLBIPM(), 
-                 NULL, 
+                 theSink.conf2->audio_routing_data.PluginFeatures,
+                 AUDIO_MODE_MUTE_BOTH,
+                 0,
+                 powerManagerGetLBIPM(),
+                 NULL,
                  &theSink.task);
-    AudioPlayTone(sine_tone, theSink.features.QueueEventTones, theSink.codec_task, TonesGetToneVolume(FALSE), theSink.conf2->audio_routing_data.PluginFeatures); 
+    AudioPlayTone(sine_tone, theSink.features.QueueEventTones, theSink.codec_task, TonesGetToneVolume(FALSE), theSink.conf2->audio_routing_data.PluginFeatures);
 }
 
 
@@ -688,11 +686,11 @@ void enterKeyTestMode(void)
 DESCRIPTION
     A configured key has been pressed, check if this is in key test mode
 */
-void checkDUTKeyPress(uint32 lNewState)
+void checkDUTKeyPress(u32 lNewState)
 {
     if (getDUTMode() == dut_test_keys)
     {
-        switchDUTLed();        
+        switchDUTLed();
     }
 }
 
@@ -700,29 +698,29 @@ void checkDUTKeyPress(uint32 lNewState)
 DESCRIPTION
     A configured key has been released, check if this is in key test mode
 */
-void checkDUTKeyRelease(uint32 lNewState, ButtonsTime_t pTime)
+void checkDUTKeyRelease(u32 lNewState, ButtonsTime_t pTime)
 {
     if (getDUTMode() == dut_test_keys)
     {
         switch (pTime)
         {
-            case B_SHORT:         
+            case B_SHORT:
             case B_DOUBLE:
             case B_LOW_TO_HIGH:
-            case B_HIGH_TO_LOW:             
+            case B_HIGH_TO_LOW:
             case B_LONG_RELEASE:
-            case B_VERY_LONG_RELEASE:    
+            case B_VERY_LONG_RELEASE:
             case B_VERY_VERY_LONG_RELEASE:
             {
-                switchDUTLed();                
+                switchDUTLed();
             }
             break;
-            
+
             default:
             {
                 /* Button time not handled */
             }
-            break;        
+            break;
         }
     }
 }

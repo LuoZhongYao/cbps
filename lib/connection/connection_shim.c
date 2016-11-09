@@ -15,12 +15,12 @@
 /* Macro for flattening tp_bdaddr and typed_bdaddr. Assumes that 
  *     typed_bdaddr taddr; 
  * has the same shape and position as 
- *     uint8        type; 
+ *     u8        type; 
  *     bdaddr       bd_addr;
  * and that
  *     tp_bdaddr    tpaddr;
  * has the same shape and position as
- *     uint8        type;
+ *     u8        type;
  *     bdaddr       bd_addr;
  *     TRANSPORT_T  transport
  * in the _TEST_EXTRA_ version of the msg structure.
@@ -51,7 +51,7 @@ void ConnectionHandleComplexMessage(Task task, MessageId id, Message message)
                 new_msg->psm = original->psm;
                 new_msg->cid = original->connection_id;
                 new_msg->identifier = original->identifier;
-                new_msg->task = (uint16) task;
+                new_msg->task = task;
                 MessageSend(task, CL_L2CAP_CONNECT_IND_TEST_EXTRA, new_msg);
             }
             break;
@@ -71,7 +71,7 @@ void ConnectionHandleComplexMessage(Task task, MessageId id, Message message)
                 new_msg->flush_timeout_remote = original->flush_timeout_remote;
                 new_msg->qos_remote = original->qos_remote;
                 new_msg->flow_mode = original->mode;
-                new_msg->task = (uint16) MessageSinkGetTask(original->sink);
+                new_msg->task = MessageSinkGetTask(original->sink);
                 MessageSend(task, CL_L2CAP_CONNECT_CFM_TEST_EXTRA, new_msg);
             }
             break;
@@ -80,9 +80,9 @@ void ConnectionHandleComplexMessage(Task task, MessageId id, Message message)
             {
                 Source src = ((MessageMoreData*)message)->source;
                 CL_SYSTEM_MORE_DATA_TEST_EXTRA_T *pdu;
-                const uint8 *s = SourceMap(src);
-                uint16 len = SourceBoundary(src);
-                uint16 datalen=len;
+                const u8 *s = SourceMap(src);
+                u16 len = SourceBoundary(src);
+                u16 datalen=len;
                 
                 /* Do not allow large data more than 512 ..Just Limit to 
                  * 128 bytes.
@@ -153,7 +153,7 @@ void ConnectionHandleComplexMessage(Task task, MessageId id, Message message)
             CL_SM_GET_INDEXED_ATTRIBUTE_CFM_TEST_EXTRA_T *new_msg = 
                 malloc(
                     sizeof(CL_SM_GET_INDEXED_ATTRIBUTE_CFM_TEST_EXTRA_T) 
-                    + (original->size_psdata * sizeof(uint8))
+                    + (original->size_psdata * sizeof(u8))
                     - 1     /* for the psdata array of 1 */
                     );
 
@@ -235,8 +235,8 @@ void ConnectionHandleComplexMessage(Task task, MessageId id, Message message)
 void ConnectionL2capConnectRequestTestExtraDefault(
         Task theAppTask,
         const bdaddr *addr,
-        uint16 psm_local,
-        uint16 psm_remote
+        u16 psm_local,
+        u16 psm_remote
         )
 {
     ConnectionL2capConnectRequest(
@@ -252,17 +252,17 @@ void ConnectionL2capConnectRequestTestExtraDefault(
 void ConnectionL2capConnectRequestTestExtraConftab(
         Task theAppTask,
         const bdaddr *addr,
-        uint16 psm_local,
-        uint16 psm_remote,
-        uint16 size_conftab,
-        uint8 *conftab
+        u16 psm_local,
+        u16 psm_remote,
+        u16 size_conftab,
+        u8 *conftab
         )
 {
     if (size_conftab)
     {
         /* copy the conftab data to a slot */
-        uint16* dyn_conftab = malloc(sizeof(uint16)* (size_conftab/2));
-        uint16 it;
+        u16* dyn_conftab = malloc(sizeof(u16)* (size_conftab/2));
+        u16 it;
 
         for(it=0; it<size_conftab/2; it++)
         {
@@ -284,15 +284,15 @@ void ConnectionL2capConnectRequestTestExtraConftab(
 
 void ConnectionL2capConnectResponseTestExtraDefault(
         Task theAppTask,
-        uint16 task,
+        Task task,
         bool response,
-        uint16 psm,
-        uint16 cid,
-        uint8 identifier
+        u16 psm,
+        u16 cid,
+        u8 identifier
         )
 {
     ConnectionL2capConnectResponse(
-            (Task) task,
+            task,
             response,
             psm,
             cid,
@@ -304,20 +304,20 @@ void ConnectionL2capConnectResponseTestExtraDefault(
 
 void ConnectionL2capConnectResponseTestExtraConftab(
         Task theAppTask,
-        uint16 task,
+        Task task,
         bool response,
-        uint16 psm,
-        uint16 cid,
-        uint8 identifier,
-        uint16 size_conftab,
-        uint8 *conftab
+        u16 psm,
+        u16 cid,
+        u8 identifier,
+        u16 size_conftab,
+        u8 *conftab
         )
 {
     if (size_conftab)
     {
         /* copy the conftab data to a slot */
-        uint16* dyn_conftab = malloc(sizeof(uint16)* (size_conftab/2));
-        uint16 it;
+        u16* dyn_conftab = malloc(sizeof(u16)* (size_conftab/2));
+        u16 it;
 
         for(it=0; it<size_conftab/2; it++)
         {
@@ -343,8 +343,8 @@ void ConnectionL2capConnectResponseTestExtraConftab(
 void ConnectionRfcommConnectRequestTestExtraDefault(
         Task theAppTask,
         const bdaddr* bd_addr,
-        uint16 security_chan,
-        uint8 remote_server_chan
+        u16 security_chan,
+        u8 remote_server_chan
         )
 {
     ConnectionRfcommConnectRequest(
@@ -359,12 +359,12 @@ void ConnectionRfcommConnectRequestTestExtraDefault(
 void ConnectionRfcommConnectRequestTestExtraParams(
         Task theAppTask,
         const bdaddr* bd_addr,
-        uint16 security_chan,
-        uint8 remote_server_chan,
-        uint16 max_payload_size,
-        uint8 modem_signal,
-        uint8 break_signal,
-        uint16 msc_timeout
+        u16 security_chan,
+        u8 remote_server_chan,
+        u16 max_payload_size,
+        u8 modem_signal,
+        u8 break_signal,
+        u16 msc_timeout
         )
 {
     rfcomm_config_params params;  
@@ -387,7 +387,7 @@ void ConnectionRfcommConnectResponseTestExtraDefault(
         Task theAppTask,
         bool response,
         Sink sink,
-        uint8 local_server_channel
+        u8 local_server_channel
         )
 {
     ConnectionRfcommConnectResponse(
@@ -403,11 +403,11 @@ void ConnectionRfcommConnectResponseTestExtraParams(
         Task theAppTask,
         bool response,
         Sink sink,
-        uint8 local_server_channel,
-        uint16 max_payload_size,
-        uint8 modem_signal,
-        uint8 break_signal,
-        uint16 msc_timeout
+        u8 local_server_channel,
+        u16 max_payload_size,
+        u8 modem_signal,
+        u8 break_signal,
+        u16 msc_timeout
         )
 {
     rfcomm_config_params params;  
@@ -445,15 +445,15 @@ void ConnectionRfcommPortNegRequestTestExtra(
         Task theAppTask,
         Sink sink,
         bool request,
-        uint8 baud_rate,
-        uint8 data_bits,
-        uint8 stop_bits,
-        uint8 parity,
-        uint8 parity_type,
-        uint8 flow_ctrl_mask,
-        uint8 xon,
-        uint8 xoff,
-        uint16 parameter_mask
+        u8 baud_rate,
+        u8 data_bits,
+        u8 stop_bits,
+        u8 parity,
+        u8 parity_type,
+        u8 flow_ctrl_mask,
+        u8 xon,
+        u8 xoff,
+        u16 parameter_mask
         )
 {
     port_par p_params;
@@ -474,15 +474,15 @@ void ConnectionRfcommPortNegRequestTestExtra(
 void ConnectionRfcommPortNegResponseTestExtra(
         Task theAppTask,
         Sink sink,
-        uint8 baud_rate,
-        uint8 data_bits,
-        uint8 stop_bits,
-        uint8 parity,
-        uint8 parity_type,
-        uint8 flow_ctrl_mask,
-        uint8 xon,
-        uint8 xoff,
-        uint16 parameter_mask
+        u8 baud_rate,
+        u8 data_bits,
+        u8 stop_bits,
+        u8 parity,
+        u8 parity_type,
+        u8 flow_ctrl_mask,
+        u8 xon,
+        u8 xoff,
+        u16 parameter_mask
         )
 {
     port_par p_params;
@@ -509,10 +509,10 @@ void ConnectionSyncConnectRequestTestExtraDefault(Task theAppTask, Sink sink)
 void ConnectionSyncConnectRequestTestExtraParams(
         Task theAppTask,
         Sink sink,
-        uint32 tx_bandwidth,
-        uint32 rx_bandwidth,
-        uint16 max_latency,
-        uint16 voice_settings,
+        u32 tx_bandwidth,
+        u32 rx_bandwidth,
+        u16 max_latency,
+        u16 voice_settings,
         sync_retx_effort retx_effort,
         sync_pkt_type packet_type
         )
@@ -544,10 +544,10 @@ void ConnectionSyncConnectResponseTestExtraParams(
         Task theAppTask,
         const bdaddr* bd_addr,
         bool accept,
-        uint32 tx_bandwidth,
-        uint32 rx_bandwidth,
-        uint16 max_latency,
-        uint16 voice_settings,
+        u32 tx_bandwidth,
+        u32 rx_bandwidth,
+        u16 max_latency,
+        u16 voice_settings,
         sync_retx_effort retx_effort,
         sync_pkt_type packet_type
         )
@@ -574,10 +574,10 @@ void ConnectionSyncRenegotiateTestExtraDefault(Task theAppTask, Sink sink)
 void ConnectionSyncRenegotiateTestExtraParams(
         Task theAppTask,
         Sink sink,
-        uint32 tx_bandwidth,
-        uint32 rx_bandwidth,
-        uint16 max_latency,
-        uint16 voice_settings,
+        u32 tx_bandwidth,
+        u32 rx_bandwidth,
+        u16 max_latency,
+        u16 voice_settings,
         sync_retx_effort retx_effort,
         sync_pkt_type packet_type
         )
@@ -598,11 +598,11 @@ void ConnectionSyncRenegotiateTestExtraParams(
 void ConnectionSdpServiceSearchAttributeRequestTestExtra(
         Task theAppTask,
         const bdaddr *addr,
-        uint16 max_attributes,
-        uint16 size_search_pattern,
-        uint16 size_attribute_list,
-        uint16 size_search_attribute_list,
-        const uint8 *search_attribute_list
+        u16 max_attributes,
+        u16 size_search_pattern,
+        u16 size_attribute_list,
+        u16 size_search_attribute_list,
+        const u8 *search_attribute_list
         )
 {
     /* Unused in the shim layer but needed to generate the message from rfcli */
@@ -619,20 +619,20 @@ void ConnectionSdpServiceSearchAttributeRequestTestExtra(
             );
 }
 
-void ConnectionSendSinkDataTestExtra(Sink sink, uint16 size_data, uint8* data)
+void ConnectionSendSinkDataTestExtra(Sink sink, u16 size_data, u8* data)
 {
-    uint8* s=SinkMap(sink);
-    uint16 o=SinkClaim(sink,size_data);
+    u8* s=SinkMap(sink);
+    u16 o=SinkClaim(sink,size_data);
 
     memmove(s+o, data, size_data);
     
     SinkFlush(sink, size_data);
 }
 
-void ConnectionSendSinkAutoDataTestExtra(Sink sink, uint16 size_data)
+void ConnectionSendSinkAutoDataTestExtra(Sink sink, u16 size_data)
 {
-    uint8* s=SinkMap(sink);
-    uint16 o;
+    u8* s=SinkMap(sink);
+    u16 o;
 
     printf("Data to send of size %d",size_data);
     o= SinkClaim(sink,size_data);
@@ -651,29 +651,29 @@ void ConnectionSendSinkAutoDataTestExtra(Sink sink, uint16 size_data)
 
 void ConnectionWriteInquiryAccessCodeTestExtra(
         Task theAppTask,
-        uint8 *iac,
-        uint16 num_iac
+        u8 *iac,
+        u16 num_iac
         )
 {
     /* TODO: Implement shim function */
 }
 
 void ConnectionSmIoCapabilityResponseTestExtra(
-        uint8               type,
+        u8               type,
         bdaddr*             bd_addr,
-        uint16              transport,
+        u16              transport,
         cl_sm_io_capability io_capability,
-        uint16              mitm,
+        u16              mitm,
         bool                bonding,
-        uint16              key_distribution,
-        uint16              oob_setting,
-        uint8               size_oob_data,
-        uint8*              oob_data
+        u16              key_distribution,
+        u16              oob_setting,
+        u8               size_oob_data,
+        u8*              oob_data
         )
 {
     tp_bdaddr tpaddr;
-    uint16 rand_r_offset = 0;
-    uint8  *rand_r_ptr = NULL;
+    u16 rand_r_offset = 0;
+    u8  *rand_r_ptr = NULL;
 
     tpaddr.transport = (TRANSPORT_T)transport;
     tpaddr.taddr.type = type;
@@ -707,7 +707,7 @@ void ConnectionSmIoCapabilityResponseTestExtra(
 void ConnectionSmIoCapabilityResponseTestExtraDefault(
         bdaddr* bd_addr,
         cl_sm_io_capability io_capability,
-        uint16 mitm,
+        u16 mitm,
         bool bonding
         )
 {
@@ -732,7 +732,7 @@ void ConnectionSmIoCapabilityResponseTestExtraDefault(
 /* This is done purely to work around a bug in RFLCI
  * See B-80970 for the original bug.
  */
-void ConnectionEnterDutModeTestExtra(uint8 dummy)
+void ConnectionEnterDutModeTestExtra(u8 dummy)
 {
     ConnectionEnterDutMode();
 }
@@ -742,33 +742,33 @@ void ConnectionEnterDutModeTestExtra(uint8 dummy)
  */
 void ConnectionReadRemoteVersionBdaddrTestExtra(
         Task theAppTask,
-        uint8 bdaddr_typed,
+        u8 bdaddr_typed,
         const bdaddr * addr
         )
 {
     /* TODO: Implement shim Function */
 }
 
-/* RFCLI can't handle arrays of uint16 so need to pass an array of uint8 and 
+/* RFCLI can't handle arrays of u16 so need to pass an array of u8 and 
  * Pack it.
  */
 void ConnectionSmAddAuthDeviceTestExtra(
         Task theAppTask,
         const bdaddr *peer_bd_addr,
-        uint16 trusted,
-        uint16 bonded,
-        uint8 key_type,
-        uint16 size_link_key,
-        const uint8* link_key
+        u16 trusted,
+        u16 bonded,
+        u8 key_type,
+        u16 size_link_key,
+        const u8* link_key
         )
 {
-    uint16 *u16_link_key = malloc( sizeof(uint16) * size_link_key/2);
-    uint16 *ptr = u16_link_key;
-    uint16 idx;
+    u16 *u16_link_key = malloc( sizeof(u16) * size_link_key/2);
+    u16 *ptr = u16_link_key;
+    u16 idx;
 
     for(idx=0; idx<size_link_key; idx+=2)
     {
-        *(ptr++) = ((uint16)link_key[idx] << 8) | (link_key[idx+1]);
+        *(ptr++) = ((u16)link_key[idx] << 8) | (link_key[idx+1]);
     }
     
     ConnectionSmAddAuthDevice(
@@ -788,9 +788,9 @@ void ConnectionSmAddAuthDeviceTestExtra(
 void ConnectionBleAddAdvertisingReportFilterTestExtra(
         Task theAppTask,
         ble_ad_type ad_type,
-        uint16 interval,
-        uint16 size_pattern,
-        const uint8 * pattern
+        u16 interval,
+        u16 size_pattern,
+        const u8 * pattern
         )
 {
     CL_BLE_ADD_ADVERTISING_FILTER_CFM_TEST_EXTRA_T * cfm = 
@@ -809,7 +809,7 @@ void ConnectionBleAddAdvertisingReportFilterTestExtra(
 /* Another dummy param to stop RFCLI breaking */
 void ConnectionBleClearAdvertisingReportFilterTestExtra(
         Task theAppTask,
-        uint16 dummy
+        u16 dummy
         )
 {
     CL_BLE_CLEAR_ADVERTISING_FILTER_CFM_TEST_EXTRA_T * cfm = 
@@ -825,7 +825,7 @@ void ConnectionBleClearAdvertisingReportFilterTestExtra(
 /* Flatten the typed_bdaddr type for BLE functions calls */
 void ConnectionDmBleSecurityReqTestExtra(
         Task                    theAppTask, 
-        uint8                   type, 
+        u8                   type, 
         const bdaddr            *addr, 
         ble_security_type       security,
         ble_connection_type     conn_type
@@ -846,7 +846,7 @@ void ConnectionDmBleSecurityReqTestExtra(
  * know why!
  */
 void ConnectionDmBleAddDeviceToWhiteListReqTestExtra(
-        uint8 type,
+        u8 type,
         const bdaddr *bd_addr
         )
 {
@@ -857,7 +857,7 @@ void ConnectionDmBleAddDeviceToWhiteListReqTestExtra(
  * know why!
  */
 void ConnectionDmBleRemoveDeviceFromWhiteListReqTestExtra(
-        uint8 type,
+        u8 type,
         const bdaddr *bd_addr
         )
 {
@@ -865,18 +865,18 @@ void ConnectionDmBleRemoveDeviceFromWhiteListReqTestExtra(
 }
 
 /* Dummy Param to stop RFCLI from breaking. */
-void ConnectionDmBleReadWhiteListSizeReqTestExtra(uint8 dummy)
+void ConnectionDmBleReadWhiteListSizeReqTestExtra(u8 dummy)
 {
     ConnectionDmBleReadWhiteListSizeReq();
 }
 
 /* Dummy Param to stop RFCLI from breaking. */
-void ConnectionDmBleClearWhiteListReqTestExtra(uint8 dummy)
+void ConnectionDmBleClearWhiteListReqTestExtra(u8 dummy)
 {
     ConnectionDmBleClearWhiteListReq();
 }
 
-void ConnectionSetLinkPolicyTestExtra(uint8 dummy)
+void ConnectionSetLinkPolicyTestExtra(u8 dummy)
 {
     /* stub! */
 }
@@ -885,9 +885,9 @@ void ConnectionSetLinkPolicyTestExtra(uint8 dummy)
 void ConnectionDmBleSetAdvertisingParamsReqTestExtraDefault(
         ble_adv_type            adv_type,
         bool                    random_own_address,
-        uint8                   channel_map,
-        uint16                  adv_interval_min,
-        uint16                  adv_interval_max, 
+        u8                   channel_map,
+        u16                  adv_interval_min,
+        u16                  adv_interval_max, 
         ble_adv_filter_policy   filter_policy
         )
 {
@@ -909,7 +909,7 @@ void ConnectionDmBleSetAdvertisingParamsReqTestExtraDefault(
 /* Use for directed advertising params */
 void ConnectionDmBleSetAdvertisingParamsReqTestExtra(
         bool                    random_own_address,
-        uint8                   channel_map,
+        u8                   channel_map,
         bool                    random_direct_address,
         const bdaddr            *bd_addr
         )
@@ -931,20 +931,20 @@ void ConnectionDmBleSetAdvertisingParamsReqTestExtra(
 
 
 void ConnectionDmBleSetConnectionParametersReqTestExtra(
-        uint16      size_param_arr,
-        const uint8 *param_arr
+        u16      size_param_arr,
+        const u8 *param_arr
         )
 {
     ble_connection_params *params = PanicUnlessNew(ble_connection_params);
 
-    uint16 size_arr =  size_param_arr/2;
-    uint16 *u16_array = malloc( sizeof(uint16) * size_arr);
-    uint16 *ptr = u16_array;
-    uint16 idx;
+    u16 size_arr =  size_param_arr/2;
+    u16 *u16_array = malloc( sizeof(u16) * size_arr);
+    u16 *ptr = u16_array;
+    u16 idx;
 
     for(idx=0; idx<size_param_arr; idx+=2)
     {
-        *(ptr++) = ((uint16)param_arr[idx] << 8) | (param_arr[idx+1]);
+        *(ptr++) = ((u16)param_arr[idx] << 8) | (param_arr[idx+1]);
     }
 
     if (size_arr > sizeof(ble_connection_params))
@@ -972,20 +972,20 @@ void ConnectionDmBleSetConnectionParametersReqTestExtra(
 }
 
 void ConnectionL2capConnectionParametersUpdateReqTestExtra(
-        uint8                   type,
+        u8                   type,
         const bdaddr            *addr,
-        uint16                  min_interval,
-        uint16                  max_interval,
-        uint16                  latency,
-        uint16                  timeout
+        u16                  min_interval,
+        u16                  max_interval,
+        u16                  latency,
+        u16                  timeout
         )
 {
     /* Stub! */ ;
 }
 
 void ConnectionDmBleConfigureLocalAddressReqTestExtra(
-        uint16                  local,
-        uint8                   type, 
+        u16                  local,
+        u8                   type, 
         const bdaddr            *bd_addr    
         )
 {
@@ -999,14 +999,14 @@ void ConnectionDmBleConfigureLocalAddressReqTestExtra(
 
 void ConnectionDmBleConnectionParametersUpdateReqTestExtra(
         Task theAppTask,
-        uint8  type,
+        u8  type,
         bdaddr *bd_addr,
-        uint16 min_interval,
-        uint16 max_interval,
-        uint16 latency,
-        uint16 timeout,
-        uint16 min_ce_length,
-        uint16 max_ce_length
+        u16 min_interval,
+        u16 max_interval,
+        u16 latency,
+        u16 timeout,
+        u16 min_ce_length,
+        u16 max_ce_length
         )        
 {
     /* Stub */
@@ -1014,13 +1014,13 @@ void ConnectionDmBleConnectionParametersUpdateReqTestExtra(
 
 void ConnectionDmBleAcceptConnectionParUpdateResponseTestExtra(
         bool                accept_update,
-        uint8               type,
+        u8               type,
         const bdaddr        *bd_addr,
-        uint16              id,
-        uint16              conn_interval_min,
-        uint16              conn_interval_max,
-        uint16              conn_latency,
-        uint16              supervision_timeout
+        u16              id,
+        u16              conn_interval_min,
+        u16              conn_interval_max,
+        u16              conn_latency,
+        u16              supervision_timeout
         )
 {
     /* Stub */
@@ -1030,7 +1030,7 @@ void ConnectionDmBleAcceptConnectionParUpdateResponseTestExtra(
 
 void ConnectionGetRssiBdaddrTestExtraDefault(
         Task                    theAppTask,
-        uint8                   type,
+        u8                   type,
         const bdaddr            *bd_addr,    
         TRANSPORT_T             transport
         )
@@ -1046,9 +1046,9 @@ void ConnectionGetRssiBdaddrTestExtraDefault(
 
 
 void ConnectionSmUserConfirmationResponseTestExtra(
-        uint8           type,
+        u8           type,
         const bdaddr*   bd_addr,
-        uint16          transport,
+        u16          transport,
         bool            confirm
         )
 {
@@ -1062,11 +1062,11 @@ void ConnectionSmUserConfirmationResponseTestExtra(
 }
 
 void ConnectionSmUserPasskeyResponseTestExtra(
-        uint8           type,
+        u8           type,
         const bdaddr*   bd_addr,
-        uint16          transport,
+        u16          transport,
         bool            cancelled,
-        uint32          passkey
+        u32          passkey
         )
 {
     tp_bdaddr       tpaddr;
@@ -1079,10 +1079,10 @@ void ConnectionSmUserPasskeyResponseTestExtra(
 }
 
 void ConnectionSmSendKeypressNotificationRequestTestExtra(
-        uint8               type,
+        u8               type,
         const bdaddr*       bd_addr,
-        uint16              transport,
-        uint16              keypress_type
+        u16              transport,
+        u16              keypress_type
         )
 {
     tp_bdaddr       tpaddr;
@@ -1099,7 +1099,7 @@ void ConnectionSmSendKeypressNotificationRequestTestExtra(
 
 
 void ConnectionSmEncryptionKeyRefreshTestExtra(
-        uint8 type, 
+        u8 type, 
         const bdaddr* bd_addr
         )
 {
@@ -1112,10 +1112,10 @@ void ConnectionSmEncryptionKeyRefreshTestExtra(
 }
 
 void ConnectionSmPinCodeResponseTestExtra(
-        uint8           type,
+        u8           type,
         const bdaddr*    bd_addr,
-        uint16          size_pin_code,
-        const uint8*    pin_code
+        u16          size_pin_code,
+        const u8*    pin_code
         )
 {
     typed_bdaddr    taddr;

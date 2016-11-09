@@ -59,11 +59,11 @@ Copyright (c) 2012 - 2015 Qualcomm Technologies International, Ltd.
 typedef struct 
 {
     /*! current position in the string */
-    uint8           pos;
+    u8           pos;
      /*! amount of time in ms before the display scroll updates */
-    uint16          scroll_update;
+    u16          scroll_update;
        /*!length of the text to display*/
-    uint8           text_length;
+    u8           text_length;
        /*! text to display */
     char            text[1];
 }LCD_SCROLL_TEXT_MSG_T ;

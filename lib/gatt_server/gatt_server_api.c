@@ -24,7 +24,7 @@ NOTES
 
 
 /******************************************************************************/
-bool gattServerSendReadClientConfigInd(Task task, uint16 cid, uint16  handle)
+bool gattServerSendReadClientConfigInd(Task task, u16 cid, u16  handle)
 {
     if (task)
     {
@@ -39,7 +39,7 @@ bool gattServerSendReadClientConfigInd(Task task, uint16 cid, uint16  handle)
 
 
 /******************************************************************************/
-bool gattServerSendWriteClientConfigInd(Task task, uint16 cid, uint16 value)
+bool gattServerSendWriteClientConfigInd(Task task, u16 cid, u16 value)
 {
     if (task)
     {
@@ -55,7 +55,7 @@ bool gattServerSendWriteClientConfigInd(Task task, uint16 cid, uint16 value)
 
 /******************************************************************************/
 bool gattServerSendServiceChangedIndicationCfm(Task task,
-                                               uint16 cid,
+                                               u16 cid,
                                                gatt_status_t status)
 {
     if (task)

@@ -26,7 +26,7 @@ DESCRIPTION
 RETURNS
 	NULL on failure.
 */
-uint8 *a2dpGrabSink(Sink sink, uint16 size);
+u8 *a2dpGrabSink(Sink sink, u16 size);
 
 
 /****************************************************************************
@@ -40,12 +40,12 @@ DESCRIPTION
 RETURNS
 	bool - TRUE on success, FALSE on failure.
 */
-bool a2dpSendPacket(remote_device *device, uint8 signalling_header, uint8 signal_id, uint16 payload_size);
+bool a2dpSendPacket(remote_device *device, u8 signalling_header, u8 signal_id, u16 payload_size);
 
-void a2dpSendAccept (remote_device *device, avdtp_signal_id signal_id, uint16 payload_size);
-void a2dpSendReject (remote_device *device, avdtp_signal_id signal_id, uint16 error_code);
+void a2dpSendAccept (remote_device *device, avdtp_signal_id signal_id, u16 payload_size);
+void a2dpSendReject (remote_device *device, avdtp_signal_id signal_id, u16 error_code);
 void a2dpSendGeneralReject (remote_device *device);
-bool a2dpSendCommand(remote_device *device, uint8 signal_id, const uint8* payload_data, uint16 payload_size);
+bool a2dpSendCommand(remote_device *device, u8 signal_id, const u8* payload_data, u16 payload_size);
 
 void a2dpHandleSignalPacket(remote_device *device);
 

@@ -178,16 +178,16 @@ struct __obex
     TaskData     task;           /* The Task Data */               
     Task         theApp;         /* The application Task */
     Sink         sink;           /* The Rfcomm Sink */
-    uint8        channel;        /* Associated RFCOMM Channel or L2CAP PSM*/
-    uint16       maxPktLen;      /* The OBEX max pkt len */
+    u8        channel;        /* Associated RFCOMM Channel or L2CAP PSM*/
+    u16       maxPktLen;      /* The OBEX max pkt len */
     ObexRole     role;           /* Role of the session */
     ObexState    state;          /* State of OBEX session */
-    uint16       pktLen;         /* Length of the outgoing packet */
-    uint16       srcUsed;        /* Data in the Source is already used */
-    uint16       sizeTargetWho;  /* Size of the Target/Who */
-    const uint8* targetWho;      /* Target/Who Header */
+    u16       pktLen;         /* Length of the outgoing packet */
+    u16       srcUsed;        /* Data in the Source is already used */
+    u16       sizeTargetWho;  /* Size of the Target/Who */
+    const u8* targetWho;      /* Target/Who Header */
     bool         auth;           /* TRUE for authenticated session */
-    uint32       connID;         /* Connection Identifier Header */
+    u32       connID;         /* Connection Identifier Header */
 #ifdef GOEP_VERSION_2_0
     ObexSrmMode srm;             /* Status of srm */
     bool        srmLock;         /* Lock set for the SRM */
@@ -202,55 +202,55 @@ void obexProfileHandler( Task task, MessageId id, Message message );
     Client handler routines
 ************************************************************************/
 bool obexConnectReq( Obex session, bool flush );
-uint16 obexHandleConnectResponse( Obex session, Source source, uint16 pktLen );
-uint16 obexHandleGetPutResponse( Obex session, Source source, uint16 pktLen );
+u16 obexHandleConnectResponse( Obex session, Source source, u16 pktLen );
+u16 obexHandleGetPutResponse( Obex session, Source source, u16 pktLen );
 void obexHandleAbortResponse( Obex session , ObexStatus status);
 void obexHandleDisconnectResponse( Obex session );
-uint16 obexHandleResponse( Obex session, Source source, uint16 pktLen );
+u16 obexHandleResponse( Obex session, Source source, u16 pktLen );
 
 /***********************************************************************
     Server handler routines
 ************************************************************************/
-uint16 obexHandleCommand( Obex session, Source source, uint16 pktLen );
+u16 obexHandleCommand( Obex session, Source source, u16 pktLen );
 
 
                            
 /***************************************************************************
     OBEX packet handler routines 
 ***************************************************************************/
-bool obexFrameConnectPkt( Obex session, uint8 opcode );
-void obexFlushPacket( Obex session, uint8 opcode );
+bool obexFrameConnectPkt( Obex session, u8 opcode );
+void obexFlushPacket( Obex session, u8 opcode );
 void obexHandleIncomingPacket( Obex session );
-bool obexValidateConnectionID(Obex session, Source source, uint16 *len);
-void obexSendAuthPacket( Obex session, uint8 hdr, uint16 size, Source src );
-uint16 obexSinkSlack( Obex session );
-bool obexSinkClaim( Obex session, uint16 len );
+bool obexValidateConnectionID(Obex session, Source source, u16 *len);
+void obexSendAuthPacket( Obex session, u8 hdr, u16 size, Source src );
+u16 obexSinkSlack( Obex session );
+bool obexSinkClaim( Obex session, u16 len );
 
 /**************************************************************************
     OBEX Session Handler routines
 ****************************************************************************/
-bool obexStoreConnectionID( Obex session, const uint8* pkt, uint16 len );
-bool obexValidateSession( Obex session, const uint8* pkt, uint16 len );
-bool obexAuthenticateSession( Obex session, const uint8* pkt, uint16* len);
+bool obexStoreConnectionID( Obex session, const u8* pkt, u16 len );
+bool obexValidateSession( Obex session, const u8* pkt, u16 len );
+bool obexAuthenticateSession( Obex session, const u8* pkt, u16* len);
 void obexDisconnectSession( Obex session );
 void obexHandleSessionCfm( Obex       session,
                            ObexStatus status,
                            const bdaddr* addr,
-                           uint16  channel );
+                           u16  channel );
 #ifdef GOEP_VERSION_2_0
 
 void obexL2capConnectReq( Obex sessionTask,
                           const bdaddr* addr, 
-                          uint16 psm );
+                          u16 psm );
 void obexL2capConnectResp( Obex sessionTask,
                            bool accept,
-                           uint16 psm,
+                           u16 psm,
                            ObexConnId id );
 void obexHandleL2capConnectCfm( Obex session, Message message );
 void obexChangeSrmMode( Obex session, ObexSrmMode mode );
-void obexHandleSrm( Obex session, uint8 cmd, Source src, uint16 len );
+void obexHandleSrm( Obex session, u8 cmd, Source src, u16 len );
 void obexHandleSrmSpace( Obex session );
-void obexHandleL2capDisconnect( Obex session, uint8 id );
+void obexHandleL2capDisconnect( Obex session, u8 id );
 
 #else
 
@@ -270,27 +270,27 @@ void obexHandleL2capDisconnect( Obex session, uint8 id );
 /**************************************************************************
     OBEX Object handler routines
 ****************************************************************************/
-uint16 obexFetchHeader(const uint8* pkt, uint16 len, uint8 opcode);
-bool obexAddUint32Header( Obex session, uint8 opcode, uint32 value );
-bool obexAddUint8Header( Obex session, uint8 opcode, uint8 value );
-uint8 obexGetUint8Header( const uint8* pkt, uint16 len, uint8 opcode );
-bool obexAddEmptyHeader( Obex session, uint8 hdr, uint16 size );
-bool obexAddUnicodeHeader( Obex session, uint8 hdr, uint16 size, Source src );
-bool obexAddSeqHeader( Obex session, uint8 hdr, uint16 size, Source src );
-uint32 obexGetUint32Header( const uint8* pkt, uint16 len, uint8 opcode );
-uint8* obexGetSeqHeader( const uint8* pkt, uint16* len, uint8 opcode );
-const uint8* obexGetTLVHeaderValue( const uint8* pkt,
-                                    uint16 *pktLen,
-                                    uint8  tag ); 
-uint16 obexFrameTLVHeader( uint8* pkt,
-                           uint8  tag,
-                           uint16 len,
-                           const uint8* data);
-const uint8* obexGetDigest( Obex Session, 
-                            const uint8* pkt,
-                            uint16 *len,
-                            uint8 hdrId,
-                            uint8 tag );
+u16 obexFetchHeader(const u8* pkt, u16 len, u8 opcode);
+bool obexAddUint32Header( Obex session, u8 opcode, u32 value );
+bool obexAddUint8Header( Obex session, u8 opcode, u8 value );
+u8 obexGetUint8Header( const u8* pkt, u16 len, u8 opcode );
+bool obexAddEmptyHeader( Obex session, u8 hdr, u16 size );
+bool obexAddUnicodeHeader( Obex session, u8 hdr, u16 size, Source src );
+bool obexAddSeqHeader( Obex session, u8 hdr, u16 size, Source src );
+u32 obexGetUint32Header( const u8* pkt, u16 len, u8 opcode );
+u8* obexGetSeqHeader( const u8* pkt, u16* len, u8 opcode );
+const u8* obexGetTLVHeaderValue( const u8* pkt,
+                                    u16 *pktLen,
+                                    u8  tag ); 
+u16 obexFrameTLVHeader( u8* pkt,
+                           u8  tag,
+                           u16 len,
+                           const u8* data);
+const u8* obexGetDigest( Obex Session, 
+                            const u8* pkt,
+                            u16 *len,
+                            u8 hdrId,
+                            u8 tag );
 
 #endif /* OBEX_INTERNAL_H */
 

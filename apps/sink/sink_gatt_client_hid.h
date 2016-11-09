@@ -60,7 +60,7 @@ RETURNS
     TRUE if the HID service was successfully added, FALSE otherwise.
 */
 #ifdef GATT_HID_CLIENT
-bool sinkGattHidClientAddService(uint16 cid, uint16 start, uint16 end);
+bool sinkGattHidClientAddService(u16 cid, u16 start, u16 end);
 #else
 #define sinkGattHidClientAddService(cid, start, end) (FALSE)
 #endif
@@ -78,7 +78,7 @@ PARAMETERS
     cid             The connection ID
 */
 #ifdef GATT_HID_CLIENT
-void sinkGattHIDClientRemoveService(GHIDC_T *ghidc, uint16 cid);
+void sinkGattHIDClientRemoveService(GHIDC_T *ghidc, u16 cid);
 #else
 #define sinkGattHIDClientRemoveService(ghidc, cid) ((void)(0))
 #endif
@@ -115,7 +115,7 @@ PARAMETERS
     ebanle    TRUE Enable Notification False: Disable Notification 
 */
 #ifdef GATT_HID_CLIENT
-void sinkGattHidClientNotificationReqForReportId(uint16 cid,uint16 report_id,bool enable);
+void sinkGattHidClientNotificationReqForReportId(u16 cid,u16 report_id,bool enable);
 #else
 #define sinkGattHidClientNotificationReqForReportId(cid,report_id,enable)  ((void)(0))
 #endif

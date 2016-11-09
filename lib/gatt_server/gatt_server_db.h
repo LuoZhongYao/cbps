@@ -13,8 +13,8 @@
 #define HANDLE_GATT_SERVICE_CHANGED     (0x0003)
 #define HANDLE_GATT_SERVICE_CHANGED_CLIENT_CONFIG (0x0004)
 
-uint16 *GattGetDatabase(uint16 *len);
-uint16 GattGetDatabaseSize(void);
+u16 *GattGetDatabase(u16 *len);
+u16 GattGetDatabaseSize(void);
 
 #endif
 

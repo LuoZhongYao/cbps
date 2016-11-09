@@ -25,7 +25,7 @@ NOTES
 #ifndef CL_EXCLUDE_SDP
 
 /*****************************************************************************/
-void ConnectionRegisterServiceRecord(Task appTask, uint16 num_rec_bytes, const uint8 *service_record)
+void ConnectionRegisterServiceRecord(Task appTask, u16 num_rec_bytes, const u8 *service_record)
 {
 	/* Check some record has been supplied */
 	if((num_rec_bytes == 0) || (service_record == NULL))
@@ -43,14 +43,14 @@ void ConnectionRegisterServiceRecord(Task appTask, uint16 num_rec_bytes, const u
 		MAKE_CL_MESSAGE(CL_INTERNAL_SDP_REGISTER_RECORD_REQ);
 		message->theAppTask = appTask;
 		message->record_length = num_rec_bytes;
-			message->record = (uint8 *) service_record;
+			message->record = (u8 *) service_record;
 		MessageSend(connectionGetCmTask(), CL_INTERNAL_SDP_REGISTER_RECORD_REQ, message);
 	}
 }
 
 
 /*****************************************************************************/
-void ConnectionUnregisterServiceRecord(Task appTask, uint32 service_record_hdl)
+void ConnectionUnregisterServiceRecord(Task appTask, u32 service_record_hdl)
 {
 	/* Create an internal message and send it to the state machine */
 	MAKE_CL_MESSAGE(CL_INTERNAL_SDP_UNREGISTER_RECORD_REQ);

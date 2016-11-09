@@ -25,7 +25,7 @@ DESCRIPTION
 RETURN
     void
 */
-void gattBatteryInitSendInitCfm(GBASC *battery_client, uint16 handle, gatt_battery_client_status_t status);
+void gattBatteryInitSendInitCfm(GBASC *battery_client, u16 handle, gatt_battery_client_status_t status);
 
 
 #endif

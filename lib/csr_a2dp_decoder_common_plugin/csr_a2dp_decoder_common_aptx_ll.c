@@ -36,7 +36,7 @@ NOTES
 DESCRIPTION
     This function connects APTX low delay audio 
 ****************************************************************************/
-void MusicConnectAptxLowLatencySource(A2dpPluginConnectParams *codecData, uint8 content_protection)
+void MusicConnectAptxLowLatencySource(A2dpPluginConnectParams *codecData, u8 content_protection)
 {
     Transform rtp_transform = 0;
     DECODER_t * DECODER = CsrA2dpDecoderGetDecoderData();

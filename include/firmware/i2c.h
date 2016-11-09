@@ -64,6 +64,6 @@ Use of the I2C bus requires pull-up resistors connected to the respective PIOs. 
 
      If either \e tx_len or \e rx_len exceeds 64, failure may be returned or performance may be impaired; for instance, audio streaming may be disrupted.
 */
-uint16 I2cTransfer(uint16 address, const uint8 *tx, uint16 tx_len, uint8 *rx, uint16 rx_len);
+u16 I2cTransfer(u16 address, const u8 *tx, u16 tx_len, u8 *rx, u16 rx_len);
 
 #endif

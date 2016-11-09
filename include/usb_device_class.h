@@ -167,10 +167,10 @@ typedef enum
 typedef struct
 {
     /*! Left and right gain settings */
-    int16     out_l_vol;
-    int16     out_r_vol;
+    i16     out_l_vol;
+    i16     out_r_vol;
     /*! Input Gain setting */
-    int16     in_vol;
+    i16     in_vol;
     /*! Speaker/mic mute settings (TRUE/FALSE) */
     bool      out_mute;
     bool      in_mute;
@@ -184,8 +184,8 @@ typedef struct
 */
 typedef struct
 {
-    const uint8*        descriptor;
-    uint16              size_descriptor;
+    const u8*        descriptor;
+    u16              size_descriptor;
     const EndPointInfo* end_point_info;
 } usb_device_class_descriptor;
 
@@ -226,14 +226,14 @@ typedef struct
 */
 typedef struct
 {
-    uint16 speaker_min;
-    uint16 speaker_max;
-    uint16 speaker_res;
-    uint16 speaker_default;
-    uint16 mic_min;
-    uint16 mic_max;
-    uint16 mic_res;
-    uint16 mic_default;    
+    u16 speaker_min;
+    u16 speaker_max;
+    u16 speaker_res;
+    u16 speaker_default;
+    u16 mic_min;
+    u16 mic_max;
+    u16 mic_res;
+    u16 mic_default;    
 } usb_device_class_audio_volume_config;
 
 
@@ -263,7 +263,7 @@ typedef struct
 */
 typedef struct
 {
-    uint16 sample_rate;
+    u16 sample_rate;
 } USB_DEVICE_CLASS_SAMPLE_RATE_T;
 
 typedef enum
@@ -281,9 +281,9 @@ typedef enum
 typedef struct
 {
     usb_device_class_type class_type;
-    uint16 report_id;
-    uint16 size_report;
-    uint8 report[1];
+    u16 report_id;
+    u16 size_report;
+    u8 report[1];
 } USB_DEVICE_CLASS_MSG_REPORT_IND_T;
 
 
@@ -302,7 +302,7 @@ typedef struct
     
     @param Pointer to configuration data
 */
-usb_device_class_status UsbDeviceClassConfigure(usb_device_class_config config, uint16 value_16, uint32 value_32, const uint8 *params);
+usb_device_class_status UsbDeviceClassConfigure(usb_device_class_config config, u16 value_16, u32 value_32, const u8 *params);
 
 
 /*!
@@ -318,7 +318,7 @@ usb_device_class_status UsbDeviceClassConfigure(usb_device_class_config config, 
     
     @param usb_device_class One or more of the values from usb_device_class_type, indicating which USB device classes to enumerate as.
 */
-usb_device_class_status UsbDeviceClassEnumerate(Task app_task, uint16 usb_device_class);
+usb_device_class_status UsbDeviceClassEnumerate(Task app_task, u16 usb_device_class);
 
 
 /*!
@@ -327,7 +327,7 @@ usb_device_class_status UsbDeviceClassEnumerate(Task app_task, uint16 usb_device
     @param id The ID of the value to retrieve
     @param value Where the returned value should be stored
 */
-usb_device_class_status UsbDeviceClassGetValue(usb_device_class_get_value id, uint16 *value);
+usb_device_class_status UsbDeviceClassGetValue(usb_device_class_get_value id, void *value);
 
 
 /*!
@@ -346,7 +346,7 @@ usb_device_class_status UsbDeviceClassSendEvent(usb_device_class_event event);
     @param size_report The size of the report data which is being sent.
     @param report The report data which is being sent.
 */
-usb_device_class_status UsbDeviceClassSendReport(usb_device_class_type class_type, uint16 report_id, uint16 size_report, uint8 *report);
+usb_device_class_status UsbDeviceClassSendReport(usb_device_class_type class_type, u16 report_id, u16 size_report, u8 *report);
 
 
 #endif /* _USB_DEVICE_CLASS_H */

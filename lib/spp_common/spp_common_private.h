@@ -67,7 +67,7 @@ typedef struct __SPP_COMMON
     Task            client_task;
     Sink            sink;
     bdaddr          bd_addr;
-    uint16          max_payload_size;
+    u16          max_payload_size;
     sppState        state;
 } SPP_COMMON;
 

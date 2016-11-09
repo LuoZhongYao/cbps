@@ -86,14 +86,14 @@ void enterKeyTestMode(void);
 DESCRIPTION
     A configured key has been pressed, check if this is in key test mode
 */
-void checkDUTKeyPress(uint32 lNewState);
+void checkDUTKeyPress(u32 lNewState);
 
 
 /*************************************************************************
 DESCRIPTION
     A configured key has been released, check if this is in key test mode
 */
-void checkDUTKeyRelease(uint32 lNewState, ButtonsTime_t pTime);
+void checkDUTKeyRelease(u32 lNewState, ButtonsTime_t pTime);
 
 
 /*************************************************************************

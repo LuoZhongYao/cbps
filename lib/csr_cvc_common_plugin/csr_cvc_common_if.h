@@ -548,8 +548,8 @@ typedef enum
 
 typedef struct
 {
-    uint16 padding1;
-    uint16 padding2;
+    u16 padding1;
+    u16 padding2;
     unsigned unused:13;
     unsigned external_mic_settings:2;
     unsigned mic_mute:1;

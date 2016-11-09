@@ -21,8 +21,8 @@ DESCRIPTION
 #define AVRCP_NUMBER_MEDIA_ATTRIBUTES_FULL 7            /* number of media attributes to retrieve information for when requiring full track data */
 
 
-extern const uint8 avrcp_retrieve_media_attributes_basic[AVRCP_NUMBER_MEDIA_ATTRIBUTES_BASIC * 4];
-extern const uint8 avrcp_retrieve_media_attributes_full[AVRCP_NUMBER_MEDIA_ATTRIBUTES_FULL * 4];
+extern const u8 avrcp_retrieve_media_attributes_basic[AVRCP_NUMBER_MEDIA_ATTRIBUTES_BASIC * 4];
+extern const u8 avrcp_retrieve_media_attributes_full[AVRCP_NUMBER_MEDIA_ATTRIBUTES_FULL * 4];
 
 
 #ifdef ENABLE_AVRCP_BROWSING
@@ -80,22 +80,22 @@ typedef enum
 
 typedef struct
 {    
-    uint16 index;    
-    uint32 track_index_high;
-    uint32 track_index_low;
+    u16 index;    
+    u32 track_index_high;
+    u32 track_index_low;
     bool full_attributes;
 } AVRCP_BROWSING_NOW_PLAYING_TRACK_T;
 
 typedef struct
 {
-    uint16 start_index;
-    uint16 end_index;
+    u16 start_index;
+    u16 end_index;
 } AVRCP_BROWSING_RETRIEVE_MEDIA_PLAYERS_T;    
 
 typedef struct
 {
-    uint16 start_index;
-    uint16 end_index;
+    u16 start_index;
+    u16 end_index;
 } AVRCP_BROWSING_RETRIEVE_NOW_PLAYING_LIST_T;
 
 typedef struct
@@ -106,8 +106,8 @@ typedef struct
 
 typedef struct
 {
-    uint16 start_index;
-    uint16 end_index;
+    u16 start_index;
+    u16 end_index;
 } AVRCP_BROWSING_RETRIEVE_FILESYSTEM_T;
 
 typedef struct
@@ -129,19 +129,19 @@ typedef struct
 
 typedef struct
 {
-    uint16 player_id;
+    u16 player_id;
 } AVRCP_BROWSING_SET_PLAYER_T;
 
 typedef struct
 {
-    uint16 size_string;
+    u16 size_string;
     Source string;
 } AVRCP_BROWSING_SEARCH_T;
 
 typedef struct
 {
-    uint16 start_index;
-    uint16 end_index;
+    u16 start_index;
+    u16 end_index;
 } AVRCP_BROWSING_RETRIEVE_SEARCH_LIST_T;
 
 typedef struct
@@ -150,24 +150,24 @@ typedef struct
 } AVRCP_BROWSING_DISCONNECT_IDLE_T;
 
 /* initialization */
-void sinkAvrcpBrowsingInit(uint16 link_index);
+void sinkAvrcpBrowsingInit(u16 link_index);
 
 /* Utility function to check if AVRCP browsing is supported */
-bool sinkAvrcpBrowsingIsSupported(uint16 Index);
+bool sinkAvrcpBrowsingIsSupported(u16 Index);
 
 /* Utility function to check if AVRCP browsing supports Group Navigation feature */
-bool sinkAvrcpBrowsingIsGroupNavigationSupported(uint16 Index);
+bool sinkAvrcpBrowsingIsGroupNavigationSupported(u16 Index);
 
 /* message handler */
 void avrcpBrowsingHandler(Task task, MessageId id, Message message);
 
 /* Utility function to clear pending messages from the browsing handler */
-void sinkAvrcpBrowsingFlushHandlerTask(uint16 index);
+void sinkAvrcpBrowsingFlushHandlerTask(u16 index);
 
 void sinkAvrcpBrowsingDisconnectOnIdleRequest(AVRCP *avrcp);
 
 /* Utility function to cancel disconnectOnIdle request */
-void sinkAvrcpBrowsingCancelDisconnectOnIdle(uint16 index);
+void sinkAvrcpBrowsingCancelDisconnectOnIdle(u16 index);
 
 /* get folder items */
 void sinkAvrcpBrowsingGetFolderItemsCfm(AVRCP_BROWSE_GET_FOLDER_ITEMS_CFM_T *msg);
@@ -176,22 +176,22 @@ void sinkAvrcpBrowsingGetNumberOfItemsCfm(AVRCP_BROWSE_GET_NUMBER_OF_ITEMS_CFM_T
 
 
 /* now playing */
-void sinkAvrcpBrowsingRetrieveNowPlayingTrackRequest(uint16 Index, uint32 track_index_high, uint32 track_index_low, bool full_attributes);
+void sinkAvrcpBrowsingRetrieveNowPlayingTrackRequest(u16 Index, u32 track_index_high, u32 track_index_low, bool full_attributes);
 
-bool sinkAvrcpBrowsingRetrieveNowPlayingListRequest(uint16 start_index, uint16 end_index);
+bool sinkAvrcpBrowsingRetrieveNowPlayingListRequest(u16 start_index, u16 end_index);
 
 bool sinkAvrcpBrowsingPlayNowPlayingItemRequest(avrcp_browse_uid uid);
 
 void sinkAvrcpBrowsingGetItemAttributesCfm(AVRCP_BROWSE_GET_ITEM_ATTRIBUTES_CFM_T *msg);
 
 /* multiple media players */
-bool sinkAvrcpBrowsingMultipleMediaPlayersIsSupported(uint16 Index);
+bool sinkAvrcpBrowsingMultipleMediaPlayersIsSupported(u16 Index);
 
-bool sinkAvrcpBrowsingRetrieveMediaPlayersRequest(uint16 start_index, uint16 end_index);
+bool sinkAvrcpBrowsingRetrieveMediaPlayersRequest(u16 start_index, u16 end_index);
 
-bool sinkAvrcpBrowsingSetAddressedMediaPlayerRequest(uint16 player_id);
+bool sinkAvrcpBrowsingSetAddressedMediaPlayerRequest(u16 player_id);
 
-bool sinkAvrcpBrowsingSetBrowsedMediaPlayerRequest(uint16 player_id);
+bool sinkAvrcpBrowsingSetBrowsedMediaPlayerRequest(u16 player_id);
 
 void sinkAvrcpBrowsingSetBrowsedPlayerCfm(AVRCP_BROWSE_SET_PLAYER_CFM_T *msg);
 
@@ -201,7 +201,7 @@ void sinkAvrcpBrowsingAddressedPlayerChangedInd(AVRCP_EVENT_ADDRESSED_PLAYER_CHA
 
 void sinkAvrcpBrowsingRegisterChangedUIDNotification(AVRCP *avrcp);
 
-bool sinkAvrcpBrowsingRetrieveFileSystemRequest(uint16 start_index, uint16 end_index);
+bool sinkAvrcpBrowsingRetrieveFileSystemRequest(u16 start_index, u16 end_index);
 
 bool sinkAvrcpBrowsingRetrieveNumberOfItemsRequest(avrcp_browse_scope browsing_scope);
 
@@ -218,11 +218,11 @@ void sinkAvrcpBrowsingUIDsChangedInd(AVRCP_EVENT_UIDS_CHANGED_IND_T *msg);
 void sinkAvrcpBrowsingAvailablePlayersChangedInd(AVRCP_EVENT_AVAILABLE_PLAYERS_CHANGED_IND_T *msg);
 
 /* search */
-bool sinkAvrcpSearchIsSupported(uint16 Index);
+bool sinkAvrcpSearchIsSupported(u16 Index);
         
-bool sinkAvrcpBrowsingSearchRequest(uint16 size_string, Source string);   
+bool sinkAvrcpBrowsingSearchRequest(u16 size_string, Source string);   
 
-bool sinkAvrcpBrowsingRetrieveSearchItemsRequest(uint16 start_index, uint16 end_index);
+bool sinkAvrcpBrowsingRetrieveSearchItemsRequest(u16 start_index, u16 end_index);
 
 bool sinkAvrcpBrowsingPlaySearchItemRequest(avrcp_browse_uid uid);
 

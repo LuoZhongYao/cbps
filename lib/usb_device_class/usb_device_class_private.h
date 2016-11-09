@@ -41,7 +41,7 @@ typedef enum
 typedef struct
 {
     Task app_task;
-    uint16 usb_classes;
+    u16 usb_classes;
     UsbInterface usb_interface[MAX_USB_INTERFACES];
     TaskData usb_task[MAX_USB_TASKS];
 #ifndef USB_DEVICE_CLASS_REMOVE_AUDIO
@@ -52,7 +52,7 @@ typedef struct
 extern device_class_state *device;
 
 
-uint8 *claimSink(Sink sink, uint16 size);
+u8 *claimSink(Sink sink, u16 size);
 
 
 #endif /* _USB_DEVICE_CLASS_PRIVATE_H */

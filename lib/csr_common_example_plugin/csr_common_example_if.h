@@ -51,11 +51,11 @@ DESCRIPTION
 /* dsp message structure*/
 typedef struct
 {
-    uint16 id;
-    uint16 a;
-    uint16 b;
-    uint16 c;
-    uint16 d;
+    u16 id;
+    u16 a;
+    u16 b;
+    u16 c;
+    u16 d;
 } DSP_REGISTER_T;
 
 /* Values for the selecting the plugin variant in the ExamplePluginTaskdata structure  */

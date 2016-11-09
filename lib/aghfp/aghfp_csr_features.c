@@ -22,7 +22,7 @@ Part of ADK 4.0
 /*
 	Helper function to deal with processing the AT+CSRSF command.
 */
-static void handleReponseCSRSupportedFeatures(AGHFP * aghfp, bool callerName, bool rawText, bool smsInd, bool battLevel, bool pwrSource, uint16 codecs, bool codec_bandwidths_present, uint16 codec_bandwidths)
+static void handleReponseCSRSupportedFeatures(AGHFP * aghfp, bool callerName, bool rawText, bool smsInd, bool battLevel, bool pwrSource, u16 codecs, bool codec_bandwidths_present, u16 codec_bandwidths)
 {
     MAKE_AGHFP_MESSAGE(AGHFP_CSR_SUPPORTED_FEATURES_IND);
     
@@ -39,7 +39,7 @@ static void handleReponseCSRSupportedFeatures(AGHFP * aghfp, bool callerName, bo
     MessageSend ( aghfp->client_task , AGHFP_CSR_SUPPORTED_FEATURES_IND , message );
 }
 
-void aghfpCsrSupportedFeaturesResponse (AGHFP *aghfp, bool callerName, bool rawText, bool smsInd, bool battLevel, bool pwrSource , uint16 codecs, bool codec_bandwidths_present, uint16 codec_bandwidths)
+void aghfpCsrSupportedFeaturesResponse (AGHFP *aghfp, bool callerName, bool rawText, bool smsInd, bool battLevel, bool pwrSource , u16 codecs, bool codec_bandwidths_present, u16 codec_bandwidths)
 {
     /*send AT command to HF*/
     
@@ -92,7 +92,7 @@ void aghfpCsrSupportedFeaturesResponse (AGHFP *aghfp, bool callerName, bool rawT
 }
 
 
-void aghfpFeatureNegotiate ( AGHFP * aghfp , uint16 num_csr_features, uint16 indicator0, uint16 value0, uint16 indicator1, uint16 value1, bool sendLeadingOK )
+void aghfpFeatureNegotiate ( AGHFP * aghfp , u16 num_csr_features, u16 indicator0, u16 value0, u16 indicator1, u16 value1, bool sendLeadingOK )
 {
     char buf[4];
 

@@ -34,8 +34,8 @@ typedef struct
 {
     Sink    sink;
     
-    uint16  size_data;
-    uint8   data[1];
+    u16  size_data;
+    u8   data[1];
 } SPPC_MESSAGE_MORE_DATA_TEST_EXTRA_T;
 
 typedef struct 
@@ -43,7 +43,7 @@ typedef struct
     SPP                         *spp;
     spp_connect_status          status;
     Sink                        sink;
-    uint16                      payload_size;
+    u16                      payload_size;
 } SPPC_CLIENT_CONNECT_CFM_TEST_EXTRA_T;
 
 typedef struct 
@@ -66,7 +66,7 @@ typedef struct
 void SppcHandleComplexMessage(Task task, MessageId id, Message message);
 
 /*****************************************************************************/
-void SppcConnectRequestTestExtra(Task theAppTask, const bdaddr *bd_addr, const uint16 security_channel, uint16 max_payload_size);
+void SppcConnectRequestTestExtra(Task theAppTask, const bdaddr *bd_addr, const u16 security_channel, u16 max_payload_size);
 
 /*****************************************************************************/
 void SppcDisconnectResponseTestExtra(SPPC *sppc);

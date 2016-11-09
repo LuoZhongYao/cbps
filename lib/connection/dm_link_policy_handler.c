@@ -88,7 +88,7 @@ static bool sendGetRoleRequest(Sink sink)
 Set the link supervision timeout on the ACL link identified by the specified
 Bluetooth Device Address to the specified timeout value.
 */
-static void setLinkSupervisionTimeout(const bdaddr* addr, uint16 timeout)
+static void setLinkSupervisionTimeout(const bdaddr* addr, u16 timeout)
 {
     MAKE_PRIM_C(DM_HCI_WRITE_LINK_SUPERV_TIMEOUT_REQ);
     prim->handle = 0;
@@ -104,7 +104,7 @@ identified by the Bluetooth Device Address.
 */
 static void processPowerTable(
         const bdaddr *addr,
-        uint16 num_entries,
+        u16 num_entries,
         lp_power_table const *power_table
         )
 {

@@ -14,7 +14,7 @@
 
 
 /****************************************************************************/
-gatt_battery_server_status_t GattBatteryServerReadLevelResponse(const GBASS *battery_server, uint16 cid, uint8 battery_level)
+gatt_battery_server_status_t GattBatteryServerReadLevelResponse(const GBASS *battery_server, u16 cid, u8 battery_level)
 {
     gatt_status_t status = gatt_status_failure;
 
@@ -34,7 +34,7 @@ gatt_battery_server_status_t GattBatteryServerReadLevelResponse(const GBASS *bat
 }
 
 /****************************************************************************/
-gatt_battery_server_status_t GattBatteryServerReadClientConfigResponse(const GBASS *battery_server, uint16 cid, uint16 client_config)
+gatt_battery_server_status_t GattBatteryServerReadClientConfigResponse(const GBASS *battery_server, u16 cid, u16 client_config)
 {
     gatt_battery_server_status_t result = gatt_battery_server_status_invalid_parameter;
 
@@ -48,7 +48,7 @@ gatt_battery_server_status_t GattBatteryServerReadClientConfigResponse(const GBA
 }
 
 /****************************************************************************/
-gatt_battery_server_status_t GattBatteryServerReadPresentationResponse(const GBASS *battery_server, uint16 cid, uint8 name_space, uint16 description)
+gatt_battery_server_status_t GattBatteryServerReadPresentationResponse(const GBASS *battery_server, u16 cid, u8 name_space, u16 description)
 {
     gatt_battery_server_status_t result = gatt_battery_server_status_invalid_parameter;
 

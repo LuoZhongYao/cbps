@@ -28,7 +28,7 @@ NOTES
 #include <vm.h>
 
 /*****************************************************************************/
-void ConnectionWritePagescanActivity(uint16 interval, uint16 window)
+void ConnectionWritePagescanActivity(u16 interval, u16 window)
 {
     /* Check params are within allowed values - debug build only */
 #ifdef CONNECTION_DEBUG_LIB    

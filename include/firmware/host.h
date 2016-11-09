@@ -65,7 +65,7 @@ task for #MESSAGE_FROM_HOST using MessageHostCommsTask().
 \subsection host_message_code Example code
 Send a small packet to the host
 \code
-uint16 *data = PanicUnlessMalloc(3 * sizeof(uint16));
+u16 *data = PanicUnlessMalloc(3 * sizeof(u16));
 data[0] = 3; // length
 data[1] = 0x7e; // sub-type
 data[2] = 0x1234; // data
@@ -107,12 +107,12 @@ last word is not part of the payload.
 **
 In other words, a consumer might look like:
 \code
-void incoming(const uint16 *packet)
+void incoming(const u16 *packet)
 {
-uint16 words = packet[0];
-uint16 type  = packet[1];
-uint16 chan  = type & 0xff;
-uint16 bytes = (words - 2) * 2 - ((type >> 8) == 1);
+u16 words = packet[0];
+u16 type  = packet[1];
+u16 chan  = type & 0xff;
+u16 bytes = (words - 2) * 2 - ((type >> 8) == 1);
 ...
 }
 \endcode
@@ -121,7 +121,7 @@ uint16 bytes = (words - 2) * 2 - ((type >> 8) == 1);
 Send a 2 byte packet to the host on channel 1
 \code
 Sink sink = PanicNull(StreamHostSink(1));
-uint8 *data = SinkMap(sink) + SinkClaim(sink, 2);
+u8 *data = SinkMap(sink) + SinkClaim(sink, 2);
 data[0] = 0x12;
 data[1] = 0x34;
 PanicZero(SinkFlush(sink, 2));
@@ -129,11 +129,11 @@ PanicZero(SinkFlush(sink, 2));
 **
 Process packets from the host on channel 2
 \code
-uint16 size;
+u16 size;
 Source source = StreamHostSource(2);
 while ((size = SourceBoundary(source)) != 0)
 {
-const uint8 *data = SourceMap(source);
+const u8 *data = SourceMap(source);
 // do something with the data here
 SourceDrop(source, size);
 }
@@ -184,6 +184,6 @@ to make sure that the value of the key is "0x0100 0xb800".
   into a block malloc'd by the call, and that block will be used instead.
   @return The length of the block sent on success, zero otherwise.
 */
-uint16 HostSendMessage(uint16 *msg);
+u16 HostSendMessage(u16 *msg);
 
 #endif

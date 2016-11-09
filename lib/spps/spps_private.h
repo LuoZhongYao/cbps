@@ -18,11 +18,11 @@ DESCRIPTION
 
 /* Default Spp service record */
 #define SSP_SERVICE_RECORD_SIZE		62
-extern const uint8 spp_service_record [SSP_SERVICE_RECORD_SIZE];
+extern const u8 spp_service_record [SSP_SERVICE_RECORD_SIZE];
 
 
 /* private SPP Server funcitons */
-void sppStoreServiceHandle(uint32 service_handle);
-uint32 sppGetServiceHandle(void);
+void sppStoreServiceHandle(u32 service_handle);
+u32 sppGetServiceHandle(void);
 
 #endif /* SPPS_PRIVATE_H_ */

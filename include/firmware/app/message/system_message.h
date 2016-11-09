@@ -367,9 +367,9 @@ typedef struct
 */
 typedef struct
 {
-    uint16 state;        /*!< The state of PIO lines 0..15 when this message was sent. */
-    uint32 time;         /*!< The time at which that state was valid. */
-    uint16 state16to31;  /*!< The state of PIO lines 16..31 when this messsage was sent. */
+    u16 state;        /*!< The state of PIO lines 0..15 when this message was sent. */
+    u32 time;         /*!< The time at which that state was valid. */
+    u16 state16to31;  /*!< The state of PIO lines 16..31 when this messsage was sent. */
 } MessagePioChanged;
 
 /*!
@@ -378,7 +378,7 @@ typedef struct
 typedef struct
 {
     vm_adc_source_type adc_source; /*!< The ADC source for which the reading was made. */
-    uint16 reading; /*!< The reading derived from the hardware. See adc.h for how to interpret this reading. */
+    u16 reading; /*!< The reading derived from the hardware. See adc.h for how to interpret this reading. */
 } MessageAdcResult;
 
 /*!
@@ -412,8 +412,8 @@ typedef struct
 */
 typedef struct
 {
-    uint16 id;      /*!< The message id sent by Kalimba */
-    uint16 data[4]; /*!< The message payload */
+    u16 id;      /*!< The message id sent by Kalimba */
+    u16 data[4]; /*!< The message payload */
 } MessageFromKalimba;
 
 /*!
@@ -421,9 +421,9 @@ typedef struct
 */
 typedef struct
 {
-    uint16 id;      /*!< The message id sent by Kalimba */
-    uint16 len;     /*!< The length of the message payload */
-    uint16 data[1]; /*!< len words of message payload */
+    u16 id;      /*!< The message id sent by Kalimba */
+    u16 len;     /*!< The length of the message payload */
+    u16 data[1]; /*!< len words of message payload */
 } MessageFromKalimbaLong;
 
 /*!
@@ -433,7 +433,7 @@ typedef struct
 */
 typedef struct
 {
-    uint16 config_value; /*!< bConfigurationValue for the selected configuration */
+    u16 config_value; /*!< bConfigurationValue for the selected configuration */
 } MessageUsbConfigValue;
 
 /*!
@@ -449,8 +449,8 @@ typedef struct
 */
 typedef struct
 {
-    uint16 interface;
-    uint16 altsetting;
+    u16 interface;
+    u16 altsetting;
 } MessageUsbAltInterface;
 
 /*!
@@ -467,21 +467,21 @@ typedef struct
 */
 typedef struct
 {
-    uint16  num_events;         /*!< number of events described in this message */
+    u16  num_events;         /*!< number of events described in this message */
     capsense_event event[1];    /*!< array of events (length of num_events) */
 } MessageCapsenseChanged;
 
 typedef struct
 {
     partition_filesystem_devices device; /*!< file system device written to */
-    uint16 partition;                    /*!< partition written to */
+    u16 partition;                    /*!< partition written to */
     partition_set_digest_result set_digest_result;  /*!< result of set digest, see #partition_set_digest_result */
 } MessageStreamSetDigest;
 
 typedef struct
 {
     partition_filesystem_devices device; /*!< file system device written to */
-    uint16 partition;                    /*!< partition written to */
+    u16 partition;                    /*!< partition written to */
     partition_verify_result verify_result;  /*!< result of verification, see #partition_verify_result */
 } MessageStreamPartitionVerify;
 
@@ -506,15 +506,15 @@ typedef struct
 {
     infrared_event    event;            /*!< Event type */
     infrared_protocol protocol;         /*!< Infra-red protocol */
-    uint32 time;                        /*!< Time in milliseconds event occurred */
-    uint16 address;                     /*!< Protocol specific device address */
-    uint16 size_data;                   /*!< Size of data[] field */
-    uint8 data[1];                      /*!< Protocol specific event data */
+    u32 time;                        /*!< Time in milliseconds event occurred */
+    u16 address;                     /*!< Protocol specific device address */
+    u16 size_data;                   /*!< Size of data[] field */
+    u8 data[1];                      /*!< Protocol specific event data */
 } MessageInfraRedEvent;
 
 typedef struct
 {
-    uint16 len;                      /*!< The length of the message payload */
-    uint16 message[1];                      /*!< Unsolicited message from operator */
+    u16 len;                      /*!< The length of the message payload */
+    u16 message[1];                      /*!< Unsolicited message from operator */
 } MessageFromOperator;
 #endif

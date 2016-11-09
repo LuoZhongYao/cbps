@@ -70,34 +70,34 @@ DESCRIPTION
 #define EIR_BLOCK_SIZE(size)                    (EIR_NULL_SIZE + (size))
 
 /* UUIDs to list */
-static const uint8 eir_uuids[] = {  
+static const u8 eir_uuids[] = {  
     EIR_UUID16(BT_UUID_SERVICE_CLASS_A2DP),
     EIR_UUID16(BT_UUID_SERVICE_CLASS_AUDIO_SOURCE)
 };
 
-static const uint8 eir_a2dp_uuids[] =  {EIR_UUID16(BT_UUID_SERVICE_CLASS_A2DP),
+static const u8 eir_a2dp_uuids[] =  {EIR_UUID16(BT_UUID_SERVICE_CLASS_A2DP),
                                         EIR_UUID16(BT_UUID_SERVICE_CLASS_AUDIO_SOURCE)
                                        };
 
-static const uint8 eir_avrcp_uuids[] = {EIR_UUID16(BT_UUID_SERVICE_CLASS_AVRCP),
+static const u8 eir_avrcp_uuids[] = {EIR_UUID16(BT_UUID_SERVICE_CLASS_AVRCP),
                                         EIR_UUID16(BT_UUID_SERVICE_CLASS_AVRCP_CT),
                                         EIR_UUID16(BT_UUID_SERVICE_CLASS_AVRCP_TG)
                                        };
 
-static const uint8 eir_hfp_uuids[] =   {EIR_UUID16(BT_UUID_SERVICE_CLASS_HFP_AG)
+static const u8 eir_hfp_uuids[] =   {EIR_UUID16(BT_UUID_SERVICE_CLASS_HFP_AG)
                                        };
 
 
 /* DataEl(0x35), Length(0x03), UUID(0x19), Advanced Audio Distribution(0x111E) */
-static const uint8 inquiry_hfp_service_search_pattern[] = {0x35, 0x03, 0x19, 0x11, 0x1E};
+static const u8 inquiry_hfp_service_search_pattern[] = {0x35, 0x03, 0x19, 0x11, 0x1E};
 /* DataEl(0x35), Length(0x03), UUID(0x19), Advanced Audio Distribution(0x110D) */
-static const uint8 inquiry_a2dp_service_search_pattern[] = {0x35, 0x03, 0x19, 0x11, 0x0D};
+static const u8 inquiry_a2dp_service_search_pattern[] = {0x35, 0x03, 0x19, 0x11, 0x0D};
 
 
 /* local inquiry functions */
 static void inquiry_store_result(const CL_DM_INQUIRE_RESULT_T *result);
-static PROFILES_T inquiry_parse_eir_uuids(const uint8 size_uuids, const uint8 *uuids);
-static INQUIRY_EIR_DATA_T inquiry_parse_eir_data(const uint8 size_eir_data, const uint8* eir_data);
+static PROFILES_T inquiry_parse_eir_uuids(const u8 size_uuids, const u8 *uuids);
+static INQUIRY_EIR_DATA_T inquiry_parse_eir_data(const u8 size_eir_data, const u8* eir_data);
 
 
 /***************************************************************************
@@ -122,9 +122,9 @@ NAME
 void inquiry_write_eir_data(const CL_DM_LOCAL_NAME_COMPLETE_T *data)
 {
     /* Determine length of EIR data */
-    uint16 total_eir_size = 0;
-    uint16 size_uuids = 0;
-    uint8 *eir = NULL;
+    u16 total_eir_size = 0;
+    u16 size_uuids = 0;
+    u8 *eir = NULL;
 
     if (AGHFP_PROFILE_IS_ENABLED)
     {
@@ -140,14 +140,14 @@ void inquiry_write_eir_data(const CL_DM_LOCAL_NAME_COMPLETE_T *data)
     }
     
     total_eir_size = EIR_BLOCK_SIZE(EIR_DATA_SIZE_FULL(data->size_local_name) + 
-                    EIR_DATA_SIZE_FULL(sizeof(uint8)) + EIR_DATA_SIZE_FULL(size_uuids));
+                    EIR_DATA_SIZE_FULL(sizeof(u8)) + EIR_DATA_SIZE_FULL(size_uuids));
     
     /* Allocate space for EIR data */
-    eir = (uint8 *)memory_create(total_eir_size);
+    eir = (u8 *)memory_create(total_eir_size);
     
     if (eir)
     {
-        uint8 *p = eir;
+        u8 *p = eir;
             
         /* Device Name Field */
         *p++ = EIR_DATA_SIZE(data->size_local_name);  
@@ -156,7 +156,7 @@ void inquiry_write_eir_data(const CL_DM_LOCAL_NAME_COMPLETE_T *data)
         p += data->size_local_name;
             
         /* Inquiry Tx Field */
-        *p++ = EIR_DATA_SIZE(sizeof(int8));
+        *p++ = EIR_DATA_SIZE(sizeof(i8));
         *p++ = EIR_TYPE_INQUIRY_TX;
         *p++ = theSource->inquiry_mode.inquiry_tx;
             
@@ -220,7 +220,7 @@ void inquiry_start_discovery(void)
     if (theSource->inquiry_data)
     {
         /* start Bluetooth inquiry */
-        ConnectionInquire(&theSource->connectionTask, INQUIRY_LAP, INQUIRY_MAX_RESPONSES, INQUIRY_TIMEOUT, (uint32)COD_MAJOR_AV);            
+        ConnectionInquire(&theSource->connectionTask, INQUIRY_LAP, INQUIRY_MAX_RESPONSES, INQUIRY_TIMEOUT, (u32)COD_MAJOR_AV);            
     }
     else
     {
@@ -394,7 +394,7 @@ static void inquiry_store_result(const CL_DM_INQUIRE_RESULT_T *prim)
     
     if ((theSource->inquiry_data != NULL) && (theSource->inquiry_data->write_idx < INQUIRY_SCAN_BUFFER_SIZE))
     {
-        uint8 j, k;    
+        u8 j, k;    
         
         /* Start by checking if we have already found this device */
         for (k = 0; k < theSource->inquiry_data->write_idx; k++)
@@ -458,11 +458,11 @@ static void inquiry_store_result(const CL_DM_INQUIRE_RESULT_T *prim)
 NAME    
     inquiry_parse_eir_uuids - Returns the profiles found in the EIR data
 */
-static PROFILES_T inquiry_parse_eir_uuids(const uint8 size_uuids, const uint8 *uuids)
+static PROFILES_T inquiry_parse_eir_uuids(const u8 size_uuids, const u8 *uuids)
 {
     PROFILES_T profiles = PROFILE_NONE;
-    uint8 k;
-    uint16 uuid;
+    u8 k;
+    u16 uuid;
     
     for (k = 0; k < size_uuids; k += 2)
     {
@@ -485,9 +485,9 @@ static PROFILES_T inquiry_parse_eir_uuids(const uint8 size_uuids, const uint8 *u
 NAME    
     inquiry_parse_eir_data - Returns the the required EIR data found in the inquiry result
 */
-static INQUIRY_EIR_DATA_T inquiry_parse_eir_data(const uint8 size_eir_data, const uint8* eir_data)
+static INQUIRY_EIR_DATA_T inquiry_parse_eir_data(const u8 size_eir_data, const u8* eir_data)
 {
-    const uint8* p = eir_data;
+    const u8* p = eir_data;
     INQUIRY_EIR_DATA_T result;
     
     /* Default to max possible Inquiry Tx Power */
@@ -496,7 +496,7 @@ static INQUIRY_EIR_DATA_T inquiry_parse_eir_data(const uint8 size_eir_data, cons
     result.profiles_complete = FALSE;
     
     /* Search until no more to read */
-    for (p = eir_data; (uint8)(p - eir_data) != size_eir_data; p += (*p)+1)
+    for (p = eir_data; (u8)(p - eir_data) != size_eir_data; p += (*p)+1)
     {
         /* Check type fields for UUIDs or Inquiry Tx Power */
         if (*(p+1) == EIR_TYPE_INQUIRY_TX)

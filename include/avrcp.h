@@ -819,7 +819,7 @@ typedef struct
         features attribute value in the SDP service record of controller. 
         This field will be ignored if the library is built with only the 
         Target support.*/
-    uint8 supported_controller_features;
+    u8 supported_controller_features;
 
     /*! The supported target features must be filled in if the device supports
         the target(TG) role or the library will default to a possibly undesired
@@ -829,7 +829,7 @@ typedef struct
         See the AVRCP Supported Features Flag Defines at the top of avrcp.h. 
         This field will be ignored if the library is built with only the 
         Controller support.*/
-    uint8 supported_target_features;
+    u8 supported_target_features;
 
     /*! Set to zero if no extensions are supported in the Target application. 
         If this bit is not set, library acts as v1.0 . If
@@ -838,7 +838,7 @@ typedef struct
         If extensions are supported (eg. AVRCP Metadata extensions), 
         use the AVRCP Extensions Flag Defines from the top of avrcp.h. 
      */
-    uint8 profile_extensions;
+    u8 profile_extensions;
 
 } avrcp_init_params;
 
@@ -867,14 +867,14 @@ typedef enum{
     @brief The 8 octets UID to identify the media elements.
 */
 typedef struct{
-    uint32      msb;
-    uint32      lsb;
+    u32      msb;
+    u32      lsb;
 }avrcp_browse_uid;
 
 /*!
     @brief AV/C protocol - Used to form the targets address
 */
-typedef uint16 avc_subunit_id;
+typedef u16 avc_subunit_id;
 
 
 
@@ -997,7 +997,7 @@ typedef struct
     /*! The current AVRCP status. */    
     avrcp_status_code    status;        
     /*! Registered SDP handle */
-    uint32              sdp_handle;
+    u32              sdp_handle;
 } AVRCP_INIT_CFM_T;
 
 /*!
@@ -1023,9 +1023,9 @@ typedef struct
     /*! The Bluetooth Device Address of device connecting */
     bdaddr        bd_addr;            
     /*! Connection identifier */    
-    uint16        connection_id;    
+    u16        connection_id;    
     /*! Signalling identifier */
-    uint16        signal_id;
+    u16        signal_id;
 } AVRCP_CONNECT_IND_T;
 
 
@@ -1048,7 +1048,7 @@ typedef struct
 {
     AVRCP                *avrcp;  /*!< Pointer to AVRCP profile instance. */
     avrcp_status_code    status;  /*!< The current AVRCP status. */
-    uint16               max_browse_data;/*!< Maximum Browse Data allowed */
+    u16               max_browse_data;/*!< Maximum Browse Data allowed */
 } AVRCP_BROWSE_CONNECT_CFM_T;
 
 /*!
@@ -1064,9 +1064,9 @@ typedef struct
     /*! The Bluetooth Device Address of device connecting */
     bdaddr        bd_addr;            
     /*! Connection identifier */    
-    uint16        connection_id;    
+    u16        connection_id;    
     /*! Signalling identifier */
-    uint16        signal_id;
+    u16        signal_id;
 } AVRCP_BROWSE_CONNECT_IND_T;
 
 /*!
@@ -1092,7 +1092,7 @@ typedef struct
     /*! The outcome of the request. */
     avrcp_status_code    status;
     /*! The features supported by the remote device. */
-    uint16                features;
+    u16                features;
 } AVRCP_GET_SUPPORTED_FEATURES_CFM_T;
 
 /*!
@@ -1108,7 +1108,7 @@ typedef struct
     /*! The outcome of the request. */
     avrcp_status_code    status;
     /*! The extensions supported on the remote device. */
-    uint16                extensions;
+    u16                extensions;
 } AVRCP_GET_EXTENSIONS_CFM_T;
 
 #ifndef AVRCP_TG_ONLY_LIB  /* CT APIs are not exposed on TG only lib */ 
@@ -1138,9 +1138,9 @@ typedef struct
     /*! The unit type. */
     avc_subunit_type    unit_type;            
     /*! The unit. */
-    uint16                unit;                
+    u16                unit;                
     /*! The company identifier. */    
-    uint32                company_id;            
+    u32                company_id;            
 } AVRCP_UNITINFO_CFM_T;
 
 /*!
@@ -1156,10 +1156,10 @@ typedef struct
     /*! Connection handle */
     Sink                sink;                            
     /*! Requested page on the target device. */
-    uint8                page;                            
+    u8                page;                            
     /*! Four entries from the subunit table for the requested page on the
       target device.*/    
-    uint8                page_data[PAGE_DATA_LENGTH];
+    u8                page_data[PAGE_DATA_LENGTH];
 } AVRCP_SUBUNITINFO_CFM_T;
 
 /*!
@@ -1181,7 +1181,7 @@ typedef struct
         recommended to use this field since this has be deprecated and 
         will be removed in future.
      */     
-    uint8               response; 
+    u8               response; 
 #endif  
 } AVRCP_VENDORDEPENDENT_CFM_T;
 
@@ -1199,16 +1199,16 @@ typedef struct
     /*! The outcome of the request. */
     avrcp_status_code   status;
     /*! If the Metadata packet is of type single, start, continue, or end. */
-    uint16              metadata_packet_type;
+    u16              metadata_packet_type;
     /*! The type of the capability returned (only valid if status indicates 
         success). Only valid for first packet in fragmented response.*/
     avrcp_capability_id caps;
     /*! The total number of capabilities returned. Only valid for first 
        Metadata packet in a fragmented response. */
-    uint16              number_of_caps;
+    u16              number_of_caps;
     /*! The size, in bytes, of the list of supported capabilities in 
         this packet (only valid if status indicates success). */
-    uint16              size_caps_list; 
+    u16              size_caps_list; 
     /*! The list of supported capabilities (only valid if status indicates 
         success).  The application MUST call the AvrcpSourceProcessed API 
         after it has finished processing the Source data. */
@@ -1217,10 +1217,10 @@ typedef struct
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
-    uint16              no_packets;
-    uint16              ctp_packet_type;
-    uint16              data_offset;
+    u16              transaction;
+    u16              no_packets;
+    u16              ctp_packet_type;
+    u16              data_offset;
 #endif
 
 } AVRCP_GET_CAPS_CFM_T; 
@@ -1239,12 +1239,12 @@ typedef struct
     /*! The outcome of the request. */
     avrcp_status_code    status;
     /*! If the Metadata packet is of type single, start, continue, or end. */
-    uint16              metadata_packet_type;
+    u16              metadata_packet_type;
     /*! The total number of attributes returned. Only valid for first packet 
         in fragmented response. */
-    uint16              number_of_attributes;
+    u16              number_of_attributes;
     /*! The size, in bytes, of the list of supported attributes */
-    uint16                size_attributes;
+    u16                size_attributes;
     /*! The list of supported attributes (only valid if status indicates
         success). The application MUST call the AvrcpSourceProcessed API 
         after it has finished processing the Source data. */
@@ -1253,10 +1253,10 @@ typedef struct
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
-    uint16              no_packets;
-    uint16              ctp_packet_type;
-    uint16              data_offset;
+    u16              transaction;
+    u16              no_packets;
+    u16              ctp_packet_type;
+    u16              data_offset;
 #endif
 } AVRCP_LIST_APP_ATTRIBUTE_CFM_T;
 
@@ -1274,12 +1274,12 @@ typedef struct
     /*! The outcome of the request. */
     avrcp_status_code status;
     /*! If the Metadata packet is of type single, start, continue, or end. */
-    uint16 metadata_packet_type;
+    u16 metadata_packet_type;
     /*! The total number of values returned. Only valid for first packet 
         in fragmented response. */
-    uint16 number_of_values;
+    u16 number_of_values;
     /*! The size, in bytes, of the list of supported values */
-    uint16 size_values;
+    u16 size_values;
     /*! The list of supported values (only valid if status indicates success). 
         The application MUST call the AvrcpSourceProcessed API after it has
         finished processing the Source data. */
@@ -1288,10 +1288,10 @@ typedef struct
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
-    uint16              no_packets;
-    uint16              ctp_packet_type;
-    uint16              data_offset;
+    u16              transaction;
+    u16              no_packets;
+    u16              ctp_packet_type;
+    u16              data_offset;
 #endif
 
 } AVRCP_LIST_APP_VALUE_CFM_T;
@@ -1310,12 +1310,12 @@ typedef struct
     /*! The outcome of the request. */
     avrcp_status_code status;
     /*! If the Metadata packet is of type single, start, continue, or end. */
-    uint16 metadata_packet_type;
+    u16 metadata_packet_type;
     /*! The total number of values returned. Only valid for first packet 
         in fragmented response. */
-    uint16 number_of_values;
+    u16 number_of_values;
     /*! The size, in bytes, of the list of supported values */
-    uint16 size_values;
+    u16 size_values;
     /*! The list of supported values (only valid if status indicates success).
         The application MUST call the AvrcpSourceProcessed API after it
         has finished processing the Source data. */
@@ -1324,10 +1324,10 @@ typedef struct
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
-    uint16              no_packets;
-    uint16              ctp_packet_type;
-    uint16              data_offset;
+    u16              transaction;
+    u16              no_packets;
+    u16              ctp_packet_type;
+    u16              data_offset;
 #endif
 
 } AVRCP_GET_APP_VALUE_CFM_T;
@@ -1349,7 +1349,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED 
     /*! The transaction. */
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_SET_APP_VALUE_CFM_T;
 
@@ -1367,12 +1367,12 @@ typedef struct
     /*! The outcome of the request. */
     avrcp_status_code    status;
     /*! If the Metadata packet is of type single, start, continue, or end. */
-    uint16              metadata_packet_type;
+    u16              metadata_packet_type;
     /*! The total number of attributes returned. Only valid for first 
         packet in fragmented response. */
-    uint16              number_of_attributes;
+    u16              number_of_attributes;
     /*! The size, in bytes, of the list of supported attributes */
-    uint16                size_attributes;
+    u16                size_attributes;
     /*! The list of supported attributes (only valid if status indicates
         success).  The application MUST call the AvrcpSourceProcessed API
         after it has finished processing the Source data. */
@@ -1381,10 +1381,10 @@ typedef struct
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
-    uint16              no_packets;
-    uint16              ctp_packet_type;
-    uint16               data_offset;
+    u16              transaction;
+    u16              no_packets;
+    u16              ctp_packet_type;
+    u16               data_offset;
 #endif
 
 } AVRCP_GET_APP_ATTRIBUTE_TEXT_CFM_T;
@@ -1403,12 +1403,12 @@ typedef struct
     /*! The outcome of the request. */
     avrcp_status_code    status;
     /* If the Metadata packet is of type single, start, continue, or end. */
-    uint16              metadata_packet_type;
+    u16              metadata_packet_type;
     /* The total number of attributes returned. Only valid for first packet 
        in fragmented response. */
-    uint16              number_of_attributes;
+    u16              number_of_attributes;
     /*! The size, in bytes, of the list of supported attributes */
-    uint16                size_attributes;
+    u16                size_attributes;
     /*! The list of supported attributes (only valid if status indicates
         success).  The application MUST call the AvrcpSourceProcessed API
         after it has finished processing the Source data. */
@@ -1417,10 +1417,10 @@ typedef struct
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
-    uint16              no_packets;
-    uint16              ctp_packet_type;
-    uint16              data_offset;
+    u16              transaction;
+    u16              no_packets;
+    u16              ctp_packet_type;
+    u16              data_offset;
 #endif
 } AVRCP_GET_APP_VALUE_TEXT_CFM_T;
 
@@ -1438,12 +1438,12 @@ typedef struct
     /*! The outcome of the request. */
     avrcp_status_code    status;
     /*! If the Metadata packet is of type single, start, continue, or end. */
-    uint16              metadata_packet_type;
+    u16              metadata_packet_type;
     /*! The total number of attributes returned. Only valid for first packet
         in fragmented response. */
-    uint16              number_of_attributes;
+    u16              number_of_attributes;
     /*! The size, in bytes, of the list of supported attributes */
-    uint16                size_attributes;
+    u16                size_attributes;
     /*! The list of supported attributes (only valid if status indicates
         success).  The application MUST call the AvrcpSourceProcessed API 
         after it has finished processing the Source data. */
@@ -1452,10 +1452,10 @@ typedef struct
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
-    uint16              no_packets;
-    uint16              ctp_packet_type;
-    uint16              data_offset;
+    u16              transaction;
+    u16              no_packets;
+    u16              ctp_packet_type;
+    u16              data_offset;
 #endif
 
 } AVRCP_GET_ELEMENT_ATTRIBUTES_CFM_T;
@@ -1473,16 +1473,16 @@ typedef struct
     /*! The outcome of the request. */
     avrcp_status_code status;
     /*! The total length of the playing song in milliseconds. */
-    uint32 song_length;
+    u32 song_length;
     /*! The current position of the playing song in milliseconds elapsed. */
-    uint32 song_elapsed;
+    u32 song_elapsed;
     /*! Current status of playing media. */
     avrcp_play_status play_status;
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
+    u16              transaction;
 #endif
 
 } AVRCP_GET_PLAY_STATUS_CFM_T;
@@ -1509,7 +1509,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /*! This field has been deprecated. */
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_REGISTER_NOTIFICATION_CFM_T;
 
@@ -1527,7 +1527,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* This field has been deprecated.*/
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_EVENT_PLAYBACK_STATUS_CHANGED_IND_T;
 
@@ -1542,13 +1542,13 @@ typedef struct
     /*! The response from the remote device. */
     avrcp_response_type response;
     /*! Index of the current track - upper 4 bytes */
-    uint32 track_index_high;
+    u32 track_index_high;
     /*! Index of the current track - lower 4 bytes */
-    uint32 track_index_low;
+    u32 track_index_low;
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* This field has been deprecated. */
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_EVENT_TRACK_CHANGED_IND_T;
 
@@ -1566,7 +1566,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* This field has been deprecated.*/
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_EVENT_TRACK_REACHED_END_IND_T;
 
@@ -1584,7 +1584,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* This field has been deprecated.*/
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_EVENT_TRACK_REACHED_START_IND_T;
 
@@ -1599,11 +1599,11 @@ typedef struct
     /*! The response from the remote device. */
     avrcp_response_type response;
     /*! The current playback position in milliseconds. */
-    uint32 playback_pos;
+    u32 playback_pos;
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* This field has been deprecated.*/
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_EVENT_PLAYBACK_POS_CHANGED_IND_T;
 
@@ -1622,7 +1622,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* This field has been deprecated.*/
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_EVENT_BATT_STATUS_CHANGED_IND_T;
 
@@ -1643,7 +1643,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* This field has been deprecated. */
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_EVENT_SYSTEM_STATUS_CHANGED_IND_T;
 
@@ -1660,10 +1660,10 @@ typedef struct
     avrcp_response_type response;
     /* The total number of attributes for which values are requested. 
         Only valid for first packet in fragmented response. */
-    uint16              number_of_attributes;
+    u16              number_of_attributes;
     /*! The size, in bytes, of the list of attributes in this packet (only
         valid if status indicates success). */
-    uint16              size_attributes; 
+    u16              size_attributes; 
     /*! The list of attributes (only valid if status indicates success).
         The application MUST call the AvrcpSourceProcessed API after it 
         has finished processing the Source data. */
@@ -1672,11 +1672,11 @@ typedef struct
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
-    uint16              no_packets;
-    uint16              ctp_packet_type;
-    uint16              data_offset;
-    uint16              metadata_packet_type;
+    u16              transaction;
+    u16              no_packets;
+    u16              ctp_packet_type;
+    u16              data_offset;
+    u16              metadata_packet_type;
 #endif
 } AVRCP_EVENT_PLAYER_APP_SETTING_CHANGED_IND_T;
 
@@ -1687,7 +1687,7 @@ typedef struct
 typedef struct{
     AVRCP               *avrcp;     /* Profile instance */        
     avrcp_response_type response;  /* The response from the remote device. */
-    uint8               volume;    /* Volume at TG */
+    u8               volume;    /* Volume at TG */
 
 }AVRCP_EVENT_VOLUME_CHANGED_IND_T;
 
@@ -1700,8 +1700,8 @@ typedef struct{
 typedef struct{
     AVRCP               *avrcp;     /* Profile Instance */
     avrcp_response_type response;   /* The response from the remote device. */
-    uint16              player_id;  /* Requested player ID to set */ 
-    uint16              uid_counter;/* UID Counter */ 
+    u16              player_id;  /* Requested player ID to set */ 
+    u16              uid_counter;/* UID Counter */ 
 }AVRCP_EVENT_ADDRESSED_PLAYER_CHANGED_IND_T;
 
 /*!
@@ -1722,7 +1722,7 @@ typedef struct{
 typedef struct{
     AVRCP               *avrcp;      /* Profile Instance */
     avrcp_response_type response;    /* The response from the remote device.*/
-    uint16               uid_counter;/*UID counter of current browsed player*/
+    u16               uid_counter;/*UID counter of current browsed player*/
 }AVRCP_EVENT_UIDS_CHANGED_IND_T;
 
 /*!
@@ -1746,11 +1746,11 @@ typedef struct
     /*! The outcome of the request. */
     avrcp_status_code status;
     /*! The target PDU. */
-    uint16 pdu_id;
+    u16 pdu_id;
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* This field has been deprecated. */
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_REQUEST_CONTINUING_RESPONSE_CFM_T;
 
@@ -1768,7 +1768,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /*! This field has been deprecated. */
-    uint16 transaction;
+    u16 transaction;
 #endif
 
 } AVRCP_ABORT_CONTINUING_RESPONSE_CFM_T;
@@ -1788,7 +1788,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED 
     /*! This field has been deprecated. */
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_PREVIOUS_GROUP_CFM_T;
 
@@ -1805,7 +1805,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED 
      /*! This field has been deprecated. */
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_NEXT_GROUP_CFM_T;
 
@@ -1822,7 +1822,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED 
     /*! This field has been deprecated. */
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_INFORM_BATTERY_STATUS_CFM_T;
 
@@ -1841,7 +1841,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED 
     /*! This field has been deprecated. */
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_INFORM_CHARACTER_SET_CFM_T;
 
@@ -1856,7 +1856,7 @@ typedef struct{
     /*! Outcome of the request,returns avrcp_success on success */
     avrcp_status_code status; 
    /*! Volume at TG on success */ 
-    uint8             volume; 
+    u8             volume; 
 }AVRCP_SET_ABSOLUTE_VOLUME_CFM_T;
 
 /*!
@@ -1908,11 +1908,11 @@ typedef struct{
     AVRCP            *avrcp;       /* Profile Instance */
     avrcp_status_code status;      /* Outcome of the request, 
                                       returns avrcp_success on success */
-    uint16            uid_counter; /* UID Counter of the Browsed player */
-    uint32            num_items;   /* Number of items in the current folder */
+    u16            uid_counter; /* UID Counter of the Browsed player */
+    u32            num_items;   /* Number of items in the current folder */
     avrcp_char_set    char_type;   /* Character Set used for Folder names */
-    uint8             folder_depth;/* depth of folders */ 
-    uint16            size_path;   /* size of folder_path in bytes */
+    u8             folder_depth;/* depth of folders */ 
+    u16            size_path;   /* size of folder_path in bytes */
     Source            folder_path; /* This contains the path of the folder 
                                       in length-name pairs. Number of pairs 
                                       equal to folder_depth*/
@@ -1929,7 +1929,7 @@ typedef struct{
 typedef struct{
     AVRCP                    *avrcp;    /* Profile Instance */
     avrcp_status_code        status;    /* Returns avrcp_success on success*/
-    uint32                   num_items; /* Total items in the changed folder*/ 
+    u32                   num_items; /* Total items in the changed folder*/ 
 }AVRCP_BROWSE_CHANGE_PATH_CFM_T;
 
 /*!
@@ -1946,8 +1946,8 @@ typedef struct{
 typedef struct{
     AVRCP               *avrcp;         /* Profile Instance */
     avrcp_status_code   status;         /* Returns avrcp_success on success*/
-    uint8               num_attributes; /* Number of Attributes */
-    uint16              size_attr_list; /* Size of attr_value_list in bytes */
+    u8               num_attributes; /* Number of Attributes */
+    u16              size_attr_list; /* Size of attr_value_list in bytes */
     Source              attr_value_list;/* List of attribute Entry values */  
 }AVRCP_BROWSE_GET_ITEM_ATTRIBUTES_CFM_T;
 
@@ -1965,9 +1965,9 @@ typedef struct{
 typedef struct{
     AVRCP               *avrcp;         /* Profile Instance */
     avrcp_status_code   status;         /* Returns avrcp_success on success*/
-    uint16              uid_counter;    /* current  UID counter */
-    uint16              num_items;      /* Number of items returned */
-    uint16              item_list_size; /* Number of bytes in the item_list */
+    u16              uid_counter;    /* current  UID counter */
+    u16              num_items;      /* Number of items returned */
+    u16              item_list_size; /* Number of bytes in the item_list */
     Source              item_list;      /* Item list */
 }AVRCP_BROWSE_GET_FOLDER_ITEMS_CFM_T;
 
@@ -1986,8 +1986,8 @@ typedef struct{
 typedef struct{
     AVRCP               *avrcp;         /* Profile Instance */
     avrcp_status_code   status;         /* Returns avrcp_success on success*/
-    uint16              uid_counter;    /* current  UID counter */
-    uint32              num_items;      /* Number of items returned */
+    u16              uid_counter;    /* current  UID counter */
+    u32              num_items;      /* Number of items returned */
 }AVRCP_BROWSE_GET_NUMBER_OF_ITEMS_CFM_T;
 
 /*!
@@ -2002,8 +2002,8 @@ typedef struct{
 typedef struct{
     AVRCP               *avrcp;       /* Profile Instance */
     avrcp_status_code   status;       /* Returns avrcp_success on success*/
-    uint16               uid_counter; /* The UID counter*/
-    uint32               num_items;   /* Number of matching media elements */
+    u16               uid_counter; /* The UID counter*/
+    u32               num_items;   /* Number of matching media elements */
 }AVRCP_BROWSE_SEARCH_CFM_T;
 
 #endif /* !AVRCP_TG_ONLY_LIB */
@@ -2022,9 +2022,9 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED
    /*! This field has be deprecated */
-    uint16                 transaction;                
+    u16                 transaction;                
     /*! This field has been deprecated */
-    uint16                 no_packets;  
+    u16                 no_packets;  
 #endif
 
     /*! The sink. */
@@ -2039,14 +2039,14 @@ typedef struct
       identified by opid.  Active low.*/
     bool                 state;                        
     /*! Length of following operation_data */
-    uint16                size_op_data;                
+    u16                size_op_data;                
     /*! The op_data field is required for the Vendor Unique operation. For
       other operations, op_data length and data fields should be zero. The
       client should not attempt to free this pointer, the memory will be freed
       when the message is destroyed. If the client needs access to this data
       after the message has been destroyed it is the client's responsibility to
       copy it. */
-    uint8                op_data[1]; 
+    u8                op_data[1]; 
 } AVRCP_PASSTHROUGH_IND_T;
 
 
@@ -2071,7 +2071,7 @@ typedef struct
 {
     AVRCP                *avrcp;    /*!< Pointer to avrcp profile instance. */
     Sink                sink;       /*!< Connection handle */
-    uint8                page;      /*!< Requested page. */    
+    u8                page;      /*!< Requested page. */    
 } AVRCP_SUBUNITINFO_IND_T;
 
 /*!
@@ -2085,9 +2085,9 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /*! The transaction. This field will be deprecated */
-    uint16                transaction;            
+    u16                transaction;            
     /*! This field has been deprecated.*/
-    uint16                no_packets;        
+    u16                no_packets;        
 #endif             
 
     /*! The subunit type. */
@@ -2095,18 +2095,18 @@ typedef struct
     /*! The subunit identifier. */
     avc_subunit_id        subunit_id;                
     /*! The company identifier. */
-    uint32                company_id;                
+    u32                company_id;                
     /*! The command type. */
-    uint8               command_type;           
+    u8               command_type;           
     /*! The sink. */
     Sink                sink;                    
     /*! The length of op_data. */
-    uint16                size_op_data;            
+    u16                size_op_data;            
     /*! The operation data. The client should not attempt to free this pointer,
       the memory will be freed when the message is destroyed. If the client
       needs access to this data after the message has been destroyed it is the
       client's responsibility to copy it. */    
-    uint8                op_data[1];    
+    u8                op_data[1];    
 } AVRCP_VENDORDEPENDENT_IND_T;
 
 
@@ -2124,7 +2124,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /*! This field has been deprecated */
-    uint16              transaction;
+    u16              transaction;
 #endif
 
 } AVRCP_GET_CAPS_IND_T;
@@ -2140,7 +2140,7 @@ typedef struct
     /*! Pointer to avrcp profile instance. */
     AVRCP                *avrcp;
     /*! The transaction. */
-    uint16              transaction;
+    u16              transaction;
 } AVRCP_LIST_APP_ATTRIBUTE_IND_T;
 
 /*!
@@ -2154,11 +2154,11 @@ typedef struct
     AVRCP *avrcp;
     /*! The player application setting attribute ID for which the possible 
         values should be returned. */
-    uint16 attribute_id;
+    u16 attribute_id;
 
 #ifdef AVRCP_ENABLE_DEPRECATED 
     /* This field will be deprecated */
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_LIST_APP_VALUE_IND_T;
 
@@ -2173,10 +2173,10 @@ typedef struct
     AVRCP *avrcp;
     /*! The total number of attributes for which values are requested.
         Only valid for first packet in fragmented response. */
-    uint16              number_of_attributes;
+    u16              number_of_attributes;
     /*! The size, in bytes, of the list of attributes in this packet
         (only valid if status indicates success). */
-    uint16              size_attributes; 
+    u16              size_attributes; 
     /*! The list of attributes (only valid if status indicates success). 
         The application MUST call the AvrcpSourceProcessed API after it 
         has finished processing the Source data.*/
@@ -2185,11 +2185,11 @@ typedef struct
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
-    uint16              no_packets;
-    uint16              ctp_packet_type;
-    uint16              data_offset;
-    uint16              metadata_packet_type;
+    u16              transaction;
+    u16              no_packets;
+    u16              ctp_packet_type;
+    u16              data_offset;
+    u16              metadata_packet_type;
 #endif
 } AVRCP_GET_APP_VALUE_IND_T;
 
@@ -2204,10 +2204,10 @@ typedef struct
     AVRCP *avrcp;
     /*! The total number of attributes for which values are requested. 
         Only valid for first packet in fragmented response. */
-    uint16              number_of_attributes;
+    u16              number_of_attributes;
     /*! The size, in bytes, of the list of attributes in this packet 
         (only valid if status indicates success). */
-    uint16              size_attributes; 
+    u16              size_attributes; 
     /*! The list of attributes (only valid if status indicates success).
         The application MUST call the AvrcpSourceProcessed API after 
         it has finished processing the Source data. */
@@ -2216,11 +2216,11 @@ typedef struct
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
-    uint16              no_packets;
-    uint16              ctp_packet_type;
-    uint16              data_offset;
-    uint16              metadata_packet_type;
+    u16              transaction;
+    u16              no_packets;
+    u16              ctp_packet_type;
+    u16              data_offset;
+    u16              metadata_packet_type;
 #endif
 
 } AVRCP_SET_APP_VALUE_IND_T;
@@ -2237,9 +2237,9 @@ typedef struct
     AVRCP                *avrcp;
     /* The total number of attributes returned. Only valid for first packet
      in fragmented response. */
-    uint16              number_of_attributes;
+    u16              number_of_attributes;
     /*! The size, in bytes, of the list of supported attributes */
-    uint16                size_attributes;
+    u16                size_attributes;
     /*! The list of supported attributes (only valid if status indicates 
         success).  The application MUST call the AvrcpSourceProcessed API 
         after it has finished processing the Source data. */
@@ -2249,11 +2249,11 @@ typedef struct
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
-    uint16              no_packets;
-    uint16              ctp_packet_type;
-    uint16              data_offset;
-    uint16              metadata_packet_type;
+    u16              transaction;
+    u16              no_packets;
+    u16              ctp_packet_type;
+    u16              data_offset;
+    u16              metadata_packet_type;
 #endif
 } AVRCP_GET_APP_ATTRIBUTE_TEXT_IND_T;
 
@@ -2266,12 +2266,12 @@ typedef struct
     /*! Pointer to avrcp profile instance. */
     AVRCP                *avrcp;
     /*! Attribute ID to retrieve values for. */
-    uint16                attribute_id;
+    u16                attribute_id;
     /*! The total number of attributes returned. Only valid for first packet
        in fragmented response. */
-    uint16              number_of_attributes;
+    u16              number_of_attributes;
     /*! The size, in bytes, of the list of supported attributes */
-    uint16                size_attributes;
+    u16                size_attributes;
     /*! The list of supported attributes (only valid if status indicates 
         success). The application MUST call the AvrcpSourceProcessed API 
         after it has finished processing the Source data. */
@@ -2280,11 +2280,11 @@ typedef struct
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
-    uint16              no_packets;
-    uint16              ctp_packet_type;
-    uint16              data_offset;
-    uint16              metadata_packet_type;
+    u16              transaction;
+    u16              no_packets;
+    u16              ctp_packet_type;
+    u16              data_offset;
+    u16              metadata_packet_type;
 #endif
 
 } AVRCP_GET_APP_VALUE_TEXT_IND_T;
@@ -2299,15 +2299,15 @@ typedef struct
     /*! Pointer to avrcp profile instance. */
     AVRCP *avrcp;
     /* Top 4 bytes of identifier to identify an element on TG */
-    uint32                identifier_high;
+    u32                identifier_high;
     /* Bottom 4 bytes of identifier to identify an element on TG */
-    uint32                identifier_low;
+    u32                identifier_low;
     /* The total number of attributes for which values are requested. 
         Only valid for first packet in fragmented response. */
-    uint16              number_of_attributes;
+    u16              number_of_attributes;
     /*! The size, in bytes, of the list of attributes in this packet 
         (only valid if status indicates success). */
-    uint16              size_attributes; 
+    u16              size_attributes; 
     /*! The list of attributes (only valid if status indicates success). 
         The application MUST call the AvrcpSourceProcessed API after it
         has finished processing the Source data. */
@@ -2316,11 +2316,11 @@ typedef struct
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
-    uint16              no_packets;
-    uint16              ctp_packet_type;
-    uint16              data_offset;
-    uint16              metadata_packet_type;
+    u16              transaction;
+    u16              no_packets;
+    u16              ctp_packet_type;
+    u16              data_offset;
+    u16              metadata_packet_type;
 #endif
 
 } AVRCP_GET_ELEMENT_ATTRIBUTES_IND_T;
@@ -2337,7 +2337,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /*! This field has been deprecated */
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_GET_PLAY_STATUS_IND_T;
 
@@ -2353,11 +2353,11 @@ typedef struct
     avrcp_supported_events event_id;
     /*! Time interval, in seconds, at which the change in playback position 
         should be notified. Only applicable for EVENT_PLAYBACK_POS_CHANGED */
-    uint32 playback_interval;
+    u32 playback_interval;
 
 #ifdef AVRCP_ENABLE_DEPRECATED  
     /* This field has been deprecated. */
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_REGISTER_NOTIFICATION_IND_T;
 
@@ -2373,7 +2373,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED 
     /*! This field has been deprecated. */
-    uint16              transaction;
+    u16              transaction;
 #endif
 } AVRCP_PREVIOUS_GROUP_IND_T;
 
@@ -2389,7 +2389,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED 
      /*! This field has been deprecated. */
-    uint16              transaction;
+    u16              transaction;
 #endif
 } AVRCP_NEXT_GROUP_IND_T;
 
@@ -2405,7 +2405,7 @@ typedef struct
 
 #ifdef AVRCP_ENABLE_DEPRECATED 
     /*! This field has been deprecated. */
-    uint16 transaction;
+    u16 transaction;
 #endif
 } AVRCP_INFORM_BATTERY_STATUS_IND_T;
 
@@ -2420,10 +2420,10 @@ typedef struct
     AVRCP *avrcp;
     /* The total number of attributes for which values are requested.
        Only valid for first packet in fragmented response. */
-    uint16              number_of_attributes;
+    u16              number_of_attributes;
     /*! The size, in bytes, of the list of attributes in this packet 
         (only valid if status indicates success). */
-    uint16              size_attributes; 
+    u16              size_attributes; 
     /*! The list of attributes (only valid if status indicates success).
         The application MUST call the AvrcpSourceProcessed API after it
         has finished processing the Source data. */
@@ -2432,11 +2432,11 @@ typedef struct
 #ifdef AVRCP_ENABLE_DEPRECATED 
     /* Following fields have been deprecated and it is not recommended to use.
        These field will be removed in future versions*/
-    uint16              transaction;
-    uint16              no_packets;
-    uint16              ctp_packet_type;
-    uint16              data_offset;
-    uint16              metadata_packet_type;
+    u16              transaction;
+    u16              no_packets;
+    u16              ctp_packet_type;
+    u16              data_offset;
+    u16              metadata_packet_type;
 #endif
 
 } AVRCP_INFORM_CHARACTER_SET_IND_T;
@@ -2451,7 +2451,7 @@ typedef struct{
     AVRCP             *avrcp; 
     /*! Requested %Volume. 0 as 0% and 0x7F as 100%. Scaling should
        be applied to achieve other between these two*/ 
-    uint8             volume; 
+    u8             volume; 
                                 
                                 
 }AVRCP_SET_ABSOLUTE_VOLUME_IND_T;
@@ -2463,7 +2463,7 @@ typedef struct{
 */
 typedef struct{
     AVRCP             *avrcp;       /* Profile Instance */
-    uint16             player_id;   /* Requested player ID to set */ 
+    u16             player_id;   /* Requested player ID to set */ 
 }AVRCP_SET_ADDRESSED_PLAYER_IND_T;
 
 /*!
@@ -2475,7 +2475,7 @@ typedef struct{
     AVRCP                *avrcp;     /* Profile Instance */
     avrcp_browse_scope   scope;      /* Browse Scope in which UID is valid */
     avrcp_browse_uid     uid;        /* media element item or folder item UID*/
-    uint16               uid_counter;/* The UID counter value associated 
+    u16               uid_counter;/* The UID counter value associated 
                                          with the uid and scope */
 }AVRCP_PLAY_ITEM_IND_T;
 
@@ -2487,7 +2487,7 @@ typedef struct{
     AVRCP                *avrcp;     /* Profile Instance */
     avrcp_browse_scope   scope;      /* Browse Scope in which UID is valid */
     avrcp_browse_uid     uid;        /* media element item or folder item UID*/
-    uint16               uid_counter;/* The UID counter value associated 
+    u16               uid_counter;/* The UID counter value associated 
                                          with the uid and scope */
 }AVRCP_ADD_TO_NOW_PLAYING_IND_T;
 
@@ -2499,7 +2499,7 @@ typedef struct{
 
 typedef struct{
     AVRCP             *avrcp;      /* Profile Instance */
-    uint16            player_id;   /* Requested player ID to set */ 
+    u16            player_id;   /* Requested player ID to set */ 
 }AVRCP_BROWSE_SET_PLAYER_IND_T;
 
 
@@ -2509,7 +2509,7 @@ typedef struct{
 */
 typedef struct{
     AVRCP                    *avrcp;       /* Profile Instance */
-    uint16                   uid_counter;  /* The UID counter value */
+    u16                   uid_counter;  /* The UID counter value */
     avrcp_browse_direction   direction;    /* Direction of browsing */
     avrcp_browse_uid         folder_uid;   /* UID of the folder to navigate*/ 
 }AVRCP_BROWSE_CHANGE_PATH_IND_T;
@@ -2532,8 +2532,8 @@ typedef struct{
     AVRCP               *avrcp;      /* Profile Instance */
     avrcp_browse_scope  scope;       /* Scope in which UID is valid */
     avrcp_browse_uid    uid;         /* UID of the media element or folder.*/
-    uint16              uid_counter; /* The UID counter value */
-    uint8               num_attr;    /* number of requested attributes */ 
+    u16              uid_counter; /* The UID counter value */
+    u8               num_attr;    /* number of requested attributes */ 
     Source              attr_list;    /* attribute List */
 }AVRCP_BROWSE_GET_ITEM_ATTRIBUTES_IND_T;
 
@@ -2554,9 +2554,9 @@ typedef struct{
 typedef struct{
     AVRCP                *avrcp;     /* Profile Instance */
     avrcp_browse_scope   scope;      /* Scope in which UID is valid */
-    uint32               start;      /* Start item Index. 0 for first item */
-    uint32               end;        /* index of the final item to retrieve.*/
-    uint8                num_attr;   /* requested attributes count */
+    u32               start;      /* Start item Index. 0 for first item */
+    u32               end;        /* index of the final item to retrieve.*/
+    u8                num_attr;   /* requested attributes count */
     Source               attr_list;  /* List of Metadata attributes. */
 }AVRCP_BROWSE_GET_FOLDER_ITEMS_IND_T;
 
@@ -2585,7 +2585,7 @@ typedef struct{
 typedef struct{
     AVRCP            *avrcp;       /* Profile Instance */
     avrcp_char_set   char_set;     /* Must be avrcp_char_set_utf_8*/
-    uint16           str_length;   /* Length of Search string in bytes */
+    u16           str_length;   /* Length of Search string in bytes */
    Source            string;       /* Source containing the search String */
 }AVRCP_BROWSE_SEARCH_IND_T;
 
@@ -2636,8 +2636,8 @@ void AvrcpConnectRequest(Task theAppTask, const bdaddr *bd_addr);
     @link AVRCP_CONNECT_IND_T AVRCP_CONNECT_IND @endlink.
 */
 void AvrcpConnectResponse(  Task theAppTask, 
-                            uint16 connection_id, 
-                            uint16 signal_id, 
+                            u16 connection_id, 
+                            u16 signal_id, 
                             bool accept );
 
 /*!
@@ -2665,8 +2665,8 @@ void AvrcpBrowseConnectRequest(AVRCP *avrcp, const bdaddr *bd_addr);
     @link AVRCP_BROWSE_CONNECT_IND_T AVRCP_BROWSE_CONNECT_IND @endlink.
 */
 void AvrcpBrowseConnectResponse(AVRCP   *avrcp, 
-                                uint16  connection_id, 
-                                uint16  signal_id,
+                                u16  connection_id, 
+                                u16  signal_id,
                                 bool    accept);
 
 
@@ -2815,7 +2815,7 @@ void AvrcpPassthroughRequest(AVRCP             *avrcp,
                       avc_subunit_id    subunit_id,
                       bool              state, 
                       avc_operation_id  opid, 
-                      uint16            size_operation_data, 
+                      u16            size_operation_data, 
                       Source            operation_data);
 
 
@@ -2887,7 +2887,7 @@ void AvrcpUnitInfoRequest(AVRCP *avrcp);
                      -----------------------------------------------
 
 */
-void AvrcpSubUnitInfoRequest(AVRCP *avrcp, uint8 page);
+void AvrcpSubUnitInfoRequest(AVRCP *avrcp, u8 page);
 
 
 /*!
@@ -2934,9 +2934,9 @@ void AvrcpSubUnitInfoRequest(AVRCP *avrcp, uint8 page);
 void AvrcpVendorDependentRequest(  AVRCP            *avrcp, 
                             avc_subunit_type subunit_type, 
                             avc_subunit_id   subunit_id, 
-                            uint8            ctype, 
-                            uint32           company_id, 
-                            uint16           size_data, 
+                            u8            ctype, 
+                            u32           company_id, 
+                            u16           size_data, 
                             Source           data);
 
 
@@ -2993,7 +2993,7 @@ void AvrcpListAppAttributeRequest(AVRCP *avrcp);
     @endlink is sent to the application. 
 
 */
-void AvrcpListAppValueRequest(AVRCP *avrcp, uint16 attribute_id);
+void AvrcpListAppValueRequest(AVRCP *avrcp, u16 attribute_id);
 
 
 /*!
@@ -3017,7 +3017,7 @@ void AvrcpListAppValueRequest(AVRCP *avrcp, uint16 attribute_id);
 
 */
 void AvrcpGetAppValueRequest( AVRCP *avrcp, 
-                               uint16 size_attributes, 
+                               u16 size_attributes, 
                                Source attributes);
 
 /*!
@@ -3036,7 +3036,7 @@ void AvrcpGetAppValueRequest( AVRCP *avrcp,
     @endlink is sent to the application. 
 */
 void AvrcpSetAppValueRequest( AVRCP *avrcp, 
-                              uint16 size_attributes, 
+                              u16 size_attributes, 
                               Source attributes );
 
 /*!
@@ -3056,7 +3056,7 @@ void AvrcpSetAppValueRequest( AVRCP *avrcp,
     @endlink is sent to the application. 
 */
 void AvrcpGetAppAttributeTextRequest( AVRCP *avrcp, 
-                                      uint16 size_attributes, 
+                                      u16 size_attributes, 
                                       Source attributes );
 
 /*!
@@ -3078,8 +3078,8 @@ void AvrcpGetAppAttributeTextRequest( AVRCP *avrcp,
     @endlink is sent to the application. 
 */
 void AvrcpGetAppValueTextRequest(AVRCP *avrcp,
-                                 uint16 attribute_id, 
-                                 uint16 size_values, 
+                                 u16 attribute_id, 
+                                 u16 size_values, 
                                  Source values);
 /*!
     @brief Request the attributes of the element specified in remote 
@@ -3105,9 +3105,9 @@ void AvrcpGetAppValueTextRequest(AVRCP *avrcp,
     
 */
 void AvrcpGetElementAttributesRequest(AVRCP *avrcp,
-                               uint32 identifier_high, 
-                               uint32 identifier_low, 
-                               uint16 size_attributes, 
+                               u32 identifier_high, 
+                               u32 identifier_low, 
+                               u16 size_attributes, 
                                Source attributes);
 /*!
     @brief Used by the CT to request the status of the currently playing
@@ -3146,7 +3146,7 @@ void AvrcpGetPlayStatusRequest(AVRCP *avrcp);
 */
 void AvrcpRegisterNotificationRequest( AVRCP                   *avrcp, 
                                        avrcp_supported_events  event_id, 
-                                       uint32           playback_interval);
+                                       u32           playback_interval);
 
 /*!
     @brief Used by CT to request for continuing response packets for the 
@@ -3164,7 +3164,7 @@ void AvrcpRegisterNotificationRequest( AVRCP                   *avrcp,
     indicate the outcome of this request for failure, 
     
 */
-void AvrcpRequestContinuingResponseRequest(AVRCP *avrcp, uint16 pdu_id);
+void AvrcpRequestContinuingResponseRequest(AVRCP *avrcp, u16 pdu_id);
 
 /*!
     @brief Used by CT to abort continuing response. 
@@ -3181,7 +3181,7 @@ void AvrcpRequestContinuingResponseRequest(AVRCP *avrcp, uint16 pdu_id);
     @endlink  is sent to the application. 
    
 */
-void AvrcpAbortContinuingResponseRequest(AVRCP *avrcp, uint16 pdu_id);
+void AvrcpAbortContinuingResponseRequest(AVRCP *avrcp, u16 pdu_id);
 
 /*!
     @brief This function is used to move to the first song in the next group.
@@ -3244,7 +3244,7 @@ void AvrcpInformBatteryStatusRequest(AVRCP                *avrcp,
 
 */
 void AvrcpInformCharacterSetRequest(AVRCP   *avrcp, 
-                                    uint16  size_attributes, 
+                                    u16  size_attributes, 
                                     Source  attributes);
 
 /*!
@@ -3261,7 +3261,7 @@ void AvrcpInformCharacterSetRequest(AVRCP   *avrcp,
     AVRCP_SET_ABSOLUTE_VOLUME_CFM_T AVRCP_SET_ABSOLUTE_VOLUME_CFM
     @endlink  is sent to the application. 
 */
-void  AvrcpSetAbsoluteVolumeRequest( AVRCP *avrcp, uint8  volume);
+void  AvrcpSetAbsoluteVolumeRequest( AVRCP *avrcp, u8  volume);
 
 
 
@@ -3281,7 +3281,7 @@ void  AvrcpSetAbsoluteVolumeRequest( AVRCP *avrcp, uint8  volume);
     AVRCP_SET_ADDRESSED_PLAYER_CFM_T AVRCP_SET_ADDRESSED_PLAYER_CFM
     @endlink  is sent to the application. 
 */
-void AvrcpSetAddressedPlayerRequest(AVRCP*  avrcp, uint16  player_id);
+void AvrcpSetAddressedPlayerRequest(AVRCP*  avrcp, u16  player_id);
 
 /*!
     @brief This function is used by the CT to send PlayItem Command to the 
@@ -3311,7 +3311,7 @@ void AvrcpSetAddressedPlayerRequest(AVRCP*  avrcp, uint16  player_id);
 void AvrcpPlayItemRequest( AVRCP*              avrcp, 
                     avrcp_browse_scope  scope,    
                     avrcp_browse_uid    uid,  
-                    uint16              uid_counter);
+                    u16              uid_counter);
 
 /*!
     @brief This function is used by the CT to send AddToNowPlaying Command 
@@ -3342,7 +3342,7 @@ void AvrcpPlayItemRequest( AVRCP*              avrcp,
 void AvrcpAddToNowPlayingRequest(AVRCP*               avrcp,  
                           avrcp_browse_scope   scope,  
                           avrcp_browse_uid     uid, 
-                          uint16               uid_counter);
+                          u16               uid_counter);
 
 /*!
     @brief This function is used by the CT to send SetBrowsedPlayer Command 
@@ -3360,7 +3360,7 @@ void AvrcpAddToNowPlayingRequest(AVRCP*               avrcp,
     @endlink  is sent to the application. 
 */
 void AvrcpBrowseSetPlayerRequest(AVRCP*    avrcp,   
-                          uint16    player_id);
+                          u16    player_id);
 
 /*!
     @brief This function is used by the CT to send ChangePath Command 
@@ -3384,7 +3384,7 @@ void AvrcpBrowseSetPlayerRequest(AVRCP*    avrcp,
     @endlink  is sent to the application. 
 */
 void AvrcpBrowseChangePathRequest( AVRCP*                  avrcp,  
-                            uint16                  uid_counter,
+                            u16                  uid_counter,
                             avrcp_browse_direction  direction,
                             avrcp_browse_uid        folder_uid);  
 
@@ -3428,8 +3428,8 @@ void AvrcpBrowseChangePathRequest( AVRCP*                  avrcp,
 void AvrcpBrowseGetItemAttributesRequest(  AVRCP*               avrcp,
                                     avrcp_browse_scope   scope,  
                                     avrcp_browse_uid     uid,   
-                                    uint16               uid_counter, 
-                                    uint8                num_attr, 
+                                    u16               uid_counter, 
+                                    u8                num_attr, 
                                     Source               attr_list);
 
 /*!
@@ -3474,9 +3474,9 @@ void AvrcpBrowseGetItemAttributesRequest(  AVRCP*               avrcp,
 
 void AvrcpBrowseGetFolderItemsRequest( AVRCP*              avrcp,   
                                 avrcp_browse_scope  scope,   
-                                uint32              start,   
-                                uint32              end,      
-                                uint8               num_attr, 
+                                u32              start,   
+                                u32              end,      
+                                u8               num_attr, 
                                 Source              attr_list); 
 
 /*!
@@ -3520,7 +3520,7 @@ void AvrcpBrowseGetNumberOfItemsRequest( AVRCP*              avrcp,
 
 void AvrcpBrowseSearchRequest( AVRCP*              avrcp,
                         avrcp_char_set      char_set, 
-                        uint16              str_length,
+                        u16              str_length,
                         Source              string);
 
 
@@ -3555,8 +3555,8 @@ void AvrcpPassthroughResponse(AVRCP *avrcp, avrcp_response_type response);
 void AvrcpUnitInfoResponse( AVRCP               *avrcp, 
                             bool                accept, 
                             avc_subunit_type    unit_type, 
-                            uint8               unit, 
-                            uint32              company_id);
+                            u8               unit, 
+                            u32              company_id);
 
 /*!
     @brief Provide information about the subunit(s) of a device.
@@ -3572,7 +3572,7 @@ void AvrcpUnitInfoResponse( AVRCP               *avrcp,
     @link AVRCP_SUBUNITINFO_IND_T AVRCP_SUBUNITINFO_IND @endlink.
 
 */
-void AvrcpSubUnitInfoResponse(AVRCP *avrcp,bool accept,const uint8 *page_data);
+void AvrcpSubUnitInfoResponse(AVRCP *avrcp,bool accept,const u8 *page_data);
 
 /*!
     @brief Verify the data that was sent. 
@@ -3628,7 +3628,7 @@ void AvrcpVendorDependentResponse(AVRCP *avrcp, avrcp_response_type response);
 void AvrcpGetCapsResponse(  AVRCP               *avrcp, 
                             avrcp_response_type response,
                             avrcp_capability_id caps, 
-                            uint16              size_caps_list, 
+                            u16              size_caps_list, 
                             Source              caps_list);
 
 
@@ -3652,7 +3652,7 @@ void AvrcpGetCapsResponse(  AVRCP               *avrcp,
 */
 void AvrcpListAppAttributeResponse(AVRCP                *avrcp,
                                    avrcp_response_type  response, 
-                                   uint16               size_attributes,
+                                   u16               size_attributes,
                                    Source               attributes);
 
 /*!
@@ -3675,7 +3675,7 @@ void AvrcpListAppAttributeResponse(AVRCP                *avrcp,
 */
 void AvrcpListAppValueResponse( AVRCP               *avrcp, 
                                 avrcp_response_type response, 
-                                uint16              size_values, 
+                                u16              size_values, 
                                 Source              values);
 
 /*!
@@ -3699,7 +3699,7 @@ void AvrcpListAppValueResponse( AVRCP               *avrcp,
 */
 void AvrcpGetAppValueResponse( AVRCP               *avrcp,
                                avrcp_response_type response,
-                               uint16              size_values, 
+                               u16              size_values, 
                                Source              values);
 
 /*!
@@ -3742,8 +3742,8 @@ void AvrcpSetAppValueResponse( AVRCP *avrcp,
 */
 void AvrcpGetAppAttributeTextResponse(AVRCP *avrcp,
                                 avrcp_response_type response,
-                                uint16              number_of_attributes,
-                                uint16              size_attributes, 
+                                u16              number_of_attributes,
+                                u16              size_attributes, 
                                 Source              attributes);
 
 /*!
@@ -3769,8 +3769,8 @@ void AvrcpGetAppAttributeTextResponse(AVRCP *avrcp,
 */
 void AvrcpGetAppValueTextResponse( AVRCP *avrcp, 
                                    avrcp_response_type response, 
-                                   uint16 number_of_values,
-                                   uint16 size_values,
+                                   u16 number_of_values,
+                                   u16 size_values,
                                    Source values );
 /*!
     @brief Respond with the element attribute data that was requested
@@ -3794,8 +3794,8 @@ void AvrcpGetAppValueTextResponse( AVRCP *avrcp,
 */ 
 void AvrcpGetElementAttributesResponse(AVRCP *avrcp, 
                                        avrcp_response_type response,
-                                       uint16 number_of_attributes,
-                                       uint16 size_attributes, 
+                                       u16 number_of_attributes,
+                                       u16 size_attributes, 
                                        Source attributes);
 /*!
     @brief Used by the TG to respond with the status of the currently
@@ -3820,8 +3820,8 @@ void AvrcpGetElementAttributesResponse(AVRCP *avrcp,
 */
 void AvrcpGetPlayStatusResponse(AVRCP               *avrcp, 
                                 avrcp_response_type response, 
-                                uint32              song_length, 
-                                uint32              song_elapsed, 
+                                u32              song_length, 
+                                u32              song_elapsed, 
                                 avrcp_play_status   play_status);
 
 /*!
@@ -3879,8 +3879,8 @@ void AvrcpEventPlaybackStatusChangedResponse(AVRCP              *avrcp,
 */
 void AvrcpEventTrackChangedResponse(AVRCP               *avrcp, 
                                     avrcp_response_type response, 
-                                    uint32              track_index_high, 
-                                    uint32              track_index_low);
+                                    u32              track_index_high, 
+                                    u32              track_index_low);
 
 
 /*!
@@ -3955,7 +3955,7 @@ void AvrcpEventTrackReachedStartResponse(AVRCP               *avrcp,
 */
 void AvrcpEventPlaybackPosChangedResponse(AVRCP                 *avrcp, 
                                           avrcp_response_type   response, 
-                                          uint32                playback_pos);
+                                          u32                playback_pos);
 
 
 /*!
@@ -4040,7 +4040,7 @@ void AvrcpEventSystemStatusChangedResponse(AVRCP                *avrcp,
 */
 void AvrcpEventPlayerAppSettingChangedResponse(AVRCP        *avrcp, 
                                         avrcp_response_type response, 
-                                        uint16              size_attributes, 
+                                        u16              size_attributes, 
                                         Source              attributes);
 
 /*!
@@ -4120,7 +4120,7 @@ void AvrcpInformCharacterSetResponse(AVRCP               *avrcp,
      @return TRUE if the data_size is configured successfully else FALSE.
 */
 bool AvrcpSetMetadataResponsePDUDataSize(AVRCP                   *avrcp,
-                                     uint16 data_size);
+                                     u16 data_size);
 
 /*!
     @brief This function is used by the TG (Category 2) to respond to
@@ -4145,7 +4145,7 @@ bool AvrcpSetMetadataResponsePDUDataSize(AVRCP                   *avrcp,
 
 void AvrcpSetAbsoluteVolumeResponse(AVRCP               *avrcp, 
                                     avrcp_response_type response, 
-                                    uint8               volume);  
+                                    u8               volume);  
 /*!
     @brief This function is used by the TG (Category 2) to notify CT on 
     volume change events at TG if CT has registered for 
@@ -4175,7 +4175,7 @@ void AvrcpSetAbsoluteVolumeResponse(AVRCP               *avrcp,
 
 void AvrcpEventVolumeChangedResponse(AVRCP               *avrcp, 
                                      avrcp_response_type response,
-                                     uint8               volume);
+                                     u8               volume);
          
 /*!
     @brief This function is used by the TG  to respond to
@@ -4230,8 +4230,8 @@ void AvrcpSetAddressedPlayerResponse(AVRCP*              avrcp,
 */
 void AvrcpEventAddressedPlayerChangedResponse(AVRCP*    avrcp, 
                                     avrcp_response_type response, 
-                                    uint16              player_id, 
-                                    uint16              uid_counter);
+                                    u16              player_id, 
+                                    u16              uid_counter);
 /*!
     @brief This function is used by the TG to notify CT on 
     Available players change event at TG.
@@ -4336,7 +4336,7 @@ void AvrcpAddToNowPlayingResponse( AVRCP*              avrcp,
 
 void AvrcpEventUidsChangedResponse(AVRCP*               avrcp,
                                   avrcp_response_type  response,
-                                  uint16               uid_counter);
+                                  u16               uid_counter);
 
 /*!
     @brief This function is used by the TG to notify CT on Now Playing
@@ -4403,11 +4403,11 @@ void AvrcpEventNowPlayingContentChangedResponse(AVRCP*               avrcp,
 */
 void AvrcpBrowseSetPlayerResponse(AVRCP*                avrcp, 
                                   avrcp_response_type   response,
-                                  uint16                uid_counter,
-                                  uint32                num_items, 
+                                  u16                uid_counter,
+                                  u32                num_items, 
                                   avrcp_char_set        char_type, 
-                                  uint8                 folder_depth, 
-                                  uint16                size_folder_path,
+                                  u8                 folder_depth, 
+                                  u16                size_folder_path,
                                   Source                folder_path);
 
 
@@ -4434,7 +4434,7 @@ void AvrcpBrowseSetPlayerResponse(AVRCP*                avrcp,
 
 void AvrcpBrowseChangePathResponse(AVRCP*               avrcp,
                                    avrcp_response_type  response,
-                                   uint32               num_items);
+                                   u32               num_items);
 
 /*!
     @brief This function is used by the TG to respond to GetItemAttributes
@@ -4465,8 +4465,8 @@ void AvrcpBrowseChangePathResponse(AVRCP*               avrcp,
 */
 void AvrcpBrowseGetItemAttributesResponse(AVRCP*              avrcp,
                                           avrcp_response_type response,
-                                          uint8               num_attributes,
-                                          uint16              size_attr_list,
+                                          u8               num_attributes,
+                                          u16              size_attr_list,
                                           Source              attr_value_list);
 
    
@@ -4508,9 +4508,9 @@ void AvrcpBrowseGetItemAttributesResponse(AVRCP*              avrcp,
 */
 void AvrcpBrowseGetFolderItemsResponse( AVRCP*              avrcp,         
                                         avrcp_response_type response,     
-                                        uint16              uid_counter, 
-                                        uint16              num_items,  
-                                        uint16              item_list_size,
+                                        u16              uid_counter, 
+                                        u16              num_items,  
+                                        u16              item_list_size,
                                         Source              item_list);      
 
 
@@ -4543,8 +4543,8 @@ void AvrcpBrowseGetFolderItemsResponse( AVRCP*              avrcp,
 */
 void AvrcpBrowseGetNumberOfItemsResponse( AVRCP*              avrcp,         
                                         avrcp_response_type response,     
-                                        uint16              uid_counter, 
-                                        uint32              num_items);
+                                        u16              uid_counter, 
+                                        u32              num_items);
 
 /*!
     @brief This function is used by the TG to respond to Search
@@ -4577,8 +4577,8 @@ void AvrcpBrowseGetNumberOfItemsResponse( AVRCP*              avrcp,
 
 void AvrcpBrowseSearchResponse(AVRCP*               avrcp,         
                                avrcp_response_type  response,     
-                               uint16               uid_counter, 
-                               uint32               num_items);   
+                               u16               uid_counter, 
+                               u32               num_items);   
 
 #endif /* !AVRCP_CT_ONLY_LIB */
 

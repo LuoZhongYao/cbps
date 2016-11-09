@@ -24,7 +24,7 @@ NOTES
 #include <vm.h>
 
 /*****************************************************************************/
-void ConnectionSmAddAuthDevice(Task theAppTask, const bdaddr *peer_bd_addr, uint16 trusted, uint16 bonded, uint8 key_type, uint16 size_link_key, const uint16* link_key)
+void ConnectionSmAddAuthDevice(Task theAppTask, const bdaddr *peer_bd_addr, u16 trusted, u16 bonded, u8 key_type, u16 size_link_key, const u16* link_key)
 {
 #ifdef CONNECTION_DEBUG_LIB
     if (size_link_key != BREDR_KEY_SIZE)

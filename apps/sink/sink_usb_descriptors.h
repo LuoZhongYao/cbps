@@ -10,9 +10,9 @@ DESCRIPTION
 #ifndef _SINK_USB_DESCRIPTORS_H_
 #define _SINK_USB_DESCRIPTORS_H_
 
-#define SAMPLE_RATE_CVC    ((uint32) 8000)
-#define SAMPLE_RATE_CVC_WB ((uint32) 16000)
-#define SAMPLE_RATE_STEREO ((uint32) 48000)
+#define SAMPLE_RATE_CVC    ((u32) 8000)
+#define SAMPLE_RATE_CVC_WB ((u32) 16000)
+#define SAMPLE_RATE_STEREO ((u32) 48000)
 
 /* Unit/Terminal IDs */
 #define SPEAKER_IT  0x01

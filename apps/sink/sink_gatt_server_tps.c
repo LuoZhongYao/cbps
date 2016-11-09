@@ -26,13 +26,11 @@ DESCRIPTION
 
 
 #ifdef DEBUG_GATT
-#define GATT_DEBUG(x) DEBUG(x)
 #else
-#define GATT_DEBUG(x) 
 #endif
 
 /*******************************************************************************/
-bool sinkGattTxPowerServerInitialiseTask(uint16 **ptr)
+bool sinkGattTxPowerServerInitialiseTask(u16 **ptr)
 {
     gatt_tps_status tps_status;
     tps_status = GattTransmitPowerServerInitTask(sinkGetBleTask(), (GTPSS *)*ptr,
@@ -41,7 +39,7 @@ bool sinkGattTxPowerServerInitialiseTask(uint16 **ptr)
 
     if (tps_status == gatt_tps_status_success)
     {
-        GATT_DEBUG(("GATT Tx Power Server initialised\n"));
+        LOGD("GATT Tx Power Server initialised\n");
         /* The size of TPS is also calculated and memory is alocated.
          * So advance the ptr so that the next Server while initializing.
          * shall not over write the same memory */
@@ -50,7 +48,7 @@ bool sinkGattTxPowerServerInitialiseTask(uint16 **ptr)
     }
     else
     {
-        GATT_DEBUG(("GATT Tx Power Server init failed [%x]\n", tps_status));
+        LOGD("GATT Tx Power Server init failed [%x]\n", tps_status);
     }
     return FALSE;
 }

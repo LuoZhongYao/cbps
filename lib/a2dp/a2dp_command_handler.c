@@ -32,7 +32,7 @@ NOTES
 #include <sink.h>
 
 
-static uint8 getReceivedMessageType (remote_device *device)
+static u8 getReceivedMessageType (remote_device *device)
 {
     return *device->signal_conn.connection.active.received_packet & 0x03;
 }
@@ -40,22 +40,22 @@ static uint8 getReceivedMessageType (remote_device *device)
 /*****************************************************************************/
 static bool sendSetConfiguration(remote_device *device)
 {
-    uint8 *configured_service_caps = (uint8 *)PanicNull( blockGetBase( device->device_id, data_block_configured_service_caps ) );
-    uint16 configured_service_caps_size = blockGetSize( device->device_id, data_block_configured_service_caps );
+    u8 *configured_service_caps = (u8 *)PanicNull( blockGetBase( device->device_id, data_block_configured_service_caps ) );
+    u16 configured_service_caps_size = blockGetSize( device->device_id, data_block_configured_service_caps );
 
     return a2dpSendCommand(device, avdtp_set_configuration, configured_service_caps, configured_service_caps_size);
 }
 
 /*****************************************************************************/
-static bool sendDelayReport (remote_device *device, uint16 delay)
+static bool sendDelayReport (remote_device *device, u16 delay)
 {
-    uint8 delay_report[2];
+    u8 delay_report[2];
 
     /* Update locally cached copy of current delay before sending */
     device->media_conn[0].status.delay = delay;
     
-    delay_report[1] = (uint8)delay;
-    delay_report[0] = (uint8)(delay >> 8);
+    delay_report[1] = (u8)delay;
+    delay_report[0] = (u8)(delay >> 8);
 
     return a2dpSendCommand(device, avdtp_delayreport, delay_report, 2);
 }
@@ -127,10 +127,10 @@ void a2dpSetStreamState(remote_device *device, avdtp_stream_state state)
 /****************************************************************************/
 void a2dpHandleInternalWatchdogTimeout(MessageId msg_id)
 {
-    PanicFalse((uint16)(msg_id-A2DP_INTERNAL_WATCHDOG_BASE) < A2DP_MAX_REMOTE_DEVICES);
+    PanicFalse((u16)(msg_id-A2DP_INTERNAL_WATCHDOG_BASE) < A2DP_MAX_REMOTE_DEVICES);
 
     {    
-        remote_device *device = &a2dp->remote_conn[(uint16)(msg_id-A2DP_INTERNAL_WATCHDOG_BASE)];
+        remote_device *device = &a2dp->remote_conn[(u16)(msg_id-A2DP_INTERNAL_WATCHDOG_BASE)];
 
         if ((device->signal_conn.status.stream_state == avdtp_stream_local_aborting) ||
             (device->signal_conn.status.stream_state == avdtp_stream_remote_aborting))
@@ -149,10 +149,10 @@ void a2dpHandleInternalWatchdogTimeout(MessageId msg_id)
     }
 }
 
-static const sep_data_type * findLocalCodecInfo (remote_device *device, uint8 seid)
+static const sep_data_type * findLocalCodecInfo (remote_device *device, u8 seid)
 {
     sep_data_type *sep_list = (sep_data_type *)PanicNull( blockGetBase(device->device_id, data_block_sep_list) );
-    uint16 sep_list_size = blockGetSize(device->device_id, data_block_sep_list) / sizeof(sep_data_type);
+    u16 sep_list_size = blockGetSize(device->device_id, data_block_sep_list) / sizeof(sep_data_type);
     
     while (sep_list_size--)
     {
@@ -170,10 +170,10 @@ static const sep_data_type * findLocalCodecInfo (remote_device *device, uint8 se
 }
 
 #if 0   /* TODO: Not currently used */
-static uint8 findLocalCodecType (remote_device *device, uint8 seid)
+static u8 findLocalCodecType (remote_device *device, u8 seid)
 {
     sep_data_type *sep_list = (sep_data_type *)PanicNull( blockGetBase(device->device_id, data_block_sep_list) );
-    uint16 sep_list_size = blockGetSize(device->device_id, data_block_sep_list) / sizeof(sep_data_type);
+    u16 sep_list_size = blockGetSize(device->device_id, data_block_sep_list) / sizeof(sep_data_type);
     
     while (sep_list_size--)
     {
@@ -181,8 +181,8 @@ static uint8 findLocalCodecType (remote_device *device, uint8 seid)
         
         if (sep_config->seid == seid)
         {
-            const uint8 * local_codec = sep_config->caps;
-            uint16 local_codec_size = sep_config->size_caps;
+            const u8 * local_codec = sep_config->caps;
+            u16 local_codec_size = sep_config->size_caps;
             
             /* Should never fail since local codec caps will always be present */
             PanicFalse( a2dpFindCodecSpecificInformation(&local_codec, &local_codec_size) );
@@ -197,18 +197,18 @@ static uint8 findLocalCodecType (remote_device *device, uint8 seid)
 }
 #endif
 
-static bool buildPreferredList (remote_device *device, const uint8 *seid_list, uint16 seid_list_size)
+static bool buildPreferredList (remote_device *device, const u8 *seid_list, u16 seid_list_size)
 {
-    uint16 i;
-    uint16 available_seps = 0;
-    PRINT(("buildPreferredList seid_list=%X seid_list_size=%u   ", (uint16)seid_list, seid_list_size));
+    u16 i;
+    u16 available_seps = 0;
+    PRINT(("buildPreferredList seid_list=%X seid_list_size=%u   ", (u16)seid_list, seid_list_size));
     
     blockRemove(device->device_id, data_block_list_preferred_local_seids);
     
     if ((seid_list_size == 0) || (seid_list == NULL))
     {   /* Build preferred list from local seid list */
         sep_data_type *sep_list = (sep_data_type *)PanicNull( blockGetBase(device->device_id, data_block_sep_list) );
-        uint16 sep_list_size = blockGetSize(device->device_id, data_block_sep_list) / sizeof(sep_data_type);
+        u16 sep_list_size = blockGetSize(device->device_id, data_block_sep_list) / sizeof(sep_data_type);
         
         /* Find available seps */
         for (i=0; i<sep_list_size; i++)
@@ -230,8 +230,8 @@ static bool buildPreferredList (remote_device *device, const uint8 *seid_list, u
                 if (!sep_list->in_use)
                 {
                     const sep_config_type *sep_config = sep_list->sep_config;
-                    const uint8 * local_codec = sep_config->caps;
-                    uint16 local_codec_size = sep_config->size_caps;
+                    const u8 * local_codec = sep_config->caps;
+                    u16 local_codec_size = sep_config->size_caps;
                     
                     /* Should never fail since local codec caps will always be present */
                     PanicFalse( a2dpFindCodecSpecificInformation(&local_codec, &local_codec_size) );
@@ -276,8 +276,8 @@ static bool buildPreferredList (remote_device *device, const uint8 *seid_list, u
                 if (sep_data && !sep_data->in_use)
                 {
                     const sep_config_type *sep_config = sep_data->sep_config;
-                    const uint8 * local_codec = sep_config->caps;
-                    uint16 local_codec_size = sep_config->size_caps;
+                    const u8 * local_codec = sep_config->caps;
+                    u16 local_codec_size = sep_config->size_caps;
                     
                     /* Should never fail since local codec caps will always be present */
                     PanicFalse( a2dpFindCodecSpecificInformation(&local_codec, &local_codec_size) );
@@ -308,8 +308,8 @@ static bool buildPreferredList (remote_device *device, const uint8 *seid_list, u
 
 static bool doesCodecMatch (sep_info *local_sep, sep_info *remote_sep)
 {
-    PRINT(("doesCodecMatch -  local_sep:0x%X = seid:0x%X role:%u codec:0x%X\n", (uint16)local_sep, local_sep->seid, local_sep->role, local_sep->codec));
-    PRINT(("doesCodecMatch - remote_sep:0x%X = seid:0x%X role:%u codec:0x%X\n", (uint16)remote_sep, remote_sep->seid, remote_sep->role, remote_sep->codec));
+    PRINT(("doesCodecMatch -  local_sep:0x%X = seid:0x%X role:%u codec:0x%X\n", (u16)local_sep, local_sep->seid, local_sep->role, local_sep->codec));
+    PRINT(("doesCodecMatch - remote_sep:0x%X = seid:0x%X role:%u codec:0x%X\n", (u16)remote_sep, remote_sep->seid, remote_sep->role, remote_sep->codec));
 
     if ((local_sep->codec == remote_sep->codec) && (local_sep->codec != AVDTP_MEDIA_CODEC_UNDEFINED) && (local_sep->role != remote_sep->role))
     {
@@ -331,7 +331,7 @@ static bool haveCodecType (sep_info *sep)
 
 static bool haveCodecCaps (remote_device *device, sep_info *sep)
 {
-    const uint8 *service_caps;
+    const u8 *service_caps;
     
     if ((service_caps = blockGetBase( device->device_id, data_block_configured_service_caps )) != NULL)
     {
@@ -380,7 +380,7 @@ static bool selectNextSeid (remote_device *device)
     return TRUE;
 }
 
-static void issueDiscover (remote_device *device, const uint8 *seid_list, uint16 seid_list_size)
+static void issueDiscover (remote_device *device, const u8 *seid_list, u16 seid_list_size)
 {
     if (buildPreferredList(device, seid_list, seid_list_size))
     {
@@ -403,7 +403,7 @@ static void issueDiscover (remote_device *device, const uint8 *seid_list, uint16
 
 static void issueGetCapabilities (remote_device *device)
 {
-    uint8 signal_id;
+    u8 signal_id;
     
     PRINT(("issueGetCapabilities\n"));
     
@@ -429,8 +429,8 @@ static void issueGetCapabilities (remote_device *device)
 
 static bool issueSetConfiguration (remote_device *device)
 {
-    uint8 *remote_service_caps;
-    uint16 remote_service_caps_size;
+    u8 *remote_service_caps;
+    u16 remote_service_caps_size;
     bool result = FALSE;
     
     PRINT(("issueSetConfiguration - "));
@@ -440,7 +440,7 @@ static bool issueSetConfiguration (remote_device *device)
     case CONFIGURATION_BY_CLIENT:       
         /* Issue request to client (app) to select an appropriate configuration */
         PRINT(("CONFIGURATION_BY_CLIENT\n"));
-        remote_service_caps = (uint8 *)PanicNull( blockGetBase(device->device_id, data_block_configured_service_caps) );
+        remote_service_caps = (u8 *)PanicNull( blockGetBase(device->device_id, data_block_configured_service_caps) );
         remote_service_caps_size = blockGetSize(device->device_id, data_block_configured_service_caps);
         a2dpCodecConfigureInd(device, device->local_sep.seid, remote_service_caps_size, remote_service_caps);     /* TODO: Make multi-stream aware */
         a2dpSetStreamState(device, avdtp_stream_processing_caps);
@@ -519,7 +519,7 @@ static void issueOpen (remote_device *device)
 
 static bool continueStreamConnect (remote_device *device)
 {
-    PRINT(("continueStreamConnect(%X) stream_state=%u\n", (uint16)device, device->signal_conn.status.stream_state));
+    PRINT(("continueStreamConnect(%X) stream_state=%u\n", (u16)device, device->signal_conn.status.stream_state));
     
     /* Attempt Stream Connect */
     do
@@ -547,8 +547,8 @@ static bool continueStreamConnect (remote_device *device)
                 
         case avdtp_stream_configuring:
         {   /* AVDTP_SET_CONFIGURATION was successful */
-            uint8 *configured_caps = blockGetBase(device->device_id, data_block_configured_service_caps);
-            uint16 size_configured_caps = blockGetSize(device->device_id, data_block_configured_service_caps);
+            u8 *configured_caps = blockGetBase(device->device_id, data_block_configured_service_caps);
+            u16 size_configured_caps = blockGetSize(device->device_id, data_block_configured_service_caps);
             
             /* Issue an Av Sync delay notification, if delay reporting has been configured and local device is configured as a sink */
             if (a2dpIsServiceSupported(AVDTP_SERVICE_DELAY_REPORTING, configured_caps, size_configured_caps))
@@ -612,10 +612,10 @@ static bool continueStreamConnect (remote_device *device)
 /****************************************************************************/
 void a2dpHandleInternalClientRspTimeout(MessageId msg_id)
 {
-    PanicFalse((uint16)(msg_id-A2DP_INTERNAL_CLIENT_RSP_TIMEOUT_BASE) < A2DP_MAX_REMOTE_DEVICES);
+    PanicFalse((u16)(msg_id-A2DP_INTERNAL_CLIENT_RSP_TIMEOUT_BASE) < A2DP_MAX_REMOTE_DEVICES);
 
     {    
-        remote_device *device = &a2dp->remote_conn[(uint16)(msg_id-A2DP_INTERNAL_CLIENT_RSP_TIMEOUT_BASE)];
+        remote_device *device = &a2dp->remote_conn[(u16)(msg_id-A2DP_INTERNAL_CLIENT_RSP_TIMEOUT_BASE)];
 
         switch (device->signal_conn.status.stream_state)
         {
@@ -657,10 +657,10 @@ void a2dpHandleInternalClientRspTimeout(MessageId msg_id)
 /****************************************************************************/
 void a2dpHandleInternalRemoteCmdTimeout(MessageId msg_id)
 {
-    PanicFalse((uint16)(msg_id-A2DP_INTERNAL_REMOTE_CMD_TIMEOUT_BASE) < A2DP_MAX_REMOTE_DEVICES);
+    PanicFalse((u16)(msg_id-A2DP_INTERNAL_REMOTE_CMD_TIMEOUT_BASE) < A2DP_MAX_REMOTE_DEVICES);
 
     {    
-        remote_device *device = &a2dp->remote_conn[(uint16)(msg_id-A2DP_INTERNAL_REMOTE_CMD_TIMEOUT_BASE)];
+        remote_device *device = &a2dp->remote_conn[(u16)(msg_id-A2DP_INTERNAL_REMOTE_CMD_TIMEOUT_BASE)];
 
         switch (device->signal_conn.status.stream_state)
         {
@@ -1004,10 +1004,10 @@ void a2dpHandleDelayReportResponse (remote_device *device)
 
 void a2dpHandleDiscoverCommand (remote_device *device)
 {
-    uint16 error_code;
-    uint16 payload_size;
+    u16 error_code;
+    u16 payload_size;
     
-    if ( (error_code = a2dpProcessDiscoverCommand(device, &payload_size))!=(uint16)avdtp_ok )
+    if ( (error_code = a2dpProcessDiscoverCommand(device, &payload_size))!=(u16)avdtp_ok )
     {
         a2dpSendReject(device, avdtp_discover, error_code);
     }
@@ -1019,10 +1019,10 @@ void a2dpHandleDiscoverCommand (remote_device *device)
 
 void a2dpHandleGetCapabilitiesCommand (remote_device *device)
 {
-    uint16 error_code;
-    uint16 payload_size;
+    u16 error_code;
+    u16 payload_size;
     
-    if ( (error_code = a2dpProcessGetCapabilitiesCommand(device, &payload_size))!=(uint16)avdtp_ok )
+    if ( (error_code = a2dpProcessGetCapabilitiesCommand(device, &payload_size))!=(u16)avdtp_ok )
     {
         a2dpSendReject(device, avdtp_get_capabilities, error_code);
     }
@@ -1034,8 +1034,8 @@ void a2dpHandleGetCapabilitiesCommand (remote_device *device)
 
 void a2dpHandleSetConfigurationCommand (remote_device *device)
 {
-    uint16 error_code;
-    uint16 payload_size;
+    u16 error_code;
+    u16 payload_size;
     signalling_channel *signalling = &device->signal_conn;
     
     if ( (signalling->status.stream_state != avdtp_stream_idle) &&
@@ -1047,14 +1047,14 @@ void a2dpHandleSetConfigurationCommand (remote_device *device)
     {   /* TP/SIG/SMG/BI-08-C requires us to process an AVDTP_SET_CONFIGURATION command in the Configured state */
         a2dpSendReject(device, avdtp_set_configuration, avdtp_bad_state);
     }
-    else if ( (error_code = a2dpProcessSetConfigurationCommand(device, &payload_size))!=(uint16)avdtp_ok )
+    else if ( (error_code = a2dpProcessSetConfigurationCommand(device, &payload_size))!=(u16)avdtp_ok )
     {
         a2dpSendReject(device, avdtp_set_configuration, error_code);
     }
     else
     {
-        uint8 *configured_caps = blockGetBase(device->device_id, data_block_configured_service_caps);
-        uint16 size_configured_caps = blockGetSize(device->device_id, data_block_configured_service_caps);
+        u8 *configured_caps = blockGetBase(device->device_id, data_block_configured_service_caps);
+        u16 size_configured_caps = blockGetSize(device->device_id, data_block_configured_service_caps);
             
         device->sep_configured_locally = FALSE;
         a2dpSetStreamState(device, avdtp_stream_configured);
@@ -1069,10 +1069,10 @@ void a2dpHandleSetConfigurationCommand (remote_device *device)
 
 void a2dpHandleGetConfigurationCommand (remote_device *device)
 {
-    uint16 error_code;
-    uint16 payload_size;
+    u16 error_code;
+    u16 payload_size;
     
-    if ( (error_code = a2dpProcessGetConfigurationCommand(device, &payload_size))!=(uint16)avdtp_ok )
+    if ( (error_code = a2dpProcessGetConfigurationCommand(device, &payload_size))!=(u16)avdtp_ok )
     {
         a2dpSendReject(device, avdtp_get_configuration, error_code);
     }
@@ -1084,8 +1084,8 @@ void a2dpHandleGetConfigurationCommand (remote_device *device)
 
 void a2dpHandleReconfigureCommand (remote_device *device)
 {
-    uint16 error_code;
-    uint16 payload_size;
+    u16 error_code;
+    u16 payload_size;
     signalling_channel *signalling = &device->signal_conn;
 
     /* should not receive RECONFIGURE command in states other than
@@ -1096,7 +1096,7 @@ void a2dpHandleReconfigureCommand (remote_device *device)
     {
         a2dpSendReject(device, avdtp_reconfigure, avdtp_bad_state);
     }
-    else if ( (error_code = a2dpProcessReconfigureCommand(device, &payload_size))!=(uint16)avdtp_ok )
+    else if ( (error_code = a2dpProcessReconfigureCommand(device, &payload_size))!=(u16)avdtp_ok )
     {
         a2dpSendReject(device, avdtp_reconfigure, error_code);
     }
@@ -1109,14 +1109,14 @@ void a2dpHandleReconfigureCommand (remote_device *device)
 
 void a2dpHandleOpenCommand (remote_device *device)
 {
-    uint16 error_code;
+    u16 error_code;
     signalling_channel *signalling = &device->signal_conn;
     
     if (signalling->status.stream_state != avdtp_stream_configured)
     {
         a2dpSendReject(device, avdtp_open, avdtp_bad_state);
     }
-    else if ( (error_code = a2dpProcessOpenCommand(device))!=(uint16)avdtp_ok )
+    else if ( (error_code = a2dpProcessOpenCommand(device))!=(u16)avdtp_ok )
     {
         a2dpSendReject(device, avdtp_open, error_code);
     }
@@ -1132,7 +1132,7 @@ void a2dpHandleOpenCommand (remote_device *device)
 
 bool a2dpHandleCloseCommand (remote_device *device)
 {
-    uint16 error_code;
+    u16 error_code;
     
     if ( (device->signal_conn.status.stream_state == avdtp_stream_remote_opening) ||
          (device->signal_conn.status.stream_state == avdtp_stream_local_opening) )
@@ -1149,7 +1149,7 @@ bool a2dpHandleCloseCommand (remote_device *device)
     {
         a2dpSendReject(device, avdtp_close, avdtp_bad_state);
     }
-    else if ( (error_code = a2dpProcessCloseCommand(device))!=(uint16)avdtp_ok )
+    else if ( (error_code = a2dpProcessCloseCommand(device))!=(u16)avdtp_ok )
     {
         a2dpSendReject(device, avdtp_close, error_code);
     }
@@ -1165,7 +1165,7 @@ bool a2dpHandleCloseCommand (remote_device *device)
 
 bool a2dpHandleStartCommand (remote_device *device)
 {
-    uint16 error_code;
+    u16 error_code;
 
     if ( (device->signal_conn.status.stream_state == avdtp_stream_remote_opening) ||
          (device->signal_conn.status.stream_state == avdtp_stream_local_opening) )
@@ -1178,7 +1178,7 @@ bool a2dpHandleStartCommand (remote_device *device)
     {
         a2dpSendReject(device, avdtp_start, avdtp_bad_state);
     }
-    else if ( (error_code = a2dpProcessStartCommand(device))!=(uint16)avdtp_ok )
+    else if ( (error_code = a2dpProcessStartCommand(device))!=(u16)avdtp_ok )
     {
         a2dpSendReject(device, avdtp_start, error_code);
     }
@@ -1193,14 +1193,14 @@ bool a2dpHandleStartCommand (remote_device *device)
 
 void a2dpHandleSuspendCommand (remote_device *device)
 {
-    uint16 error_code;
+    u16 error_code;
     
     if ( (device->signal_conn.status.stream_state != avdtp_stream_streaming) &&
          (device->signal_conn.status.stream_state != avdtp_stream_local_suspending) )
     {
         a2dpSendReject(device, avdtp_suspend, avdtp_bad_state);
     }
-    else if ( (error_code = a2dpProcessSuspendCommand(device))!=(uint16)avdtp_ok )
+    else if ( (error_code = a2dpProcessSuspendCommand(device))!=(u16)avdtp_ok )
     {
         a2dpSendReject(device, avdtp_suspend, error_code);
     }
@@ -1224,8 +1224,8 @@ void a2dpHandleAbortCommand (remote_device *device)
 
 void a2dpHandleGetAllCapabilitiesCommand (remote_device *device)
 {
-    uint16 error_code;
-    uint16 payload_size;
+    u16 error_code;
+    u16 payload_size;
     
 
     /* If the connected device supports less than AVDTP 1.3 than process the GetCapabilities command otherwise process GetAllCapabilities */
@@ -1239,7 +1239,7 @@ void a2dpHandleGetAllCapabilitiesCommand (remote_device *device)
         error_code = a2dpProcessGetAllCapabilitiesCommand(device, &payload_size);
     }
     
-    if (error_code != (uint16)avdtp_ok )
+    if (error_code != (u16)avdtp_ok )
     {
         a2dpSendReject(device, avdtp_get_all_capabilities, error_code);
     }
@@ -1251,7 +1251,7 @@ void a2dpHandleGetAllCapabilitiesCommand (remote_device *device)
 
 void a2dpHandleDelayReportCommand (remote_device *device)
 {
-    uint16 error_code;
+    u16 error_code;
     
     if ( (device->signal_conn.status.stream_state != avdtp_stream_configured) &&
          (device->signal_conn.status.stream_state != avdtp_stream_local_opening) &&
@@ -1263,7 +1263,7 @@ void a2dpHandleDelayReportCommand (remote_device *device)
     {
         a2dpSendReject(device, avdtp_delayreport, avdtp_bad_state);
     }
-    else if ( (error_code = a2dpProcessDelayReportCommand(device))!=(uint16)avdtp_ok )
+    else if ( (error_code = a2dpProcessDelayReportCommand(device))!=(u16)avdtp_ok )
     {
         a2dpSendReject(device, avdtp_delayreport, error_code);
     }
@@ -1534,7 +1534,7 @@ void a2dpStreamReconfigure (const A2DP_INTERNAL_MEDIA_RECONFIGURE_REQ_T *req)
 }
 
 
-void a2dpStreamDelayReport (remote_device *device, uint16 delay)
+void a2dpStreamDelayReport (remote_device *device, u16 delay)
 {
     if ( (device->signal_conn.status.stream_state != avdtp_stream_configured) &&
          (device->signal_conn.status.stream_state != avdtp_stream_local_opening) &&

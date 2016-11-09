@@ -20,6 +20,7 @@ NOTES
 #include <sink.h>
 #include <source.h>
 #include <panic.h>
+#include <stdlib.h>
 #include <memory.h>
 
 #include "avrcp_private.h"
@@ -35,9 +36,9 @@ NOTES
 ***************************************************************************/
 static void avrcpUpdateTransactionLabel( AVRCP* avrcp )
 {
-    uint8 id;
-    uint8 events =  avrcp->registered_events;
-    uint8 tl = AVRCP_NEXT_TRANSACTION(avrcp->cmd_transaction_label); 
+    u8 id;
+    u8 events =  avrcp->registered_events;
+    u8 tl = AVRCP_NEXT_TRANSACTION(avrcp->cmd_transaction_label); 
                                     
     for(id=0; (id < AVRCP_MAX_NUM_EVENTS) && events ; id++, events>>=1)
     {
@@ -59,9 +60,9 @@ static void avrcpUpdateTransactionLabel( AVRCP* avrcp )
 * DESCRIPTION
 *  Get the transaction label and update it to the next unique label.
 ***************************************************************************/
-uint8 avrcpGetNextTransactionLabel(AVRCP *avrcp)
+u8 avrcpGetNextTransactionLabel(AVRCP *avrcp)
 {
-   uint8 tl = avrcp->cmd_transaction_label;
+   u8 tl = avrcp->cmd_transaction_label;
 
    /* Post update the transaction label to an unique label */
    avrcpUpdateTransactionLabel( avrcp ); 
@@ -111,7 +112,7 @@ avrcp_status_code convertResponseToStatus(avrcp_response_type resp)
 ******************************************************************************/
 void avrcpSendCommonStatusCfm(AVRCP*            avrcp,
                               avrcp_status_code status,
-                              uint16            message_id)
+                              u16            message_id)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_COMMON_STATUS_CFM);
     message->status = status;
@@ -133,12 +134,12 @@ void avrcpSendCommonStatusCfm(AVRCP*            avrcp,
 *******************************************************************************/
 void avrcpSendCommonFragmentedMetadataCfm(AVRCP         *avrcp, 
                                           avrcp_status_code  status,
-                                          uint16         id, 
-                                          uint16         metadata_packet_type,
-                                          uint16         data_length, 
-                                          const uint8*   data)
+                                          u16         id, 
+                                          u16         metadata_packet_type,
+                                          u16         data_length, 
+                                          const u8*   data)
 {
-    uint16 offset=0;
+    u16 offset=0;
     MAKE_AVRCP_MESSAGE(AVRCP_COMMON_FRAGMENTED_METADATA_CFM);
     
     message->avrcp = avrcp;
@@ -209,7 +210,7 @@ void avrcpSendCommonFragmentedMetadataCfm(AVRCP         *avrcp,
 *******************************************************************************/
 void avrcpSendCommonMetadataCfm(AVRCP *avrcp, 
                                 avrcp_status_code status, 
-                                uint16 id)
+                                u16 id)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_COMMON_METADATA_CFM_MESSAGE);
 
@@ -249,9 +250,9 @@ void avrcpSendCommonMetadataCfm(AVRCP *avrcp,
 * RETURNS
 *    void
 ********************************************************************************/
-uint8 avrcpGetErrorStatusCode(avrcp_response_type *response, uint8 command_type)
+u8 avrcpGetErrorStatusCode(avrcp_response_type *response, u8 command_type)
 {
-    uint8 error_code = AVRCP_STATUS_SUCCESS;
+    u8 error_code = AVRCP_STATUS_SUCCESS;
 
     /* if response value is any specific rejected error response values,
        convert the response to avrcp_response_rejected after extracting the 
@@ -314,7 +315,7 @@ uint8 avrcpGetErrorStatusCode(avrcp_response_type *response, uint8 command_type)
 * RETURNS
 *    void
 *******************************************************************************/
-void avrcpSendCommonMetadataInd(AVRCP *avrcp, uint16 id)
+void avrcpSendCommonMetadataInd(AVRCP *avrcp, u16 id)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_COMMON_METADATA_IND_MESSAGE);
 
@@ -338,9 +339,9 @@ void avrcpSendCommonMetadataInd(AVRCP *avrcp, uint16 id)
 *    void
 *******************************************************************************/
 void avrcpSendCommonFragmentedMetadataInd(  AVRCP     *avrcp, 
-                                            uint16     id, 
-                                            uint16     number_of_data_items, 
-                                            uint16     data_length, 
+                                            u16     id, 
+                                            u16     number_of_data_items, 
+                                            u16     data_length, 
                                             Source     source)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_COMMON_FRAGMENTED_METADATA_IND);
@@ -374,7 +375,7 @@ void avrcpSendCommonFragmentedMetadataInd(  AVRCP     *avrcp,
 * status
 ******************************************************************************/
 bool AvrcpSetMetadataResponsePDUDataSize(AVRCP *avrcp, 
-                                     uint16 data_size)
+                                     u16 data_size)
 {
     /* data_size should less than or equal to the max AVRCP_AVC_MAX_DATA_SIZE. 
     * If it is more than max AVRCP_AVC_MAX_DATA_SIZE then library will return FALSE
@@ -401,7 +402,7 @@ bool AvrcpSetMetadataResponsePDUDataSize(AVRCP *avrcp,
 *    message id.
 *
 ******************************************************************************/
-void avrcpSendCommonCfmMessageToApp(uint16              message_id,
+void avrcpSendCommonCfmMessageToApp(u16              message_id,
                                     avrcp_status_code   status, 
                                     Sink                sink, 
                                     AVRCP               *avrcp)
@@ -424,16 +425,16 @@ void avrcpSendCommonCfmMessageToApp(uint16              message_id,
 *   ptr     -   Data packet
 *   offset  -   Offset to start of company ID in the data packet.
 *******************************************************************************/
-uint32 avrcpGetCompanyId(const uint8 *ptr, uint16 offset)
+u32 avrcpGetCompanyId(const u8 *ptr, u16 offset)
 {
-    uint32 cid = 0;
-    uint32 cid_tmp = 0;
+    u32 cid = 0;
+    u32 cid_tmp = 0;
 
-    cid_tmp = (uint32) ptr[offset];
+    cid_tmp = (u32) ptr[offset];
     cid = (cid_tmp << 16);
-    cid_tmp = (uint32) ptr[offset+1];
+    cid_tmp = (u32) ptr[offset+1];
     cid |= (cid_tmp << 8);
-    cid_tmp = (uint32) ptr[offset+2];
+    cid_tmp = (u32) ptr[offset+2];
     cid |= cid_tmp;
 
     return cid;
@@ -450,10 +451,10 @@ uint32 avrcpGetCompanyId(const uint8 *ptr, uint16 offset)
 *   Sink     -   L2CAP sink
 *   size     -   Requested Sink Space to reserve.
 *******************************************************************************/
-uint8 *avrcpGrabSink(Sink sink, uint16 size)
+u8 *avrcpGrabSink(Sink sink, u16 size)
 {
-    uint8 *dest = SinkMap(sink);
-    uint16 claim_result = SinkClaim(sink, size);
+    u8 *dest = SinkMap(sink);
+    u16 claim_result = SinkClaim(sink, size);
     if (claim_result == 0xffff)
     {
         AVRCP_DEBUG(("SinkClaim return Invalid Offset"));
@@ -476,7 +477,7 @@ void avrcpSourceDrop(AVRCP* avrcp)
 
     if(avrcp->av_msg_len)   
     {
-        uint16 data_drop = avrcp->av_msg_len;
+        u16 data_drop = avrcp->av_msg_len;
 
         if( SourceMap(source) != avrcp->av_msg ) 
         {
@@ -574,12 +575,12 @@ void avrcpSourceProcessed(AVRCP *avrcp, bool intern)
 * DESCRIPTION
 *   Utility functions to convert 4 data octets to a UINT32 value.
 *****************************************************************************/
-uint32 convertUint8ValuesToUint32(const uint8 *ptr)
+u32 convertUint8ValuesToUint32(const u8 *ptr)
 {
-    return ((((uint32)ptr[0] << 24) & 0xFF000000) | 
-            (((uint32)ptr[1] << 16) & 0x00FF0000) | 
-            (((uint32)ptr[2] << 8) & 0x0000FF00)  | 
-            ((uint32)ptr[3] & 0x000000FF));
+    return ((((u32)ptr[0] << 24) & 0xFF000000) | 
+            (((u32)ptr[1] << 16) & 0x00FF0000) | 
+            (((u32)ptr[2] << 8) & 0x0000FF00)  | 
+            ((u32)ptr[3] & 0x000000FF));
 }
 
 /****************************************************************************
@@ -589,7 +590,7 @@ uint32 convertUint8ValuesToUint32(const uint8 *ptr)
 * DESCRIPTION
 *   Utility functions to convert 32 bit value to 4 data octets.
 *****************************************************************************/
-void convertUint32ToUint8Values(uint8 *ptr, uint32 value)
+void convertUint32ToUint8Values(u8 *ptr, u32 value)
 {
     ptr[0] = (value >> 24) & 0xFF;
     ptr[1] = (value >> 16) & 0xFF;
@@ -607,11 +608,11 @@ void convertUint32ToUint8Values(uint8 *ptr, uint32 value)
 * RETURNS
 *    void
 *******************************************************************************/
-Source avrcpSourceFromConstData(AVRCP *avrcp, const uint8 *data, uint16 length)
+Source avrcpSourceFromConstData(AVRCP *avrcp, const u8 *data, u16 length)
 {
-    uint8* ptr = NULL;
+    u8* ptr = NULL;
     Source src = StreamSourceFromSink(avrcp->sink);
-    uint16 data_drop = avrcp->av_msg_len;
+    u16 data_drop = avrcp->av_msg_len;
 
     /* If application does not free the data yet. Force free */
     if( avrcp->data_app_ind && (src != avrcp->data_app_ind) )
@@ -628,7 +629,7 @@ Source avrcpSourceFromConstData(AVRCP *avrcp, const uint8 *data, uint16 length)
     if(avrcp->fragment == avrcp_packet_type_single)
     {
         /* allocate memory */
-        ptr = (uint8*)malloc(length);
+        ptr = (u8*)malloc(length);
     }
     else
     {
@@ -665,7 +666,7 @@ Source avrcpSourceFromConstData(AVRCP *avrcp, const uint8 *data, uint16 length)
 * RETURNS
 *    void
 *******************************************************************************/
-Source avrcpSourceFromData(AVRCP *avrcp, uint8 *data, uint16 length)
+Source avrcpSourceFromData(AVRCP *avrcp, u8 *data, u16 length)
 {
     /* Create a source from the data */
     Source src = StreamRegionSource(data, length);

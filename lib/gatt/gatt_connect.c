@@ -111,9 +111,9 @@ static void gattSendConnectionCfm(
     Task task, 
     gatt_status_t status, 
     typed_bdaddr *taddr, 
-    uint16 flags, 
-    uint16 mtu, 
-    uint16 cid
+    u16 flags, 
+    u16 mtu, 
+    u16 cid
     )
 {
     MAKE_GATT_MESSAGE(GATT_CONNECT_CFM);
@@ -390,8 +390,8 @@ RETURNS
 */
 void GattConnectResponse(
         Task theAppTask,
-        uint16 cid,
-        uint16 flags,
+        u16 cid,
+        u16 flags,
         bool accept
         )
 {

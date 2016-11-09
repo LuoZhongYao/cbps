@@ -53,7 +53,7 @@ static void aclOpen(const bdaddr* bd_addr)
 
 
 /*****************************************************************************/
-static void aclClose(const bdaddr* bd_addr, uint16 flags, uint8 reason)
+static void aclClose(const bdaddr* bd_addr, u16 flags, u8 reason)
 {
     MAKE_PRIM_T(DM_ACL_CLOSE_REQ);
     prim->addrt.type = TBDADDR_PUBLIC;
@@ -234,7 +234,7 @@ static void endAuthentication(
 static void sendAclOpenedIndToClient(
                     Task task,
                     TYPED_BD_ADDR_T *addr,
-                    uint16 flags,
+                    u16 flags,
                     uint24_t dev_class,
                     hci_status status,
                     DM_ACL_BLE_CONN_PARAMS_T *ble
@@ -541,10 +541,10 @@ void connectionHandleSmKeysInd(
             const DM_SM_KEYS_IND_T    *ind
             )
 {
-    uint16                  key_idx;
-    uint16                  new_idx=0;
+    u16                  key_idx;
+    u16                  new_idx=0;
     bool                    bonded = FALSE;
-    uint16                  key_type;
+    u16                  key_type;
     const TYPED_BD_ADDR_T   *addrt_to_use;
 
     /* Use calloc to 0 all fields */
@@ -624,7 +624,7 @@ void connectionHandleSmKeysInd(
 
                 break;
 
-            /* DIV is a uint16 so no memory needs to be allocated for
+            /* DIV is a u16 so no memory needs to be allocated for
              * handling it BUT it does need to be stored so that the
              * next DIV can be calculated after a power cycle.
              */
@@ -1329,7 +1329,7 @@ void connectionHandleReadLocalOobDataCfm(
         if(cfm->status == HCI_SUCCESS)
         {
             /* Get the data from the primitive */
-            uint8* oob_data = VmGetPointerFromHandle(cfm->oob_hash_c);
+            u8* oob_data = VmGetPointerFromHandle(cfm->oob_hash_c);
             memmove(message->oob_hash_c, oob_data, CL_SIZE_OOB_DATA);
             free(oob_data);
 
@@ -1512,7 +1512,7 @@ void handleSecurityInitReq(
     prim->security_mode = connectionConvertSecurityMode_t(req->security_mode);
     prim->write_auth_enable =
                    connectionConvertWriteAuthEnable_t(req->write_auth_enable);
-    prim->mode3_enc = (uint8) req->mode3_enc;
+    prim->mode3_enc = (u8) req->mode3_enc;
 
 #ifndef DISABLE_BLE
     if (state->version >= bluetooth4_0)
@@ -1653,7 +1653,7 @@ void handleSetSecurityModeReq(
             prim->security_level_default = 0; /* not set  here*/
             prim->security_mode = connectionConvertSecurityMode_t(req->mode);
             prim->write_auth_enable = 0;
-            prim->mode3_enc = (uint8) req->mode3_enc;
+            prim->mode3_enc = (u8) req->mode3_enc;
             VmSendDmPrim(prim);
         }
     }
@@ -1956,7 +1956,7 @@ void handleRegisterOutgoingReq(
         )
 {
     MAKE_PRIM_T(DM_SM_REGISTER_OUTGOING_REQ);
-    prim->context = (uint16) req->theAppTask;
+    prim->context = req->theAppTask;
     prim->connection.addrt.type = TBDADDR_PUBLIC;
     BdaddrConvertVmToBluestack(&prim->connection.addrt.addr, &req->bd_addr);
     prim->connection.service.protocol_id =
@@ -2182,8 +2182,8 @@ void connectionHandleEncryptionKeyRefreshInd(
         )
 {
     tp_bdaddr tpaddr;
-    uint16 i = 0;
-    uint16 max_sinks;
+    u16 i = 0;
+    u16 max_sinks;
     hci_status status = connectionConvertHciStatus(ind->status);
     Sink *sink_list = 0;
     bool ind_sent = FALSE;
@@ -2297,7 +2297,7 @@ void handleIoCapabilityRequestRes(
         )
 {
     cl_sm_io_capability io_capability = res->io_capability;
-    uint8 authentication_requirements = 0;
+    u8 authentication_requirements = 0;
 
     /* If Security is handled by the security manager (BLE link) */
     if (smState->sm_security)
@@ -2675,9 +2675,9 @@ void handleGetAuthDeviceReq(
     }
     else
     {
-        uint16 linkkey[BREDR_KEY_SIZE];
+        u16 linkkey[BREDR_KEY_SIZE];
         cl_sm_link_key_type link_key_type;
-        uint16 trusted;
+        u16 trusted;
         MAKE_CL_MESSAGE_WITH_LEN(CL_SM_GET_AUTH_DEVICE_CFM, SIZE_LINK_KEY);
 
         message->bd_addr = req->bd_addr;
@@ -2728,8 +2728,8 @@ static void sendEncryptionChangeInd(
 void connectionHandleEncryptionChange(DM_SM_ENCRYPTION_CHANGE_IND_T *ind)
 {
     tp_bdaddr tpaddr;
-    uint16 i = 0;
-    uint16 max_sinks;
+    u16 i = 0;
+    u16 max_sinks;
     Sink *sink_list = 0;
     bool ind_sent = FALSE;
 

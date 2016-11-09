@@ -36,8 +36,8 @@ typedef struct
 {
     Sink    sink;
     
-    uint16  size_data;
-    uint8   data[1];
+    u16  size_data;
+    u8   data[1];
 } SPPS_MESSAGE_MORE_DATA_TEST_EXTRA_T;
 
 typedef struct
@@ -53,7 +53,7 @@ typedef struct
 typedef struct
 {
     bdaddr  addr;   
-    uint8   server_channel;
+    u8   server_channel;
     Sink    sink;
 } SPPS_CONNECT_IND_TEST_EXTRA_T;
 
@@ -62,7 +62,7 @@ typedef struct
     SPP                         *spp;
     spp_connect_status          status;
     Sink                        sink;
-    uint16                      payload_size;
+    u16                      payload_size;
 } SPPS_SERVER_CONNECT_CFM_TEST_EXTRA_T;
 
 typedef struct 
@@ -90,7 +90,7 @@ void SppsStartServiceTestExtra(Task theAppTask);
 void SppsStopServiceTestExtra(Task theAppTask);
 
 /*****************************************************************************/
-void SppsConnectResponseTestExtra(Task theAppTask, const bdaddr *bd_addr, const bool response, const Sink sink, const uint8 local_server_channel, const uint16 max_payload_size);
+void SppsConnectResponseTestExtra(Task theAppTask, const bdaddr *bd_addr, const bool response, const Sink sink, const u8 local_server_channel, const u16 max_payload_size);
 
 /*****************************************************************************/
 void SppsDisconnectResponseTestExtra(SPPS *spps);

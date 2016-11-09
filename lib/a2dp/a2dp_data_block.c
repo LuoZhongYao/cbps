@@ -42,7 +42,7 @@ NOTES
 bool blockInit (void)
 {
 #ifndef SINGLE_MEM_SLOT
-    uint16 i;
+    u16 i;
     
     for (i=0; i<A2DP_MAX_REMOTE_DEVICES_DEFAULT; i++)
     {
@@ -55,7 +55,7 @@ bool blockInit (void)
     for (i=0; i<A2DP_MAX_REMOTE_DEVICES_DEFAULT; i++)
     {
         DBLK_BASE(i) = (DBLK_TYPE *)PanicNull(malloc(DBLK_HDR_SIZE));
-        memset((uint8 *)DBLK_BASE(i), 0, DBLK_HDR_SIZE);
+        memset((u8 *)DBLK_BASE(i), 0, DBLK_HDR_SIZE);
     }
     
     return TRUE;
@@ -64,7 +64,7 @@ bool blockInit (void)
 #endif
 }
 
-uint8 *blockAdd (uint8 device_id, data_block_id block_id, uint8 element_count, uint8 element_size)
+u8 *blockAdd (u8 device_id, data_block_id block_id, u8 element_count, u8 element_size)
 {
     if ((device_id < A2DP_MAX_REMOTE_DEVICES_DEFAULT) && (block_id < max_data_blocks))
     {
@@ -78,22 +78,22 @@ uint8 *blockAdd (uint8 device_id, data_block_id block_id, uint8 element_count, u
         
         if (!data_block->offset && element_count && element_size)
         {
-            uint16 block_size = element_size * element_count;
+            u16 block_size = element_size * element_count;
 #ifdef SINGLE_MEM_SLOT
-            uint16 offset = DBLK_HDR_SIZE + DBLK_DATA_SIZE;  /* New block added at end of any existing ones */
+            u16 offset = DBLK_HDR_SIZE + DBLK_DATA_SIZE;  /* New block added at end of any existing ones */
             DBLK_TYPE *new_data_pool = (DBLK_TYPE *)realloc(DBLK_BASE, offset+block_size);
 #else
-            uint16 offset = DBLK_HDR_SIZE + DBLK_DATA_SIZE(device_id);  /* New block added at end of any existing ones */
+            u16 offset = DBLK_HDR_SIZE + DBLK_DATA_SIZE(device_id);  /* New block added at end of any existing ones */
             DBLK_TYPE *new_data_pool = (DBLK_TYPE *)realloc(DBLK_BASE(device_id), offset+block_size);
 #endif
             if (new_data_pool)
             {
 #ifdef SINGLE_MEM_SLOT
                 DBLK_BASE = new_data_pool;
-                memset((uint8*)((uint16)DBLK_BASE+offset), 0, block_size);  /* For debug purposes */
+                memset((u8*)((u16)DBLK_BASE+offset), 0, block_size);  /* For debug purposes */
 #else
                 DBLK_BASE(device_id) = new_data_pool;
-                memset((uint8*)((uint16)DBLK_BASE(device_id)+offset), 0, block_size);  /* For debug purposes */
+                memset((u8*)((uintptr_t)DBLK_BASE(device_id)+offset), 0, block_size);  /* For debug purposes */
 #endif
 
 #ifdef SINGLE_MEM_SLOT
@@ -109,11 +109,11 @@ uint8 *blockAdd (uint8 device_id, data_block_id block_id, uint8 element_count, u
                 data_block->current_element = 0;
 
 #ifdef SINGLE_MEM_SLOT
-                PRINT((" [@%X]  size_blocks=%u\n",(uint16)DBLK_BASE+offset, DBLK_DATA_SIZE));
-                return (uint8 *)((uint16)DBLK_BASE+offset);
+                PRINT((" [@%X]  size_blocks=%u\n",(u16)DBLK_BASE+offset, DBLK_DATA_SIZE));
+                return (u8 *)((uintptr_t)DBLK_BASE+offset);
 #else
-                PRINT((" [@%X]  size_blocks(%u)=%u\n",(uint16)DBLK_BASE(device_id)+offset, device_id, DBLK_DATA_SIZE(device_id)));
-                return (uint8 *)((uint16)DBLK_BASE(device_id)+offset);
+                PRINT((" [@%X]  size_blocks(%u)=%u\n",(u16)DBLK_BASE(device_id)+offset, device_id, DBLK_DATA_SIZE(device_id)));
+                return (u8 *)((uintptr_t)DBLK_BASE(device_id)+offset);
 #endif
             }
         }
@@ -125,7 +125,7 @@ uint8 *blockAdd (uint8 device_id, data_block_id block_id, uint8 element_count, u
 }
 
 
-void blockRemove (uint8 device_id, data_block_id block_id)
+void blockRemove (u8 device_id, data_block_id block_id)
 {
     if ((device_id < A2DP_MAX_REMOTE_DEVICES_DEFAULT) && (block_id < max_data_blocks))
     {
@@ -134,14 +134,14 @@ void blockRemove (uint8 device_id, data_block_id block_id)
 #else
         data_block_info *data_block = &DBLK(device_id)[block_id];
 #endif
-        uint16 offset = data_block->offset;
+        u16 offset = data_block->offset;
         
         PRINT(("blockRemove(devId=%u, blkId=%u)",device_id, block_id));
         
         if ( offset )
         {
             DBLK_TYPE *new_data_pool;
-            uint16 block_size = data_block->block_size;
+            u16 block_size = data_block->block_size;
 #ifdef SINGLE_MEM_SLOT
             data_block_info *block = &DBLK[0][0];
 #else
@@ -151,7 +151,7 @@ void blockRemove (uint8 device_id, data_block_id block_id)
             /* Reduce offsets of all blocks positioned above the block being removed */        
             do
             {
-                PRINT((" [%X]",(uint16)block));
+                PRINT((" [%X]",(u16)block));
                 
                 if ( offset < block->offset )
                 {
@@ -179,8 +179,8 @@ void blockRemove (uint8 device_id, data_block_id block_id)
                 
 #ifdef SINGLE_MEM_SLOT
             /* Shift blocks above removed block down by the appropriate amount.  For debug purposes, fill the now unused area at top of memory area */
-            memmove((uint8*)DBLK_BASE+offset, (uint8*)DBLK_BASE+offset+block_size, DBLK_DATA_SIZE-offset+DBLK_HDR_SIZE);
-            memset((uint8*)DBLK_BASE+DBLK_DATA_SIZE+DBLK_HDR_SIZE, 0xFF, block_size);  /* For debug purposes */
+            memmove((u8*)DBLK_BASE+offset, (u8*)DBLK_BASE+offset+block_size, DBLK_DATA_SIZE-offset+DBLK_HDR_SIZE);
+            memset((u8*)DBLK_BASE+DBLK_DATA_SIZE+DBLK_HDR_SIZE, 0xFF, block_size);  /* For debug purposes */
             
             if ( (new_data_pool = (DBLK_TYPE *)realloc(DBLK_BASE, DBLK_HDR_SIZE+DBLK_DATA_SIZE)) != NULL )
             {
@@ -189,8 +189,8 @@ void blockRemove (uint8 device_id, data_block_id block_id)
             /* No need to worry about a failed realloc, old one will still exist and be valid */
 #else
             /* Shift blocks above removed block down by the appropriate amount.  For debug purposes, fill the now unused area at top of memory area */
-            memmove((uint8*)DBLK_BASE(device_id)+offset, (uint8*)DBLK_BASE(device_id)+offset+block_size, DBLK_DATA_SIZE(device_id)-offset+DBLK_HDR_SIZE);
-            memset((uint8*)DBLK_BASE(device_id)+DBLK_DATA_SIZE(device_id)+DBLK_HDR_SIZE, 0xFF, block_size);  /* For debug purposes */
+            memmove((u8*)DBLK_BASE(device_id)+offset, (u8*)DBLK_BASE(device_id)+offset+block_size, DBLK_DATA_SIZE(device_id)-offset+DBLK_HDR_SIZE);
+            memset((u8*)DBLK_BASE(device_id)+DBLK_DATA_SIZE(device_id)+DBLK_HDR_SIZE, 0xFF, block_size);  /* For debug purposes */
             
             if ( (new_data_pool = (DBLK_TYPE *)realloc(DBLK_BASE(device_id), DBLK_HDR_SIZE+DBLK_DATA_SIZE(device_id))) != NULL )
             {
@@ -203,22 +203,22 @@ void blockRemove (uint8 device_id, data_block_id block_id)
 }
 
 
-uint8 *blockGetBase (uint8 device_id, data_block_id block_id)
+u8 *blockGetBase (u8 device_id, data_block_id block_id)
 {
     if ((device_id < A2DP_MAX_REMOTE_DEVICES_DEFAULT) && (block_id < max_data_blocks))
     {
 #ifdef SINGLE_MEM_SLOT
-        uint16 offset = DBLK[device_id][block_id].offset;
+        u16 offset = DBLK[device_id][block_id].offset;
 #else
-        uint16 offset = DBLK(device_id)[block_id].offset;
+        u16 offset = DBLK(device_id)[block_id].offset;
 #endif
 
         PRINT(("blockGetBase(devId=%u, blkId=%u)\n",device_id, block_id));
         
 #ifdef SINGLE_MEM_SLOT
-        return (offset)?(uint8*)((uint16)DBLK_BASE+offset):(uint8*)0;
+        return (offset)?(u8*)((uintptr_t)DBLK_BASE+offset):(u8*)0;
 #else
-        return (offset)?(uint8*)((uint16)DBLK_BASE(device_id)+offset):(uint8*)0;
+        return (offset)?(u8*)((uintptr_t)DBLK_BASE(device_id)+offset):(u8*)0;
 #endif
     }
     
@@ -226,7 +226,7 @@ uint8 *blockGetBase (uint8 device_id, data_block_id block_id)
 }
 
 
-uint8 *blockGetIndexed (uint8 device_id, data_block_id block_id, uint8 element)
+u8 *blockGetIndexed (u8 device_id, data_block_id block_id, u8 element)
 {
     if ((device_id < A2DP_MAX_REMOTE_DEVICES_DEFAULT) && (block_id < max_data_blocks))
     {
@@ -235,16 +235,16 @@ uint8 *blockGetIndexed (uint8 device_id, data_block_id block_id, uint8 element)
 #else
         data_block_info *data_block = &DBLK(device_id)[block_id];
 #endif
-        uint16 offset = data_block->element_size * element;
+        u16 offset = data_block->element_size * element;
         
         PRINT(("blockGetIndexed(devId=%u, blkId=%u, ele=%u)\n",device_id, block_id, element));
         
         offset += data_block->offset;
         
 #ifdef SINGLE_MEM_SLOT
-        return (offset)?(uint8*)((uint16)DBLK_BASE+offset):(uint8*)0;
+        return (offset)?(u8*)((uintptr_t)DBLK_BASE+offset):(u8*)0;
 #else
-        return (offset)?(uint8*)((uint16)DBLK_BASE(device_id)+offset):(uint8*)0;
+        return (offset)?(u8*)((uintptr_t)DBLK_BASE(device_id)+offset):(u8*)0;
 #endif
     }
     
@@ -252,7 +252,7 @@ uint8 *blockGetIndexed (uint8 device_id, data_block_id block_id, uint8 element)
 }
 
 
-uint8 *blockGetCurrent (uint8 device_id, data_block_id block_id)
+u8 *blockGetCurrent (u8 device_id, data_block_id block_id)
 {
     if ((device_id < A2DP_MAX_REMOTE_DEVICES_DEFAULT) && (block_id < max_data_blocks))
     {
@@ -261,16 +261,16 @@ uint8 *blockGetCurrent (uint8 device_id, data_block_id block_id)
 #else
         data_block_info *data_block = &DBLK(device_id)[block_id];
 #endif
-        uint16 offset = data_block->element_size * data_block->current_element;
+        u16 offset = data_block->element_size * data_block->current_element;
 
         PRINT(("blockGetCurrent(devId=%u, blkId=%u)=%u\n",device_id, block_id, data_block->current_element));
 
         offset += data_block->offset;
 
 #ifdef SINGLE_MEM_SLOT
-        return (offset)?(uint8*)((uint16)DBLK_BASE+offset):(uint8*)0;
+        return (offset)?(u8*)((uintptr_t)DBLK_BASE+offset):(u8*)0;
 #else
-        return (offset)?(uint8*)((uint16)DBLK_BASE(device_id)+offset):(uint8*)0;
+        return (offset)?(u8*)((uintptr_t)DBLK_BASE(device_id)+offset):(u8*)0;
 #endif
     }
     
@@ -278,7 +278,7 @@ uint8 *blockGetCurrent (uint8 device_id, data_block_id block_id)
 }
 
 
-uint8 *blockSetCurrent (uint8 device_id, data_block_id block_id, uint8 element)
+u8 *blockSetCurrent (u8 device_id, data_block_id block_id, u8 element)
 {
     if ((device_id < A2DP_MAX_REMOTE_DEVICES_DEFAULT) && (block_id < max_data_blocks))
     {
@@ -310,7 +310,7 @@ uint8 *blockSetCurrent (uint8 device_id, data_block_id block_id, uint8 element)
 }
 
 
-uint16 blockGetSize (uint8 device_id, data_block_id block_id)
+u16 blockGetSize (u8 device_id, data_block_id block_id)
 {
     if ((device_id < A2DP_MAX_REMOTE_DEVICES_DEFAULT) && (block_id < max_data_blocks))
     {

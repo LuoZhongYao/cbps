@@ -97,7 +97,7 @@ DESCRIPTION
     Attempt to route the A2DP audio. 
 
 */
-void audio_a2dp_connect(Sink sink, uint16 device_id, uint16 stream_id);
+void audio_a2dp_connect(Sink sink, u16 device_id, u16 stream_id);
 
 
 /****************************************************************************
@@ -108,7 +108,7 @@ DESCRIPTION
     Attempt to disconnect the A2DP audio. 
 
 */
-void audio_a2dp_disconnect(uint16 device_id, Sink media_sink);
+void audio_a2dp_disconnect(u16 device_id, Sink media_sink);
 
 
 /****************************************************************************
@@ -130,7 +130,7 @@ DESCRIPTION
     Set the A2DP audio plugin in use. 
 
 */
-void audio_a2dp_set_plugin(uint8 seid);
+void audio_a2dp_set_plugin(u8 seid);
 
 
 /****************************************************************************
@@ -163,7 +163,7 @@ DESCRIPTION
     Attempt to route the AGHFP audio. 
 
 */
-void audio_aghfp_connect(Sink sink, bool esco, bool wbs, uint16 size_warp, uint16 *warp);
+void audio_aghfp_connect(Sink sink, bool esco, bool wbs, u16 size_warp, u16 *warp);
 
 
 /****************************************************************************
@@ -219,7 +219,7 @@ DESCRIPTION
     Change the bitpool for the A2DP audio. 
 
 */
-void audio_a2dp_update_bitpool(uint8 bitpool, uint8 bad_link_bitpool);
+void audio_a2dp_update_bitpool(u8 bitpool, u8 bad_link_bitpool);
 
 
 /****************************************************************************

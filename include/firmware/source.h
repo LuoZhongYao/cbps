@@ -24,7 +24,7 @@
 
   @note This call will return zero if the source stream is connected to another stream.
 */
-uint16 SourceSize(Source source);
+u16 SourceSize(Source source);
 
 /*! 
   @brief Reports the number of words available in the first header
@@ -36,7 +36,7 @@ uint16 SourceSize(Source source);
 
   @note This call will return zero if the source stream is connected to another stream.
 */
-uint16 SourceSizeHeader(Source source);
+u16 SourceSizeHeader(Source source);
 
 /*!
   @brief Map the source into the address map, returning a pointer to the
@@ -53,7 +53,7 @@ uint16 SourceSizeHeader(Source source);
 
   @note This call will return zero if the source stream is connected to another stream.
 */
-const uint8 *SourceMap(Source source);
+const u8 *SourceMap(Source source);
 
 /*!
   @brief Map the first header associated with a source into the address map.
@@ -69,7 +69,7 @@ const uint8 *SourceMap(Source source);
 
   @note This call will return zero if the source stream is connected to another stream.
 */
-const uint16 *SourceMapHeader(Source source);
+const u16 *SourceMapHeader(Source source);
 
 /*!
   @brief Discards the indicated number of bytes from the front of the source.
@@ -79,7 +79,7 @@ const uint16 *SourceMapHeader(Source source);
 
   @note This call will fail if the source stream is connected to another stream.
 */
-void SourceDrop(Source source, uint16 amount);
+void SourceDrop(Source source, u16 amount);
 
 /*!
   @brief Return how many bytes in this source are before the next packet boundary
@@ -91,7 +91,7 @@ void SourceDrop(Source source, uint16 amount);
 
   @note This call will return zero if the source stream is connected to another stream.
 */
-uint16 SourceBoundary(Source source);
+u16 SourceBoundary(Source source);
 
 /*!
     @brief Configure a particular source.
@@ -107,7 +107,7 @@ uint16 SourceBoundary(Source source);
     be lost once source is closed and key needs to be reconfigured if source
     is reopened.
 */
-bool SourceConfigure(Source source, stream_config_key key, uint32 value);
+bool SourceConfigure(Source source, stream_config_key key, u32 value);
 
 /*!
     @brief Request to close the source

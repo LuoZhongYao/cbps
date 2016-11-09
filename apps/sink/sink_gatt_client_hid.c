@@ -23,39 +23,37 @@ DESCRIPTION
 
 #ifdef GATT_HID_CLIENT
 
-static const uint8 hid_ble_advertising_filter[] = {GATT_SERVICE_UUID_HUMAN_INTERFACE_DEVICE & 0xFF, GATT_SERVICE_UUID_HUMAN_INTERFACE_DEVICE >> 8};
+static const u8 hid_ble_advertising_filter[] = {GATT_SERVICE_UUID_HUMAN_INTERFACE_DEVICE & 0xFF, GATT_SERVICE_UUID_HUMAN_INTERFACE_DEVICE >> 8};
 
 #ifdef DEBUG_GATT_HID_CLIENT
-#define GATT_HID_CLIENT_DEBUG(x) DEBUG(x)
 #else
-#define GATT_HID_CLIENT_DEBUG(x) 
 #endif
 
 
 /*******************************************************************************
 NAME
     gattHidFindConnection
-    
+
 DESCRIPTION
     Finds a client connection associated with a hid instance.
-    
+
 PARAMETERS
     ghidc    The hid client instance pointer
-    
-RETURNS    
-    The client connection pointer associated with the hid instance. NULL if not found.    
-    
+
+RETURNS
+    The client connection pointer associated with the hid instance. NULL if not found.
+
 */
 static gatt_client_connection_t *gattHidFindConnection(const GHIDC_T *ghidc)
 {
-    uint16 index = 0;
+    u16 index = 0;
     gatt_client_services_t *data = NULL;
-    
+
     if (ghidc == NULL)
     {
         return NULL;
     }
-    
+
     for (index = 0; index < GATT_CLIENT.number_connections; index++)
     {
         data = gattClientGetServiceData(&GATT_CLIENT.connection[index]);
@@ -64,41 +62,41 @@ static gatt_client_connection_t *gattHidFindConnection(const GHIDC_T *ghidc)
             return &GATT_CLIENT.connection[index];
         }
     }
-    
+
     return NULL;
 }
 
 /*******************************************************************************
 NAME
     gattHIDServiceInitialised
-    
+
 DESCRIPTION
     Called when the hid service is initialised.
-    
+
 PARAMETERS
     ghidc    The hid client instance pointer
-    
+
 */
 static void gattHidServiceInitialised(const GHIDC_T *ghidc)
 {
     gatt_client_connection_t *conn = gattHidFindConnection(ghidc);
-    
+
     if (conn != NULL)
     {
         gattClientDiscoveredServiceInitialised(conn);
-    }        
+    }
 }
 
 /*******************************************************************************
 NAME
     gattHidInitCfm
-    
+
 DESCRIPTION
     Handle the GATT_HID_CLIENT_INIT_CFM message.
-    
+
 PARAMETERS
     cfm    The GATT_HID_CLIENT_INIT_CFM message
-    
+
 */
 static void gattHidInitCfm(const GATT_HID_CLIENT_INIT_CFM_T *cfm)
 {
@@ -117,110 +115,110 @@ static void gattHidInitCfm(const GATT_HID_CLIENT_INIT_CFM_T *cfm)
     }
     /* The service initialisation is complete */
     gattHidServiceInitialised(cfm->hid_client);
-    
+
 }
 
 /*******************************************************************************
 NAME
     gattHidSetNotificationReportIdRegCfm
-    
+
 DESCRIPTION
     Handle the GATT_HID_CLIENT_NOTIFICATION_REPROTID_REG_CFM message.
-    
+
 PARAMETERS
     cfm    The GATT_HID_CLIENT_NOTIFICATION_REPROTID_REG_CFM_T message
-    
+
 */
 static void  gattHidSetNotificationReportIdRegCfm(const GATT_HID_CLIENT_NOTIFICATION_REPROTID_REG_CFM_T* cfm)
 {
-    GATT_HID_CLIENT_DEBUG(("GattHid:GATT_HID_CLIENT_NOTIFICATION_REPROTID_REG_CFM_T status[%u]\n", cfm->status));
+    GATT_HID_LOGD("GattHid:GATT_HID_CLIENT_NOTIFICATION_REPROTID_REG_CFM_T status[%u]\n", cfm->status);
 }
 
 /*******************************************************************************
 NAME
     gattHidCtrlReqCfm
-    
+
 DESCRIPTION
     Handle the GATT_HID_CLIENT_CONTROL_REQ_CFM message.
-    
+
 PARAMETERS
     cfm    The GATT_HID_CLIENT_NOTIFICATION_REG_CFM_T message
-    
+
 */
 static void gattHidCtrlReqCfm(const GATT_HID_CLIENT_CONTROL_REQ_CFM_T*cfm)
 {
-    GATT_HID_CLIENT_DEBUG(("GattHid:GATT_HID_CLIENT_CONTROL_REQ_CFM_T status[%u]\n", cfm->status));
+    GATT_HID_LOGD("GattHid:GATT_HID_CLIENT_CONTROL_REQ_CFM_T status[%u]\n", cfm->status);
 }
 
 /*******************************************************************************
 NAME
     gattHidReadReportMapCfm
-    
+
 DESCRIPTION
     Handle the GATT_HID_CLIENT_READ_REPORT_MAP_CFM message.
-    
+
 PARAMETERS
     cfm    The GATT_HID_CLIENT_READ_REPORT_MAP_CFM message
-    
+
 */
 static void gattHidReadReportMapCfm(const GATT_HID_CLIENT_READ_REPORT_MAP_CFM_T* cfm)
 {
-    GATT_HID_CLIENT_DEBUG(("GattHid:GATT_HID_CLIENT_READ_REPORT_MAP_CFM status[%u]\n", cfm->status));
+    GATT_HID_LOGD("GattHid:GATT_HID_CLIENT_READ_REPORT_MAP_CFM status[%u]\n", cfm->status);
     if(cfm->status == gatt_hid_client_status_success)
     {
         /* Invoke remote control module interface for parsing the report map descriptor */
-        sinkGattHidRcProcessReportMapDescriptor(cfm->cid,cfm->size_value,(uint8*)cfm->value,cfm->more_to_come);
+        sinkGattHidRcProcessReportMapDescriptor(cfm->cid,cfm->size_value,(u8*)cfm->value,cfm->more_to_come);
     }
 }
 
 /*******************************************************************************
 NAME
     gattHidNotificationInd
-    
+
 DESCRIPTION
     Handle the GATT_HID_CLIENT_NOTIFICATION_IND message.
-    
+
 PARAMETERS
     ind    The GATT_HID_CLIENT_NOTIFICATION_IND_T message
-    
+
 */
 static void gattHidNotificationInd(const GATT_HID_CLIENT_NOTIFICATION_IND_T *ind)
 {
 
 #ifdef DEBUG_GATT_HID_CLIENT
-    uint16 index = 0;
+    u16 index = 0;
 #endif
-    GATT_HID_CLIENT_DEBUG(("GattHid:GATT_HID_CLIENT_NOTIFICATION_IND_T level[%u]\n", ind->report_id));
+    GATT_HID_LOGD("GattHid:GATT_HID_CLIENT_NOTIFICATION_IND_T level[%u]\n", ind->report_id);
 #ifdef DEBUG_GATT_HID_CLIENT
     for(index = 0;index< ind->size_value;index++)
     {
-        GATT_HID_CLIENT_DEBUG(("GattHid:GATT_HID_CLIENT_NOTIFICATION_IND_T level[%u]\n", ind->value[index]));
+        GATT_HID_LOGD("GattHid:GATT_HID_CLIENT_NOTIFICATION_IND_T level[%u]\n", ind->value[index]);
     }
 #endif
     /* Call remote control module to process the button presses */
-    sinkGattHidRcProcessButtonPress(ind->size_value,(uint8*)ind->value,ind->cid);
+    sinkGattHidRcProcessButtonPress(ind->size_value,(u8*)ind->value,ind->cid);
 }
 
 /*******************************************************************************
 NAME
     gattHidSetInstance
-    
+
 DESCRIPTION
     Sets the appropriate HID client instance
-    
+
 PARAMETERS
     cid             The connection ID
-    
-RETURNS    
+
+RETURNS
     The HID Client Instance if set successfully, NULL otherwise.
-    
+
 */
-static GHIDC_T* gattHidSetInstance(uint16 cid)
+static GHIDC_T* gattHidSetInstance(u16 cid)
 {
     gatt_client_services_t *client_services = NULL;
     gatt_client_connection_t *connection;
-    uint16 *service;
-    
+    u16 *service;
+
     connection = gattClientFindByCid(cid);
     service = gattClientAddService(connection, sizeof(GHIDC_T));
 
@@ -246,28 +244,28 @@ static GHIDC_T* gattHidSetInstance(uint16 cid)
 /*******************************************************************************
 NAME
     gattHidEnableInputReportNotifications
-    
+
 DESCRIPTION
     Enables Report Characterictic- Input Reports  notifications
     this is done for qualification purpose
-    
+
 PARAMETERS
     cid             The connection ID
-    
-RETURNS    
+
+RETURNS
     None
-    
+
 */
-static void gattHidEnableInputReportNotifications(uint16 cid)
+static void gattHidEnableInputReportNotifications(u16 cid)
 {
     gatt_client_connection_t *connection;
     gatt_client_services_t *service;
 
-    GATT_HID_CLIENT_DEBUG(("GattHid:gattHidEnableInputReportNotifications \n"));
+    GATT_HID_LOGD("GattHid:gattHidEnableInputReportNotifications \n");
     /*Get connection from cid */
     connection = gattClientFindByCid(cid);
     service = gattClientGetServiceData(connection);
-    
+
     if(service && service->hidc_instance1)
     {
       /* Enable Input Report Notifications for 1st instance*/
@@ -283,27 +281,27 @@ static void gattHidEnableInputReportNotifications(uint16 cid)
 /*******************************************************************************
 NAME
     gattHidReadCCDReq
-    
+
 DESCRIPTION
     Read CCD for requested mode - this is done for qualification purpose
-    
+
 PARAMETERS
     cid             The connection ID
-    
-RETURNS    
+
+RETURNS
     None
-    
+
 */
-static void gattHidReadCCDReq(uint16 cid)
+static void gattHidReadCCDReq(u16 cid)
 {
     gatt_client_connection_t *connection;
     gatt_client_services_t *service;
 
-    GATT_HID_CLIENT_DEBUG(("GattHid:gattHidReadCCDReq \n"));
+    GATT_HID_LOGD("GattHid:gattHidReadCCDReq \n");
     /*Get connection from cid */
     connection = gattClientFindByCid(cid);
     service = gattClientGetServiceData(connection);
-    
+
     if(service && service->hidc_instance1)
     {
         /* Read CCD for Input Report for 1st instance*/
@@ -317,13 +315,13 @@ static void gattHidReadCCDReq(uint16 cid)
 }
 
 /****************************************************************************/
-/* Interface Functions                                                      */     
+/* Interface Functions                                                      */
 /****************************************************************************/
 
 /****************************************************************************/
 void sinkGattHidClientSetupAdvertisingFilter(void)
 {
-    GATT_HID_CLIENT_DEBUG(("GattHid: Add HID scan filter\n"));
+    GATT_HID_LOGD("GattHid: Add HID scan filter\n");
     ConnectionBleAddAdvertisingReportFilter(ble_ad_type_more_uuid16, sizeof(hid_ble_advertising_filter), sizeof(hid_ble_advertising_filter), hid_ble_advertising_filter);
     ConnectionBleAddAdvertisingReportFilter(ble_ad_type_complete_uuid16, sizeof(hid_ble_advertising_filter), sizeof(hid_ble_advertising_filter), hid_ble_advertising_filter);
 }
@@ -332,16 +330,16 @@ void sinkGattHidClientSetupAdvertisingFilter(void)
 /****************************************************************************/
 
 /****************************************************************************/
-void sinkGattHidClientNotificationReqForReportId(uint16 cid,uint16 report_id,bool enable)
+void sinkGattHidClientNotificationReqForReportId(u16 cid,u16 report_id,bool enable)
 {
     gatt_client_connection_t *connection;
     gatt_client_services_t *service;
 
-    GATT_HID_CLIENT_DEBUG(("GattHid:GattHidClient: Func(),sinkGattHidClientNotificationReqForReportId reportId[%d]\n",report_id));
+    GATT_HID_LOGD("GattHid:GattHidClient: Func(),sinkGattHidClientNotificationReqForReportId reportId[%d]\n",report_id);
     /*Get connection from cid */
     connection = gattClientFindByCid(cid);
     service = gattClientGetServiceData(connection);
-    
+
     if(service && service->hidc_instance1)
     {
       /* Enable Notification for 1st instance*/
@@ -362,19 +360,19 @@ void sinkGattHidClientInit(void)
 }
 
 /****************************************************************************/
-bool sinkGattHidClientAddService(uint16 cid, uint16 start, uint16 end)
+bool sinkGattHidClientAddService(u16 cid, u16 start, u16 end)
 {
     GHIDC_T *ghidc = NULL;
     GATT_HID_CLIENT_INIT_PARAMS_T ghidc_init;
     /* Configure Remote control timers */
     sinkGattHidRcConfigTimers();
-    GATT_HID_CLIENT_DEBUG(("GattHid:sinkGattHidClientAddService() num connection [%u]",GATT_CLIENT.number_connections));
-    GATT_HID_CLIENT_DEBUG(("Max Remote Supported [%u]\n",GATT_HID_RC_MAX_REMOTE_SUPORTED));
+    GATT_HID_LOGD("GattHid:sinkGattHidClientAddService() num connection [%u]",GATT_CLIENT.number_connections);
+    GATT_HID_LOGD("Max Remote Supported [%u]\n",GATT_HID_RC_MAX_REMOTE_SUPORTED);
 
     /* Check any more new remote can be supported */
     if(GATT_CLIENT.number_connections <= GATT_HID_RC_MAX_REMOTE_SUPORTED)
     {
-        GATT_HID_CLIENT_DEBUG(("GattHid:sinkGattHidClientAddService\n"));
+        GATT_HID_LOGD("GattHid:sinkGattHidClientAddService\n");
 
         ghidc = gattHidSetInstance(cid);
         if (ghidc)
@@ -383,18 +381,18 @@ bool sinkGattHidClientAddService(uint16 cid, uint16 start, uint16 end)
             ghidc_init.start_handle = start;
             ghidc_init.end_handle = end;
             if (GattHidClientInit(sinkGetBleTask(),ghidc, &ghidc_init, NULL,TRUE) == gatt_hid_client_status_initiated)
-            {    
-                GATT_HID_CLIENT_DEBUG(("GattHid:Init Success\n"));           
+            {
+                GATT_HID_LOGD("GattHid:Init Success\n");
                 return TRUE;
             }
         }
     }
-    GATT_HID_CLIENT_DEBUG(("GattHid:Init Failed\n"));
+    GATT_HID_LOGD("GattHid:Init Failed\n");
     return FALSE;
 }
 
 /****************************************************************************/
-void sinkGattHIDClientRemoveService(GHIDC_T *ghidc, uint16 cid)
+void sinkGattHIDClientRemoveService(GHIDC_T *ghidc, u16 cid)
 {
     /* Deinit GATT HID client */
     GattHidClientDeInit(ghidc);
@@ -403,15 +401,15 @@ void sinkGattHIDClientRemoveService(GHIDC_T *ghidc, uint16 cid)
 /****************************************************************************/
 void sinkGattHIDClientExtraConfig(void)
 {
-    uint16 index = 0;
+    u16 index = 0;
     gatt_client_services_t *data = NULL;
-    
+
     for (index = 0; index < GATT_CLIENT.number_connections; index++)
     {
         data = gattClientGetServiceData(&GATT_CLIENT.connection[index]);
         if (data )
         {
-            /* Read external report reference characteristic value for each of the discovered instance, 
+            /* Read external report reference characteristic value for each of the discovered instance,
                 this is required for qualification purpose.
             */
             if(data->hidc_instance1)
@@ -429,7 +427,7 @@ void sinkGattHIDClientExtraConfig(void)
 /******************************************************************************/
 void sinkGattHidClientMsgHandler (Task task, MessageId id, Message message)
 {
-    GATT_HID_CLIENT_DEBUG(("GattHid:sinkGattHidClientMsgHandler %x\n",id));
+    GATT_HID_LOGD("GattHid:sinkGattHidClientMsgHandler %x\n",id);
     switch(id)
     {
         case GATT_HID_CLIENT_INIT_CFM:
@@ -448,7 +446,7 @@ void sinkGattHidClientMsgHandler (Task task, MessageId id, Message message)
         }
         break;
         case GATT_HID_CLIENT_READ_REPORT_MAP_CFM:
-        {   
+        {
             gattHidReadReportMapCfm((GATT_HID_CLIENT_READ_REPORT_MAP_CFM_T*)message);
         }
         break;
@@ -459,25 +457,25 @@ void sinkGattHidClientMsgHandler (Task task, MessageId id, Message message)
         break;
         case GATT_HID_CLIENT_READ_EXT_REF_CFM:
         {
-            GATT_HID_CLIENT_DEBUG(("GattHid:GATT_HID_CLIENT_READ_EXT_REF_CFM status[%x]\n", ((GATT_HID_CLIENT_READ_EXT_REF_CFM_T*)message)->status));
+            GATT_HID_LOGD("GattHid:GATT_HID_CLIENT_READ_EXT_REF_CFM status[%x]\n", ((GATT_HID_CLIENT_READ_EXT_REF_CFM_T*)message)->status);
             /* Enable notifications for Input reports for qualification purpose */
             gattHidEnableInputReportNotifications(((GATT_HID_CLIENT_READ_EXT_REF_CFM_T*)message)->cid);
         }
         break;
         case GATT_HID_CLIENT_NOTIFICATION_REG_CFM:
         {
-            GATT_HID_CLIENT_DEBUG(("GattHid:GATT_HID_CLIENT_NOTIFICATION_REG_CFM status[%x]\n", ((GATT_HID_CLIENT_NOTIFICATION_REG_CFM_T*)message)->status));
+            GATT_HID_LOGD("GattHid:GATT_HID_CLIENT_NOTIFICATION_REG_CFM status[%x]\n", ((GATT_HID_CLIENT_NOTIFICATION_REG_CFM_T*)message)->status);
             /* Send Read request for Input report ccd for qualification purpose*/
             gattHidReadCCDReq(((GATT_HID_CLIENT_NOTIFICATION_REG_CFM_T*)message)->cid);
         }
         case GATT_HID_CLIENT_READ_CCD_CFM:
         {
-            GATT_HID_CLIENT_DEBUG(("GattHid:GATT_HID_CLIENT_READ_CCD_CFM status[%x]\n", ((GATT_HID_CLIENT_READ_CCD_CFM_T*)message)->status));
+            GATT_HID_LOGD("GattHid:GATT_HID_CLIENT_READ_CCD_CFM status[%x]\n", ((GATT_HID_CLIENT_READ_CCD_CFM_T*)message)->status);
         }
         break;
         default:
         {
-            GATT_HID_CLIENT_DEBUG(("GattHid:Unhandled HIDC msg[%x]\n", id));
+            GATT_HID_LOGD("GattHid:Unhandled HIDC msg[%x]\n", id);
         }
         break;
     }

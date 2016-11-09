@@ -48,7 +48,7 @@ DESCRIPTION
 /* Determines if in an audio active state */    
 #define aghfp_is_audio(state) ((state >= AGHFP_STATE_CONNECTED_AUDIO) && (state <= AGHFP_STATE_DISCONNECTING_AUDIO))    
 /* Display unhandled states in Debug Mode */    
-#define aghfp_unhandled_state(inst) AGHFP_DEBUG(("    AGHFP Unhandled State [%d] inst[0x%x]\n", aghfp_get_state(inst), (uint16)inst));    
+#define aghfp_unhandled_state(inst) AGHFP_DEBUG(("    AGHFP Unhandled State [%d] inst[0x%x]\n", aghfp_get_state(inst), (u16)inst));    
 
 
 /* exit state functions */
@@ -91,8 +91,8 @@ void aghfp_init(void)
        Codec negotiation required for Wide Band Speech (WBS).
     */
     aghfp_profile profile = aghfp_handsfree_16_profile;
-    uint16 features = aghfp_voice_recognition | aghfp_enhanced_call_status | aghfp_codec_negotiation;
-    uint16 index;
+    u16 features = aghfp_voice_recognition | aghfp_enhanced_call_status | aghfp_codec_negotiation;
+    u16 index;
     
     /* allocate memory for AGHFP instances */
     theSource->aghfp_data.inst = (aghfpInstance *)memory_get_block(MEMORY_GET_BLOCK_PROFILE_AGHFP);
@@ -117,7 +117,7 @@ NAME
 */
 aghfpInstance *aghfp_get_instance_from_bdaddr(const bdaddr addr)
 {
-    uint16 index;
+    u16 index;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     
     if (inst)
@@ -140,7 +140,7 @@ NAME
 */
 aghfpInstance *aghfp_get_instance_from_pointer(AGHFP *aghfp)
 {
-    uint16 index;
+    u16 index;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     
     if (inst)
@@ -163,7 +163,7 @@ NAME
 */
 aghfpInstance *aghfp_get_free_instance(void)
 {
-    uint16 index;
+    u16 index;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     
     if (inst)
@@ -186,7 +186,7 @@ NAME
 */
 void aghfp_init_instance(aghfpInstance *inst)
 {
-    uint16 i = 0;
+    u16 i = 0;
     
     inst->aghfpTask.handler = aghfp_msg_handler;
     MessageFlushTask(&inst->aghfpTask);
@@ -259,10 +259,10 @@ void aghfp_start_connection(void)
 NAME    
     aghfp_get_number_connections - Returns the number of AGHFP connections
 */
-uint16 aghfp_get_number_connections(void)
+u16 aghfp_get_number_connections(void)
 {
-    uint16 connections = 0;
-    uint16 index;
+    u16 connections = 0;
+    u16 index;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     
     if (inst)
@@ -285,7 +285,7 @@ NAME
 */
 void aghfp_disconnect_all(void)
 {
-    uint16 index;
+    u16 index;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     
     if (inst)
@@ -341,7 +341,7 @@ NAME
 */
 void aghfp_route_all_audio(void)
 {
-    uint16 index;
+    u16 index;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     
     if (inst != NULL)
@@ -371,7 +371,7 @@ NAME
 */
 void aghfp_suspend_all_audio(void)
 {
-    uint16 index;
+    u16 index;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     
     if (inst != NULL)
@@ -392,7 +392,7 @@ NAME
 */
 bool aghfp_is_connecting(void)
 {
-    uint16 index;
+    u16 index;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     AGHFP_STATE_T state;
     
@@ -417,7 +417,7 @@ NAME
 */
 bool aghfp_is_audio_active(void)
 {
-    uint16 index = 0;
+    u16 index = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     bool aghfp_audio_present = FALSE;    
     
@@ -457,7 +457,7 @@ NAME
     aghfp_call_ind_incoming - A call indication has been recieved from the host (incoming call)
     
 */
-void aghfp_call_ind_incoming(uint16 size_data, const uint8 *data)
+void aghfp_call_ind_incoming(u16 size_data, const u8 *data)
 {
     /* update AG Host state */
     aghfp_host_set_call_state(aghfp_call_none);
@@ -504,7 +504,7 @@ NAME
     aghfp_call_ind_waiting_active_call - A call indication has been recieved from the host (active call with call waiting)
     
 */
-void aghfp_call_ind_waiting_active_call(uint16 size_data, const uint8 *data)
+void aghfp_call_ind_waiting_active_call(u16 size_data, const u8 *data)
 {
     /* update AG Host state */
     aghfp_host_set_call_state(aghfp_call_active);
@@ -551,9 +551,9 @@ void aghfp_call_ind_held(void)
 NAME    
     aghfp_signal_strength_ind - A signal strength indication has been received from the host
 */
-void aghfp_signal_strength_ind(uint8 signal_strength)
+void aghfp_signal_strength_ind(u8 signal_strength)
 {
-    uint16 index = 0;
+    u16 index = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     
     if (inst != NULL)
@@ -577,9 +577,9 @@ NAME
     aghfp_battery_level_ind - A battery level indication has been received from the host
 
 */
-void aghfp_battery_level_ind(uint8 battery_level)
+void aghfp_battery_level_ind(u8 battery_level)
 {
-    uint16 index = 0;
+    u16 index = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     
     if (inst != NULL)
@@ -605,7 +605,7 @@ NAME
 */
 void aghfp_audio_transfer_req(bool use_codec_negotiated)
 {
-    uint16 index = 0;
+    u16 index = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     
     if (inst != NULL)
@@ -643,7 +643,7 @@ void aghfp_audio_transfer_req(bool use_codec_negotiated)
 NAME    
     aghfp_network_operator_ind - A network operator indication has been received from the host
 */
-void aghfp_network_operator_ind(uint16 size_data, const uint8 *data)
+void aghfp_network_operator_ind(u16 size_data, const u8 *data)
 {
     if (size_data >= 1)
     {
@@ -659,7 +659,7 @@ NAME
 */
 void aghfp_network_availability_ind(bool available)
 {
-    uint16 index = 0;
+    u16 index = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     aghfp_service_availability availability = available ? aghfp_service_present : aghfp_service_none;
         
@@ -685,7 +685,7 @@ NAME
 */
 void aghfp_network_roam_ind(bool roam)
 {
-    uint16 index = 0;
+    u16 index = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     aghfp_roam_status roaming = roam ? aghfp_roam_active : aghfp_roam_none;
         
@@ -711,7 +711,7 @@ NAME
 */
 void aghfp_error_ind(void)
 {
-    uint16 index = 0;
+    u16 index = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;
         
     if (inst != NULL)
@@ -735,7 +735,7 @@ NAME
 */
 void aghfp_ok_ind(void)
 {
-    uint16 index = 0;
+    u16 index = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;
         
     if (inst != NULL)
@@ -757,9 +757,9 @@ void aghfp_ok_ind(void)
 NAME    
     aghfp_current_call_ind - A current call indication has been received from the host
 */
-void aghfp_current_call_ind(uint16 size_data, const uint8 *data)
+void aghfp_current_call_ind(u16 size_data, const u8 *data)
 {
-    uint16 index = 0;
+    u16 index = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     aghfp_call_info call;
     
@@ -769,7 +769,7 @@ void aghfp_current_call_ind(uint16 size_data, const uint8 *data)
     
     if (size_data >= 5)
     {
-        call.idx = (uint8)data[0];
+        call.idx = (u8)data[0];
 	    call.dir = data[1];
 	    call.status = data[2];
 	    call.mode = data[3];
@@ -811,7 +811,7 @@ NAME
 */
 void aghfp_voice_recognition_ind(bool enable)
 {
-    uint16 index = 0;
+    u16 index = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;
         
     if (inst != NULL)
@@ -874,7 +874,7 @@ NAME
 */
 void aghfp_send_source_volume(aghfpInstance *inst)
 {
-    uint16 index = 0;
+    u16 index = 0;
     
     if (inst)
     {
@@ -906,14 +906,14 @@ void aghfp_send_source_volume(aghfpInstance *inst)
 NAME    
     aghfp_speaker_volume_ind - Receives speaker volume from the remote device 
 */
-void aghfp_speaker_volume_ind(uint8 volume)
+void aghfp_speaker_volume_ind(u8 volume)
 {
     usb_device_class_audio_levels levels;
     
     if (theSource->ps_config->usb_config.usb_hid_consumer_interface)
     {
         /* get the current USB audio levels */ 
-        UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_LEVELS, (uint16*)&levels);
+        UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_LEVELS, (u16*)&levels);
 
         /* send USB HID command to the Host to update volume */
         if (levels.out_mute)
@@ -939,7 +939,7 @@ void aghfp_speaker_volume_ind(uint8 volume)
 NAME    
     aghfp_mic_gain_ind - Receives microphone gain from the remote device 
 */
-void aghfp_mic_gain_ind(uint8 gain)
+void aghfp_mic_gain_ind(u8 gain)
 {
     
 }
@@ -951,7 +951,7 @@ NAME
 */
 void aghfp_send_voice_recognition(bool enable)
 {
-    uint16 index;
+    u16 index;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     
     if (inst != NULL)
@@ -977,7 +977,7 @@ NAME
 */
 void aghfp_host_set_call_state(aghfp_call_status status)
 {
-    uint16 index = 0;
+    u16 index = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     aghfp_call_status old_call_state = theSource->aghfp_data.aghost_state.call_status;
     
@@ -1007,7 +1007,7 @@ NAME
 void aghfp_host_set_call_setup_state(aghfp_call_setup_status status)
 
 {
-    uint16 index = 0;
+    u16 index = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     aghfp_call_setup_status old_setup_state = theSource->aghfp_data.aghost_state.call_setup_status;
     
@@ -1063,7 +1063,7 @@ NAME
 */
 void aghfp_host_set_call_held_state(aghfp_call_held_status status)
 {
-    uint16 index = 0;
+    u16 index = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;
     aghfp_call_held_status old_held_state = theSource->aghfp_data.aghost_state.call_held_status;
     
@@ -1088,7 +1088,7 @@ void aghfp_host_set_call_held_state(aghfp_call_held_status status)
 NAME    
     aghfp_host_set_signal_strength - Sets the signal strength of the AG Host
 */
-void aghfp_host_set_signal_strength(uint8 signal_strength)
+void aghfp_host_set_signal_strength(u8 signal_strength)
 {
     theSource->aghfp_data.aghost_state.signal = signal_strength;
     AGHFP_DEBUG(("AGHFP: Host signal strength [%d]\n", signal_strength));
@@ -1099,7 +1099,7 @@ void aghfp_host_set_signal_strength(uint8 signal_strength)
 NAME    
     aghfp_host_set_battery_level - Sets the battery level of the AG Host
 */
-void aghfp_host_set_battery_level(uint8 battery_level)
+void aghfp_host_set_battery_level(u8 battery_level)
 {
     theSource->aghfp_data.aghost_state.batt = battery_level;
     AGHFP_DEBUG(("AGHFP: Host battery level [%d]\n", battery_level));
@@ -1132,9 +1132,9 @@ void aghfp_host_set_network_availability(aghfp_service_availability availability
 NAME    
     aghfp_host_set_network_operator - Sets the network operator name of the AG Host
 */
-void aghfp_host_set_network_operator(uint16 size_name, const uint8 *name)
+void aghfp_host_set_network_operator(u16 size_name, const u8 *name)
 {
-    uint16 index;
+    u16 index;
     
     if (size_name > AGHOST_MAX_NETWORK_OPERATOR_CHARACTERS)
     {
@@ -1163,9 +1163,9 @@ void aghfp_host_set_network_operator(uint16 size_name, const uint8 *name)
 NAME    
     aghfp_host_set_ring_indication - Stores the data associated with a RING indication
 */
-void aghfp_host_set_ring_indication(uint8 clip_type, uint8 size_clip_number, const uint8 *clip_number)
+void aghfp_host_set_ring_indication(u8 clip_type, u8 size_clip_number, const u8 *clip_number)
 {
-    uint16 index = 0;
+    u16 index = 0;
     
     aghfp_host_clear_ring_indication();
    
@@ -1203,10 +1203,10 @@ void aghfp_host_clear_ring_indication(void)
 NAME    
     aghfp_store_warp_values - Stores the warp values for the current AGHFP audio connection    
 */
-void aghfp_store_warp_values(uint16 number_warp_values, uint16 *warp)
+void aghfp_store_warp_values(u16 number_warp_values, u16 *warp)
 {
-    uint16 index = 0;
-    uint16 i = 0;
+    u16 index = 0;
+    u16 i = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;    
         
     if (inst != NULL)
@@ -1238,7 +1238,7 @@ NAME
 */
 void aghfp_send_audio_params(void)
 {
-    uint16 index = 0;
+    u16 index = 0;
     aghfpInstance *inst = theSource->aghfp_data.inst;    
         
     if (inst != NULL)
@@ -1498,7 +1498,7 @@ static void aghfp_enter_state_disconnected(aghfpInstance *inst, AGHFP_STATE_T ol
 {
     if (aghfp_is_connected(old_state))
     {
-        uint16 i = 0;
+        u16 i = 0;
         /* update attributes on a disconnection */
         MAKE_MESSAGE(APP_STORE_DEVICE_ATTRIBUTES);
         message->addr = inst->addr;
@@ -1567,9 +1567,9 @@ static void aghfp_enter_state_connected(aghfpInstance *inst, AGHFP_STATE_T old_s
         ConnectionGetRole(&theSource->connectionTask, inst->slc_sink);
         
         /* Retrieve the device attributes */
-        if (ConnectionSmGetAttributeNow(PS_KEY_USER_PAIRED_ATTR_BASE, &inst->addr, sizeof(ATTRIBUTES_T), (uint8*)&attributes))
+        if (ConnectionSmGetAttributeNow(PS_KEY_USER_PAIRED_ATTR_BASE, &inst->addr, sizeof(ATTRIBUTES_T), (u8*)&attributes))
         {
-            uint16 i = 0;
+            u16 i = 0;
             /* Store locally the attributes that were read */
             for (i = 0; i < CSR_AG_AUDIO_WARP_NUMBER_VALUES; i++)
             {

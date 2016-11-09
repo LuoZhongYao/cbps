@@ -138,13 +138,13 @@ static const BootSectorExeType boot_exe = {
 
 /* This is the first few entries of the FAT, first sector.
    This states that one file exists at the start of the data area. */
-static const uint8 default_fat_entries[] = {
+static const u8 default_fat_entries[] = {
     0x00, 0x00, /* cluster 0 not used */
     0x00, 0x00, /* cluster 1 not used */
     FAT_LAST_CLUSTER & 0xff, (FAT_LAST_CLUSTER & 0xff00)>>8 /* cluster 2 is last cluster for file */
 };
 
-static const uint8 default_file_data[] = {
+static const u8 default_file_data[] = {
     'C','S','R',' ','m','a','s','s',' ','s','t','o','r','a','g','e',' ','e','x','a','m','p','l','e',' ','t','e','x','t',' ','f','i','l','e','.'
 };
 #define SIZE_FAT_FILE sizeof(default_file_data)
@@ -166,10 +166,10 @@ static const DirectoryType default_root_file = {
 };
 
 
-static uint8 *claimSink(Sink sink, uint16 size)
+static u8 *claimSink(Sink sink, u16 size)
 {
-    uint8 *dest = SinkMap(sink);
-    uint16 claim_result = SinkClaim(sink, size);
+    u8 *dest = SinkMap(sink);
+    u16 claim_result = SinkClaim(sink, size);
     if (claim_result == 0xffff)
     {
         return 0;
@@ -179,12 +179,12 @@ static uint8 *claimSink(Sink sink, uint16 size)
 }
 
 
-static uint32 read_sectors(FileInfoType *file_info, uint32 logical_address, uint32 transfer_length, uint32 area_start_sector)
+static u32 read_sectors(FileInfoType *file_info, u32 logical_address, u32 transfer_length, u32 area_start_sector)
 {
-    uint32 start_sector;
-    uint32 end_sector;
-    uint32 file_end_sector = file_info->end_sector;
-    uint16 i = 0;
+    u32 start_sector;
+    u32 end_sector;
+    u32 file_end_sector = file_info->end_sector;
+    u16 i = 0;
     Sink sink = StreamUsbEndPointSink(end_point_bulk_out);
     
     /* correct end sector for FAT2, as it's otherwise treated as FAT1 */
@@ -222,15 +222,15 @@ static uint32 read_sectors(FileInfoType *file_info, uint32 logical_address, uint
     /* send the data in the sectors from start_sector to end_sector */
     while (i <= (end_sector - start_sector))
     {
-        uint8 *buffer = 0;
-        uint16 sink_slack = 0;
-        uint16 source_size;
-        uint16 blocks_in_sink;
-        uint16 blocks_in_source;
-        uint16 blocks_to_read;
-        uint32 bytes_to_read;
-        uint32 remaining_bytes;
-        uint16 bytes_to_copy = 0;          
+        u8 *buffer = 0;
+        u16 sink_slack = 0;
+        u16 source_size;
+        u16 blocks_in_sink;
+        u16 blocks_in_source;
+        u16 blocks_to_read;
+        u32 bytes_to_read;
+        u32 remaining_bytes;
+        u16 bytes_to_copy = 0;          
         
         /* wait for free space in Sink */
         Fat16_WaitAvailable(sink, BYTES_PER_SECTOR);
@@ -262,7 +262,7 @@ static uint32 read_sectors(FileInfoType *file_info, uint32 logical_address, uint
                              
         if ((buffer = claimSink(sink, bytes_to_read)) != 0)
         {            
-            const uint8 *data_ptr = SourceMap(file_info->src);
+            const u8 *data_ptr = SourceMap(file_info->src);
             bool flush;
 
             if (bytes_to_copy < bytes_to_read)
@@ -291,30 +291,30 @@ void Fat16_Initialise(MassStorageType *ms)
     if (ms->file_info[FILE_INFO_DATA].size == 0)
     {
         ms->file_info[FILE_INFO_DATA].size = SIZE_FAT_FILE;
-        ms->file_info[FILE_INFO_DATA].params = (uint8 *)default_file_data; 
+        ms->file_info[FILE_INFO_DATA].params = (u8 *)default_file_data; 
         ms->file_info[FILE_INFO_DATA].index = 0;
     }
     
     if (ms->file_info[FILE_INFO_ROOT_DIR].size == 0)
     {
         ms->file_info[FILE_INFO_ROOT_DIR].size = sizeof(default_root_file);
-        ms->file_info[FILE_INFO_ROOT_DIR].params = (uint8 *)&default_root_file.filename[0];
+        ms->file_info[FILE_INFO_ROOT_DIR].params = (u8 *)&default_root_file.filename[0];
         ms->file_info[FILE_INFO_ROOT_DIR].index = 0;
     }
     
     if (ms->file_info[FILE_INFO_FAT].size == 0)
     {
         ms->file_info[FILE_INFO_FAT].size = sizeof(default_fat_entries);
-        ms->file_info[FILE_INFO_FAT].params = (uint8 *)default_fat_entries; 
+        ms->file_info[FILE_INFO_FAT].params = (u8 *)default_fat_entries; 
         ms->file_info[FILE_INFO_FAT].index = 0;
     }
     ms->info_read = FALSE;
 }
 
 
-void Fat16_Read(MassStorageType *ms, uint32 logical_address, uint32 transfer_length)
+void Fat16_Read(MassStorageType *ms, u32 logical_address, u32 transfer_length)
 {       
-    uint32 end_address = logical_address + transfer_length - 1;
+    u32 end_address = logical_address + transfer_length - 1;
     Sink sink_bulk_out = StreamUsbEndPointSink(end_point_bulk_out);
     
     MS_DEBUG(("FAT16: Read log addr: %ld end addr: %ld\n", logical_address, end_address));
@@ -322,9 +322,9 @@ void Fat16_Read(MassStorageType *ms, uint32 logical_address, uint32 transfer_len
     if (!ms->info_read)
     {
         /* information read once from read-only file system */
-        uint32 fat_number_sectors;
-        uint32 root_number_sectors;
-        uint32 data_number_sectors;   
+        u32 fat_number_sectors;
+        u32 root_number_sectors;
+        u32 data_number_sectors;   
     
         /* FAT size calculations */
         fat_number_sectors = ms->file_info[FILE_INFO_FAT].size / BYTES_PER_SECTOR + 1;       
@@ -359,15 +359,15 @@ void Fat16_Read(MassStorageType *ms, uint32 logical_address, uint32 transfer_len
         MS_DEBUG(("FAT16: log addr: %ld\n", logical_address));
         if (logical_address == MBR_SECTOR) /* Master Boot Record */
         {            
-            uint8 *buffer = 0;
+            u8 *buffer = 0;
             
             /* wait for free space in Sink */
             Fat16_WaitAvailable(sink_bulk_out, BYTES_PER_SECTOR);
             
             if ((buffer = claimSink(sink_bulk_out, BYTES_PER_SECTOR)) != 0)
             {
-                uint16 offset = 0;
-                uint16 size_data = sizeof(MasterBootRecordExeType);
+                u16 offset = 0;
+                u16 size_data = sizeof(MasterBootRecordExeType);
                 memmove(buffer, &mbr_exe, size_data);
                 offset += size_data;            
                 size_data = sizeof(MasterBootRecordPartitionType);
@@ -384,15 +384,15 @@ void Fat16_Read(MassStorageType *ms, uint32 logical_address, uint32 transfer_len
         }
         else if (logical_address == BOOT_SECTOR) /* Boot Sector */
         {       
-            uint8 *buffer = 0;  
+            u8 *buffer = 0;  
             
             /* wait for free space in Sink */
             Fat16_WaitAvailable(sink_bulk_out, BYTES_PER_SECTOR);
                           
             if ((buffer = claimSink(sink_bulk_out, BYTES_PER_SECTOR)) != 0)
             {
-                uint16 offset = 0;
-                uint16 size_data = sizeof(BootSectorType);
+                u16 offset = 0;
+                u16 size_data = sizeof(BootSectorType);
                 memmove(buffer, &boot_sector, size_data);
                 offset += size_data;
                 size_data = sizeof(BootSectorExeType);
@@ -428,7 +428,7 @@ void Fat16_Read(MassStorageType *ms, uint32 logical_address, uint32 transfer_len
         }
         else /* sector with no data */
         {
-            uint8 *buffer = 0;
+            u8 *buffer = 0;
             
             /* wait for free space in Sink */
             Fat16_WaitAvailable(sink_bulk_out, BYTES_PER_SECTOR);
@@ -446,19 +446,19 @@ void Fat16_Read(MassStorageType *ms, uint32 logical_address, uint32 transfer_len
 }
 
 
-uint32 Fat16_GetBlockSize(void)
+u32 Fat16_GetBlockSize(void)
 {
     return BYTES_PER_SECTOR;
 }
 
 
-uint32 Fat16_GetTotalBlocks(void)
+u32 Fat16_GetTotalBlocks(void)
 {
     return TOTAL_SECTORS;    
 }
 
 
-void Fat16_ConfigureDataArea(MassStorageType *ms, uint16 value_16, uint32 value_32, uint8 *params)
+void Fat16_ConfigureDataArea(MassStorageType *ms, u16 value_16, u32 value_32, u8 *params)
 {
     ms->file_info[FILE_INFO_DATA].size = value_32;
     if (params)
@@ -474,7 +474,7 @@ void Fat16_ConfigureDataArea(MassStorageType *ms, uint16 value_16, uint32 value_
 }
 
 
-void Fat16_ConfigureFat(MassStorageType *ms, uint16 value_16, uint32 value_32, uint8 *params)
+void Fat16_ConfigureFat(MassStorageType *ms, u16 value_16, u32 value_32, u8 *params)
 {
     ms->file_info[FILE_INFO_FAT].size = value_32;
     if (params)
@@ -490,7 +490,7 @@ void Fat16_ConfigureFat(MassStorageType *ms, uint16 value_16, uint32 value_32, u
 }
 
 
-void Fat16_ConfigureRootDir(MassStorageType *ms, uint16 value_16, uint32 value_32, uint8 *params)
+void Fat16_ConfigureRootDir(MassStorageType *ms, u16 value_16, u32 value_32, u8 *params)
 {
     ms->file_info[FILE_INFO_ROOT_DIR].size = value_32;
     if (params)
@@ -506,7 +506,7 @@ void Fat16_ConfigureRootDir(MassStorageType *ms, uint16 value_16, uint32 value_3
 }
 
 
-void Fat16_WaitAvailable(Sink sink, uint16 size)
+void Fat16_WaitAvailable(Sink sink, u16 size)
 {
     /* While not enough space and USB still attached, wait */
     while((SinkSlack(sink) < size) && (UsbDeviceState() == usb_device_state_configured));

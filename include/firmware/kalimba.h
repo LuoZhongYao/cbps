@@ -37,7 +37,7 @@ void KalimbaPowerOff(void);
 /*!
   @brief Sends a four word message to Kalimba. 
 */
-bool KalimbaSendMessage(uint16 message, uint16 a, uint16 b, uint16 c, uint16 d);
+bool KalimbaSendMessage(u16 message, u16 a, u16 b, u16 c, u16 d);
 
 /*!
   @brief Send a long message to Kalimba
@@ -48,6 +48,6 @@ bool KalimbaSendMessage(uint16 message, uint16 a, uint16 b, uint16 c, uint16 d);
 
   @return TRUE if the message was sent, FALSE if the send failed.
 */
-bool KalimbaSendLongMessage(uint16 message, uint16 len, const uint16 *data);
+bool KalimbaSendLongMessage(u16 message, u16 len, const u16 *data);
 
 #endif

@@ -74,20 +74,20 @@ typedef enum
 */
 typedef struct
 {
-    uint8     num_codecs;
-    uint16    codecs;
+    u8     num_codecs;
+    u16    codecs;
     wbs_codec codec_ids[1];
 } codecs_info;
 
 /*
     Return the Codec ID given a codec mask.
 */
-wbs_codec WbsCodecMaskToCodecId(codecs_info *codecs_info_in, uint16 codec_mask);
+wbs_codec WbsCodecMaskToCodecId(codecs_info *codecs_info_in, u16 codec_mask);
 
 /*
     Return the codec mask given a Codec ID.
 */
-uint16 WbsCodecIdToCodecMask(codecs_info *codecs_info_in, wbs_codec codec_id);
+u16 WbsCodecIdToCodecMask(codecs_info *codecs_info_in, wbs_codec codec_id);
 
 #endif /* WBS */
 

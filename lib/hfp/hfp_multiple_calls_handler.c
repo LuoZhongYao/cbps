@@ -42,7 +42,7 @@ DESCRIPTION
 RETURNS
     void
 */
-static bool hfpCheckCallActionState(hfp_link_data* link, hfp_chld_action action, uint16 call_idx, hfp_at_cmd* pending_cmd)
+static bool hfpCheckCallActionState(hfp_link_data* link, hfp_chld_action action, u16 call_idx, hfp_at_cmd* pending_cmd)
 {
     switch(action)
     {
@@ -144,7 +144,7 @@ bool hfpSendChldCmd(HFP_INTERNAL_AT_CHLD_REQ_T* req)
 {
     hfp_link_data* link    = req->link;
     hfp_chld_action action = req->action;
-    uint16 call_idx        = req->index;
+    u16 call_idx        = req->index;
     hfp_at_cmd pending_cmd = hfpCmdPending;
     
     char chld[12];
@@ -271,7 +271,7 @@ DESCRIPTION
 RETURNS
     void
 */
-static void sendCallWaitingNotificationToApp(hfp_link_data* link, uint8 type, uint16 size_number, const uint8 *number, uint16 size_name, const uint8* name)
+static void sendCallWaitingNotificationToApp(hfp_link_data* link, u8 type, u16 size_number, const u8 *number, u16 size_name, const u8* name)
 {
     /* Don't exceed max length */
     if(size_number >= HFP_MAX_ARRAY_LEN)

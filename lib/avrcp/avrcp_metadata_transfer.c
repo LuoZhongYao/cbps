@@ -21,6 +21,7 @@ NOTES
 #include <stream.h>
 #include <source.h>
 #include <panic.h>
+#include <stdlib.h>
 #include <memory.h>
 
 #include "avrcp_metadata_transfer.h"
@@ -35,19 +36,19 @@ NOTES
 #include "avrcp_init.h"
 
 static AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *avrcpCreateMetadataMessage(
-        uint16 id, avrcpPending pending, uint16 inline_param_len,
-        uint8 *inline_params, uint16 source_param_len, Source source_params);
+        u16 id, avrcpPending pending, u16 inline_param_len,
+        u8 *inline_params, u16 source_param_len, Source source_params);
 static void avrcpCreateMetadataInlineHeader(
-        AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *message, uint8 pdu_id,
-        uint16 inline_data_len, uint16 inline_param_len,
-        uint16 source_param_len);
+        AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *message, u8 pdu_id,
+        u16 inline_data_len, u16 inline_param_len,
+        u16 source_param_len);
 static void avrcpCreateMetadataInlineData(
         AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *message,
-        uint16 inline_param_len, uint8 *inline_params);
+        u16 inline_param_len, u8 *inline_params);
 static void avrcpCreateMetadataSourceData(AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T
-                    *message, uint16 source_param_len, Source source_params);
+                    *message, u16 source_param_len, Source source_params);
 static void avrcpCreateMetadataMessageInfo(
-        AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *message, uint16 id,
+        AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *message, u16 id,
         avrcpPending pending);
 
 /****************************************************************************
@@ -60,9 +61,9 @@ static void avrcpCreateMetadataMessageInfo(
  *PARAMETERS
  * pdu          -       command PDU ID. 
  ****************************************************************************/
-static uint8 avrcpGetCommandType(uint8 id)
+static u8 avrcpGetCommandType(u8 id)
 {
-    uint8 ctype;
+    u8 ctype;
 
     switch(id)
     {
@@ -124,9 +125,9 @@ static avrcp_packet_type avrcpGetMetadataPacketType( AVRCP* avrcp,
  *PARAMETERS
  * pdu          -       command PDU ID. 
  ****************************************************************************/
-static uint16 convertPduToMsgId(uint16 pdu_id)
+static u16 convertPduToMsgId(u16 pdu_id)
 {
-    uint16 msg_id=0;
+    u16 msg_id=0;
 
     switch(pdu_id)
     {
@@ -319,19 +320,19 @@ void avrcpSendMetadataFailCfmToClient(AVRCP *avrcp, avrcp_status_code status)
  *MESSAGE RETURNED
 *****************************************************************************/
 void avrcpHandleMetadataResponse(   AVRCP       *avrcp, 
-                                    const uint8 *ptr, 
-                                    uint16      packet_size)
+                                    const u8 *ptr, 
+                                    u16      packet_size)
 {
-    uint16 pdu_id = ptr[AVRCP_AVC_PDU_OFFSET];
-    uint16 meta_packet_type = ptr[AVRCP_AVC_PT_OFFSET];
-    uint8 transaction = (avrcp->av_msg[AVCTP_HEADER_START_OFFSET]  & 
+    u16 pdu_id = ptr[AVRCP_AVC_PDU_OFFSET];
+    u16 meta_packet_type = ptr[AVRCP_AVC_PT_OFFSET];
+    u8 transaction = (avrcp->av_msg[AVCTP_HEADER_START_OFFSET]  & 
                         AVCTP_TRANSACTION_MASK) >> AVCTP0_TRANSACTION_SHIFT;
-    uint16 param_len = ptr[AVRCP_AVC_LEN_OFFSET] << 8 |
+    u16 param_len = ptr[AVRCP_AVC_LEN_OFFSET] << 8 |
                        ptr[AVRCP_AVC_LEN_OFFSET+1];
     avrcp_status_code status;
     avrcp_response_type  response =  ptr[AVRCP_CTYPE_OFFSET];
-    const uint8 *data=NULL;
-    uint16 pdu_len = param_len + 
+    const u8 *data=NULL;
+    u16 pdu_len = param_len + 
                     AVRCP_VENDOR_HEADER_SIZE+METADATA_HEADER_SIZE;
 
     if( packet_size < AVRCP_VENDOR_HEADER_SIZE+METADATA_HEADER_SIZE )
@@ -538,11 +539,11 @@ void avrcpHandleMetadataResponse(   AVRCP       *avrcp,
 *       code
 *****************************************************************************/
 avrcp_status_code avrcpSendMetadataCommand(AVRCP*       avrcp, 
-                                           uint16       id, 
+                                           u16       id, 
                                            avrcpPending pending, 
-                                           uint16       inline_param_len,
-                                           uint8*       inline_params, 
-                                           uint16       source_param_len, 
+                                           u16       inline_param_len,
+                                           u8*       inline_params, 
+                                           u16       source_param_len, 
                                            Source       source_params)
 {
     AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *message;
@@ -573,7 +574,7 @@ avrcp_status_code avrcpSendMetadataCommand(AVRCP*       avrcp,
                                 source_param_len, source_params);
     MessageSendConditionally(&avrcp->task, 
                                 AVRCP_INTERNAL_VENDORDEPENDENT_REQ, 
-                                message,(uint16*)&avrcp->pending);       
+                                message,(u16*)&avrcp->pending);       
     return avrcp_success;
      
 }
@@ -602,10 +603,10 @@ avrcp_status_code avrcpSendMetadataCommand(AVRCP*       avrcp,
 *       The message
 *****************************************************************************/
 static AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *avrcpCreateMetadataMessage(
-        uint16 id, avrcpPending pending, uint16 inline_param_len,
-        uint8 *inline_params, uint16 source_param_len, Source source_params)
+        u16 id, avrcpPending pending, u16 inline_param_len,
+        u8 *inline_params, u16 source_param_len, Source source_params)
 {
-    uint16 inline_data_len = inline_param_len + METADATA_HEADER_SIZE;
+    u16 inline_data_len = inline_param_len + METADATA_HEADER_SIZE;
     MAKE_AVRCP_MESSAGE_WITH_LEN(AVRCP_INTERNAL_VENDORDEPENDENT_REQ,
                                                         inline_data_len);
     avrcpCreateMetadataInlineHeader(message, id, inline_data_len, 
@@ -637,12 +638,12 @@ static AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *avrcpCreateMetadataMessage(
 *
 *****************************************************************************/
 static void avrcpCreateMetadataInlineHeader(
-        AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *message, uint8 pdu_id,
-        uint16 inline_data_len, uint16 inline_param_len,
-        uint16 source_param_len)
+        AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *message, u8 pdu_id,
+        u16 inline_data_len, u16 inline_param_len,
+        u16 source_param_len)
 {
-    uint8 *pdu;
-    uint16 total_param_len;
+    u8 *pdu;
+    u16 total_param_len;
 
     message->extra_data_len = inline_data_len;
     pdu = message->extra_data;
@@ -677,7 +678,7 @@ static void avrcpCreateMetadataInlineHeader(
 *****************************************************************************/
 static void avrcpCreateMetadataInlineData(
         AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *message,
-        uint16 inline_param_len, uint8 *inline_params)
+        u16 inline_param_len, u8 *inline_params)
 {
     /* Copy the passed in params into the end of the pdu */
     if (inline_param_len)
@@ -704,7 +705,7 @@ static void avrcpCreateMetadataInlineData(
 *
 *****************************************************************************/
 static void avrcpCreateMetadataSourceData(AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T
-                    *message, uint16 source_param_len, Source source_params)
+                    *message, u16 source_param_len, Source source_params)
 {
     message->data = source_params;
     message->data_length = source_param_len;
@@ -725,7 +726,7 @@ static void avrcpCreateMetadataSourceData(AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T
 *
 *****************************************************************************/
 static void avrcpCreateMetadataMessageInfo(
-        AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *message, uint16 id,
+        AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *message, u16 id,
         avrcpPending pending)
 {
     message->company_id = AVRCP_BT_COMPANY_ID;
@@ -751,7 +752,7 @@ static void avrcpCreateMetadataMessageInfo(
  *PARAMETERS
  * pdu          -       command PDU ID. 
  ****************************************************************************/
-static avrcpPending convertPduToEnum(uint16 pdu_id)
+static avrcpPending convertPduToEnum(u16 pdu_id)
 {
     switch (pdu_id)
     {
@@ -791,16 +792,16 @@ static avrcpPending convertPduToEnum(uint16 pdu_id)
 *    trans_id           - Transaction ID
 *    pdu_id             - PDU ID
 *    avrcp_packet_type  - Metadata packet type
-*    uint16             - parameter length    
+*    u16             - parameter length    
 *
 * RETURNS
 *    void
 ****************************************************************************/
-static void avrcpFrameAVCResponseHeader(uint8*            ptr, 
-                                        uint8             trans_id,
-                                        uint8             pdu_id,
+static void avrcpFrameAVCResponseHeader(u8*            ptr, 
+                                        u8             trans_id,
+                                        u8             pdu_id,
                                         avrcp_packet_type metadata_packet_type,
-                                        uint16            param_length)
+                                        u16            param_length)
                      
 {
     /* Frame the AVCTP Start header. Frame it as a Start packet, 
@@ -843,7 +844,7 @@ static void avrcpFrameAVCResponseHeader(uint8*            ptr,
 ****************************************************************************/
 static void prepareMetadataControlResponse(AVRCP *avrcp, 
                                     avrcp_response_type response,
-                                    uint16 id)
+                                    u16 id)
 {
     if((id == AVRCP_INFORM_BATTERY_STATUS_PDU_ID) ||
        (id == AVRCP_INFORM_CHARACTER_SET_PDU_ID))
@@ -854,7 +855,7 @@ static void prepareMetadataControlResponse(AVRCP *avrcp,
     }
     else
     {
-       uint8 data[AVRCP_ERROR_CODE_SIZE] = {AVRCP_STATUS_SUCCESS};
+       u8 data[AVRCP_ERROR_CODE_SIZE] = {AVRCP_STATUS_SUCCESS};
        avrcpSendMetadataResponse(avrcp, response, id, 0, 
                                  avrcp_packet_type_single, 
                                  AVRCP_ERROR_CODE_SIZE, 
@@ -887,7 +888,7 @@ static void prepareMetadataControlResponse(AVRCP *avrcp,
 ****************************************************************************/
 void avrcpSendRejectMetadataResponse(AVRCP *avrcp,
                                      avrcp_response_type response, 
-                                     uint16 id)
+                                     u16 id)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_INTERNAL_REJECT_METADATA_RES);
 
@@ -928,10 +929,10 @@ void avrcpSendRejectMetadataResponse(AVRCP *avrcp,
 ****************************************************************************/
 void avrcpHandleInternalRejectMetadataResponse(AVRCP *avrcp,
                                                avrcp_response_type response, 
-                                               uint16 id)
+                                               u16 id)
 {
-    uint8 mandatory_data[1]; /* Just error code for failure */
-    uint16 data_size = 0;
+    u8 mandatory_data[1]; /* Just error code for failure */
+    u16 data_size = 0;
 
    /* Get the error status code */
     mandatory_data[0] = avrcpGetErrorStatusCode(&response,
@@ -978,16 +979,16 @@ void avrcpHandleInternalRejectMetadataResponse(AVRCP *avrcp,
  *MESSAGE RETURNED
 *****************************************************************************/
 void avrcpHandleMetadataCommand(AVRCP       *avrcp, 
-                                const uint8 *ptr, 
-                                uint16      packet_size)
+                                const u8 *ptr, 
+                                u16      packet_size)
 {
-    uint16 pdu_id =  ptr[AVRCP_AVC_PDU_OFFSET];
-    uint16 meta_packet_type = ptr[AVRCP_AVC_PT_OFFSET];
-    uint16 param_len = ptr[AVRCP_AVC_LEN_OFFSET] << 8 | 
+    u16 pdu_id =  ptr[AVRCP_AVC_PDU_OFFSET];
+    u16 meta_packet_type = ptr[AVRCP_AVC_PT_OFFSET];
+    u16 param_len = ptr[AVRCP_AVC_LEN_OFFSET] << 8 | 
                        ptr[AVRCP_AVC_LEN_OFFSET+1];
-    const uint8 *data = NULL;
-    uint8 start_data = 0;
-    uint16 pdu_len = param_len + AVRCP_VENDOR_HEADER_SIZE+
+    const u8 *data = NULL;
+    u8 start_data = 0;
+    u16 pdu_len = param_len + AVRCP_VENDOR_HEADER_SIZE+
                                   METADATA_HEADER_SIZE;
     
     /* Copy the last Transaction ID. This is required to frame the response
@@ -1066,7 +1067,7 @@ void avrcpHandleMetadataCommand(AVRCP       *avrcp,
 
     else if(pdu_id == AVRCP_REGISTER_NOTIFICATION_PDU_ID)
     {
-        uint8 event =  ptr[AVRCP_AVC_PARAM_OFFSET];
+        u8 event =  ptr[AVRCP_AVC_PARAM_OFFSET];
         
         if ((event >= EVENT_PLAYBACK_STATUS_CHANGED) && 
             (event <= EVENT_VOLUME_CHANGED))
@@ -1249,14 +1250,14 @@ void avrcpHandleCommonMetadataControlResponse(AVRCP         *avrcp,
 ****************************************************************************/
 void prepareMetadataStatusResponse( AVRCP               *avrcp, 
                                     avrcp_response_type response, 
-                                    uint16              id, 
-                                    uint16              param_length, 
+                                    u16              id, 
+                                    u16              param_length, 
                                     Source              data_list, 
-                                    uint16              size_mandatory_data, 
-                                    uint8*              mandatory_data)
+                                    u16              size_mandatory_data, 
+                                    u8*              mandatory_data)
 {
     avrcp_packet_type  metadata_packet_type =  avrcp_packet_type_single;
-    uint16 data_len =  avrcp->av_max_data_size;
+    u16 data_len =  avrcp->av_max_data_size;
 
     /* Check if Metadata packet has to be fragmented to 
         fit into 512 AV/C(or app defined) frame size restriction. */
@@ -1315,16 +1316,16 @@ void prepareMetadataStatusResponse( AVRCP               *avrcp,
 
 void avrcpSendMetadataResponse(AVRCP              *avrcp, 
                                avrcp_response_type response, 
-                               uint8               pdu_id, 
+                               u8               pdu_id, 
                                Source              caps_list, 
                                avrcp_packet_type   metadata_packet_type, 
-                               uint16              param_length, 
-                               uint16              size_mandatory_data, 
-                               uint8              *mandatory_data)
+                               u16              param_length, 
+                               u16              size_mandatory_data, 
+                               u8              *mandatory_data)
 {
-    uint8  *temp       = NULL;
-    uint8   trans_id   = 0;
-    uint16  temp_len   = 0;
+    u8  *temp       = NULL;
+    u8   trans_id   = 0;
+    u16  temp_len   = 0;
     bool    last_command = TRUE;
 
     /* 
@@ -1336,7 +1337,7 @@ void avrcpSendMetadataResponse(AVRCP              *avrcp,
      */ 
     if(pdu_id == AVRCP_REGISTER_NOTIFICATION_PDU_ID)
     {
-        uint8 event_id;  
+        u8 event_id;  
 
         if(  avrcp->block_received_data == avrcp_events_start_dummy )
         {

@@ -16,11 +16,11 @@ DESCRIPTION
     Send an access response to the GATT Manager library.
 */
 static void send_link_loss_access_rsp(Task task,
-                                    uint16 cid,
-                                    uint16 handle,
-                                    uint16 result,
-                                    uint16 size_value,
-                                    const uint8 *value)
+                                    u16 cid,
+                                    u16 handle,
+                                    u16 result,
+                                    u16 size_value,
+                                    const u8 *value)
 {
     if (!GattManagerServerAccessResponse(task, cid, handle, result, size_value, value))
     {
@@ -30,7 +30,7 @@ static void send_link_loss_access_rsp(Task task,
 }
 
 /***************************************************************************/
-void send_link_loss_alert_level_access_rsp(const GLLSS_T *const link_loss_server, uint16 cid, uint8 alert_level)
+void send_link_loss_alert_level_access_rsp(const GLLSS_T *const link_loss_server, u16 cid, u8 alert_level)
 {
     send_link_loss_access_rsp((Task)&link_loss_server->lib_task, cid, HANDLE_LINK_LOSS_ALERT_LEVEL, gatt_status_success, 1, &alert_level);
 }
@@ -42,7 +42,7 @@ NAME
 DESCRIPTION
     Send an error access response to the GATT Manager library.
 */
-static void send_link_loss_access_error_rsp(const GLLSS_T *const link_loss_server, const GATT_MANAGER_SERVER_ACCESS_IND_T *const access_ind, uint16 error)
+static void send_link_loss_access_error_rsp(const GLLSS_T *const link_loss_server, const GATT_MANAGER_SERVER_ACCESS_IND_T *const access_ind, u16 error)
 {
     send_link_loss_access_rsp((Task)&link_loss_server->lib_task, access_ind->cid, access_ind->handle, error, 0, NULL);
 }

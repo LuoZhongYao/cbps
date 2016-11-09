@@ -27,7 +27,7 @@ NOTES
 #define PIN_IS_VALID(x) ((x <= PIN_MAX) && (x != PIN_INVALID))
 
 #define PIO_NONE        (0UL)
-#define PIO_MASK(x)     (PIN_IS_VALID(x) ? ((uint32)1 << x) : PIO_NONE)
+#define PIO_MASK(x)     (PIN_IS_VALID(x) ? ((u32)1 << x) : PIO_NONE)
 
 
 /****************************************************************************
@@ -37,9 +37,9 @@ NAME
 DESCRIPTION
     This function converts from a pin to a PIO pins
 */
-static uint32 pioCommonGetMask(uint8 pin, pio_common_dir dir)
+static u32 pioCommonGetMask(u8 pin, pio_common_dir dir)
 {
-    uint32 pins = PIO_MASK(pin);
+    u32 pins = PIO_MASK(pin);
     if(PioSetDir32(pins, (dir ? pins : 0)) != PIO_NONE)
         return PIO_NONE;
     return pins;
@@ -53,9 +53,9 @@ NAME
 DESCRIPTION
     This function will drive/pull a PIO to the specified level
 */
-bool PioCommonSetPin(uint8 pin, pio_common_dir dir, bool level)
+bool PioCommonSetPin(u8 pin, pio_common_dir dir, bool level)
 {
-    uint32 pins = pioCommonGetMask(pin, dir);
+    u32 pins = pioCommonGetMask(pin, dir);
     PRINT(("PIO: %s %d (0x%lX) ", (dir ? "Drive" : "Pull"), pin, pins));
     if((pins != PIO_NONE) && (PioSet32(pins, (level ? pins : 0)) == PIO_NONE))
     {
@@ -76,9 +76,9 @@ DESCRIPTION
     will return TRUE if the pin is high, FALSE if the pin is low or could
     not be configured.
 */
-bool PioCommonGetPin(uint8 pin)
+bool PioCommonGetPin(u8 pin)
 {
-    uint32 pins = pioCommonGetMask(pin, pio_input);
+    u32 pins = pioCommonGetMask(pin, pio_input);
     PRINT(("PIO: Get %d (0x%lX) ", pin, pins));
     pins &= PioGet32();
     PRINT(("%s\n", pins ? "High" : "Low"));
@@ -95,9 +95,9 @@ DESCRIPTION
     them. If not successful on all pins this function will debounce all 
     possible PIOs and return FALSE, otherwise it will return TRUE.
 */
-bool PioCommonDebounce(uint32 pins, uint16 count, uint16 period)
+bool PioCommonDebounce(u32 pins, u16 count, u16 period)
 {
-    uint32 result;
+    u32 result;
     
     PRINT(("PIO: Debounce 0x%lX\n", pins));
     PioSetDir32(pins, pio_input);

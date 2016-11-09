@@ -100,7 +100,7 @@ struct __pbapcState
     pbapcSetPhonebookState setPbState;
 
     /* Remote server supported repositories */
-    uint8   srvRepos;
+    u8   srvRepos;
 
     /* Phone Book details */
     pbapcPb  pb;
@@ -114,7 +114,7 @@ void pbapcGoepHandler(Task task, MessageId id, Message message);
 void pbapcInitHandler( Task task, MessageId id,Message message);
 void pbapcGoepConnect( pbapcState *state,
                        const bdaddr *addr,
-                       uint16       channel );
+                       u16       channel );
 void pbapcInitConnection( pbapcState *state, const bdaddr *bdAddr );
 
 /* Set Phone book functions */

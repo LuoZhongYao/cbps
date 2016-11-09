@@ -23,7 +23,7 @@ static void SetDefaultConfigParams(codec_config_params *config)
 
 void CodecConfigure(Task codecTask, const codec_config_params *config)
 {
-	uint16 length = sizeof(codec_config_params);
+	u16 length = sizeof(codec_config_params);
 	MAKE_CODEC_MESSAGE(CODEC_INTERNAL_CONFIG_REQ);
 	message->config = (codec_config_params *) PanicUnlessMalloc(length);
 	if (!config)

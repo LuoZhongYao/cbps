@@ -64,7 +64,7 @@ static bool checkCallFlag (AGHFP *aghfp, aghfp_call_flags call_flag)
 
 static void setCallProgress (AGHFP *aghfp, aghfp_call_progress progress)
 {
-	PRINT(("\nsetCallProgress %u", (uint16)progress));
+	PRINT(("\nsetCallProgress %u", (u16)progress));
 	aghfp->call_progress = progress;
 	
 	if ( progress==CallProgressIdle )
@@ -760,9 +760,9 @@ bool aghfpCallManagerActiveNotComplete (AGHFP *aghfp)
 /****************************************************************************
 	Main entry to Call Manager sate machine.
 */
-void aghfpManageCall (AGHFP *aghfp, aghfp_call_event call_event, uint16 event_value)
+void aghfpManageCall (AGHFP *aghfp, aghfp_call_event call_event, u16 event_value)
 {
-	PRINT(("\naghfpManageCall 0x%X - %u[%u,%u]\n", (uint16)aghfp, (uint16)aghfp->call_progress, (uint16)call_event, event_value));
+	PRINT(("\naghfpManageCall 0x%X - %u[%u,%u]\n", (u16)aghfp, (u16)aghfp->call_progress, (u16)call_event, event_value));
 	
 	switch ( aghfp->call_progress )
 	{
@@ -810,9 +810,9 @@ void aghfpResetCallerIdDetails (AGHFP *aghfp)
 /****************************************************************************
 	Sets the Caller Id details for +CLIP notifications.
 */
-void AghfpSetCallerIdDetails (AGHFP *aghfp, uint8 type_number, uint16 size_number, const uint8 *number, uint16 size_string, const uint8 *string)
+void AghfpSetCallerIdDetails (AGHFP *aghfp, u8 type_number, u16 size_number, const u8 *number, u16 size_string, const u8 *string)
 {
-	uint16 size_data = 0;
+	u16 size_data = 0;
 	if ( number!=NULL )
 	{
 		size_data += size_number;
@@ -842,7 +842,7 @@ void AghfpSetCallerIdDetails (AGHFP *aghfp, uint8 type_number, uint16 size_numbe
 */
 void aghfpHandleSetCallerIdDetails (AGHFP *aghfp, AGHFP_INTERNAL_SET_CALLER_ID_DETAILS_REQ_T *req)
 {
-	uint16 size_data = req->size_number + req->size_alpha;
+	u16 size_data = req->size_number + req->size_alpha;
 	
 	aghfp->call_params.call_details.type_number = req->type_number;
 	aghfp->call_params.call_details.size_number = req->size_number;

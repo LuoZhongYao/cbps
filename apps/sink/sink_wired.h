@@ -172,7 +172,7 @@ RETURNS
     None
 */ 
 #ifdef ENABLE_WIRED
-void analogGetAudioRate (uint16 *rate);
+void analogGetAudioRate (u16 *rate);
 #else
 #define analogGetAudioRate(x) (*(x) = 0)
 #endif

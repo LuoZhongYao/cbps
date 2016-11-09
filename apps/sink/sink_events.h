@@ -588,6 +588,6 @@ DESCRIPTION
 RETURNS
     void
 */
-void sinkSendLater(sinkEvents_t event, uint32 delay);
+void sinkSendLater(sinkEvents_t event, u32 delay);
 
 #endif

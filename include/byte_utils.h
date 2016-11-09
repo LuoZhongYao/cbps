@@ -14,15 +14,15 @@ DESCRIPTION
 
 #include <csrtypes.h>
 
-uint16 ByteUtilsMemCpyToStream(uint8 *dst, uint8 *src, uint16 size);
-uint16 ByteUtilsMemCpyFromStream(uint8 *dst, const uint8 *src, uint16 size);
+u16 ByteUtilsMemCpyToStream(u8 *dst, u8 *src, u16 size);
+u16 ByteUtilsMemCpyFromStream(u8 *dst, const u8 *src, u16 size);
 
-uint16 ByteUtilsSet1Byte(uint8 *dst, uint16 byteIndex, uint8 val);
-uint16 ByteUtilsSet2Bytes(uint8 *dst, uint16 byteIndex, uint16 val);
-uint16 ByteUtilsSet4Bytes(uint8 *dst, uint16 byteIndex, uint32 val);
+u16 ByteUtilsSet1Byte(u8 *dst, u16 byteIndex, u8 val);
+u16 ByteUtilsSet2Bytes(u8 *dst, u16 byteIndex, u16 val);
+u16 ByteUtilsSet4Bytes(u8 *dst, u16 byteIndex, u32 val);
 
-uint8 ByteUtilsGet1ByteFromStream(const uint8 *src);
-uint16 ByteUtilsGet2BytesFromStream(const uint8 *src);
-uint32 ByteUtilsGet4BytesFromStream(const uint8 *src);
+u8 ByteUtilsGet1ByteFromStream(const u8 *src);
+u16 ByteUtilsGet2BytesFromStream(const u8 *src);
+u32 ByteUtilsGet4BytesFromStream(const u8 *src);
 
 #endif /* BYTE_UTILS_H_ */

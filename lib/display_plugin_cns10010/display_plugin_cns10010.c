@@ -14,6 +14,7 @@ DESCRIPTION
     show the volume and battery bars.
 */
 #include <i2c.h>
+#include <stdlib.h>
 #include <memory.h>
 #include <display_plugin_if.h>
 #include "display_plugin_cns10010_private.h"
@@ -143,10 +144,10 @@ static const lcd_datum lcd_setup_data[] =
 
 static display_t *display;
 
-static bool lcd_write(uint8 rs, uint8 data)
+static bool lcd_write(u8 rs, u8 data)
 {
-    uint16 ack;
-    uint8 lcd_data[2];
+    u16 ack;
+    u8 lcd_data[2];
     
     lcd_data[0] = rs;
     lcd_data[1] = data;
@@ -164,7 +165,7 @@ NAME
 DESCRIPTION
     Put data in the buffer to be sent to the LCD when it's ready
 */
-static void store_data(uint8 rs, uint8 data)
+static void store_data(u8 rs, u8 data)
 {
     display->lcd_buffer[display->buffer_idx].rs = rs;
     display->lcd_buffer[display->buffer_idx].data = data;
@@ -290,11 +291,11 @@ NAME
 DESCRIPTION
     Set the displayed text, padded with spaces
 */
-static bool lcd_display_text(char* text, uint8 len, uint8 line)
+static bool lcd_display_text(char* text, u8 len, u8 line)
 {    
-    uint16 txtlen = len;
-    uint16 maxlen;
-    uint8 start;
+    u16 txtlen = len;
+    u16 maxlen;
+    u8 start;
     
     DISPLAY_DEBUG(("cns10010: text %d on %d\n", txtlen, line));
     
@@ -331,7 +332,7 @@ static bool lcd_display_text(char* text, uint8 len, uint8 line)
     }
         
     {
-        uint16 idx;
+        u16 idx;
         store_data(RS_CTRL, start); /* Address DDRAM, selecting the correct line  */
         
         for (idx = 0; idx < maxlen; ++idx)
@@ -358,14 +359,14 @@ DESCRIPTION
 
 static void lcd_set_text(DISPLAY_PLUGIN_SET_TEXT_MSG_T *message)
 { 
-    uint16 displayDuration = message->display_time;
+    u16 displayDuration = message->display_time;
 #ifdef ENABLE_SCROLL
-    uint8 maxLen;
-    uint16 scrollLen = message->text_length;
-    uint8 updateTime = message->scroll_update;
-    uint8 scrollStartIn = message->scroll_pause;
+    u8 maxLen;
+    u16 scrollLen = message->text_length;
+    u8 updateTime = message->scroll_update;
+    u8 scrollStartIn = message->scroll_pause;
     char *scrollBuffer = message->text;
-    uint8 line = message->line;
+    u8 line = message->line;
        
     /* find the line lengths, cancel existing messages */
     if (line == 1)
@@ -463,12 +464,12 @@ DESCRIPTION
     Scroll the text 
 */
 #ifdef ENABLE_SCROLL
-static void lcd_scroll_text(LCD_SCROLL_TEXT_MSG_T *message, uint8 line)
+static void lcd_scroll_text(LCD_SCROLL_TEXT_MSG_T *message, u8 line)
 {    
-    uint16 scrollLen = message->text_length;   
-    uint8 updateTime =    message->scroll_update;
+    u16 scrollLen = message->text_length;   
+    u8 updateTime =    message->scroll_update;
     char *scrollBuffer = message->text;
-    uint8 position = message->pos;
+    u8 position = message->pos;
     
     DISPLAY_DEBUG(("cns10010: Scrolling (pos %u, scrllen %u, seglen %u)...\n", position, scrollLen, scrollLen-position));
  
@@ -508,7 +509,7 @@ NAME
 DESCRIPTION
     Internal message handler to clear display text line after a time out
 */
-static void lcd_clear_line( uint16 line )
+static void lcd_clear_line( u16 line )
 {
     DISPLAY_DEBUG(("cns10010: clear line %u\n", line));
     
@@ -537,7 +538,7 @@ DESCRIPTION
     Show the battery level by changing the graphic to have the
     appropriate number of bars
 */
-static void lcd_set_battery(uint16 battery_level)
+static void lcd_set_battery(u16 battery_level)
 {    
     DISPLAY_DEBUG(("cns10010: batt %d\n", battery_level));
 
@@ -555,7 +556,7 @@ static void lcd_set_battery(uint16 battery_level)
     
     else
     {
-        uint16 level;
+        u16 level;
 
         store_data(RS_CTRL, LCD_CMD_CGRAM); /* Address CGRAM char 0 */
         
@@ -596,7 +597,7 @@ NAME
 DESCRIPTION
     Show the volume level
 */
-static void lcd_set_volume(uint16 volume)
+static void lcd_set_volume(u16 volume)
 {
     DISPLAY_DEBUG(("cns10010: vol %d\n", volume));
     
@@ -614,7 +615,7 @@ static void lcd_set_volume(uint16 volume)
     
     else
     {
-        uint16 level;
+        u16 level;
         
     /*  Position cursor  */
         store_data(RS_CTRL, LCD_CMD_DDRAM | (LCD_DDRAM_LINE2 + 9));
@@ -622,7 +623,7 @@ static void lcd_set_volume(uint16 volume)
     /*  Build volume bar from groups of 0, 1, 2 or 3  */
         for (level = 1; level <= DISPLAY_MAX_VOLUME; level += 3)
         {
-            uint8 bar;
+            u8 bar;
             
             if (volume < level)
                 bar = LCD_CHR_VOL_0;

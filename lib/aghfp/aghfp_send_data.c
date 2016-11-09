@@ -33,10 +33,10 @@ void aghfpSendAtCmd(AGHFP *aghfp, const char *at_cmd)
 	    if (aghfp->mapped_rfcomm_sink == NULL)
 	    {
 			bool flushSuccess;
-			uint8 *dest;
-	        uint16 length = strlen(at_cmd);
+			u8 *dest;
+	        u16 length = strlen(at_cmd);
 	
-		    uint16 offset = SinkClaim(aghfp->rfcomm_sink, length + 4);
+		    u16 offset = SinkClaim(aghfp->rfcomm_sink, length + 4);
 	        AGHFP_DEBUG_ASSERT(offset != 0xFFFF, ("aghfpSendAtCmd: Invalid sink offset length = %d\n", length));
 	
 			dest = SinkMap(aghfp->rfcomm_sink);
@@ -78,15 +78,15 @@ void aghfpSendAtCmd(AGHFP *aghfp, const char *at_cmd)
  Send a single string of user data, WITH NO ADDITIONAL FORMATTING. This allows
  the sending of malformed instructions, for testing purposes.
 */
-void aghfpSendRawData(AGHFP *aghfp, uint16 length, const uint8 *data)
+void aghfpSendRawData(AGHFP *aghfp, u16 length, const u8 *data)
 {
 	/* Make sure we aren't already in the middle of a AtCmdBegin section */
 	if ( SinkIsValid(aghfp->rfcomm_sink) )
 	{
 	    if (aghfp->mapped_rfcomm_sink == NULL)
 	    {
-			uint8 *dest;
-		    uint16 offset = SinkClaim(aghfp->rfcomm_sink, length);
+			u8 *dest;
+		    u16 offset = SinkClaim(aghfp->rfcomm_sink, length);
 			AGHFP_DEBUG_ASSERT(offset != 0xFFFF, ("aghfpSendRawData: Invalid sink offset\n"));
 	
 			dest = SinkMap(aghfp->rfcomm_sink) + offset;
@@ -101,7 +101,7 @@ void aghfpSendRawData(AGHFP *aghfp, uint16 length, const uint8 *data)
 
 #ifdef DISPLAY_AT_CMDS
 			{
-				uint16 i = 0;
+				u16 i = 0;
 				printf("\nsending: ");
 				for (i = 0; i < length; ++i)
 				{
@@ -124,8 +124,8 @@ void aghfpSendRawData(AGHFP *aghfp, uint16 length, const uint8 *data)
 /****************************************************************************/
 void aghfpAtCmdBegin(AGHFP *aghfp)
 {
-	uint16 offset;
-	uint8 *dest;
+	u16 offset;
+	u8 *dest;
 
 	if ( SinkIsValid(aghfp->rfcomm_sink) )
 	{
@@ -154,9 +154,9 @@ void aghfpAtCmdBegin(AGHFP *aghfp)
 /****************************************************************************/
 void aghfpAtCmdString(AGHFP *aghfp, const char *string)
 {
-	uint16 offset;
-    uint8 *dest;
-    uint16 length = strlen(string);
+	u16 offset;
+    u8 *dest;
+    u16 length = strlen(string);
 
 	if ( SinkIsValid(aghfp->rfcomm_sink) )
 	{
@@ -186,10 +186,10 @@ void aghfpAtCmdString(AGHFP *aghfp, const char *string)
 
 
 /****************************************************************************/
-void aghfpAtCmdData(AGHFP *aghfp, const uint8 *data, uint16 len)
+void aghfpAtCmdData(AGHFP *aghfp, const u8 *data, u16 len)
 {
-	uint16 offset;
-    uint8 *dest;
+	u16 offset;
+    u8 *dest;
 
 	if ( SinkIsValid(aghfp->rfcomm_sink) )
 	{
@@ -204,7 +204,7 @@ void aghfpAtCmdData(AGHFP *aghfp, const uint8 *data, uint16 len)
 
 #ifdef DISPLAY_AT_CMDS
 		{
-			uint16 i;
+			u16 i;
 			for (i = 0; i < len; ++i)
 			{
 				putchar('X');
@@ -218,8 +218,8 @@ void aghfpAtCmdData(AGHFP *aghfp, const uint8 *data, uint16 len)
 /****************************************************************************/
 void aghfpAtCmdEnd(AGHFP *aghfp)
 {
-	uint16 offset;
-    uint8 *dest;
+	u16 offset;
+    u8 *dest;
 
 	if ( SinkIsValid(aghfp->rfcomm_sink) )
 	{

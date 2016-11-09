@@ -63,9 +63,9 @@ static const a2dp_stream_state A2dpStreamState[ 19 ] =
 };
 
 #if 0
-static a2dp_stream_state getStreamState (uint16 state_mask)
+static a2dp_stream_state getStreamState (u16 state_mask)
 {
-    uint8 state = 0;
+    u8 state = 0;
 
     if (state_mask & 0xFF00)
     {
@@ -92,7 +92,7 @@ static a2dp_stream_state getStreamState (uint16 state_mask)
 #endif
 
 
-static uint8 findDeviceId (remote_device *device)
+static u8 findDeviceId (remote_device *device)
 {
     PRINT((" device_id="));
 
@@ -107,7 +107,7 @@ static uint8 findDeviceId (remote_device *device)
 }
 
 
-static uint8 findStreamId (media_channel *media)
+static u8 findStreamId (media_channel *media)
 {
     PRINT((" stream_id="));
 
@@ -210,7 +210,7 @@ void a2dpLinklossReconnectCancelledInd (remote_device *device)
     MessageSend(a2dp->clientTask, A2DP_LINKLOSS_RECONNECT_CANCEL_IND, message);
 }
 
-void a2dpMediaOpenInd (remote_device *device, uint8 seid)
+void a2dpMediaOpenInd (remote_device *device, u8 seid)
 {
     MAKE_A2DP_MESSAGE(A2DP_MEDIA_OPEN_IND);
 
@@ -322,7 +322,7 @@ void a2dpMediaSuspendCfm (remote_device *device, media_channel *media, a2dp_stat
 }
 
 
-void a2dpCodecConfigureInd (remote_device *device, uint8 local_seid, uint16 size_remote_service_caps, uint8* remote_service_caps)
+void a2dpCodecConfigureInd (remote_device *device, u8 local_seid, u16 size_remote_service_caps, u8* remote_service_caps)
 {
     MAKE_A2DP_MESSAGE_WITH_LEN(A2DP_CODEC_CONFIGURE_IND, size_remote_service_caps);
 
@@ -364,7 +364,7 @@ void a2dpMediaReconfigureCfm (remote_device *device, media_channel *media, a2dp_
 }
 
 
-void a2dpMediaAvSyncDelayInd (remote_device *device, uint8 seid)
+void a2dpMediaAvSyncDelayInd (remote_device *device, u8 seid)
 {
     MAKE_A2DP_MESSAGE(A2DP_MEDIA_AV_SYNC_DELAY_IND);
 
@@ -377,7 +377,7 @@ void a2dpMediaAvSyncDelayInd (remote_device *device, uint8 seid)
 }
 
 
-void a2dpMediaAvSyncDelayCfm (remote_device *device, uint8 seid, a2dp_status_code status)
+void a2dpMediaAvSyncDelayCfm (remote_device *device, u8 seid, a2dp_status_code status)
 {
     MAKE_A2DP_MESSAGE(A2DP_MEDIA_AV_SYNC_DELAY_CFM);
 
@@ -390,7 +390,7 @@ void a2dpMediaAvSyncDelayCfm (remote_device *device, uint8 seid, a2dp_status_cod
     MessageSend(a2dp->clientTask, A2DP_MEDIA_AV_SYNC_DELAY_CFM, message);
 }
 
-void a2dpMediaAvSyncDelayUpdatedInd (remote_device *device, uint8 seid, uint16 delay)
+void a2dpMediaAvSyncDelayUpdatedInd (remote_device *device, u8 seid, u16 delay)
 {
     MAKE_A2DP_MESSAGE(A2DP_MEDIA_AV_SYNC_DELAY_UPDATED_IND);
 
@@ -405,7 +405,7 @@ void a2dpMediaAvSyncDelayUpdatedInd (remote_device *device, uint8 seid, uint16 d
 
 #if 0
 /****************************************************************************/
-void sendGetCurrentSepCapabilitiesCfm(a2dp_status_code status, const uint8 *caps, uint16 size_caps)
+void sendGetCurrentSepCapabilitiesCfm(a2dp_status_code status, const u8 *caps, u16 size_caps)
 {
     MAKE_A2DP_MESSAGE_WITH_LEN(A2DP_GET_CURRENT_SEP_CAPABILITIES_CFM, ((status == a2dp_success) ? size_caps : 1));
 
@@ -429,7 +429,7 @@ void sendGetCurrentSepCapabilitiesCfm(a2dp_status_code status, const uint8 *caps
 
 
 
-bool A2dpConfigureMaxRemoteDevices(uint8 max_remote_devs)
+bool A2dpConfigureMaxRemoteDevices(u8 max_remote_devs)
 {
     /* Check we can handle this request */
     if((a2dp != NULL) && (max_remote_devs <= A2DP_MAX_REMOTE_DEVICES_DEFAULT) && (max_remote_devs > 0))
@@ -477,7 +477,7 @@ bool A2dpSignallingConnectRequest (bdaddr *addr)
     }
 }
 
-bool A2dpSignallingConnectResponse (uint16 device_id, bool accept)
+bool A2dpSignallingConnectResponse (u16 device_id, bool accept)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES))
     {
@@ -495,7 +495,7 @@ bool A2dpSignallingConnectResponse (uint16 device_id, bool accept)
 }
 
 
-bool A2dpSignallingDisconnectRequest (uint16 device_id)
+bool A2dpSignallingDisconnectRequest (u16 device_id)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES))
     {
@@ -512,7 +512,7 @@ bool A2dpSignallingDisconnectRequest (uint16 device_id)
 }
 
 
-Sink A2dpSignallingGetSink (uint16 device_id)
+Sink A2dpSignallingGetSink (u16 device_id)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES))
     {
@@ -529,7 +529,7 @@ Sink A2dpSignallingGetSink (uint16 device_id)
     }
 }
 
-a2dp_signalling_state A2dpSignallingGetState (uint16 device_id)
+a2dp_signalling_state A2dpSignallingGetState (u16 device_id)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES))
     {
@@ -540,7 +540,7 @@ a2dp_signalling_state A2dpSignallingGetState (uint16 device_id)
 }
 
 
-bool A2dpDeviceGetBdaddr (uint16 device_id, bdaddr *addr)
+bool A2dpDeviceGetBdaddr (u16 device_id, bdaddr *addr)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES))
     {
@@ -561,7 +561,7 @@ bool A2dpDeviceGetBdaddr (uint16 device_id, bdaddr *addr)
 }
 
 
-bool A2dpDeviceManageLinkloss (uint16 device_id, bool enable)
+bool A2dpDeviceManageLinkloss (u16 device_id, bool enable)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES))
     {
@@ -580,7 +580,7 @@ bool A2dpDeviceManageLinkloss (uint16 device_id, bool enable)
 }
 
 
-bool A2dpMediaOpenRequest (uint16 device_id, uint16 size_seid_list, uint8 *seid_list)
+bool A2dpMediaOpenRequest (u16 device_id, u16 size_seid_list, u8 *seid_list)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES))
     {
@@ -607,7 +607,7 @@ bool A2dpMediaOpenRequest (uint16 device_id, uint16 size_seid_list, uint8 *seid_
 }
 
 
-bool A2dpMediaOpenResponse(uint16 device_id, bool accept)
+bool A2dpMediaOpenResponse(u16 device_id, bool accept)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES))
     {
@@ -625,7 +625,7 @@ bool A2dpMediaOpenResponse(uint16 device_id, bool accept)
 }
 
 
-bool A2dpMediaCloseRequest (uint16 device_id, uint16 stream_id)
+bool A2dpMediaCloseRequest (u16 device_id, u16 stream_id)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES) || (stream_id >= A2DP_MAX_MEDIA_CHANNELS))
     {
@@ -643,7 +643,7 @@ bool A2dpMediaCloseRequest (uint16 device_id, uint16 stream_id)
 }
 
 
-bool A2dpMediaStartRequest (uint16 device_id, uint16 stream_id)
+bool A2dpMediaStartRequest (u16 device_id, u16 stream_id)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES) || (stream_id >= A2DP_MAX_MEDIA_CHANNELS))
     {
@@ -661,7 +661,7 @@ bool A2dpMediaStartRequest (uint16 device_id, uint16 stream_id)
 }
 
 
-bool A2dpMediaStartResponse (uint16 device_id, uint16 stream_id, bool accept)
+bool A2dpMediaStartResponse (u16 device_id, u16 stream_id, bool accept)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES) || (stream_id >= A2DP_MAX_MEDIA_CHANNELS))
     {
@@ -680,7 +680,7 @@ bool A2dpMediaStartResponse (uint16 device_id, uint16 stream_id, bool accept)
 }
 
 
-bool A2dpMediaSuspendRequest (uint16 device_id, uint16 stream_id)
+bool A2dpMediaSuspendRequest (u16 device_id, u16 stream_id)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES) || (stream_id >= A2DP_MAX_MEDIA_CHANNELS))
     {
@@ -698,7 +698,7 @@ bool A2dpMediaSuspendRequest (uint16 device_id, uint16 stream_id)
 }
 
 
-bool A2dpMediaReconfigureRequest (uint16 device_id, uint16 stream_id, uint16 service_caps_size, const uint8 *service_caps)
+bool A2dpMediaReconfigureRequest (u16 device_id, u16 stream_id, u16 service_caps_size, const u8 *service_caps)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES) || (stream_id >= A2DP_MAX_MEDIA_CHANNELS))
     {
@@ -718,7 +718,7 @@ bool A2dpMediaReconfigureRequest (uint16 device_id, uint16 stream_id, uint16 ser
 }
 
 
-bool A2dpMediaAvSyncDelayRequest(uint16 device_id, uint8 seid, uint16 delay)
+bool A2dpMediaAvSyncDelayRequest(u16 device_id, u8 seid, u16 delay)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES))
     {
@@ -737,7 +737,7 @@ bool A2dpMediaAvSyncDelayRequest(uint16 device_id, uint8 seid, uint16 delay)
 }
 
 
-uint16 A2dpMediaAvSyncDelayResponse (uint16 device_id, uint8 seid, uint16 delay)
+u16 A2dpMediaAvSyncDelayResponse (u16 device_id, u8 seid, u16 delay)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES))
     {
@@ -756,7 +756,7 @@ uint16 A2dpMediaAvSyncDelayResponse (uint16 device_id, uint8 seid, uint16 delay)
 }
 
 
-Sink A2dpMediaGetSink (uint16 device_id, uint16 stream_id)
+Sink A2dpMediaGetSink (u16 device_id, u16 stream_id)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES) || (stream_id >= A2DP_MAX_MEDIA_CHANNELS))
     {
@@ -774,7 +774,7 @@ Sink A2dpMediaGetSink (uint16 device_id, uint16 stream_id)
 }
 
 
-a2dp_role_type A2dpMediaGetRole(uint16 device_id, uint16 stream_id)
+a2dp_role_type A2dpMediaGetRole(u16 device_id, u16 stream_id)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES) || (stream_id >= A2DP_MAX_MEDIA_CHANNELS))
     {
@@ -792,7 +792,7 @@ a2dp_role_type A2dpMediaGetRole(uint16 device_id, uint16 stream_id)
 }
 
 
-a2dp_stream_state A2dpMediaGetState (uint16 device_id, uint16 stream_id)
+a2dp_stream_state A2dpMediaGetState (u16 device_id, u16 stream_id)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES) || (stream_id >= A2DP_MAX_MEDIA_CHANNELS))
     {
@@ -803,7 +803,7 @@ a2dp_stream_state A2dpMediaGetState (uint16 device_id, uint16 stream_id)
     return A2dpStreamState[ a2dp->remote_conn[device_id].signal_conn.status.stream_state ];
 }
 
-a2dp_codec_settings * A2dpCodecGetSettings (uint16 device_id, uint16 stream_id)
+a2dp_codec_settings * A2dpCodecGetSettings (u16 device_id, u16 stream_id)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES) || (stream_id >= A2DP_MAX_MEDIA_CHANNELS))
     {
@@ -814,7 +814,7 @@ a2dp_codec_settings * A2dpCodecGetSettings (uint16 device_id, uint16 stream_id)
     return a2dpGetCodecAudioParams( &a2dp->remote_conn[device_id] );
 }
 
-a2dp_sep_status A2dpCodecSetAvailable(uint16 device_id, uint8 seid, bool available)
+a2dp_sep_status A2dpCodecSetAvailable(u16 device_id, u8 seid, bool available)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES))
     {
@@ -824,7 +824,7 @@ a2dp_sep_status A2dpCodecSetAvailable(uint16 device_id, uint8 seid, bool availab
     return a2dpSetSepAvailable(&a2dp->remote_conn[device_id], seid, available);
 }
 
-a2dp_sep_status A2dpCodecGetAvailable(uint16 device_id, uint8 seid)
+a2dp_sep_status A2dpCodecGetAvailable(u16 device_id, u8 seid)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES))
     {
@@ -835,7 +835,7 @@ a2dp_sep_status A2dpCodecGetAvailable(uint16 device_id, uint8 seid)
 }
 
 /*****************************************************************************/
-bool A2dpCodecConfigureResponse(uint16 device_id, bool accept, uint8 local_seid, uint16 size_codec_service_caps, uint8 *codec_service_caps)
+bool A2dpCodecConfigureResponse(u16 device_id, bool accept, u8 local_seid, u16 size_codec_service_caps, u8 *codec_service_caps)
 {
     if ((a2dp == NULL) || (device_id >= A2DP_MAX_REMOTE_DEVICES))
     {
@@ -908,7 +908,7 @@ void A2dpGetCurrentSepCapabilities(A2DP *dep_a2dp)
 
 #if 0
 /*****************************************************************************/
-uint8 *A2dpGetCurrentSepConfiguration(A2DP *a2dp, uint16 *size_caps)
+u8 *A2dpGetCurrentSepConfiguration(A2DP *a2dp, u16 *size_caps)
 {
     if ((a2dp->remote_conn[0].signal_conn.stream_state == avdtp_stream_open) ||
         (a2dp->remote_conn[0].signal_conn.stream_state == avdtp_stream_streaming) ||
@@ -916,15 +916,15 @@ uint8 *A2dpGetCurrentSepConfiguration(A2DP *a2dp, uint16 *size_caps)
         (a2dp->remote_conn[0].signal_conn.stream_state == avdtp_stream_local_suspending)
         )
     {
-        uint8 *service_caps = blockGetBase( data_block_configured_service_caps );
+        u8 *service_caps = blockGetBase( data_block_configured_service_caps );
         if (service_caps)
         {
-            uint8 *caps;
-            uint16 size_service_caps = blockGetSize( data_block_configured_service_caps );
+            u8 *caps;
+            u16 size_service_caps = blockGetSize( data_block_configured_service_caps );
 
             /* Create copy of service caps for app, since the library one could move */
             /* Expectation is that app will free this memory when it has finished with it */
-            caps = (uint8 *)malloc( size_service_caps );
+            caps = (u8 *)malloc( size_service_caps );
             if (caps != NULL)
             {
                 memmove( caps, service_caps, size_service_caps);

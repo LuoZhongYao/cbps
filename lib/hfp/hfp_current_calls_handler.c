@@ -66,7 +66,7 @@ AT INDICATION
 RETURNS
     void
 */
-static void hfpHandleCurrentCallsInd(hfp_link_data* link, uint16 call_idx, uint8 direction, uint8 status, uint8 mode, uint8 multiparty, uint8 type, uint8 number_length, const uint8 *number)
+static void hfpHandleCurrentCallsInd(hfp_link_data* link, u16 call_idx, u8 direction, u8 status, u8 mode, u8 multiparty, u8 type, u8 number_length, const u8 *number)
 {
     /* Validate parameters - ignore silently if any are invalid */
     if(direction > hfp_call_mobile_terminated || status > hfp_call_waiting || mode > hfp_call_fax || multiparty > hfp_multiparty_call)

@@ -44,8 +44,8 @@ DESCRIPTION
 */
 void avrcpSendNotification( AVRCP *avrcp,  
                             avrcp_response_type response, 
-                            const uint8* ptr, 
-                            uint16 packet_size);
+                            const u8* ptr, 
+                            u16 packet_size);
 
 /****************************************************************************
 NAME    
@@ -68,10 +68,10 @@ DESCRIPTION
 */
 void avrcpSendGetPlayStatusCfm(AVRCP *avrcp, 
                             avrcp_status_code status, 
-                            uint32 song_length, 
-                            uint32 song_elapsed, 
+                            u32 song_length, 
+                            u32 song_elapsed, 
                             avrcp_play_status play_status, 
-                            uint8 transaction); 
+                            u8 transaction); 
 
 
 /****************************************************************************
@@ -83,9 +83,9 @@ DESCRIPTION
 */
 void avrcpHandleGetPlayStatusResponse(AVRCP *avrcp, 
                                       avrcp_status_code status,
-                                      uint16 transaction, 
-                                      const uint8 *ptr, 
-                                      uint16 packet_size);
+                                      u16 transaction, 
+                                      const u8 *ptr, 
+                                      u16 packet_size);
 
 #endif /* !AVRCP_TG_ONLY_LIB */
 
@@ -97,7 +97,7 @@ NAME
 DESCRIPTION
     Handle Register Notification command received from the CT.
 */
-void avrcpHandleRegisterNotificationCommand(AVRCP *avrcp, const uint8 *ptr);
+void avrcpHandleRegisterNotificationCommand(AVRCP *avrcp, const u8 *ptr);
 
 
 /****************************************************************************
@@ -175,9 +175,9 @@ DESCRIPTION
 */
 void sendRegisterNotificationResponse(AVRCP *avrcp, 
                                 avrcp_response_type response, 
-                                uint16 size_mandatory, 
-                                uint8 *mandatory, 
-                                uint16 size_attributes, 
+                                u16 size_mandatory, 
+                                u8 *mandatory, 
+                                u16 size_attributes, 
                                 Source attributes);
 
 
@@ -219,7 +219,7 @@ DESCRIPTION
     Internal handler to reject a group of registered notifications
 */
 void avrcpRejectRegisterNotifications(  AVRCP*               avrcp, 
-                                        uint16                event_bits, 
+                                        u16                event_bits, 
                                         avrcp_response_type   response);
 
 /****************************************************************************

@@ -292,7 +292,7 @@ void connectionHandleWriteFlushTimeoutRequest(const CL_INTERNAL_DM_WRITE_FLUSH_T
 /****************************************************************************/
 void connectionHandleChangeLocalName(const CL_INTERNAL_DM_CHANGE_LOCAL_NAME_REQ_T *req)
 {
-	uint16 i;
+	u16 i;
 	MAKE_PRIM_C(DM_HCI_CHANGE_LOCAL_NAME_REQ); 
 	prim->common.length = sizeof(DM_HCI_CHANGE_LOCAL_NAME_REQ_T) + req->length_name;
 

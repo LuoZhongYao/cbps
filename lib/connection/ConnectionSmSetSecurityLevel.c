@@ -25,7 +25,7 @@ NOTES
 
 
 /*****************************************************************************/
-void ConnectionSmSetSecurityLevel(dm_protocol_id protocol_id, uint32 channel, dm_ssp_security_level ssp_sec_level, bool outgoing_ok, bool authorised, bool disable_legacy)
+void ConnectionSmSetSecurityLevel(dm_protocol_id protocol_id, u32 channel, dm_ssp_security_level ssp_sec_level, bool outgoing_ok, bool authorised, bool disable_legacy)
 {
 #ifdef CONNECTION_DEBUG_LIB
 	if (ssp_sec_level >= ssp_secl_level_unknown)

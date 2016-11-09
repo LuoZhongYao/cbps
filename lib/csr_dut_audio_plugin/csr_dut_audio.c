@@ -38,23 +38,23 @@ typedef struct
     /*! Codec Task */
     Task codec_task;
     /*! The current audio volume level*/
-    uint16 volume;    
+    u16 volume;    
     /*! Indicates if stereo or mono */
     bool stereo;
     /*! Indicates rate of audio */
-    uint32 rate;
+    u32 rate;
     /*! The Tone sink in use */
     Sink tone_sink;
     /*! The current tone volume level*/
-    uint16 tone_volume;
+    u16 tone_volume;
     /*! The current tone stereo flag*/
-    uint16 tone_stereo;
+    u16 tone_stereo;
 
     multi_channel_out_t tone_channel;
     /*! The current tone */
     ringtone_note *tone;
     /*! The plugin parameters */
-    uint16 params;
+    const void *params;
     /*! which microphone to use */
     unsigned dut_microphone:2;
 } DUT_AUDIO_T;
@@ -159,7 +159,7 @@ static void CsrDutAudioPluginPopulateFromAudioConnectData(const AUDIO_PLUGIN_CON
     DUT_AUDIO->tone = NULL;
     DUT_AUDIO->tone_channel = mch_out_primary_left;
     DUT_AUDIO->rate = connect_message->rate;
-    DUT_AUDIO->params = (uint16) connect_message->params;
+    DUT_AUDIO->params = connect_message->params;
     DUT_AUDIO->dut_microphone = connect_message->features.dut_microphone;
 
     PRINT(("DUT AUDIO: CsrDutAudioPluginConnect\n"));
@@ -214,7 +214,7 @@ void CsrDutAudioPluginSetMode(const AUDIO_MODE_T mode)
 }
 
 
-void CsrDutAudioPluginSetVolume(const uint16 volume)
+void CsrDutAudioPluginSetVolume(const u16 volume)
 {    
     PanicNull(DUT_AUDIO);
 
@@ -354,5 +354,5 @@ void CsrDutAudioPluginRepeatTone(Task task)
     
     CsrDutAudioPluginIncrementToneOutputChannel();
 
-    MessageSendConditionally(task, AUDIO_PLUGIN_PLAY_TONE_MSG, message, (const uint16 *)AudioBusyPtr());
+    MessageSendConditionally(task, AUDIO_PLUGIN_PLAY_TONE_MSG, message, (const u16 *)AudioBusyPtr());
 }

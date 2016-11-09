@@ -17,7 +17,7 @@ Copyright (c) 2010 - 2015 Qualcomm Technologies International, Ltd.
 
 bool usbEnumerateBatteryCharging(Task app_task)
 {
-    PRINT(("USB: setup batt charge 0x%x\n",(uint16)app_task));
+    PRINT(("USB: setup batt charge 0x%x\n",(u16)app_task));
     StreamConfigure((vm_stream_config_key)VM_STREAM_USB_ATTACH_MSG_ENABLED, 1);
     return TRUE;
 }

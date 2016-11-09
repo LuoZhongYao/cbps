@@ -58,7 +58,7 @@ DESCRIPTION
 #define DSP_OUTPUT_PORT_AUX_RIGHT       10
 
 /* Turn multi-channel output into a bitmask */
-#define CsrMultiChanGetOutputMask(mch_out) ((uint16)1 << mch_out)
+#define CsrMultiChanGetOutputMask(mch_out) ((u16)1 << mch_out)
 
 /* Helpers for enabling/disabling bits in disable_mask */
 #define CsrMultiChanSetOutputDisabled(mask, mch_out) \
@@ -149,7 +149,7 @@ typedef struct __audio_endpoint
 typedef struct __multi_channel_hardware_mapping
 {
     audio_endpoint_t endpoint;
-    int16 volume_trim;
+    i16 volume_trim;
 } multi_channel_hardware_mapping_t;
 
 /*!
@@ -206,7 +206,7 @@ typedef struct __multi_channel_config
 {
     multi_channel_hardware_mapping_t mapping[mch_out_max];
     multi_channel_group_gain_type_t gain_type[multi_channel_group_all];
-    int16 fixed_hw_gain;
+    i16 fixed_hw_gain;
 } multi_channel_config_t;
 
 /*!
@@ -234,7 +234,7 @@ typedef enum
 */
 typedef struct __multi_channel_params
 {
-    uint32 sample_rate;                     /*! Sample rate to run hardware outputs at */
+    u32 sample_rate;                     /*! Sample rate to run hardware outputs at */
     unsigned disable_mask:mch_out_max;      /*! Allows individual outputs to be disabled */
     multi_channel_transform_t transform:2;  /*! Source is ADPCM (doesn't apply to DSP) */
     unsigned disable_resample:1;            /*! Don't adjust sample rate even when 
@@ -395,7 +395,7 @@ PARAMETERS:
 RETURNS:
     Sample rate in Hz that will be used when connecting audio
 */
-uint32 CsrMultiChannelGetSampleRate(multi_channel_params_t* params);
+u32 CsrMultiChannelGetSampleRate(multi_channel_params_t* params);
 
 /******************************************************************************
 NAME:
@@ -453,7 +453,7 @@ PARAMETERS:
               digital gain.
 */
 void CsrMultiChanGainGetDigital(const multi_channel_group_t group, 
-                                const int16 master_gain, const int16 tone_gain,
+                                const i16 master_gain, const i16 tone_gain,
                                 multi_channel_gain_t* gain_info);
 
 /******************************************************************************
@@ -477,7 +477,7 @@ PARAMETERS:
               digital gain.
 */
 void CsrMultiChanGainGetDigitalOnly(const multi_channel_group_t group, 
-                                    const int16 master_gain, const int16 tone_gain,
+                                    const i16 master_gain, const i16 tone_gain,
                                     multi_channel_gain_t* gain_info);
 
 /******************************************************************************
@@ -506,7 +506,7 @@ PARAMETERS:
     
 */
 void CsrMultiChanGainSetHardware(const multi_channel_group_t group,
-                                 const int16 master_gain,
+                                 const i16 master_gain,
                                  const multi_channel_gain_t* gain_info);
 
 /******************************************************************************
@@ -526,7 +526,7 @@ PARAMETERS:
     
 */
 void CsrMultiChanGainSetHardwareOnly(const multi_channel_group_t group,
-                                     const int16 master_gain);
+                                     const i16 master_gain);
 
 /******************************************************************************
 NAME:

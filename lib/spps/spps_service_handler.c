@@ -59,7 +59,7 @@ static void sppHandleRfcommRegisterCfm(const CL_RFCOMM_REGISTER_CFM_T *cfm)
         ConnectionRegisterServiceRecord(
             (Task)&sppsServiceTask,
             sizeof(spp_service_record),
-            (const uint8 *)&spp_service_record
+            (const u8 *)&spp_service_record
             );
     }  
 }

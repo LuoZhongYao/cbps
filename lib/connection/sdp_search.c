@@ -56,7 +56,7 @@ void ConnectionSdpCloseSearchRequest(Task appTask)
 
 /*****************************************************************************/
 #define REF_FLAG 0x8000 /* Pass result as a reference instead of a value */
-void ConnectionSdpServiceSearchRequest(Task appTask, const bdaddr *bd_addr, uint16 max_num_recs, uint16 size_srch_pttrn, const uint8 *search_pattern)
+void ConnectionSdpServiceSearchRequest(Task appTask, const bdaddr *bd_addr, u16 max_num_recs, u16 size_srch_pttrn, const u8 *search_pattern)
 {
 #ifdef CONNECTION_DEBUG_LIB    
     if (size_srch_pttrn == 0)
@@ -96,7 +96,7 @@ void ConnectionSdpServiceSearchRequest(Task appTask, const bdaddr *bd_addr, uint
     }
 }
 
-void ConnectionSdpServiceSearchRefRequest(Task appTask, const bdaddr *bd_addr, uint16 max_num_recs, uint16 size_srch_pttrn, const uint8 *search_pattern)
+void ConnectionSdpServiceSearchRefRequest(Task appTask, const bdaddr *bd_addr, u16 max_num_recs, u16 size_srch_pttrn, const u8 *search_pattern)
 {
     ConnectionSdpServiceSearchRequest(
         appTask,

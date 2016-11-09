@@ -63,9 +63,9 @@ RETURNS
 */
 bool ConnectionBleAddAdvertisingReportFilter(
     ble_ad_type     ad_type,
-    uint16          interval,
-    uint16          size_pattern,
-    const uint8*    pattern    
+    u16          interval,
+    u16          size_pattern,
+    const u8*    pattern    
     )
 {
 #ifdef CONNECTION_DEBUG_LIB
@@ -93,9 +93,9 @@ bool ConnectionBleAddAdvertisingReportFilter(
         /* Copy the data to a memory slot, which will be freed after
          * the function call.
          *
-         * Data is uint8* but trap takes uint16*
+         * Data is u8* but trap takes u16*
          */
-        uint16 *uint16_pattern = (uint16 *) PanicUnlessMalloc(size_pattern);
+        u16 *uint16_pattern = (u16 *) PanicUnlessMalloc(size_pattern);
         memmove(uint16_pattern, pattern, size_pattern);
         
         return VmAddAdvertisingReportFilter(
@@ -103,7 +103,7 @@ bool ConnectionBleAddAdvertisingReportFilter(
                     ad_type,
                     interval,
                     size_pattern,
-                    (uint16)uint16_pattern
+                    (uintptr_t)uint16_pattern
                     );
     }
 }
@@ -145,8 +145,8 @@ void ConnectionDmBleSetScanParametersReq(
         bool    enable_active_scanning,
         bool    random_own_address,
         bool    white_list_only,
-        uint16  scan_interval,
-        uint16  scan_window
+        u16  scan_interval,
+        u16  scan_window
         )
 {
 #ifdef CONNECTION_DEBUG_LIB
@@ -192,7 +192,7 @@ DESCRIPTION
 RETURNS
    void
 */
-void ConnectionDmBleSetScanResponseDataReq(uint8 size_sr_data, const uint8 *sr_data)
+void ConnectionDmBleSetScanResponseDataReq(u8 size_sr_data, const u8 *sr_data)
 {
     
 #ifdef CONNECTION_DEBUG_LIB

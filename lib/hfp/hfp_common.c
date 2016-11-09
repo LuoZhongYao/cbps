@@ -53,7 +53,7 @@ ptr hfpSkipPastChar(ptr p, ptr e, char ch)
 {
     if(p)
         while(p != e)
-            if(*p++ == (uint8)ch)
+            if(*p++ == (u8)ch)
                 return p;
     return 0;
 }
@@ -88,7 +88,7 @@ void hfpSendCommonInternalMessagePriority(MessageId message_id, hfp_link_priorit
 
 
 /*****************************************************************************/
-hfp_number_type hfpConvertNumberType( uint8 type )
+hfp_number_type hfpConvertNumberType( u8 type )
 {
     switch ( type & 0x70 )
     {

@@ -33,7 +33,7 @@ static const UsbCodes usb_codes_hid_no_boot = {B_INTERFACE_CLASS_HID, /* bInterf
                                                };
 
 /* HID Report Descriptor - Consumer Transport Control Device */
-static const uint8 report_descriptor_hid_consumer_transport[] = 
+static const u8 report_descriptor_hid_consumer_transport[] = 
 {
     0x05, 0x0C,                  /* USAGE_PAGE (Consumer Devices) */
     0x09, 0x01,                  /* USAGE (Consumer Control) */
@@ -80,7 +80,7 @@ static const uint8 report_descriptor_hid_consumer_transport[] =
 };
 
 /* USB HID class descriptor - Consumer Transport Control Device*/
-static const uint8 interface_descriptor_hid_consumer_transport[] =
+static const u8 interface_descriptor_hid_consumer_transport[] =
 {
     HID_DESCRIPTOR_LENGTH,              /* bLength */
     B_DESCRIPTOR_TYPE_HID,              /* bDescriptorType */
@@ -117,7 +117,7 @@ static const usb_device_class_hid_consumer_transport_config usb_hid_config_consu
 
 
 /* USB HID keyboard class descriptor */
-static const uint8 interface_descriptor_hid_keybd[HID_DESCRIPTOR_LENGTH] =
+static const u8 interface_descriptor_hid_keybd[HID_DESCRIPTOR_LENGTH] =
 {
     HID_DESCRIPTOR_LENGTH,              /* bLength */
     B_DESCRIPTOR_TYPE_HID,              /* bDescriptorType */
@@ -130,7 +130,7 @@ static const uint8 interface_descriptor_hid_keybd[HID_DESCRIPTOR_LENGTH] =
 };
 
 /* HID Keyboard Report Descriptor */
-static const uint8 report_descriptor_hid_keybd[] =
+static const u8 report_descriptor_hid_keybd[] =
 {
     0x05, 0x01,                    /* USAGE_PAGE (Generic Desktop) */
     0x09, 0x06,                    /* USAGE (Keyboard) */
@@ -195,9 +195,9 @@ static bool usbEnumerateHidKeyboard(bool consumer_active);
 static void hidConsumerHandler(Task task, MessageId id, Message message);
 static void hidKeyboardHandler(Task task, MessageId id, Message message);
 static void handleHidClassRequest(Source source, usb_device_class_type class_type);
-static void usbSendDefaultHidConsumerOscEvent(uint16 key);
-static void usbSendDefaultHidConsumerOocEvent(uint16 key, uint16 state);
-static void usbSendDefaultHidKeyboardModifierEvent(uint16 modifier, uint16 key);
+static void usbSendDefaultHidConsumerOscEvent(u16 key);
+static void usbSendDefaultHidConsumerOocEvent(u16 key, u16 state);
+static void usbSendDefaultHidKeyboardModifierEvent(u16 modifier, u16 key);
 
  
 static bool usbEnumerateHidConsumerTransportControl(void)
@@ -276,11 +276,11 @@ static void hidKeyboardHandler(Task task, MessageId id, Message message)
  
 static void handleHidClassRequest(Source source, usb_device_class_type class_type)
 {
-    static uint8 idle_rate = 0;
+    static u8 idle_rate = 0;
     
     {    
         Sink sink = StreamSinkFromSource(source);
-        uint16 packet_size;
+        u16 packet_size;
 
         while ((packet_size = SourceBoundary(source)) != 0)
         {
@@ -298,17 +298,17 @@ static void handleHidClassRequest(Source source, usb_device_class_type class_typ
                 /* GET_REPORT */
                 case 0x01:
                 {
-                    PRINT(("USB: HID Get_Report src=0x%X wValue=0x%X wIndex=0x%X wLength=0x%X\n", (uint16)source, resp.original_request.wValue, resp.original_request.wIndex, resp.original_request.wLength));
+                    PRINT(("USB: HID Get_Report src=0x%X wValue=0x%X wIndex=0x%X wLength=0x%X\n", (u16)source, resp.original_request.wValue, resp.original_request.wIndex, resp.original_request.wLength));
                     break;
                 }
             
                 /* GET_IDLE */
                 case 0x02:
                 {
-                    uint8 *out;
+                    u8 *out;
                     if ((out = claimSink(sink, 1)) != 0)
                     {
-                        PRINT(("USB: HID Get_Idle src=0x%X wValue=0x%X wIndex=0x%X\n", (uint16)source, resp.original_request.wValue, resp.original_request.wIndex));
+                        PRINT(("USB: HID Get_Idle src=0x%X wValue=0x%X wIndex=0x%X\n", (u16)source, resp.original_request.wValue, resp.original_request.wIndex));
                         out[0] = idle_rate;
                         resp.success = TRUE;
                         resp.data_length = 1;                
@@ -319,10 +319,10 @@ static void handleHidClassRequest(Source source, usb_device_class_type class_typ
                 /* SET_REPORT */
                 case 0x09:
                 {
-                    const uint8 *in = SourceMap(source);                    
-                    uint16 size_data = resp.original_request.wLength;                
-                    uint8 report_id = resp.original_request.wValue & 0xff;
-                    PRINT(("USB: HID Set_Report src=0x%X wValue=0x%X wIndex=0x%X wLength=0x%X -> \n", (uint16)source, resp.original_request.wValue, resp.original_request.wIndex, resp.original_request.wLength));
+                    const u8 *in = SourceMap(source);                    
+                    u16 size_data = resp.original_request.wLength;                
+                    u8 report_id = resp.original_request.wValue & 0xff;
+                    PRINT(("USB: HID Set_Report src=0x%X wValue=0x%X wIndex=0x%X wLength=0x%X -> \n", (u16)source, resp.original_request.wValue, resp.original_request.wIndex, resp.original_request.wLength));
                   
                     resp.success = TRUE;
                                                             
@@ -331,7 +331,7 @@ static void handleHidClassRequest(Source source, usb_device_class_type class_typ
                         if (class_type == USB_DEVICE_CLASS_TYPE_HID_CONSUMER_TRANSPORT_CONTROL)
                         {
                             USB_DEVICE_CLASS_MSG_REPORT_IND_T *message = PanicUnlessMalloc(sizeof(USB_DEVICE_CLASS_MSG_REPORT_IND_T) + size_data);
-                            uint16 source_size = SourceSize(source);
+                            u16 source_size = SourceSize(source);
                             
                             PRINT(("    send report ind source_size[0x%x]\n", source_size));
                             
@@ -346,7 +346,7 @@ static void handleHidClassRequest(Source source, usb_device_class_type class_typ
                             }
                             memmove(message->report, in, message->size_report);
                             MessageSend(device->app_task, USB_DEVICE_CLASS_MSG_REPORT_IND, message);
-                            PRINT(("    sent report ind to Task [0x%x]\n", (uint16)device->app_task));
+                            PRINT(("    sent report ind to Task [0x%x]\n", (u16)device->app_task));
                         }
                     }                                     
                     break;
@@ -355,7 +355,7 @@ static void handleHidClassRequest(Source source, usb_device_class_type class_typ
                 /* SET_IDLE */
                 case 0x0A:    
                 {
-                    PRINT(("USB: HID Set_Idle src=0x%X wValue=0x%X wIndex=0x%X\n", (uint16)source, resp.original_request.wValue, resp.original_request.wIndex));
+                    PRINT(("USB: HID Set_Idle src=0x%X wValue=0x%X wIndex=0x%X\n", (u16)source, resp.original_request.wValue, resp.original_request.wIndex));
                     idle_rate = resp.original_request.wValue >> 8;
                     resp.success = TRUE;
                     break;
@@ -363,7 +363,7 @@ static void handleHidClassRequest(Source source, usb_device_class_type class_typ
             
                 default:
                 {
-                    PRINT(("USB: HID req=0x%X src=0x%X wValue=0x%X wIndex=0x%X wLength=0x%X\n", resp.original_request.bRequest, (uint16)source, resp.original_request.wValue, resp.original_request.wIndex, resp.original_request.wLength));
+                    PRINT(("USB: HID req=0x%X src=0x%X wValue=0x%X wIndex=0x%X wLength=0x%X\n", resp.original_request.bRequest, (u16)source, resp.original_request.wValue, resp.original_request.wIndex, resp.original_request.wLength));
                     break;            
                 }
             }
@@ -371,13 +371,13 @@ static void handleHidClassRequest(Source source, usb_device_class_type class_typ
             /* Send response */
             if (resp.data_length)
             {
-                (void)SinkFlushHeader(sink, resp.data_length, (uint16 *)&resp, sizeof(UsbResponse));
+                (void)SinkFlushHeader(sink, resp.data_length, (u16 *)&resp, sizeof(UsbResponse));
             }
             else
             {
                    /* Sink packets can never be zero-length, so flush a dummy byte */
                 (void) SinkClaim(sink, 1);
-                (void) SinkFlushHeader(sink, 1, (uint16 *) &resp, sizeof(UsbResponse));          
+                (void) SinkFlushHeader(sink, 1, (u16 *) &resp, sizeof(UsbResponse));          
             }   
 
             /* Discard the original request */
@@ -387,10 +387,10 @@ static void handleHidClassRequest(Source source, usb_device_class_type class_typ
 }
 
 
-static void usbSendDefaultHidConsumerOscEvent(uint16 key)
+static void usbSendDefaultHidConsumerOscEvent(u16 key)
 {
-    uint16 size_params = 3;
-    uint8 params[3];
+    u16 size_params = 3;
+    u8 params[3];
                 
     params[0] = 1;          /* REPORT ID */
     params[1] = key;        /* key code */
@@ -402,10 +402,10 @@ static void usbSendDefaultHidConsumerOscEvent(uint16 key)
 }
 
 
-static void usbSendDefaultHidConsumerOocEvent(uint16 key, uint16 state)
+static void usbSendDefaultHidConsumerOocEvent(u16 key, u16 state)
 {
-    uint16 size_params = 3;
-    uint8 params[3];
+    u16 size_params = 3;
+    u8 params[3];
     
     params[0] = 1; /* REPORT ID */
     
@@ -423,10 +423,10 @@ static void usbSendDefaultHidConsumerOocEvent(uint16 key, uint16 state)
 }
 
 
-static void usbSendDefaultHidKeyboardModifierEvent(uint16 modifier, uint16 key)
+static void usbSendDefaultHidKeyboardModifierEvent(u16 modifier, u16 key)
 {
-    uint16 size_params = 8;
-    uint8 params[8];
+    u16 size_params = 8;
+    u8 params[8];
     
     memset(params, 0, size_params);
                 
@@ -439,7 +439,7 @@ static void usbSendDefaultHidKeyboardModifierEvent(uint16 modifier, uint16 key)
 }
 
 
-bool usbEnumerateHid(uint16 usb_device_class)
+bool usbEnumerateHid(u16 usb_device_class)
 {
     if ((usb_device_class & USB_DEVICE_CLASS_TYPE_HID_CONSUMER_TRANSPORT_CONTROL) && (usb_device_class & USB_DEVICE_CLASS_TYPE_HID_KEYBOARD))
     {
@@ -478,10 +478,10 @@ bool usbConfigureHidConsumerTransport(usb_device_class_config config, const usb_
 }
 
 
-bool usbSendRawEventHidKeycode(usb_device_class_type type, uint16 size_params, const uint8 *params)
+bool usbSendRawEventHidKeycode(usb_device_class_type type, u16 size_params, const u8 *params)
 {
-    uint8 *ptr;
-    uint16 i;
+    u8 *ptr;
+    u16 i;
     Sink sink;
     
     if ((type & USB_DEVICE_CLASS_TYPE_HID_KEYBOARD) && (device->usb_classes & USB_DEVICE_CLASS_TYPE_HID_CONSUMER_TRANSPORT_CONTROL))
@@ -616,11 +616,11 @@ usb_device_class_status usbSendDefaultHidKeyboardEvent(usb_device_class_event ev
 }
 
 
-bool usbSendReportHidConsumerTransport(uint16 report_id, uint16 size_report, uint8 *report)
+bool usbSendReportHidConsumerTransport(u16 report_id, u16 size_report, u8 *report)
 {
     Sink sink = StreamUsbEndPointSink(end_point_int_out);
-    uint8 *data = NULL; 
-    uint16 i = 0;    
+    u8 *data = NULL; 
+    u16 i = 0;    
     
     data = claimSink(sink, size_report + 1);
     

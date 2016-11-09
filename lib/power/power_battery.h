@@ -42,7 +42,7 @@ DESCRIPTION
     Both battery voltage and level are sent to App and the App decides the 
     further operation base on the reported results.
 */
-void powerBatteryHandleVoltageReading(uint16 reading);
+void powerBatteryHandleVoltageReading(u16 reading);
 
 
 /****************************************************************************
@@ -52,7 +52,7 @@ NAME
 DESCRIPTION
     Calculate the current battery temperature
 */
-void powerBatteryHandleTemperatureReading(uint16 reading);
+void powerBatteryHandleTemperatureReading(u16 reading);
 
 
 #endif /* POWER_BATTERY_H_ */

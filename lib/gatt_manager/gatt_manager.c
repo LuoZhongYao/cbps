@@ -34,7 +34,7 @@ void GattManagerDeInit(void)
     gattManagerDataDeInit();
 }
 
-bool GattManagerRegisterConstDB(const uint16* db_ptr, uint16 size)
+bool GattManagerRegisterConstDB(const u16* db_ptr, u16 size)
 {
     if (!gattManagerDataIsInit() ||
         gattManagerDataGetInitialisationState() != gatt_manager_initialisation_state_registration ||
@@ -67,10 +67,10 @@ void GattManagerRegisterWithGatt(void)
        makes more sense to discard it at the point where we are forced to do
        so. */
     GattInit(gattManagerDataGetTask(), gattManagerDataGetDBSize(),
-             (uint16 *)gattManagerDataGetDB());
+             (u16 *)gattManagerDataGetDB());
 }
 
-void GattManagerDisconnectRequest(uint16 cid)
+void GattManagerDisconnectRequest(u16 cid)
 {
     if (gattManagerDataIsInit())
     {
@@ -78,7 +78,7 @@ void GattManagerDisconnectRequest(uint16 cid)
     }
 }
 
-void GattManagerIndicationResponse(uint16 cid)
+void GattManagerIndicationResponse(u16 cid)
 {
     if (gattManagerDataIsInit())
     {

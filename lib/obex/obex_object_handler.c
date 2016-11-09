@@ -42,9 +42,9 @@ void obexObjFlush( Obex session, bool out )
 * RETURNS
 *   Offset to the packet or invalid length 
 ****************************************************************************/
-uint16 obexFetchHeader(const uint8* pkt, uint16 len, uint8 opcode)
+u16 obexFetchHeader(const u8* pkt, u16 len, u8 opcode)
 {
-    uint16 processLen = 0;
+    u16 processLen = 0;
     
     while( len > processLen )
     {
@@ -63,7 +63,7 @@ uint16 obexFetchHeader(const uint8* pkt, uint16 len, uint8 opcode)
         else
         {
             /* Skip a sequence header */
-           uint16 hdrLen;
+           u16 hdrLen;
 
            OBEX_UINT8_TO_UINT16( hdrLen, pkt, (processLen+1));
            processLen +=  hdrLen;
@@ -81,9 +81,9 @@ uint16 obexFetchHeader(const uint8* pkt, uint16 len, uint8 opcode)
 * DESCRIPTION
 *   Add a Uint32 Header
 ****************************************************************************/
-bool obexAddUint32Header( Obex session, uint8 opcode, uint32 value )
+bool obexAddUint32Header( Obex session, u8 opcode, u32 value )
 {
-    uint8* pkt = SinkMap( session->sink )+ session->pktLen;
+    u8* pkt = SinkMap( session->sink )+ session->pktLen;
 
     if(!obexSinkClaim( session, OBEX_UINT_HDR_SIZE )) return FALSE;
 
@@ -106,9 +106,9 @@ bool obexAddUint32Header( Obex session, uint8 opcode, uint32 value )
 * DESCRIPTION
 *   Add a Uint8 Header
 ****************************************************************************/
-bool obexAddUint8Header( Obex session, uint8 opcode, uint8 value )
+bool obexAddUint8Header( Obex session, u8 opcode, u8 value )
 {
-    uint8* pkt = SinkMap( session->sink )+ session->pktLen;
+    u8* pkt = SinkMap( session->sink )+ session->pktLen;
 
     if(!obexSinkClaim( session, OBEX_BYTE_HDR_SIZE )) return FALSE;
 
@@ -127,18 +127,18 @@ bool obexAddUint8Header( Obex session, uint8 opcode, uint8 value )
 * DESCRIPTION
 *   Extract a Uint32 Header
 ****************************************************************************/
-uint32 obexGetUint32Header( const uint8* pkt, uint16 len, uint8 opcode )
+u32 obexGetUint32Header( const u8* pkt, u16 len, u8 opcode )
 {
-    uint16 offset;
+    u16 offset;
 
     offset = obexFetchHeader( pkt, len, opcode );
     
     if( offset == OBEX_INVALID_UINT16 )  return OBEX_INVALID_UINT32;
 
-    return ((((uint32)pkt[offset+1] << 24) & 0xFF000000) | 
-            (((uint32)pkt[offset+2] << 16) & 0x00FF0000) | 
-            (((uint32)pkt[offset+3] << 8) & 0x0000FF00)  | 
-            ((uint32)pkt[offset+4] & 0x000000FF));
+    return ((((u32)pkt[offset+1] << 24) & 0xFF000000) | 
+            (((u32)pkt[offset+2] << 16) & 0x00FF0000) | 
+            (((u32)pkt[offset+3] << 8) & 0x0000FF00)  | 
+            ((u32)pkt[offset+4] & 0x000000FF));
 }
 
 
@@ -149,9 +149,9 @@ uint32 obexGetUint32Header( const uint8* pkt, uint16 len, uint8 opcode )
 * DESCRIPTION
 *   Extract a Uint8 Header
 ****************************************************************************/
-uint8 obexGetUint8Header( const uint8* pkt, uint16 len, uint8 opcode )
+u8 obexGetUint8Header( const u8* pkt, u16 len, u8 opcode )
 {
-    uint16 offset;
+    u16 offset;
 
     offset = obexFetchHeader( pkt, len, opcode );
     
@@ -167,9 +167,9 @@ uint8 obexGetUint8Header( const uint8* pkt, uint16 len, uint8 opcode )
 * DESCRIPTION
 *  Extract a unicode or ByteSeq header 
 ****************************************************************************/
-uint8* obexGetSeqHeader( const uint8* pkt, uint16* len, uint8 opcode )
+u8* obexGetSeqHeader( const u8* pkt, u16* len, u8 opcode )
 {
-    uint16 offset;
+    u16 offset;
 
     offset = obexFetchHeader( pkt, *len , opcode );
     
@@ -182,7 +182,7 @@ uint8* obexGetSeqHeader( const uint8* pkt, uint16* len, uint8 opcode )
     {
         OBEX_UINT8_TO_UINT16( *len, pkt, offset+1 );
         *len -= OBEX_SEQ_HDR_SIZE;
-        return (uint8*) &pkt[offset+OBEX_SEQ_HDR_SIZE];
+        return (u8*) &pkt[offset+OBEX_SEQ_HDR_SIZE];
     }
 }
 
@@ -194,10 +194,10 @@ uint8* obexGetSeqHeader( const uint8* pkt, uint16* len, uint8 opcode )
 * DESCRIPTION
 *   Claim space for a Headers header.
 ****************************************************************************/
-bool obexAddEmptyHeader( Obex session, uint8 hdr, uint16 size )
+bool obexAddEmptyHeader( Obex session, u8 hdr, u16 size )
 {
-    uint16 hdrLen = OBEX_SEQ_HDR_SIZE + size;
-    uint8* dest = SinkMap( session->sink ) + session->pktLen;    
+    u16 hdrLen = OBEX_SEQ_HDR_SIZE + size;
+    u8* dest = SinkMap( session->sink ) + session->pktLen;    
 
     if( !obexSinkClaim(session, hdrLen) ) return FALSE;
 
@@ -217,9 +217,9 @@ bool obexAddEmptyHeader( Obex session, uint8 hdr, uint16 size )
 * DESCRIPTION
 *   Add a Byte Sequence Header
 *************************************************************************/
-bool obexAddSeqHeader( Obex session, uint8 hdr, uint16 size, Source src )
+bool obexAddSeqHeader( Obex session, u8 hdr, u16 size, Source src )
 {
-    uint8* dest = SinkMap( session->sink ) + session->pktLen;   
+    u8* dest = SinkMap( session->sink ) + session->pktLen;   
  
     if( (obexSinkSlack( session ) < (size + OBEX_SEQ_HDR_SIZE))) return FALSE;
     if( !obexAddEmptyHeader( session, hdr, 0 ) ) return FALSE;
@@ -250,13 +250,13 @@ bool obexAddSeqHeader( Obex session, uint8 hdr, uint16 size, Source src )
 * DESCRIPTION
 *   Add a Unicode Header
 *************************************************************************/
-bool obexAddUnicodeHeader( Obex session, uint8 hdr, uint16 size, Source src )
+bool obexAddUnicodeHeader( Obex session, u8 hdr, u16 size, Source src )
 {
-    uint8* dest = SinkMap( session->sink ) + session->pktLen;   
-    uint8 i=0, j=1 ;
-    uint8* unicode= &dest[3];
-    const uint8* str = SourceMap( src );
-    uint16 unicodeLen = size * 2;
+    u8* dest = SinkMap( session->sink ) + session->pktLen;   
+    u8 i=0, j=1 ;
+    u8* unicode= &dest[3];
+    const u8* str = SourceMap( src );
+    u16 unicodeLen = size * 2;
 
     if( str[size-1] != '\0' ) unicodeLen += 2;
  
@@ -293,13 +293,13 @@ bool obexAddUnicodeHeader( Obex session, uint8 hdr, uint16 size, Source src )
 * RETURNS
 *  pointer to the Digest challenge string and its length
 ***************************************************************************/
-const uint8* obexGetDigest( Obex Session, 
-                            const uint8* pkt,
-                            uint16 *len,
-                            uint8 hdrId,
-                            uint8 tag )
+const u8* obexGetDigest( Obex Session, 
+                            const u8* pkt,
+                            u16 *len,
+                            u8 hdrId,
+                            u8 tag )
 {
-    uint16 valLen = 0;
+    u16 valLen = 0;
 
     pkt = obexGetSeqHeader( pkt, len, hdrId  );
 
@@ -321,12 +321,12 @@ const uint8* obexGetDigest( Obex Session,
 * DESCRIPTION
 * Extract the Value from a TLV header like Digest or App params. 
 ***************************************************************************/
-const uint8* obexGetTLVHeaderValue( const uint8* pkt,
-                                    uint16 *pktLen,
-                                    uint8  tag ) 
+const u8* obexGetTLVHeaderValue( const u8* pkt,
+                                    u16 *pktLen,
+                                    u8  tag ) 
 {
-    uint16 offset = 0;
-    uint16 dataOffset;
+    u16 offset = 0;
+    u16 dataOffset;
 
     /*
      *  --------------------------------------
@@ -357,10 +357,10 @@ const uint8* obexGetTLVHeaderValue( const uint8* pkt,
 * DESCRIPTION
 *  Frame a TLV Header
 ***************************************************************************/
-uint16 obexFrameTLVHeader(  uint8* pkt,
-                            uint8  tag,
-                            uint16 len,
-                            const uint8* data)
+u16 obexFrameTLVHeader(  u8* pkt,
+                            u8  tag,
+                            u16 len,
+                            const u8* data)
 {
     pkt[0] = tag;
     pkt[1] = len;

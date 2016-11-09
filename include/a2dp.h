@@ -319,14 +319,14 @@ typedef enum
 */
 typedef struct
 {
-    uint8 seid;                                 /*!< Unique ID for the SEP. */
-    uint8 resource_id;                          /*!< Resource ID associated with the SEP. If a SEP is configured then all SEPs with the same resource ID will become in use. */
+    u8 seid;                                 /*!< Unique ID for the SEP. */
+    u8 resource_id;                          /*!< Resource ID associated with the SEP. If a SEP is configured then all SEPs with the same resource ID will become in use. */
     unsigned media_type:2;                      /*!< The media type of the SEP. The a2dp_sep_media_type enum details the possible options. */
     unsigned role:2;                            /*!< The role of the SEP. The a2dp_role_type enum details the possible options. */
     unsigned library_selects_settings:1;        /*!< The library_selects_settings is set to TRUE so that the library selects the optimal settings for a codec when initiating a media connection. Setting it to FALSE will allow the application to choose how the SEP should be configured based on the remote SEP capabilities. */
-    uint16 flush_timeout;                       /*!< The flush timeout for the SEP. Should be set to 0 to use the default timeout. */
-    uint16 size_caps;                           /*!< The size of the capabilities for the SEP. */
-    const uint8 *caps;                          /*!< The capabilities for the SEP. These can be taken from one of the default codec capability header files that are supplied by CSR. The service capabilities section of the AVDTP specification details the format of these capabilities. */
+    u16 flush_timeout;                       /*!< The flush timeout for the SEP. Should be set to 0 to use the default timeout. */
+    u16 size_caps;                           /*!< The size of the capabilities for the SEP. */
+    const u8 *caps;                          /*!< The capabilities for the SEP. These can be taken from one of the default codec capability header files that are supplied by CSR. The service capabilities section of the AVDTP specification details the format of these capabilities. */
 } sep_config_type;
 
 
@@ -354,11 +354,11 @@ typedef struct sep_data_type
 */
 typedef struct
 {
-    uint16 target_codec_level;     /*!< Target codec buffer fill level.*/
-    uint16 initial_codec_level;    /*!< Initial codec buffer fill level.*/
-    uint16 sra_max_rate;           /*!< SRA Maximum rate.*/
-    uint16 sra_avg_time;           /*!< SRA Averaging time.*/
-    uint16 good_working_level;     /*!< Good Working Buffer Level.*/
+    u16 target_codec_level;     /*!< Target codec buffer fill level.*/
+    u16 initial_codec_level;    /*!< Initial codec buffer fill level.*/
+    u16 sra_max_rate;           /*!< SRA Maximum rate.*/
+    u16 sra_avg_time;           /*!< SRA Averaging time.*/
+    u16 good_working_level;     /*!< Good Working Buffer Level.*/
 } aptx_sprint_params_type;
 #endif
 
@@ -375,8 +375,8 @@ typedef struct
 	unsigned latency_reporting:1;				/*!< Latency (delay) reporting in use. */
     unsigned bitpool:8;                         /*!< The bitpool value. */
     unsigned format:8;                          /*!< The format. */
-    uint16 packet_size;                         /*!< The packet size. */
-    uint32 voice_rate;                          /*!< The voice rate. */
+    u16 packet_size;                         /*!< The packet size. */
+    u32 voice_rate;                          /*!< The voice rate. */
 #ifndef A2DP_SBC_ONLY
     aptx_sprint_params_type aptx_sprint_params; /*!< aptX sprint parameters. */ 
 #endif
@@ -388,10 +388,10 @@ typedef struct
 */
 typedef struct
 {
-    uint16 size_service_record_a;               /*!< Size of the first service record to be registered. */
-    const uint8 *service_record_a;                  /*!< The first service record to be registered. */
-    uint16 size_service_record_b;               /*!< Size of the second service record to be registered. */
-    const uint8 *service_record_b;                  /*!< The second service record to be registered. */
+    u16 size_service_record_a;               /*!< Size of the first service record to be registered. */
+    const u8 *service_record_a;                  /*!< The first service record to be registered. */
+    u16 size_service_record_b;               /*!< Size of the second service record to be registered. */
+    const u8 *service_record_b;                  /*!< The second service record to be registered. */
 } service_record_type;
 
 
@@ -467,13 +467,13 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16  device_id;
+    u16  device_id;
     /*! local seid corresponding to the remote codec */
-    uint8   local_seid;
+    u8   local_seid;
     /*! The size of the codec capabilities supplied. */
-    uint16  size_codec_service_caps;
+    u16  size_codec_service_caps;
     /*! The codec capabilities of the remote device. */
-    uint8   codec_service_caps[1];
+    u8   codec_service_caps[1];
 } A2DP_CODEC_CONFIGURE_IND_T;
 
 
@@ -526,7 +526,7 @@ typedef struct
     No further library functions should be called until the A2DP_INIT_CFM
     message has been received by the clientTask.
 */
-void A2dpInit(Task clientTask, uint16 role, service_record_type *service_records, uint16 size_seps, sep_data_type *seps, uint16 linkloss_timeout);
+void A2dpInit(Task clientTask, u16 role, service_record_type *service_records, u16 size_seps, sep_data_type *seps, u16 linkloss_timeout);
 
 
 /*!
@@ -539,7 +539,7 @@ void A2dpInit(Task clientTask, uint16 role, service_record_type *service_records
     function is called with max_remote_devs set to one there can only be at 
     most one device connected or it will fail. 
 */
-bool A2dpConfigureMaxRemoteDevices(uint8 max_remote_devs);
+bool A2dpConfigureMaxRemoteDevices(u8 max_remote_devs);
 
 
 /*********** New API ************/
@@ -584,7 +584,7 @@ bool A2dpSignallingConnectRequest(bdaddr *addr);
     A2DP_SIGNALLING_CONNECT_CFM message will be sent to the client indicating the result of the
     connect request.
 */
-bool A2dpSignallingConnectResponse(uint16 device_id, bool accept);
+bool A2dpSignallingConnectResponse(u16 device_id, bool accept);
 
 
 /*!
@@ -598,7 +598,7 @@ bool A2dpSignallingConnectResponse(uint16 device_id, bool accept);
 
     A2DP_SIGNALLING_DISCONNECT_CFM message will be sent to the client indicating the result of the disconnect request.
 */
-bool A2dpSignallingDisconnectRequest(uint16 device_id);
+bool A2dpSignallingDisconnectRequest(u16 device_id);
 
 
 /*!
@@ -611,7 +611,7 @@ bool A2dpSignallingDisconnectRequest(uint16 device_id);
     A sink value of NULL will be returned if no Signalling channel has been established.
     
 */
-Sink A2dpSignallingGetSink(uint16 device_id);
+Sink A2dpSignallingGetSink(u16 device_id);
 
 /*!
     @brief Obtain the signalling state for the specified remote device.
@@ -620,7 +620,7 @@ Sink A2dpSignallingGetSink(uint16 device_id);
 
     The call to A2dpSignallingGetState will return immediately with the signalling state of the specified remote device.
 */
-a2dp_signalling_state A2dpSignallingGetState(uint16 device_id);
+a2dp_signalling_state A2dpSignallingGetState(u16 device_id);
 
 
 /*!
@@ -633,7 +633,7 @@ a2dp_signalling_state A2dpSignallingGetState(uint16 device_id);
     in the supplied structure.
     If the specified device is idle, the function will return FALSE and place a zero Bluetooth address in the supplied structure.
 */
-bool A2dpDeviceGetBdaddr (uint16 device_id, bdaddr *addr);
+bool A2dpDeviceGetBdaddr (u16 device_id, bdaddr *addr);
 
 
 /*!
@@ -648,7 +648,7 @@ bool A2dpDeviceGetBdaddr (uint16 device_id, bdaddr *addr);
     If enabled then the linkloss timeout specified in the call to A2dpInit must be non-zero for any automatic linkloss management to take place.
     If the specified device is not connected, the function will return FALSE.
 */
-bool A2dpDeviceManageLinkloss (uint16 device_id, bool enable);
+bool A2dpDeviceManageLinkloss (u16 device_id, bool enable);
 
 
 /*!
@@ -659,7 +659,7 @@ bool A2dpDeviceManageLinkloss (uint16 device_id, bool enable);
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Bluetooth address of the remote device */
     bdaddr addr;
 } A2DP_SIGNALLING_CONNECT_IND_T;
@@ -673,7 +673,7 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Outcome of the connect operation. */
     a2dp_status_code status;
     /*! Bluetooth address of the remote device */
@@ -691,7 +691,7 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Reason for the disconnection. */
     a2dp_status_code status;
     /*! Bluetooth address of the remote device */
@@ -712,7 +712,7 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
 } A2DP_SIGNALLING_LINKLOSS_IND_T;
 
 /*!
@@ -724,7 +724,7 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
 } A2DP_LINKLOSS_RECONNECT_CANCEL_IND_T;
 
 
@@ -746,7 +746,7 @@ typedef struct
     A2DP_CODEC_CONFIGURE_IND being issued, or causing an A2DP_MEDIA_OPEN_CFM notification indicating failure if all compatible remote codecs 
     have been exhausted.
 */
-bool A2dpCodecConfigureResponse(uint16 device_id, bool accept, uint8 local_seid, uint16 size_codec_service_caps, uint8 *codec_service_caps);
+bool A2dpCodecConfigureResponse(u16 device_id, bool accept, u8 local_seid, u16 size_codec_service_caps, u8 *codec_service_caps);
 
 
 typedef enum
@@ -779,7 +779,7 @@ typedef enum
         
     A2DP_MEDIA_OPEN_CFM message will be sent to the client indicating the result of the open request.
 */
-bool A2dpMediaOpenRequest(uint16 device_id, uint16 size_seid_list, uint8 *seid_list);
+bool A2dpMediaOpenRequest(u16 device_id, u16 size_seid_list, u8 *seid_list);
 
 
 /*!
@@ -795,7 +795,7 @@ bool A2dpMediaOpenRequest(uint16 device_id, uint16 size_seid_list, uint8 *seid_l
     
     A2DP_MEDIA_OPEN_CFM message will be sent to the client indicating the result of the open request.
 */
-bool A2dpMediaOpenResponse(uint16 device_id, bool accept);
+bool A2dpMediaOpenResponse(u16 device_id, bool accept);
 
 
 /*!
@@ -809,7 +809,7 @@ bool A2dpMediaOpenResponse(uint16 device_id, bool accept);
 
     A2DP_MEDIA_CLOSE_CFM message will be sent to the client indicating the result of the close request.
 */
-bool A2dpMediaCloseRequest(uint16 device_id, uint16 stream_id);
+bool A2dpMediaCloseRequest(u16 device_id, u16 stream_id);
 
 
 /*!
@@ -823,7 +823,7 @@ bool A2dpMediaCloseRequest(uint16 device_id, uint16 stream_id);
 
     A2DP_MEDIA_START_CFM message will be sent to the client indicating the result of the start request.
 */
-bool A2dpMediaStartRequest(uint16 device_id, uint16 stream_id);
+bool A2dpMediaStartRequest(u16 device_id, u16 stream_id);
 
 
 /*!
@@ -840,7 +840,7 @@ bool A2dpMediaStartRequest(uint16 device_id, uint16 stream_id);
     
     A2DP_MEDIA_START_CFM message will be sent to the client indicating the result of the start request.
 */
-bool A2dpMediaStartResponse(uint16 device_id, uint16 stream_id, bool accept);
+bool A2dpMediaStartResponse(u16 device_id, u16 stream_id, bool accept);
 
 
 /*!
@@ -854,7 +854,7 @@ bool A2dpMediaStartResponse(uint16 device_id, uint16 stream_id, bool accept);
 
     A2DP_MEDIA_SUSPEND_CFM message will be sent to the client indicating the result of the suspend request.
 */
-bool A2dpMediaSuspendRequest(uint16 device_id, uint16 stream_id);
+bool A2dpMediaSuspendRequest(u16 device_id, u16 stream_id);
 
 
 /*!
@@ -870,7 +870,7 @@ bool A2dpMediaSuspendRequest(uint16 device_id, uint16 stream_id);
 
     A2DP_MEDIA_RECONFIGURE_CFM message will be sent to the client indicating the result of the reconfigure request.
 */
-bool A2dpMediaReconfigureRequest(uint16 device_id, uint16 stream_id, uint16 service_caps_size, const uint8 *service_caps);
+bool A2dpMediaReconfigureRequest(u16 device_id, u16 stream_id, u16 service_caps_size, const u8 *service_caps);
 
 /*!
     @brief Issue a delay report to inform a connected Source of the current AV Sync delay for the codec used by the specified Media channel.
@@ -884,7 +884,7 @@ bool A2dpMediaReconfigureRequest(uint16 device_id, uint16 stream_id, uint16 serv
 
     A2DP_MEDIA_AV_SYNC_DELAY_CFM message will be sent to the client indicating the success of the delay report.
 */
-bool A2dpMediaAvSyncDelayRequest(uint16 device_id, uint8 seid, uint16 delay);
+bool A2dpMediaAvSyncDelayRequest(u16 device_id, u8 seid, u16 delay);
 
 /*!
     @brief Causes a delay report to be issued to a connected Source to setup the initial AV Sync delay for the codec used by the specified Media channel.
@@ -899,7 +899,7 @@ bool A2dpMediaAvSyncDelayRequest(uint16 device_id, uint8 seid, uint16 delay);
 
     A2DP_MEDIA_AV_SYNC_DELAY_CFM message will be sent to the client indicating the success of the delay report.
 */
-uint16 A2dpMediaAvSyncDelayResponse (uint16 device_id, uint8 seid, uint16 delay);
+u16 A2dpMediaAvSyncDelayResponse (u16 device_id, u8 seid, u16 delay);
 
 /*!
     @brief Obtain the sink of a Media channel.
@@ -912,7 +912,7 @@ uint16 A2dpMediaAvSyncDelayResponse (uint16 device_id, uint8 seid, uint16 delay)
     A sink value of NULL will be returned if the specifed Media channel has not been established.
     
 */
-Sink A2dpMediaGetSink(uint16 device_id, uint16 stream_id);
+Sink A2dpMediaGetSink(u16 device_id, u16 stream_id);
 
 /*!
     @brief Obtain the local role of a Media channel.
@@ -925,7 +925,7 @@ Sink A2dpMediaGetSink(uint16 device_id, uint16 stream_id);
     A role value of a2dp_role_undefined will be returned if the specifed Media channel has not been established.
     
 */
-a2dp_role_type A2dpMediaGetRole(uint16 device_id, uint16 stream_id);
+a2dp_role_type A2dpMediaGetRole(u16 device_id, u16 stream_id);
 
 /*!
     @brief Obtain the stream state of the specified media channel.
@@ -936,24 +936,24 @@ a2dp_role_type A2dpMediaGetRole(uint16 device_id, uint16 stream_id);
     The call to A2dpMediaGetState will return immediately with the stream state of the specified media channel, 
     connected to the specified remote device.
 */
-a2dp_stream_state A2dpMediaGetState(uint16 device_id, uint16 stream_id);
+a2dp_stream_state A2dpMediaGetState(u16 device_id, u16 stream_id);
 
 typedef struct
 {
     /*! The sampling rate for the PCM hardware. Can be used when calling AudioConnect. */
-    uint32                  rate;
+    u32                  rate;
     /*! The channel mode for the audio being streamed. Can be used when calling AudioConnect.*/
     a2dp_channel_mode       channel_mode;
     /*! The local SEID in use. This is for informational purposes only. */
-    uint8                   seid;
+    u8                   seid;
     /*! Sink for the media transport channel. */
     Sink                    sink;
     /*! The codec parameters to pass into the audio library. Can be used when calling AudioConnect. */
     codec_data_type         codecData;
     /*! Size of the configured capabilities. */
-    uint16                  size_configured_codec_caps;
+    u16                  size_configured_codec_caps;
     /*! The configured capabilities. They will have the form: [AVDTP_SERVICE_MEDIA_TRANSPORT] [0] [AVDTP_SERVICE_MEDIA_CODEC] [size media codec data] ... etc.*/
-    uint8                   configured_codec_caps[1];
+    u8                   configured_codec_caps[1];
 } a2dp_codec_settings;
 
 /*!
@@ -968,7 +968,7 @@ typedef struct
     It is expected that the application will free the memory associated with this pointer once it has finished with it.
     A NULL pointer is returned if no codec has been been selected for the specified Media channel.
 */
-a2dp_codec_settings * A2dpCodecGetSettings(uint16 device_id, uint16 stream_id);
+a2dp_codec_settings * A2dpCodecGetSettings(u16 device_id, u16 stream_id);
 
 /*
     @brief Set the availablity of a Stream Endpoint.
@@ -988,7 +988,7 @@ a2dp_codec_settings * A2dpCodecGetSettings(uint16 device_id, uint16 stream_id);
     A2DP_SEP_IN_USE      = 0x02,   
     A2DP_SEP_ERROR       = 0xFF  
 */
-a2dp_sep_status A2dpCodecSetAvailable(uint16 device_id, uint8 seid, bool available);
+a2dp_sep_status A2dpCodecSetAvailable(u16 device_id, u8 seid, bool available);
 
 /*
     @brief Get the availablity of a Stream Endpoint.
@@ -1002,7 +1002,7 @@ a2dp_sep_status A2dpCodecSetAvailable(uint16 device_id, uint8 seid, bool availab
     A2DP_SEP_IN_USE      = 0x02,   
     A2DP_SEP_ERROR       = 0xFF   
 */
-a2dp_sep_status A2dpCodecGetAvailable(uint16 device_id, uint8 seid);
+a2dp_sep_status A2dpCodecGetAvailable(u16 device_id, u8 seid);
 
 /*!
     @brief An unsolicited message sent when a remote device attempts to establish a Media channel.
@@ -1012,9 +1012,9 @@ a2dp_sep_status A2dpCodecGetAvailable(uint16 device_id, uint8 seid);
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Local SEID being opened */
-    uint8  seid;
+    u8  seid;
 } A2DP_MEDIA_OPEN_IND_T;
 
 
@@ -1026,11 +1026,11 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Identifier for a media stream connected to the remote device */
-    uint16 stream_id;
+    u16 stream_id;
     /*! Local SEID opened */
-    uint8  seid;
+    u8  seid;
     /*! Outcome of the media open operation. */
     a2dp_status_code status;
     /*! Indicates if the media channel was initiated by the local device */
@@ -1046,9 +1046,9 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Identifier for a media stream connected to the remote device */
-    uint16 stream_id;
+    u16 stream_id;
     /*! Reason for the media close. */
     a2dp_status_code status;
 } A2DP_MEDIA_CLOSE_IND_T;
@@ -1062,9 +1062,9 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Identifier for a media stream connected to the remote device */
-    uint16 stream_id;
+    u16 stream_id;
 } A2DP_MEDIA_START_IND_T;
 
 
@@ -1076,9 +1076,9 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Identifier for a media stream connected to the remote device */
-    uint16 stream_id;
+    u16 stream_id;
     /*! Outcome of the media start operation. */
     a2dp_status_code status;
 } A2DP_MEDIA_START_CFM_T;
@@ -1092,9 +1092,9 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Identifier for a media stream connected to the remote device */
-    uint16 stream_id;
+    u16 stream_id;
 } A2DP_MEDIA_SUSPEND_IND_T;
 
 
@@ -1106,9 +1106,9 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Identifier for a media stream connected to the remote device */
-    uint16 stream_id;
+    u16 stream_id;
     /*! Outcome of the media suspend operation. */
     a2dp_status_code status;
 } A2DP_MEDIA_SUSPEND_CFM_T;
@@ -1124,9 +1124,9 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Identifier for a media stream connected to the remote device */
-    uint16 stream_id;
+    u16 stream_id;
 } A2DP_MEDIA_RECONFIGURE_IND_T;
 
 
@@ -1138,9 +1138,9 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Identifier for a media stream connected to the remote device */
-    uint16 stream_id;
+    u16 stream_id;
     /*! Outcome of the media reconfigure operation. */
     a2dp_status_code status;
 } A2DP_MEDIA_RECONFIGURE_CFM_T;
@@ -1156,9 +1156,9 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Local SEID corresponding to the required AV Sync Delay update */
-    uint8  seid;
+    u8  seid;
 } A2DP_MEDIA_AV_SYNC_DELAY_IND_T;
 
 /*!
@@ -1171,9 +1171,9 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Local SEID corresponding to the AV Sync Delay update */
-    uint8  seid;
+    u8  seid;
     /*! Outcome of the av sync delay operation. */
     a2dp_status_code status;
 } A2DP_MEDIA_AV_SYNC_DELAY_CFM_T;
@@ -1187,11 +1187,11 @@ typedef struct
 typedef struct
 {
     /*! Identifier for the remote device */
-    uint16 device_id;
+    u16 device_id;
     /*! Local SEID corresponding to the updated AV Sync Delay */
-    uint8  seid;
+    u8  seid;
     /*! Updated remote AV Sync delay, in 1/10 milliseconds */
-    uint16 delay;
+    u16 delay;
 } A2DP_MEDIA_AV_SYNC_DELAY_UPDATED_IND_T;
 
 #endif /* A2DP_H_ */

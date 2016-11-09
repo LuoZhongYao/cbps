@@ -45,11 +45,11 @@ RETURNS
 
 */
 static void gattSendReadCharacteristicValueCfm(Task task,
-                                               uint16 cid,
-                                               uint16 handle, 
+                                               u16 cid,
+                                               u16 handle, 
                                                gatt_status_t status, 
-                                               uint16 size_value, 
-                                               const uint8 *value)
+                                               u16 size_value, 
+                                               const u8 *value)
 {
     MAKE_GATT_MESSAGE_WITH_VALUE(GATT_READ_CHARACTERISTIC_VALUE_CFM, 
                                  size_value,
@@ -63,8 +63,8 @@ static void gattSendReadCharacteristicValueCfm(Task task,
 }
 
 void GattReadCharacteristicValueRequest(Task theAppTask,
-                                        uint16 cid,
-                                        uint16 handle)
+                                        u16 cid,
+                                        u16 handle)
 {
     cid_map_t *conn;
 
@@ -127,7 +127,7 @@ RETURNS
 void gattHandleAttReadCfmRead(ATT_READ_CFM_T *m)
 {
     cid_map_t *conn = PanicNull(gattFindConn(m->cid)); /* never NULL */
-    uint8 *value = VmGetPointerFromHandle(m->value);
+    u8 *value = VmGetPointerFromHandle(m->value);
 
     gattSendReadCharacteristicValueCfm(conn->data.app, m->cid,
                                         conn->data.req.read.handle,
@@ -155,12 +155,12 @@ RETURNS
 
 */
 static void gattSendReadUsingCharacteristicUuidCfm(Task task,
-                                                   uint16 cid,
-                                                   uint16 handle,
+                                                   u16 cid,
+                                                   u16 handle,
                                                    bool more,
                                                    gatt_status_t status, 
-                                                   uint16 size_value, 
-                                                   const uint8 *value)
+                                                   u16 size_value, 
+                                                   const u8 *value)
 {
     MAKE_GATT_MESSAGE_WITH_VALUE(GATT_READ_USING_CHARACTERISTIC_UUID_CFM, 
                                  size_value,
@@ -175,9 +175,9 @@ static void gattSendReadUsingCharacteristicUuidCfm(Task task,
 }
 
 void GattReadUsingCharacteristicUuidRequest(Task theAppTask,
-                                            uint16 cid,
-                                            uint16 start,
-                                            uint16 end,
+                                            u16 cid,
+                                            u16 start,
+                                            u16 end,
                                             gatt_uuid_type_t uuid_type,
                                             const gatt_uuid_t *uuid)
 {
@@ -260,7 +260,7 @@ void gattHandleAttReadByTypeCfmRead(ATT_READ_BY_TYPE_CFM_T *m)
 {
     cid_map_t *conn = PanicNull(gattFindConn(m->cid)); /* never NULL */
     STASH(conn, stash, READ_USING_CHARACTERISTIC_UUID);
-    uint8 *data;
+    u8 *data;
     bool more;
     bool send;
 
@@ -314,8 +314,8 @@ void gattHandleAttReadByTypeCfmRead(ATT_READ_BY_TYPE_CFM_T *m)
 
 #if (GATT_FEATURES & GATT_READ_LONG)
 void GattReadLongCharacteristicValueRequest(Task theAppTask,
-                                            uint16 cid,
-                                            uint16 handle)
+                                            u16 cid,
+                                            u16 handle)
 {
     cid_map_t *conn;
     
@@ -386,7 +386,7 @@ void gattHandleAttReadBlobCfm(ATT_READ_BLOB_CFM_T *m)
 {
     cid_map_t *conn = PanicNull(gattFindConn(m->cid)); /* never NULL */
     STASH(conn, stash, READ_LONG_CHARACTERISTIC_VALUE);
-    uint8 *data;
+    u8 *data;
     bool sentToApp = FALSE;
     data = VmGetPointerFromHandle(m->value);
 
@@ -406,7 +406,7 @@ void gattHandleAttReadBlobCfm(ATT_READ_BLOB_CFM_T *m)
         stash->size_value = m->size_value;
         conn->data.req.read_long.offs += m->size_value;
         stash->more_to_come = TRUE;
-        if(m->size_value < (uint16)(MAX_BLOB_SIZE(conn->mtu)))
+        if(m->size_value < (u16)(MAX_BLOB_SIZE(conn->mtu)))
         {
             /* no more data to receive, set more_to_come flag to FALSE */
             stash->more_to_come = FALSE;
@@ -418,7 +418,7 @@ void gattHandleAttReadBlobCfm(ATT_READ_BLOB_CFM_T *m)
 
     /* schedule new round for getting more information */
     if (m->result == ATT_RESULT_SUCCESS &&
-        m->size_value == (uint16)(MAX_BLOB_SIZE(conn->mtu)))
+        m->size_value == (u16)(MAX_BLOB_SIZE(conn->mtu)))
     {
         gatt_read_blob_req(m->cid,
                            conn->data.req.read_long.offs,
@@ -456,10 +456,10 @@ RETURNS
 
 */
 static void gattSendReadMultipleCharacteristicValuesCfm(Task task,
-                                                        uint16 cid,
+                                                        u16 cid,
                                                         gatt_status_t status,
-                                                        uint16 size_value,
-                                                        uint8 *value)
+                                                        u16 size_value,
+                                                        u8 *value)
 {
     MAKE_GATT_MESSAGE_WITH_VALUE(GATT_READ_MULTIPLE_CHARACTERISTIC_VALUES_CFM, 
                                  size_value,
@@ -472,9 +472,9 @@ static void gattSendReadMultipleCharacteristicValuesCfm(Task task,
 }
 
 void GattReadMultipleCharacteristicValuesRequest(Task theAppTask,
-                                                 uint16 cid,
-                                                 uint16 num_handles,
-                                                 uint16 *handles)
+                                                 u16 cid,
+                                                 u16 num_handles,
+                                                 u16 *handles)
 {
     cid_map_t *conn;
 
@@ -537,7 +537,7 @@ RETURNS
 void gattHandleAttReadMultiCfm(ATT_READ_MULTI_CFM_T *m)
 {
     cid_map_t *conn = PanicNull(gattFindConn(m->cid)); /* never NULL */
-    uint8 *value = VmGetPointerFromHandle(m->value);
+    u8 *value = VmGetPointerFromHandle(m->value);
 
     gattSendReadMultipleCharacteristicValuesCfm(
         conn->data.app, m->cid, m->result,m->size_value, value);

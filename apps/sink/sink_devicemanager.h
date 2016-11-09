@@ -43,28 +43,28 @@ typedef enum
 /* HFP attributes */
 typedef struct
 {
-    uint8 volume;
+    u8 volume;
 } hfp_attributes;
 
 /* A2DP attributes */
 typedef struct
 {
-    uint8  volume;
-    uint16 clock_mismatch;
-    uint16 audio_enhancements;
+    u8  volume;
+    u16 clock_mismatch;
+    u16 audio_enhancements;
 } a2dp_attributes;
 
 /* sub woofer attributes */
 typedef struct
 {
-    uint8 sub_trim_idx;    
+    u8 sub_trim_idx;    
 } sub_attributes;
 
 
 /* All device attributes stored in PS */
 typedef struct
 {
-    uint16                      peer_version;
+    u16                      peer_version;
     remote_features             peer_features:6;    /* ENABLE_PEER use only */
     remote_device               peer_device:2;      /* ENABLE_PEER use only */    
     unsigned                    peer_supported_optional_codecs:8; 
@@ -164,7 +164,7 @@ DESCRIPTION
 RETURNS
     TRUE if successful, otherwise FALSE
 */
-bool deviceManagerGetIndexedAttributes(uint8 index, sink_attributes* attributes, typed_bdaddr* dev_addr);
+bool deviceManagerGetIndexedAttributes(u8 index, sink_attributes* attributes, typed_bdaddr* dev_addr);
 
 /****************************************************************************
 NAME
@@ -252,7 +252,7 @@ DESCRIPTION
 RETURNS
     void
 */
-uint8 deviceManagerSetPriority(const bdaddr* dev_addr);
+u8 deviceManagerSetPriority(const bdaddr* dev_addr);
 
 /****************************************************************************
  NAME
@@ -327,7 +327,7 @@ DESCRIPTION
 RETURNS
     number of connected devices
 */
-uint8 deviceManagerNumConnectedDevs(void);
+u8 deviceManagerNumConnectedDevs(void);
 
 /****************************************************************************
 NAME    
@@ -339,7 +339,7 @@ DESCRIPTION
 RETURNS
     number of connected devices
 */
-uint16 deviceManagerNumOtherConnectedDevs(const bdaddr *bd_addr);
+u16 deviceManagerNumOtherConnectedDevs(const bdaddr *bd_addr);
 
 /****************************************************************************
 NAME    
@@ -351,7 +351,7 @@ DESCRIPTION
 RETURNS
     number of connected peer devices
 */
-uint8 deviceManagerNumConnectedPeerDevs(void);
+u8 deviceManagerNumConnectedPeerDevs(void);
 
 
 /****************************************************************************
@@ -414,7 +414,7 @@ DESCRIPTION
 RETURNS
     TRUE if the HFP volume attribute was found, FALSE otherwise.
 */
-bool deviceManagerGetAttributeHfpVolume(const bdaddr *ag_addr, uint16 *hfp_vol);
+bool deviceManagerGetAttributeHfpVolume(const bdaddr *ag_addr, u16 *hfp_vol);
 
 
 #endif /* _SINK_DEVICEMANAGER_H_ */

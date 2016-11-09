@@ -52,47 +52,114 @@ const char* opGetNextElement(   opHandle *handle,
                                 const char *s,
                                 const char *e );
 
-const char* opCheckChar( const char *s, const char *e, char c );
-
 char *opDecode( ObexParseData *element,
                 const char *tag,
-                uint16  tagLen,
-                uint16  *maxValLen );
+                u16  tagLen,
+                u16  *maxValLen );
 
 bool opCheckStartTag(   const char *s,
                         const char *e, 
                         opType type );
 
-/* Inline functions */
-__inline__ const char* opSkipToChar(  const char* s, 
-                                      const char* e, 
-                                      char c );
+/*************************************************************************
+ * NAME
+ *  opSkipToChar 
+ *
+ * DESCRIPTION 
+ * Skip through the buffer till find the requested character
+ ************************************************************************/
+static __inline__ const char* opSkipToChar(const char* s, const char* e, char c )
+{
+    while( (s != e) && (*s != c )) ++s;
+    return s;
+}
 
-__inline__ const char* opSkipChars( const char* s, 
-                                    const char *e, 
-                                    char c, 
-                                    char d  );
 
-__inline__ const char* opSkipToAnyChar( const char* s, 
+/*************************************************************************
+ * NAME
+ *  opSkipToAnyChar 
+ *
+ * DESCRIPTION 
+ * Skip through the buffer till find any of the requested character from 2. 
+ ************************************************************************/
+static __inline__ const char* opSkipToAnyChar( const char* s, 
                                         const char* e, 
                                         char x , 
-                                        char y );
+                                        char y )
+{
+    while( (s != e) && (*s != x ) && (*s != y )  ) ++s;
+    return s;
+}
 
-__inline__ const char* opSkipToMulChars( const char* s, 
+/*************************************************************************
+ * NAME
+ *  opSkipToMulChar 
+ *
+ * DESCRIPTION 
+ * Skip through the buffer till find any of the request character from 3.
+ ************************************************************************/
+static __inline__ const char* opSkipToMulChars( const char* s, 
                                          const char* e, 
                                          char x , 
                                          char y,
-                                         char z );
+                                         char z )
+{
+    while( (s != e) && (*s != x ) && (*s != y ) && (*s != z) ) ++s;
+    return s;
+}
 
-__inline__ const char* opSkipToTag( const char *s, 
-                                    const char *e,  
-                                    opType type );
 
-__inline__ void opAddElement(  ObexParseData* element, 
+/*************************************************************************
+ * NAME
+ *  opSkipChars 
+ *
+ * DESCRIPTION 
+ * ignore the sequense of the requested charactes  
+ ************************************************************************/
+static __inline__ const char* opSkipChars( const char* s, 
+                                    const char* e, 
+                                    char c , 
+                                    char d )
+{
+    while( (s != e) && (*s == c  || *s == d )) ++s;
+    return s;
+}
+
+
+
+/*************************************************************************
+ * NAME
+ *  opCheckChar
+ *
+ * DESCRIPTION 
+ * Check the next character is a predicted one 
+ ************************************************************************/
+static __inline__ const char* opCheckChar( const char *s, const char *e, char c )
+{
+    if(!s) return NULL;
+    return ((s != e) && (*s == c ))? ++s : NULL; 
+}
+
+
+/*************************************************************************
+ * NAME
+ *  opAddElement
+ *
+ * DESCRIPTION 
+ * Add a element to the Object Tree
+ ************************************************************************/
+static __inline__ void opAddElement(  ObexParseData* element, 
                                ObexParseFragment fragment,
                                ObexParseObject type,
                                const char* data,
-                               uint16  len );
+                               u16  len )
+{
+    element->type = type;
+    element->fragment = fragment;
+    element->object = data;
+    element->len = len;
+} 
+
 
 #endif /* OBEX_PARSE_INTERNAL_H_ */
 

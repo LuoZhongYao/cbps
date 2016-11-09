@@ -5,7 +5,7 @@ FILE NAME
     sink_csr_features.c
 
 DESCRIPTION
-    handles the csr to csr features 
+    handles the csr to csr features
 
 NOTES
 
@@ -19,44 +19,42 @@ NOTES
 #include <hfp.h>
 
 #ifdef DEBUG_CSR2CSR
-    #define CSR2CSR_DEBUG(x) DEBUG(x)
 #else
-    #define CSR2CSR_DEBUG(x)
-#endif     
+#endif
 
-void csr2csrHandleTxtInd (void ) 
+void csr2csrHandleTxtInd (void )
 {
-    CSR2CSR_DEBUG(("CSR2CSR TXT IND\n")) ;
+    LOGD("CSR2CSR TXT IND\n");
 }
 
-void csr2csrHandleSmsInd (void ) 
+void csr2csrHandleSmsInd (void )
 {
-    CSR2CSR_DEBUG(("CSR2CSR SMS IND\n")) ;
+    LOGD("CSR2CSR SMS IND\n");
 }
 
-void csr2csrHandleSmsCfm(void ) 
+void csr2csrHandleSmsCfm(void )
 {
-    CSR2CSR_DEBUG(("CSR2CSR SMS CFM\n")) ;
+    LOGD("CSR2CSR SMS CFM\n");
 }
 
-void csr2csrHandleAgBatteryRequestInd ( void ) 
+void csr2csrHandleAgBatteryRequestInd ( void )
 {
-    CSR2CSR_DEBUG(("CSR2CSR BATTERY REQUEST IND\n")) ;
+    LOGD("CSR2CSR BATTERY REQUEST IND\n");
 	MessageSend (&theSink.task , EventUsrBatteryLevelRequest , 0 );
 }
 
-void csr2csrHandleAgBatteryRequestRes(uint8 idx)
+void csr2csrHandleAgBatteryRequestRes(u8 idx)
 {
     const unsigned char csr2csr_battery_level_indications[4] = {2,4,7,9};
-    
-    CSR2CSR_DEBUG(("CSR2CSR BATTERY REQUEST RES %d", idx)) ;
+
+    LOGD("CSR2CSR BATTERY REQUEST RES %d", idx);
     if(idx < sizeof(csr2csr_battery_level_indications))
     {
-        uint16 batt_level = csr2csr_battery_level_indications[idx];
-        CSR2CSR_DEBUG((" [%d]", batt_level)) ;
+        u16 batt_level = csr2csr_battery_level_indications[idx];
+        LOGD(" [%d]", batt_level);
         /* Attempt to send indication to both AGs (HFP will block if unsupported) */
         HfpCsrFeaturesBatteryLevelRequest(hfp_primary_link, batt_level);
         HfpCsrFeaturesBatteryLevelRequest(hfp_secondary_link, batt_level);
     }
-    CSR2CSR_DEBUG(("\n")) ;
+    LOGD("\n");
 }

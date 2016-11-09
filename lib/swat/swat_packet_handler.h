@@ -37,7 +37,7 @@ PARAMETERS:
 DESCRIPTION:
     Function to send data to the remote device
 */
-bool swatSendData(remoteDevice *device, uint8 *data, uint16 len);
+bool swatSendData(remoteDevice *device, u8 *data, u16 len);
 
 
 /*****************************************************************************

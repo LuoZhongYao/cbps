@@ -46,7 +46,7 @@ RETURNS
     TRUE if the DIS server task was initialised, FALSE otherwise.
 */
 #ifdef GATT_DIS_SERVER
-bool sinkGattDeviceInfoServerInitialise(uint16 **ptr);
+bool sinkGattDeviceInfoServerInitialise(u16 **ptr);
 #else
 #define sinkGattDeviceInfoServerInitialise(ptr) (TRUE)
 #endif

@@ -8,12 +8,12 @@ Copyright (c) 2015 Qualcomm Technologies International, Ltd.
 
 #include "service.h"
 
-static uint16 __inline__ serviceUnpack16(const uint8 *s)
-{ return (((uint16)s[0])<<8) | (uint16)s[1]; }
+static u16 __inline__ serviceUnpack16(const u8 *s)
+{ return (((u16)s[0])<<8) | (u16)s[1]; }
 
-static uint32 __inline__ serviceUnpack32(const uint8 *s)
+static u32 __inline__ serviceUnpack32(const u8 *s)
 {
-    uint32 r = s[0];
+    u32 r = s[0];
     r <<= 8; r |= s[1];
     r <<= 8; r |= s[2];
     r <<= 8; r |= s[3];

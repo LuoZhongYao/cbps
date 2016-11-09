@@ -29,8 +29,8 @@ void SppcHandleComplexMessage(Task task, MessageId id, Message message)
 			/* Move data from source into message */
 			Source src = ((SPP_MESSAGE_MORE_DATA_T*)message)->source;
 			SPPC_MESSAGE_MORE_DATA_TEST_EXTRA_T *pdu;
-			const uint8 *s = SourceMap(src);
-			uint16 len = SourceBoundary(src);
+			const u8 *s = SourceMap(src);
+			u16 len = SourceBoundary(src);
 				
 			pdu = malloc(sizeof(SPPC_MESSAGE_MORE_DATA_TEST_EXTRA_T)+len);
 			memset(pdu, 0, sizeof(SPPC_MESSAGE_MORE_DATA_TEST_EXTRA_T));
@@ -82,7 +82,7 @@ void SppcHandleComplexMessage(Task task, MessageId id, Message message)
 	}
 }
 
-void SppcConnectRequestTestExtra(Task theAppTask, const bdaddr *bd_addr, const uint16 security_channel, uint16 max_payload_size)
+void SppcConnectRequestTestExtra(Task theAppTask, const bdaddr *bd_addr, const u16 security_channel, u16 max_payload_size)
 {
     SppConnectRequest(theAppTask, bd_addr, security_channel, max_payload_size);
 }

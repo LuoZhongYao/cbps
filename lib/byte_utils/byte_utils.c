@@ -12,9 +12,9 @@ DESCRIPTION
 
 #include "byte_utils.h"
 
-uint16 ByteUtilsMemCpyToStream(uint8 *dst, uint8 *src, uint16 size)
+u16 ByteUtilsMemCpyToStream(u8 *dst, u8 *src, u16 size)
 {
-    uint16 i;
+    u16 i;
 
     for(i = 0; i < size; ++i)
     {
@@ -31,9 +31,9 @@ uint16 ByteUtilsMemCpyToStream(uint8 *dst, uint8 *src, uint16 size)
     return size;
 }
 
-uint16 ByteUtilsMemCpyFromStream(uint8 *dst, const uint8 *src, uint16 size)
+u16 ByteUtilsMemCpyFromStream(u8 *dst, const u8 *src, u16 size)
 {
-    uint16 i;
+    u16 i;
 
     for(i = 0; i < size; ++i)
     {
@@ -43,9 +43,9 @@ uint16 ByteUtilsMemCpyFromStream(uint8 *dst, const uint8 *src, uint16 size)
     return size;
 }
 
-uint16 ByteUtilsSet1Byte(uint8 *dst, uint16 byteIndex, uint8 val)
+u16 ByteUtilsSet1Byte(u8 *dst, u16 byteIndex, u8 val)
 {
-    uint16 *ptr2Byte = (uint16 *)dst;
+    u16 *ptr2Byte = (u16 *)dst;
 
     if(byteIndex%2)
     {
@@ -59,9 +59,9 @@ uint16 ByteUtilsSet1Byte(uint8 *dst, uint16 byteIndex, uint8 val)
     return 1;
 }
 
-uint16 ByteUtilsSet2Bytes(uint8 *dst, uint16 byteIndex, uint16 val)
+u16 ByteUtilsSet2Bytes(u8 *dst, u16 byteIndex, u16 val)
 {
-    uint16 *ptr2Byte = (uint16 *)dst;
+    u16 *ptr2Byte = (u16 *)dst;
 
     if(byteIndex%2)
     {
@@ -76,7 +76,7 @@ uint16 ByteUtilsSet2Bytes(uint8 *dst, uint16 byteIndex, uint16 val)
     return 2;
 }
 
-uint16 ByteUtilsSet4Bytes(uint8 *dst, uint16 byteIndex, uint32 val)
+u16 ByteUtilsSet4Bytes(u8 *dst, u16 byteIndex, u32 val)
 {
     byteIndex += ByteUtilsSet2Bytes(dst, byteIndex, val >> 16);
     ByteUtilsSet2Bytes(dst, byteIndex, val);
@@ -84,37 +84,37 @@ uint16 ByteUtilsSet4Bytes(uint8 *dst, uint16 byteIndex, uint32 val)
     return 4;
 }
 
-uint8 ByteUtilsGet1ByteFromStream(const uint8 *src)
+u8 ByteUtilsGet1ByteFromStream(const u8 *src)
 {
     return src[0];
 }
 
-uint16 ByteUtilsGet2BytesFromStream(const uint8 *src)
+u16 ByteUtilsGet2BytesFromStream(const u8 *src)
 {
-    uint16 val = 0;
+    u16 val = 0;
 
     val = src[1];
-    val |= (uint16)src[0] << 8;
+    val |= (u16)src[0] << 8;
 
     return val;
 }
 
-uint32 ByteUtilsGet4BytesFromStream(const uint8 *src)
+u32 ByteUtilsGet4BytesFromStream(const u8 *src)
 {
-    uint32 val = 0;
+    u32 val = 0;
 
-    val = ((uint32)src[3] & 0xff);
-    val |= ((uint32)src[2] & 0xff) << 8;
-    val |= ((uint32)src[1] & 0xff) << 16;
-    val |= ((uint32)src[0] & 0xff) << 24;
+    val = ((u32)src[3] & 0xff);
+    val |= ((u32)src[2] & 0xff) << 8;
+    val |= ((u32)src[1] & 0xff) << 16;
+    val |= ((u32)src[0] & 0xff) << 24;
 
     return val;
 }
 
 
-/*uint16 ByteUtilsGet1Byte(uint8 *src, uint16 byteIndex, uint8 *val)
+/*u16 ByteUtilsGet1Byte(u8 *src, u16 byteIndex, u8 *val)
 {
-    uint16 *ptr2Byte = (uint16 *)src;
+    u16 *ptr2Byte = (u16 *)src;
 
     *val = ptr2Byte[byteIndex/2];
 
@@ -122,9 +122,9 @@ uint32 ByteUtilsGet4BytesFromStream(const uint8 *src)
     return 1;
 }
 
-uint16 ByteUtilsGet2Bytes(uint8 *src, uint16 byteIndex, uint16 *val)
+u16 ByteUtilsGet2Bytes(u8 *src, u16 byteIndex, u16 *val)
 {
-    uint16 *ptr2Byte = (uint16 *)src;
+    u16 *ptr2Byte = (u16 *)src;
 
     if(byteIndex%2)
     {
@@ -139,14 +139,14 @@ uint16 ByteUtilsGet2Bytes(uint8 *src, uint16 byteIndex, uint16 *val)
     return 2;
 }
 
-uint16 ByteUtilsGet4Bytes(uint8 *src, uint16 byteIndex, uint32 *val)
+u16 ByteUtilsGet4Bytes(u8 *src, u16 byteIndex, u32 *val)
 {
-    uint16 msb, lsb;
+    u16 msb, lsb;
 
     byteIndex += ByteUtilsGet2Bytes(src, byteIndex, &msb);
     ByteUtilsGet2Bytes(src, byteIndex, &lsb);
 
-    *val = (uint32)msb << 16;
+    *val = (u32)msb << 16;
     *val |= lsb;
 
     return 4;

@@ -115,7 +115,7 @@ DESCRIPTION
     a transaction label of zero has special meaning as will therefore not be
     returned from this function.
 */
-uint8 avrcpGetNextTransactionLabel(AVRCP *avrcp);
+u8 avrcpGetNextTransactionLabel(AVRCP *avrcp);
 
 
 /****************************************************************************
@@ -137,7 +137,7 @@ DESCRIPTION
 ******************************************************************************/
 void avrcpSendCommonStatusCfm(AVRCP*            avrcp,
                               avrcp_status_code status,
-                              uint16            message_id);
+                              u16            message_id);
 
 /****************************************************************************
 NAME
@@ -148,10 +148,10 @@ DESCRIPTION
 */
 void avrcpSendCommonFragmentedMetadataCfm(AVRCP        *avrcp, 
                                        avrcp_status_code status,
-                                       uint16            id, 
-                                       uint16            metadata_packet_type,
-                                       uint16            data_length, 
-                                       const uint8*      data);
+                                       u16            id, 
+                                       u16            metadata_packet_type,
+                                       u16            data_length, 
+                                       const u8*      data);
 
 #ifdef AVRCP_ENABLE_DEPRECATED
 /****************************************************************************
@@ -164,7 +164,7 @@ DESCRIPTION
 */
 void avrcpSendCommonMetadataCfm(AVRCP *avrcp, 
                                 avrcp_status_code status, 
-                                uint16 id);
+                                u16 id);
 #else
 #define avrcpSendCommonMetadataCfm avrcpSendCommonStatusCfm
 #endif
@@ -183,8 +183,8 @@ void avrcpSendCommonMetadataCfm(AVRCP *avrcp,
 *   Error Status code from the application response
 *   
 ******************************************************************************/
-uint8 avrcpGetErrorStatusCode(avrcp_response_type *response,
-                              uint8 command_type);
+u8 avrcpGetErrorStatusCode(avrcp_response_type *response,
+                              u8 command_type);
 
 /****************************************************************************
 NAME
@@ -193,7 +193,7 @@ NAME
 DESCRIPTION
     
 */
-void avrcpSendCommonMetadataInd(AVRCP *avrcp, uint16 id);
+void avrcpSendCommonMetadataInd(AVRCP *avrcp, u16 id);
 
 
 /****************************************************************************
@@ -204,9 +204,9 @@ DESCRIPTION
     
 */
 void avrcpSendCommonFragmentedMetadataInd(  AVRCP     *avrcp, 
-                                            uint16     id, 
-                                            uint16     number_of_data_items, 
-                                            uint16     data_length, 
+                                            u16     id, 
+                                            u16     number_of_data_items, 
+                                            u16     data_length, 
                                             Source     source);
 
 
@@ -225,7 +225,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void avrcpSendCommonCfmMessageToApp(uint16              message_id, 
+void avrcpSendCommonCfmMessageToApp(u16              message_id, 
                                     avrcp_status_code   status, 
                                     Sink                sink, 
                                     AVRCP               *avrcp);
@@ -238,7 +238,7 @@ NAME
 DESCRIPTION
     Extract the company id from a data buffer.
 */
-uint32 avrcpGetCompanyId(const uint8 *ptr, uint16 offset);
+u32 avrcpGetCompanyId(const u8 *ptr, u16 offset);
 
 
 /****************************************************************************
@@ -248,7 +248,7 @@ NAME
 DESCRIPTION
     Get access to the Sink.
 */
-uint8 *avrcpGrabSink(Sink sink, uint16 size);
+u8 *avrcpGrabSink(Sink sink, u16 size);
 
 /****************************************************************************
 NAME
@@ -266,9 +266,9 @@ NAME
    convertUint8ValuesToUint32 
 
 DESCRIPTION
-    Combine 4 consecutive uint8 values into a uint32.
+    Combine 4 consecutive u8 values into a u32.
 */
-uint32 convertUint8ValuesToUint32(const uint8 *ptr);
+u32 convertUint8ValuesToUint32(const u8 *ptr);
 
 
 /****************************************************************************
@@ -276,9 +276,9 @@ NAME
     convertUint32ToUint8Values
 
 DESCRIPTION
-    Convert uint32 into 4 consecutive uint8 values.
+    Convert u32 into 4 consecutive u8 values.
 */
-void convertUint32ToUint8Values(uint8 *ptr, uint32 value);
+void convertUint32ToUint8Values(u8 *ptr, u32 value);
 
 
 /****************************************************************************
@@ -290,7 +290,7 @@ DESCRIPTION
     returns a source. It also stored the ptr to the data block so it 
     can be freed when the source empties.
 */
-Source avrcpSourceFromConstData(AVRCP *avrcp, const uint8 *data, uint16 length);
+Source avrcpSourceFromConstData(AVRCP *avrcp, const u8 *data, u16 length);
 
 
 /****************************************************************************
@@ -302,7 +302,7 @@ DESCRIPTION
     also stored the ptr to the data block so it can freed when the
     source empties.
 */
-Source avrcpSourceFromData(AVRCP *avrcp, uint8 *data, uint16 length);
+Source avrcpSourceFromData(AVRCP *avrcp, u8 *data, u16 length);
 
 /**************************************************************************
  * NAME

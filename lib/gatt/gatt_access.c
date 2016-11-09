@@ -35,9 +35,9 @@ RETURNS
 */
 void gattHandleAttAccessInd(ATT_ACCESS_IND_T *ind)
 {
-    uint8 *value = 0;
+    u8 *value = 0;
     if (ind->size_value)
-        value = (uint8 *) VmGetPointerFromHandle(ind->value);
+        value = (u8 *) VmGetPointerFromHandle(ind->value);
 
     if ( gattCidIsValid(ind->cid) )
     {
@@ -70,7 +70,7 @@ DESCRIPTION
 RETURNS
 
 */
-void GattAccessResponse(uint16 cid, uint16 handle, uint16 result, uint16 size_value, const uint8 *value)
+void GattAccessResponse(u16 cid, u16 handle, u16 result, u16 size_value, const u8 *value)
 {
     MAKE_GATT_MESSAGE_WITH_VALUE(
         GATT_INTERNAL_ACCESS_RES, 
@@ -103,9 +103,9 @@ void gattHandleInternalAccessRes(GATT_INTERNAL_ACCESS_RES_T *res)
            
         if (res->size_value)
         {
-            uint8 *value = (uint8 *)PanicUnlessMalloc(res->size_value);
+            u8 *value = (u8 *)PanicUnlessMalloc(res->size_value);
             memmove(value, res->value, res->size_value);
-            prim->value = (uint8 *)VmGetHandleFromPointer(value);
+            prim->value = (u8 *)VmGetHandleFromPointer(value);
         }
         else
         {

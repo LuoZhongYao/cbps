@@ -18,8 +18,8 @@
 /****************************************************************************/
 gatt_dis_status_t GattDeviceInfoServerInit(Task appTask, gdiss_t *const dev_info_server,
                                            gatt_dis_init_params_t *const  init_params,
-										   uint16 start_handle,
-										   uint16 end_handle)
+										   u16 start_handle,
+										   u16 end_handle)
 {
     gatt_dis_status_t retval = gatt_dis_status_invalid_parameter;
 

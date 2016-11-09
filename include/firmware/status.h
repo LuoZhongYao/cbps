@@ -27,6 +27,6 @@ Functions to access the chip status information.
   The current value of each of the fields will be written to the
   corresponding element of the results array.
 */
-void StatusQuery(uint16 count, const status_field *fields, uint16 *results);
+void StatusQuery(u16 count, const status_field *fields, u16 *results);
 
 #endif

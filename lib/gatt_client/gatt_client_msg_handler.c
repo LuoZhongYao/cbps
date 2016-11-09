@@ -13,7 +13,7 @@
 
 
 /***************************************************************************/
-static void sendServerChangedMsg(GGATTC *gatt_client, uint16 cid, uint16 start_handle, uint16 end_handle)
+static void sendServerChangedMsg(GGATTC *gatt_client, u16 cid, u16 start_handle, u16 end_handle)
 {
     MAKE_GATT_CLIENT_MESSAGE(GATT_CLIENT_SERVICE_CHANGED_IND);
     message->gatt_client = gatt_client;
@@ -27,8 +27,8 @@ static void sendServerChangedMsg(GGATTC *gatt_client, uint16 cid, uint16 start_h
 /***************************************************************************/
 static void handleGattIndication(GGATTC *gatt_client, const GATT_MANAGER_REMOTE_SERVER_INDICATION_IND_T *ind)
 {
-    uint16 start_handle = 0x0;
-    uint16 end_handle = 0xffff;
+    u16 start_handle = 0x0;
+    u16 end_handle = 0xffff;
     
     GATT_CLIENT_DEBUG_INFO(("GATTC: Remote server indication cid=[0x%x] handle=[0x%x]\n", 
                             ind->cid, 

@@ -21,42 +21,42 @@
     else \
         new_msg = malloc(sizeof(TYPE##_T) + 15);
 
-/* Flatten UUID to array of uint8 */
-static uint16 flatten_uuid(
-                    const uint32 *uuid,         /* from */
-                    uint8 *ptr,                 /* to */
+/* Flatten UUID to array of u8 */
+static u16 flatten_uuid(
+                    const u32 *uuid,         /* from */
+                    u8 *ptr,                 /* to */
                     gatt_uuid_type_t uuid_type  /* type */
                     )
 {
-    uint16 size_uuid;
+    u16 size_uuid;
     if (uuid_type == gatt_uuid16)
     {
         size_uuid = 2;
         /* Big endian octet order */
-        *ptr++ = (uint8)(uuid[0]>>8);
-        *ptr++ = (uint8)uuid[0];
+        *ptr++ = (u8)(uuid[0]>>8);
+        *ptr++ = (u8)uuid[0];
     }
     else if (uuid_type == gatt_uuid32)
     {
         size_uuid = 4;
         /* Big endian octet order */
-        *ptr++ = (uint8)(uuid[0]>>24);
-        *ptr++ = (uint8)(uuid[0]>>16);
-        *ptr++ = (uint8)(uuid[0]>>8);
-        *ptr++ = (uint8)uuid[0];
+        *ptr++ = (u8)(uuid[0]>>24);
+        *ptr++ = (u8)(uuid[0]>>16);
+        *ptr++ = (u8)(uuid[0]>>8);
+        *ptr++ = (u8)uuid[0];
     }
     else
     {
-        uint8 i;
+        u8 i;
         size_uuid = 16;
         for (i=0; i<4; i++)
             /* 4 octets at a time, 4 times is 16 octets */
         {
             /* Big endian octet order */
-            *ptr++ = (uint8)(uuid[i]>>24);
-            *ptr++ = (uint8)(uuid[i]>>16);
-            *ptr++ = (uint8)(uuid[i]>>8);
-            *ptr++ = (uint8)uuid[i];
+            *ptr++ = (u8)(uuid[i]>>24);
+            *ptr++ = (u8)(uuid[i]>>16);
+            *ptr++ = (u8)(uuid[i]>>8);
+            *ptr++ = (u8)uuid[i];
         }
     }
     return size_uuid;
@@ -224,14 +224,14 @@ void GattHandleComplexMessage(Task task, MessageId id, Message message)
 
 void GattInitTestExtraDefault(
         Task    theAppTask, 
-        uint16  size_database, 
-        uint8*  database
+        u16  size_database, 
+        u8*  database
         )
 {
     if (size_database)
     {
-        uint16 *real_db = malloc(sizeof(uint16) * (size_database/2));
-        uint16 i;
+        u16 *real_db = malloc(sizeof(u16) * (size_database/2));
+        u16 i;
 
         for (i=0; i<size_database/2; i++)
         {
@@ -249,7 +249,7 @@ void GattInitTestExtraDefault(
 void GattConnectRequestTestExtraDefault(
         Task                    theAppTask,
         bdaddr                  *bd_addr,
-        uint8                   bdaddr_type,
+        u8                   bdaddr_type,
         gatt_connection_type    conn_type
         )
 {
@@ -263,7 +263,7 @@ void GattConnectRequestTestExtraDefault(
 void GattConnectRequestTestExtra(
         Task                    theAppTask,
         bdaddr                  *bd_addr,
-        uint8                   bdaddr_type,
+        u8                   bdaddr_type,
         gatt_connection_type    conn_type,
         bool                    conn_timeout
         )
@@ -278,9 +278,9 @@ void GattConnectRequestTestExtra(
 
 void GattDiscoverPrimaryServiceRequestTestExtraDefault(
         Task            theAppTask, 
-        uint16          cid, 
-        uint16          size_uuid, 
-        const uint8     *uuid
+        u16          cid, 
+        u16          size_uuid, 
+        const u8     *uuid
         )
 {
     gatt_uuid_type_t uuid_type = gatt_uuid_none;
@@ -293,20 +293,20 @@ void GattDiscoverPrimaryServiceRequestTestExtraDefault(
     {
         uuid_type = gatt_uuid16;
         /* Big endian octet order */
-        gatt_uuid[0] = ((uint32)uuid[0]<<8) | ((uint32)uuid[1]);
+        gatt_uuid[0] = ((u32)uuid[0]<<8) | ((u32)uuid[1]);
     }
     else if (size_uuid == 4)
         /* UUID32 */
     {
         uuid_type = gatt_uuid32;
         /* Big endian octet order */
-        gatt_uuid[0] = ((uint32)uuid[0]<<24) | ((uint32)uuid[1]<<16)
-                | ((uint32)uuid[2]<<8) | ((uint32)uuid[3]);
+        gatt_uuid[0] = ((u32)uuid[0]<<24) | ((u32)uuid[1]<<16)
+                | ((u32)uuid[2]<<8) | ((u32)uuid[3]);
     }
     else if (size_uuid == 16)
         /* UUID128 */
     {
-        uint8 i;
+        u8 i;
 
         uuid_type = gatt_uuid128;    
         
@@ -314,10 +314,10 @@ void GattDiscoverPrimaryServiceRequestTestExtraDefault(
             /* 4 octets at a time, 4 times is 16 octets */
         {
             /* Big endian octet order */
-            gatt_uuid[i] =  ((uint32)(*uuid++))<<24;
-            gatt_uuid[i] |= ((uint32)(*uuid++))<<16;
-            gatt_uuid[i] |= ((uint32)(*uuid++))<<8;
-            gatt_uuid[i] |= (uint32)*uuid++;
+            gatt_uuid[i] =  ((u32)(*uuid++))<<24;
+            gatt_uuid[i] |= ((u32)(*uuid++))<<16;
+            gatt_uuid[i] |= ((u32)(*uuid++))<<8;
+            gatt_uuid[i] |= (u32)*uuid++;
         }
     }
     else

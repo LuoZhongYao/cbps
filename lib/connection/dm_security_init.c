@@ -36,7 +36,7 @@ DESCRIPTION
 RETURNS
     Nothing.
 */
-void connectionSmInit(cl_dm_bt_version version, connectionSmState *smState, uint8 flags)
+void connectionSmInit(cl_dm_bt_version version, connectionSmState *smState, u8 flags)
 {
     MAKE_CL_MESSAGE(CL_INTERNAL_SM_INIT_REQ);
 

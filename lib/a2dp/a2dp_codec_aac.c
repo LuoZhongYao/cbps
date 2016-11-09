@@ -23,7 +23,7 @@ NOTES
 
 
 /**************************************************************************/
-static void selectOptimalAacCaps (uint8 *remote_codec_caps)
+static void selectOptimalAacCaps (u8 *remote_codec_caps)
 {
     /* Object Type */
     if (remote_codec_caps[4] & (1 << 6))
@@ -94,7 +94,7 @@ static void selectOptimalAacCaps (uint8 *remote_codec_caps)
 
 
 /**************************************************************************/
-void selectOptimalAacCapsSink (const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalAacCapsSink (const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
     if (!local_codec_caps || !remote_codec_caps)
         return;
@@ -104,7 +104,7 @@ void selectOptimalAacCapsSink (const uint8 *local_codec_caps, uint8 *remote_code
 
 
 /**************************************************************************/
-void selectOptimalAacCapsSource (const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalAacCapsSource (const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
     if (!local_codec_caps || !remote_codec_caps)
         return;
@@ -114,7 +114,7 @@ void selectOptimalAacCapsSource (const uint8 *local_codec_caps, uint8 *remote_co
 
 
 /**************************************************************************/
-void getAacConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_settings)
+void getAacConfigSettings(const u8 *service_caps, a2dp_codec_settings *codec_settings)
 {
     /* Set sample rate for both channels based on codec configuration */
     if (service_caps[6] & (1 << 7))

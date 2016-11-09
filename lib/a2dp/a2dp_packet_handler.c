@@ -43,7 +43,7 @@ DESCRIPTION
 RETURNS
     bool - TRUE if packet is reasonable
 */
-static const uint8 avdtp_min_pdu_length[14] =
+static const u8 avdtp_min_pdu_length[14] =
 {
     2, /* avdtp_null                 */
     2, /* avdtp_discover             */
@@ -62,7 +62,7 @@ static const uint8 avdtp_min_pdu_length[14] =
 };
 
 /* TODO: Need to remove this */
-static uint8 getLocalSeid (remote_device *device)
+static u8 getLocalSeid (remote_device *device)
 {
     sep_data_type *current_sep = (sep_data_type *)blockGetCurrent( device->device_id, data_block_sep_list );
 
@@ -75,10 +75,10 @@ static uint8 getLocalSeid (remote_device *device)
 }
 
 /****************************************************************************/
-uint8 *a2dpGrabSink(Sink sink, uint16 size)
+u8 *a2dpGrabSink(Sink sink, u16 size)
 {
-    uint8 *dest = SinkMap(sink);
-    uint16 claim_result = SinkClaim(sink, size);
+    u8 *dest = SinkMap(sink);
+    u16 claim_result = SinkClaim(sink, size);
     if (claim_result == 0xffff)
     {
         return NULL;
@@ -87,11 +87,11 @@ uint8 *a2dpGrabSink(Sink sink, uint16 size)
     return (dest + claim_result);
 }
 
-static bool sinkFlushHeader(Sink sink, uint16 amount, const uint16 *header, uint16 length)
+static bool sinkFlushHeader(Sink sink, u16 amount, const u16 *header, u16 length)
 {
     if (SinkClaim(sink, length) != 0xFFFF)
     {
-        uint8 * sink_base = SinkMap(sink);
+        u8 * sink_base = SinkMap(sink);
 
         memmove(sink_base+length, sink_base, amount);
         memmove(sink_base, header, length);
@@ -105,20 +105,20 @@ static bool sinkFlushHeader(Sink sink, uint16 amount, const uint16 *header, uint
 
 
 /****************************************************************************/
-static bool sendPacket(remote_device *device, uint8 signalling_header, uint8 signal_id, uint16 payload_size)
+static bool sendPacket(remote_device *device, u8 signalling_header, u8 signal_id, u16 payload_size)
 {
-    uint16 header[3];
+    u16 header[3];
     signalling_channel *signalling = &device->signal_conn;
 
 #ifdef DEBUG_PRINT_ENABLED
-    uint16 i;
-    uint8 *sink_data = SinkMap(signalling->connection.active.sink);
-    PRINT(("sendPacket device=%X signalling_header=%X signal_id=%u payload_size=%u  <",(uint16)device, signalling_header, signal_id, payload_size));
+    u16 i;
+    u8 *sink_data = SinkMap(signalling->connection.active.sink);
+    PRINT(("sendPacket device=%X signalling_header=%X signal_id=%u payload_size=%u  <",(u16)device, signalling_header, signal_id, payload_size));
     for(i=0; i<payload_size; i++)  PRINT(("%X ",sink_data[i]));
     PRINT((">\n"));
 #endif
 
-    if (payload_size < ((uint16)signalling->connection.active.mtu - 1))
+    if (payload_size < ((u16)signalling->connection.active.mtu - 1))
     {   /* Enough space in MTU to fit packet and two byte header */
         header[0] = (signalling_header & 0xF3) | (avdtp_packet_type_single << 2);
         header[1] = signal_id;
@@ -138,7 +138,7 @@ static bool sendPacket(remote_device *device, uint8 signalling_header, uint8 sig
 
         /* Continuation Packets */
         header[0] = (signalling_header & 0xF3) | (avdtp_packet_type_continue << 2);
-        while (payload_size > ((uint16)signalling->connection.active.mtu - 1))
+        while (payload_size > ((u16)signalling->connection.active.mtu - 1))
         {
             payload_size -= (signalling->connection.active.mtu - 1);
             if (!sinkFlushHeader(signalling->connection.active.sink, signalling->connection.active.mtu-1, header, 1))
@@ -154,25 +154,25 @@ static bool sendPacket(remote_device *device, uint8 signalling_header, uint8 sig
 }
 
 /*****************************************************************************/
-void a2dpSendAccept (remote_device *device, avdtp_signal_id signal_id, uint16 payload_size)
+void a2dpSendAccept (remote_device *device, avdtp_signal_id signal_id, u16 payload_size)
 {
-    uint8 transaction_label = device->signal_conn.connection.active.received_transaction_label << 4;
+    u8 transaction_label = device->signal_conn.connection.active.received_transaction_label << 4;
 
     /* Clear pending transaction flag as we are now sending a response */
     device->signal_conn.status.pending_received_transaction = FALSE;
 
-    PRINT(("a2dpSendAccept device=%X signal_id=%u payload_size=%u\n",(uint16)device, signal_id, payload_size));
+    PRINT(("a2dpSendAccept device=%X signal_id=%u payload_size=%u\n",(u16)device, signal_id, payload_size));
 
     PanicFalse( sendPacket(device, transaction_label | avdtp_message_type_response_accept, signal_id, payload_size) );
 
 }
 
-void a2dpSendReject (remote_device *device, avdtp_signal_id signal_id, uint16 error_code)
+void a2dpSendReject (remote_device *device, avdtp_signal_id signal_id, u16 error_code)
 {
-    uint8 *payload;
-    uint8 payload_size;
+    u8 *payload;
+    u8 payload_size;
 
-    PRINT(("a2dpSendReject device=%X signal_id=%u error_code=%u",(uint16)device, signal_id, error_code));
+    PRINT(("a2dpSendReject device=%X signal_id=%u error_code=%u",(u16)device, signal_id, error_code));
 
     /* TODO: Convert this to a table */
     if ( (signal_id == avdtp_set_configuration) ||
@@ -189,18 +189,18 @@ void a2dpSendReject (remote_device *device, avdtp_signal_id signal_id, uint16 er
 
     if ( (payload = a2dpGrabSink(device->signal_conn.connection.active.sink, payload_size))!=NULL )
     {
-        uint8 transaction_label = device->signal_conn.connection.active.received_transaction_label << 4;
+        u8 transaction_label = device->signal_conn.connection.active.received_transaction_label << 4;
 
         /* Clear pending transaction flag as we are now sending a response */
         device->signal_conn.status.pending_received_transaction = FALSE;
 
         if (payload_size > 1)
         {   /* Top byte of error code contains additional, signal id specific, information */
-            *payload++ = (uint8)(error_code>>8);
+            *payload++ = (u8)(error_code>>8);
         }
 
         /* The actual error code */
-        *payload = (uint8)error_code;
+        *payload = (u8)error_code;
 
         PanicFalse( sendPacket(device, transaction_label | avdtp_message_type_response_reject, signal_id, payload_size) );
     }
@@ -208,13 +208,13 @@ void a2dpSendReject (remote_device *device, avdtp_signal_id signal_id, uint16 er
 
 void a2dpSendGeneralReject (remote_device *device)
 {
-    const uint8 *ptr = device->signal_conn.connection.active.received_packet;
-    uint8 transaction_label = device->signal_conn.connection.active.received_transaction_label << 4;
+    const u8 *ptr = device->signal_conn.connection.active.received_packet;
+    u8 transaction_label = device->signal_conn.connection.active.received_transaction_label << 4;
 
     /* Clear pending transaction flag as we are now sending a response */
     device->signal_conn.status.pending_received_transaction = FALSE;
 
-    PRINT(("a2dpSendGeneralReject device=%X\n",(uint16)device));
+    PRINT(("a2dpSendGeneralReject device=%X\n",(u16)device));
 
     if ((device->profile_version > avdtp_version_unknown) && (device->profile_version < avdtp_version_13))
     {
@@ -227,13 +227,13 @@ void a2dpSendGeneralReject (remote_device *device)
 }
 
 
-bool a2dpSendCommand(remote_device *device, uint8 signal_id, const uint8* payload_data, uint16 payload_size)
+bool a2dpSendCommand(remote_device *device, u8 signal_id, const u8* payload_data, u16 payload_size)
 {
-    uint16 additional_payload_size;
-    uint8* payload;
+    u16 additional_payload_size;
+    u8* payload;
     Sink sink = device->signal_conn.connection.active.sink;
 
-    PRINT(("a2dpSendCommand device=%X signal_id=%u payload_size=%u\n",(uint16)device, signal_id, payload_size));
+    PRINT(("a2dpSendCommand device=%X signal_id=%u payload_size=%u\n",(u16)device, signal_id, payload_size));
 
     if (!sink || !SinkIsValid(sink))
     {   /* can't get the sink */
@@ -300,7 +300,7 @@ RETURNS
 */
 static void processGeneralRejectResponse(remote_device *device)
 {
-    const uint8 *ptr = device->signal_conn.connection.active.received_packet;
+    const u8 *ptr = device->signal_conn.connection.active.received_packet;
 
     if (device->signal_conn.status.pending_issued_transaction && (device->signal_conn.connection.active.issued_transaction_label != (ptr[0] >> 4)))
     {
@@ -337,8 +337,8 @@ static void processGeneralRejectResponse(remote_device *device)
 /*****************************************************************************/
 static bool handleReceiveCommand(remote_device *device)
 {
-    const uint8 *ptr = device->signal_conn.connection.active.received_packet;
-    uint16 packet_size = device->signal_conn.connection.active.received_packet_length;
+    const u8 *ptr = device->signal_conn.connection.active.received_packet;
+    u16 packet_size = device->signal_conn.connection.active.received_packet_length;
     Sink sink = device->signal_conn.connection.active.sink;
 
     PRINT(("handleReceiveCommand %d - ", device->device_id));
@@ -479,8 +479,8 @@ static bool handleReceiveCommand(remote_device *device)
 static void handleReceiveResponse(remote_device *device)
 {
     signalling_channel *signalling = &device->signal_conn;
-    const uint8* ptr = signalling->connection.active.received_packet;
-    uint16 packet_size = signalling->connection.active.received_packet_length;
+    const u8* ptr = signalling->connection.active.received_packet;
+    u16 packet_size = signalling->connection.active.received_packet_length;
 
     PRINT(("handleReceiveResponse %d - ", device->device_id));
 
@@ -587,8 +587,8 @@ RETURNS
 static void handleBadHeader(remote_device *device)
 {
     signalling_channel *signalling = &device->signal_conn;
-    const uint8 *ptr = signalling->connection.active.received_packet;
-    uint16 packet_size = signalling->connection.active.received_packet_length;
+    const u8 *ptr = signalling->connection.active.received_packet;
+    u16 packet_size = signalling->connection.active.received_packet_length;
     Sink sink = signalling->connection.active.sink;
 
     PRINT(("handleBadHeader\n"));
@@ -633,10 +633,10 @@ RETURNS
 */
 static bool processSignalPacket(remote_device *device)
 {
-    uint8 message_type = *device->signal_conn.connection.active.received_packet & 0x03;
+    u8 message_type = *device->signal_conn.connection.active.received_packet & 0x03;
 
 #ifdef DEBUG_PRINT_ENABLED
-    uint16 i;
+    u16 i;
     PRINT(("processSignalPacket length=%u  <",device->signal_conn.connection.active.received_packet_length));
     for(i=0;i<device->signal_conn.connection.active.received_packet_length;i++) PRINT(("%X ",device->signal_conn.connection.active.received_packet[i]));
     PRINT((">\n"));
@@ -690,7 +690,7 @@ void a2dpHandleSignalPacket(remote_device *device)
 {
     if ( device && (device->profile_version != avdtp_version_not_requested) )
     {
-        uint16 packet_size;
+        u16 packet_size;
         signalling_channel *signalling = &device->signal_conn;
         Source source = StreamSourceFromSink(signalling->connection.active.sink);
 
@@ -701,8 +701,8 @@ void a2dpHandleSignalPacket(remote_device *device)
 
         while ((packet_size = SourceBoundary(source)) != 0)
         {
-            const uint8 *ptr = SourceMap(source);
-            uint16 type = (ptr[0]>>2) & 3;
+            const u8 *ptr = SourceMap(source);
+            u16 type = (ptr[0]>>2) & 3;
 
             switch (type)
             {
@@ -715,7 +715,7 @@ void a2dpHandleSignalPacket(remote_device *device)
                         free(signalling->connection.active.received_packet);
                     }
                     /* Packets longer than 1 part are malloc'd so we can't keep the 'const' on the pointer, cast away */
-                    signalling->connection.active.received_packet = (uint8*)ptr;
+                    signalling->connection.active.received_packet = (u8*)ptr;
                     signalling->connection.active.received_packet_length = packet_size;
 
                     /* complete packet, process it now */
@@ -745,7 +745,7 @@ void a2dpHandleSignalPacket(remote_device *device)
                         Allocate some memory to store the data until
                         the next fragment arrives.
                     */
-                    signalling->connection.active.received_packet = (uint8 *)malloc(packet_size-1);
+                    signalling->connection.active.received_packet = (u8 *)malloc(packet_size-1);
                     if (signalling->connection.active.received_packet != NULL)
                     {
                         /* copy the packet into RAM but discard the
@@ -761,7 +761,7 @@ void a2dpHandleSignalPacket(remote_device *device)
                 case avdtp_packet_type_continue:
                 case avdtp_packet_type_end:
                 {
-                    uint8 *new_rx_packet;
+                    u8 *new_rx_packet;
 
                     /* ignore continuation unless we've seen the start */
                     if (signalling->connection.active.received_packet == NULL)

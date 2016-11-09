@@ -38,7 +38,7 @@ RETURNS
 */
 void connectionHandleDmBadMessageInd(DM_BAD_MESSAGE_IND_T *ind)
 {
-    uint16 *bad_message = (uint16 *)VmGetPointerFromHandle(ind->message);
+    u16 *bad_message = (u16 *)VmGetPointerFromHandle(ind->message);
     
 #ifdef CONNECTION_DEBUG_LIB
     if (ind->message_length)

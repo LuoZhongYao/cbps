@@ -44,9 +44,9 @@ NOTES
 ******************************************************************************/
 void avrcpSendUnitInfoCfmToClient(AVRCP *avrcp, 
                                   avrcp_status_code status, 
-                                  uint16 unit_type,
-                                  uint16 unit, 
-                                  uint32 company)
+                                  u16 unit_type,
+                                  u16 unit, 
+                                  u32 company)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_UNITINFO_CFM);
     message->status = status;
@@ -73,16 +73,16 @@ void avrcpSendUnitInfoCfmToClient(AVRCP *avrcp,
 *******************************************************************************/
 void avrcpHandleInternalUnitInfoReq(AVRCP *avrcp)
 {
-    uint16 packet_size = 5 + AVRCP_TOTAL_HEADER_SIZE;
+    u16 packet_size = 5 + AVRCP_TOTAL_HEADER_SIZE;
     
     Sink sink = avrcp->sink;
 
-    uint8* ptr = avrcpGrabSink(sink, packet_size);
+    u8* ptr = avrcpGrabSink(sink, packet_size);
 
     if (!ptr)
     {    
         avrcpSendUnitInfoCfmToClient(avrcp, avrcp_no_resource, 
-                                     0, 0, (uint32) 0);
+                                     0, 0, (u32) 0);
     }
     else
     {
@@ -132,8 +132,8 @@ void avrcpHandleInternalUnitInfoReq(AVRCP *avrcp)
 *
 *****************************************************************************/
 void avrcpHandleUnitInfoResponse(AVRCP *avrcp, 
-                                const uint8 *ptr, 
-                                uint16 packet_size)
+                                const u8 *ptr, 
+                                u16 packet_size)
 { 
 
     /* Give to the application only if it is waiting */
@@ -146,13 +146,13 @@ void avrcpHandleUnitInfoResponse(AVRCP *avrcp,
                 ptr[AVRCP_UNITINFO_PANEL_OFFSET] >> 
                     AVRCP4_UNITINFO_UNIT_TYPE_SHIFT, 
                 ptr[AVRCP_UNITINFO_PANEL_OFFSET] & AVRCP4_UNITINFO_UNIT_MASK, 
-                (((uint32)ptr[AVRCP_COMPANY_ID_OFFSET] << 16) & 0x00FF0000) |
-                (((uint32)ptr[AVRCP_COMPANY_ID_OFFSET+1] << 8) & 0x0000FF00) | 
-                ((uint32)ptr[AVRCP_COMPANY_ID_OFFSET+2] & 0x000000FF));
+                (((u32)ptr[AVRCP_COMPANY_ID_OFFSET] << 16) & 0x00FF0000) |
+                (((u32)ptr[AVRCP_COMPANY_ID_OFFSET+1] << 8) & 0x0000FF00) | 
+                ((u32)ptr[AVRCP_COMPANY_ID_OFFSET+2] & 0x000000FF));
         }
         else
         {
-            avrcpSendUnitInfoCfmToClient(avrcp, avrcp_fail, 0, 0, (uint32) 0);
+            avrcpSendUnitInfoCfmToClient(avrcp, avrcp_fail, 0, 0, (u32) 0);
         }
 
         /* No longer waiting */
@@ -182,8 +182,8 @@ void avrcpHandleUnitInfoResponse(AVRCP *avrcp,
 *******************************************************************************/
 void avrcpSendSubunitInfoCfmToClient(AVRCP *avrcp, 
                                     avrcp_status_code status, 
-                                    uint8 page, 
-                                    const uint8 *page_data)
+                                    u8 page, 
+                                    const u8 *page_data)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_SUBUNITINFO_CFM);
     message->status = status;
@@ -220,10 +220,10 @@ void avrcpSendSubunitInfoCfmToClient(AVRCP *avrcp,
 void avrcpHandleInternalSubUnitInfoReq(AVRCP *avrcp, 
        const AVRCP_INTERNAL_SUBUNITINFO_REQ_T *req)
 {
-    uint16 packet_size = 5 + AVRCP_TOTAL_HEADER_SIZE;
+    u16 packet_size = 5 + AVRCP_TOTAL_HEADER_SIZE;
     
     Sink sink = avrcp->sink;
-    uint8* ptr = avrcpGrabSink(sink, packet_size);
+    u8* ptr = avrcpGrabSink(sink, packet_size);
 
     if (!ptr)
         avrcpSendSubunitInfoCfmToClient(avrcp, avrcp_no_resource, 0, 0);
@@ -282,8 +282,8 @@ void avrcpHandleInternalSubUnitInfoReq(AVRCP *avrcp,
 *
 *****************************************************************************/
 void avrcpHandleSubUnitInfoResponse(AVRCP *avrcp, 
-                                    const uint8 *ptr, 
-                                    uint16 packet_size)
+                                    const u8 *ptr, 
+                                    u16 packet_size)
 {
     if(avrcp->pending == avrcp_subunit_info)
     {
@@ -340,9 +340,9 @@ void avrcpHandleSubUnitInfoResponse(AVRCP *avrcp,
 void avrcpHandleInternalUnitInfoRes( AVRCP *avrcp,
                               const  AVRCP_INTERNAL_UNITINFO_RES_T *res)
 {
-    uint16 offset      = AVRCP_TOTAL_HEADER_SIZE;
-    uint16 packet_size = AVCTP_SINGLE_PKT_HEADER_SIZE + AVRCP_UNITINFO_SIZE;
-    uint8  *pdu        = NULL;
+    u16 offset      = AVRCP_TOTAL_HEADER_SIZE;
+    u16 packet_size = AVCTP_SINGLE_PKT_HEADER_SIZE + AVRCP_UNITINFO_SIZE;
+    u8  *pdu        = NULL;
 
     if (!avrcp->av_msg)
     {
@@ -399,8 +399,8 @@ void avrcpHandleInternalUnitInfoRes( AVRCP *avrcp,
  *    
  * PARAMETERS
  *   avrcp                   - AVRCP Task.
- *   const uint8*            - Ptr to the received AVRCP command
- *   uint16                  - packet_size
+ *   const u8*            - Ptr to the received AVRCP command
+ *   u16                  - packet_size
  *    
  *  Expected Command looks like
  *                  -----------------------------------------------
@@ -419,8 +419,8 @@ void avrcpHandleInternalUnitInfoRes( AVRCP *avrcp,
  *     
  ****************************************************************************/
 void avrcpHandleUnitInfoCommand(AVRCP       *avrcp,
-                                const uint8 *ptr, 
-                                uint16      packet_size)
+                                const u8 *ptr, 
+                                u16      packet_size)
 {
     /* Check packet has a valid header and payload if any */
 
@@ -470,8 +470,8 @@ void avrcpHandleInternalSubUnitInfoRes( AVRCP *avrcp,
                  const AVRCP_INTERNAL_SUBUNITINFO_RES_T *res)
 {
 
-    uint16 offset=AVCTP_SINGLE_PKT_HEADER_SIZE+AVRCP_SUBUNIT_PAGE_DATA_OFFSET;
-    uint16 packet_size=AVRCP_UNITINFO_SIZE+AVCTP_SINGLE_PKT_HEADER_SIZE;
+    u16 offset=AVCTP_SINGLE_PKT_HEADER_SIZE+AVRCP_SUBUNIT_PAGE_DATA_OFFSET;
+    u16 packet_size=AVRCP_UNITINFO_SIZE+AVCTP_SINGLE_PKT_HEADER_SIZE;
 
     if (avrcp->av_msg)
     {
@@ -488,7 +488,7 @@ void avrcpHandleInternalSubUnitInfoRes( AVRCP *avrcp,
             /* Write back our values and send response - 
                 No fragmentation for Unit INFO*/
             
-            uint8 *pdu = avrcpGrabSink(avrcp->sink, packet_size);
+            u8 *pdu = avrcpGrabSink(avrcp->sink, packet_size);
             
             if(pdu)
             {
@@ -528,8 +528,8 @@ void avrcpHandleInternalSubUnitInfoRes( AVRCP *avrcp,
  *    
  * PARAMETERS
  *   avrcp                   - AVRCP Task.
- *   const uint8*            - Ptr to the received AVRCP command
- *   uint16                  - packet_size
+ *   const u8*            - Ptr to the received AVRCP command
+ *   u16                  - packet_size
  *    
  *  Expected Command looks like
  *                  -----------------------------------------------
@@ -549,8 +549,8 @@ void avrcpHandleInternalSubUnitInfoRes( AVRCP *avrcp,
  ****************************************************************************/
 
 void avrcpHandleSubUnitInfoCommand(AVRCP *avrcp,
-                                   const uint8 *ptr, 
-                                   uint16 packet_size)
+                                   const u8 *ptr, 
+                                   u16 packet_size)
 {
     /* Check packet has a valid header and payload if any */
 

@@ -24,7 +24,7 @@ DESCRIPTION
 RETURNS
     
 */
-void gatt_message_internal(Task task, cid_map_t *conn, void *prim, uint16 id)
+void gatt_message_internal(Task task, cid_map_t *conn, void *prim, u16 id)
 {
     gatt_internal_t *msg = (gatt_internal_t*)prim;
 
@@ -58,7 +58,7 @@ bool gatt_message_prepare(cid_map_t *conn,
                           att_result_t result,
                           bool final,
                           bool *more_to_come,
-                          uint16 id)
+                          u16 id)
 {
     bool last = FALSE;
 
@@ -113,7 +113,7 @@ DESCRIPTION
 RETURNS
     
 */
-void gatt_message_send(cid_map_t *conn, uint16 id)
+void gatt_message_send(cid_map_t *conn, u16 id)
 {
     if (conn->data.stash)
     {

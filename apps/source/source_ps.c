@@ -44,9 +44,9 @@ Functions
 NAME    
     ps_read_user - Read a User PSKey 
 */
-uint16 ps_read_user(uint16 ps_key, void *ps_data, uint16 ps_size)
+u16 ps_read_user(u16 ps_key, void *ps_data, u16 ps_size)
 {
-    uint16 ps_retrieve = 0;
+    u16 ps_retrieve = 0;
     
 #ifdef DEBUG_PS     
     {
@@ -82,7 +82,7 @@ uint16 ps_read_user(uint16 ps_key, void *ps_data, uint16 ps_size)
 NAME    
     ps_read_full - Read a device PSKey 
 */
-uint16 ps_read_full(uint16 ps_key, void *ps_data, uint16 ps_size)
+u16 ps_read_full(u16 ps_key, void *ps_data, u16 ps_size)
 {
 #ifdef DEBUG_PS     
     {
@@ -99,12 +99,12 @@ uint16 ps_read_full(uint16 ps_key, void *ps_data, uint16 ps_size)
 NAME    
     ps_write - Write a PSKey 
 */
-uint16 ps_write(uint16 ps_key, const void *ps_data, uint16 ps_size)
+u16 ps_write(u16 ps_key, const void *ps_data, u16 ps_size)
 {
 #ifdef DEBUG_PS     
     {
-        uint16 i;
-        const uint8 *ch = ps_data;
+        u16 i;
+        const u8 *ch = ps_data;
         ch = ch;
         PS_DEBUG(("PS: WRITE; key[0x%x] size[0x%x] data[", ps_key, ps_size));
         for (i = 0; i < ps_size; i++)
@@ -130,7 +130,7 @@ RETURNS
 */ 
 void ps_set_version(void)
 {
-    uint16 cfg_set_version[2];
+    u16 cfg_set_version[2];
     
     /* read software version number pskey */
     if ((PsRetrieve(PS_KEY_CONFIG_SET_VERSION_ID, &cfg_set_version, 2) != 2)||
@@ -150,10 +150,10 @@ NAME
 */
 void ps_get_configuration(void)
 {    
-    uint16 sbc_config;
-    uint16 faststream_config;
-    uint16 aptx_config;
-    uint16 aptxLowLatency_config;
+    u16 sbc_config;
+    u16 faststream_config;
+    u16 aptx_config;
+    u16 aptxLowLatency_config;
     POWER_TABLE_T *power_table = NULL; 
 
     /* Read Bluetooth address of remote device that the source should connect to */
@@ -176,13 +176,13 @@ void ps_get_configuration(void)
 #endif    
     
     /* Read number of stored Paired Devices */
-    CfgErrFalse(ps_read_user(PS_KEY_PAIRED_DEVICE_LIST_SIZE, &theSource->ps_config->number_paired_devices, sizeof(uint16)),PS_KEY_PAIRED_DEVICE_LIST_SIZE);
+    CfgErrFalse(ps_read_user(PS_KEY_PAIRED_DEVICE_LIST_SIZE, &theSource->ps_config->number_paired_devices, sizeof(u16)),PS_KEY_PAIRED_DEVICE_LIST_SIZE);
     
     /* Read configurable timers */
     CfgErrFalse(ps_read_user(PS_KEY_USER_TIMERS, &theSource->ps_config->ps_timers, sizeof(PS_TIMERS_T)),PS_KEY_USER_TIMERS);
     
     /* Read company ID */
-    ps_read_user(PS_KEY_USER_COMPANY_ID, &theSource->ps_config->company_id, sizeof(uint32)); 
+    ps_read_user(PS_KEY_USER_COMPANY_ID, &theSource->ps_config->company_id, sizeof(u32)); 
     PS_DEBUG(("PS: Company ID [0x%lx]\n", theSource->ps_config->company_id));
     
     /* Read features */
@@ -212,22 +212,22 @@ void ps_get_configuration(void)
         }   
         if (sbc_config)
         {
-            theSource->a2dp_data.sbc_codec_config = (uint8 *)memory_get_block(MEMORY_GET_BLOCK_CODEC_SBC);
+            theSource->a2dp_data.sbc_codec_config = (u8 *)memory_get_block(MEMORY_GET_BLOCK_CODEC_SBC);
             a2dp_set_sbc_config(FALSE);
         }
         if (faststream_config)
         {
-            theSource->a2dp_data.faststream_codec_config = (uint8 *)memory_get_block(MEMORY_GET_BLOCK_CODEC_FASTSTREAM);
+            theSource->a2dp_data.faststream_codec_config = (u8 *)memory_get_block(MEMORY_GET_BLOCK_CODEC_FASTSTREAM);
             a2dp_set_faststream_config(FALSE);
         }
         if (aptx_config)
         {
-            theSource->a2dp_data.aptx_codec_config = (uint8 *)memory_get_block(MEMORY_GET_BLOCK_CODEC_APTX);
+            theSource->a2dp_data.aptx_codec_config = (u8 *)memory_get_block(MEMORY_GET_BLOCK_CODEC_APTX);
             a2dp_set_aptx_config(FALSE);
         }
         if (aptxLowLatency_config)
         {
-            theSource->a2dp_data.aptxLowLatency_codec_config = (uint8 *)memory_get_block(MEMORY_GET_BLOCK_CODEC_APTX_LOW_LATENCY);
+            theSource->a2dp_data.aptxLowLatency_codec_config = (u8 *)memory_get_block(MEMORY_GET_BLOCK_CODEC_APTX_LOW_LATENCY);
             a2dp_set_aptxLowLatency_config(FALSE);
         }
     }
@@ -236,8 +236,8 @@ void ps_get_configuration(void)
     CfgErrFalse(ps_read_user(PS_KEY_USER_A2DP_CODECS, &theSource->ps_config->a2dp_codecs, sizeof(PS_A2DP_CODECS_T)),PS_KEY_USER_A2DP_CODECS); 
     
     /* Read Sniff configuration */  
-    power_table = (POWER_TABLE_T *)memory_create(((sizeof(lp_power_table) * POWER_TABLE_ENTRIES) + sizeof(uint16)));	    
-    if (power_table && ps_read_user(PS_KEY_USER_SNIFF, power_table, ((sizeof(lp_power_table) * POWER_TABLE_ENTRIES) + sizeof(uint16))))
+    power_table = (POWER_TABLE_T *)memory_create(((sizeof(lp_power_table) * POWER_TABLE_ENTRIES) + sizeof(u16)));	    
+    if (power_table && ps_read_user(PS_KEY_USER_SNIFF, power_table, ((sizeof(lp_power_table) * POWER_TABLE_ENTRIES) + sizeof(u16))))
     {
         theSource->ps_config->sniff.number_a2dp_entries = power_table->a2dp_entries;
         theSource->ps_config->sniff.number_aghfp_entries = power_table->aghfp_entries;
@@ -245,7 +245,7 @@ void ps_get_configuration(void)
         theSource->ps_config->sniff.aghfp_powertable = &power_table->powertable[power_table->a2dp_entries];
 #ifdef DEBUG_PS   
         {
-            uint16 i;
+            u16 i;
             PS_DEBUG(("PS: Sniff; A2DP entries[%d]:\n", theSource->ps_config->sniff.number_a2dp_entries));
             for (i = 0; i < theSource->ps_config->sniff.number_a2dp_entries; i++)
             {
@@ -441,7 +441,7 @@ void ps_write_new_remote_device(const bdaddr *addr, PROFILES_T profile)
 NAME    
     ps_write_device_name - Write the device name to PS     
 */
-void ps_write_device_name(const bdaddr *addr, uint16 size_name, const uint8 *name)
+void ps_write_device_name(const bdaddr *addr, u16 size_name, const u8 *name)
 {
     /* store the local friendly name of the device with this address */
     ConnectionSmPutAttribute(PS_KEY_USER_PAIRED_NAME_BASE, addr, size_name, name);
@@ -455,5 +455,5 @@ NAME
 void ps_write_device_attributes(const bdaddr *addr, ATTRIBUTES_T attributes)
 {
     /* store the attributes of the device with this address */
-    ConnectionSmPutAttribute(PS_KEY_USER_PAIRED_ATTR_BASE, addr, sizeof(attributes), (uint8*)&attributes);
+    ConnectionSmPutAttribute(PS_KEY_USER_PAIRED_ATTR_BASE, addr, sizeof(attributes), (u8*)&attributes);
 }

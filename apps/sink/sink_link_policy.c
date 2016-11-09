@@ -7,11 +7,11 @@ FILE NAME
 
 DESCRIPTION
     Handles link policy and role switch settings across all devices/profiles
-    
+
 NOTES
 
 */
-        
+
 /****************************************************************************
     Header files
 */
@@ -91,7 +91,7 @@ static const lp_power_table lp_powertable_avrcp[]=
 {
     /* mode,        min_interval,   max_interval,   attempt,    timeout,    duration */
     {lp_active,    0,              0,              0,          0,          AVRCP_ACTIVE_MODE_INTERVAL},      /* Go into active mode for 10 seconds*/
-    {lp_sniff,     800,            800,            2,          1,          0 } 
+    {lp_sniff,     800,            800,            2,          1,          0 }
 };
 #endif
 
@@ -105,60 +105,58 @@ static const lp_power_table lp_powertable_subwoofer[2]=
 #endif
 
 #ifdef DEBUG_LP
-    #define LP_DEBUG(x) DEBUG(x)
 #else
-    #define LP_DEBUG(x) 
-#endif   
+#endif
 
 
-static uint16 linkPolicyNumberPhysicalConnections (void)
+static u16 linkPolicyNumberPhysicalConnections (void)
 {
-    uint16 connections = 0;
+    u16 connections = 0;
     Sink sink_pri, sink_sec, sink_a2dp_pri, sink_a2dp_sec;
 
     /* obtain any hfp link sinks */
     HfpLinkGetSlcSink(hfp_primary_link, &sink_pri);
     HfpLinkGetSlcSink(hfp_secondary_link, &sink_sec);
-    
+
     /* obtain sinks for any a2dp links */
     sink_a2dp_pri = A2dpSignallingGetSink(theSink.a2dp_link_data->device_id[a2dp_primary]);
     sink_a2dp_sec = A2dpSignallingGetSink(theSink.a2dp_link_data->device_id[a2dp_secondary]);
-    
+
     /* if primary hfp exists then check its role */
     if (sink_pri)
     {
         connections++;
     }
-        
-    /* if secondary hfp connection then check its role */    
+
+    /* if secondary hfp connection then check its role */
     if (sink_sec)
     {
         connections++;
     }
-    
+
     /* if primary a2dp exists and it is not the same device as pri or sec hfp connections */
     if (sink_a2dp_pri && !deviceManagerIsSameDevice(a2dp_primary, hfp_primary_link) && !deviceManagerIsSameDevice(a2dp_primary, hfp_secondary_link))
     {
         connections++;
     }
-    
+
     /* if secondary a2dp exists and it is not the same device as pri or sec hfp connections */
     if (sink_a2dp_sec && !deviceManagerIsSameDevice(a2dp_secondary, hfp_primary_link) && !deviceManagerIsSameDevice(a2dp_secondary, hfp_secondary_link))
     {
         connections++;
     }
-        
-    LP_DEBUG(("LP: Number of physical connections = %u\n", connections ));    
+
+    LOGD("Number of physical connections = %u\n", connections );
     return connections;
 }
 
 /****************************************************************************
-NAME    
+NAME
     linkPolicyUseDefaultSettings
 
 DESCRIPTION
-    set the link policy based on no a2dp streaming or sco 
-    
+    set the link policy based on no a2dp streaming or sco
+
 RETURNS
     void
 */
@@ -167,81 +165,81 @@ static void linkPolicyUseDefaultSettings(Sink sink)
     /* Set up our sniff sub rate params for SLC */
     ssr_params* slc_params = &theSink.conf2->ssr_data.slc_params;
     ConnectionSetSniffSubRatePolicy(sink, slc_params->max_remote_latency, slc_params->min_remote_timeout, slc_params->min_local_timeout);
-    
+
     /* audio not active, normal role, check for user defined power table */
     if((theSink.user_power_table)&&(theSink.user_power_table->normalEntries))
-    {                  
-        LP_DEBUG(("LP: SetLinkP - norm user table \n" ));    
+    {
+        LOGD("SetLinkP - norm user table \n" );
         /* User supplied power table */
-        ConnectionSetLinkPolicy(sink, theSink.user_power_table->normalEntries ,&theSink.user_power_table->powertable[0]);               
+        ConnectionSetLinkPolicy(sink, theSink.user_power_table->normalEntries ,&theSink.user_power_table->powertable[0]);
     }
-    /* no user defined power table so use default normal power table */       
+    /* no user defined power table so use default normal power table */
     else
-    {    
-        LP_DEBUG(("LP: SetLinkP - norm default table \n" ));    
+    {
+        LOGD("SetLinkP - norm default table \n" );
         ConnectionSetLinkPolicy(sink, 2 ,lp_powertable_default);
-    }              
+    }
 }
 
 
 /****************************************************************************
-NAME    
+NAME
     linkPolicyUseA2dpSettings
 
 DESCRIPTION
-    set the link policy requirements based on current device audio state 
-    
+    set the link policy requirements based on current device audio state
+
 RETURNS
     void
 */
-void linkPolicyUseA2dpSettings(uint16 DeviceId, uint16 StreamId, Sink sink )
+void linkPolicyUseA2dpSettings(u16 DeviceId, u16 StreamId, Sink sink )
 {
     Sink sinkAG1,sinkAG2 = NULL;
     bool faster_poll = FALSE;
-    
+
     /* obtain any sco sinks */
     HfpLinkGetAudioSink(hfp_primary_link, &sinkAG1);
     HfpLinkGetAudioSink(hfp_secondary_link, &sinkAG2);
-    
-    /* determine if the connection is currently streaming and there are no scos currently open */    
+
+    /* determine if the connection is currently streaming and there are no scos currently open */
     if ((!sinkAG1 && !sinkAG2) && (A2dpMediaGetState(DeviceId, StreamId) == a2dp_stream_streaming))
-                                
+
     {
         /* is there a user power table available from ps ? */
         if((theSink.user_power_table) && (theSink.user_power_table->A2DPStreamEntries))
-        {                
-            LP_DEBUG(("LP: SetLinkP - A2dp user table \n"))
+        {
+            LOGD("SetLinkP - A2dp user table \n");
 
             /* User supplied power table for A2DP role */
-            ConnectionSetLinkPolicy(sink, 
+            ConnectionSetLinkPolicy(sink,
                                     theSink.user_power_table->A2DPStreamEntries ,
                                     &theSink.user_power_table->powertable[ theSink.user_power_table->normalEntries + theSink.user_power_table->SCOEntries  ]
-                                    );  
+                                    );
         }
         /* no user power table so use default A2DP table */
         else
-        {    
+        {
             if (A2dpMediaGetRole(DeviceId, StreamId) == a2dp_source)
             {
-                LP_DEBUG(("LP: SetLinkP - A2dp stream source table \n" ));    
+                LOGD("SetLinkP - A2dp stream source table \n" );
                 ConnectionSetLinkPolicy(sink, 1 ,lp_powertable_a2dp_stream_source);
                 faster_poll = TRUE;
             }
             else
             {
-                LP_DEBUG(("LP: SetLinkP - A2dp stream sink table \n" ));    
+                LOGD("SetLinkP - A2dp stream sink table \n" );
                 ConnectionSetLinkPolicy(sink, 1 ,lp_powertable_a2dp_stream_sink);
             }
-        }                         
+        }
     }
     /* if not streaming a2dp check for the prescence of sco data and if none found go to normal settings */
     else if ((!sinkAG1 && !sinkAG2) && (A2dpMediaGetState(DeviceId, StreamId) != a2dp_stream_streaming))
     {
-        uint16 priority;
-        
+        u16 priority;
+
         if (getA2dpIndex(DeviceId, &priority) && (theSink.a2dp_link_data->peer_device[priority] == remote_device_peer))
         {
-            LP_DEBUG(("LP: SetLinkP - a2dp default table \n" ));    
+            LOGD("SetLinkP - a2dp default table \n" );
             ConnectionSetLinkPolicy(sink, 2 ,lp_powertable_a2dp_default);
         }
         else
@@ -251,13 +249,13 @@ void linkPolicyUseA2dpSettings(uint16 DeviceId, uint16 StreamId, Sink sink )
         }
     }
     /* default to passive to prevent any stream distortion issues should the current
-       operating mode be incorrectly identified */ 
+       operating mode be incorrectly identified */
     else
     {
-           LP_DEBUG(("LP: SetLinkP - default A2dp stream sink table \n" ));    
+           LOGD("SetLinkP - default A2dp stream sink table \n" );
            ConnectionSetLinkPolicy(sink, 1 ,lp_powertable_a2dp_stream_sink);
     }
-    
+
 #ifdef ENABLE_PEER
     {   /* Set a reasonable poll interval for the relay link to help if we ever get into a */
         /* scatternet situation due to an AV SRC refusing to be slave.                     */
@@ -280,7 +278,7 @@ void linkPolicyUseA2dpSettings(uint16 DeviceId, uint16 StreamId, Sink sink )
             prim->latency = faster_poll ? 10000 : 25000;
             prim->delay_variation = 0xffffffff;
 
-            DEBUG(("LP: SetLinkP - Set QoS %lums\n",prim->latency));
+            DEBUG(("SetLinkP - Set QoS %lums\n",prim->latency));
             VmSendDmPrim(prim);
         }
 #endif
@@ -293,49 +291,49 @@ void linkPolicyUseA2dpSettings(uint16 DeviceId, uint16 StreamId, Sink sink )
 
 
 /****************************************************************************
-NAME    
+NAME
     HfpSetLinkPolicy
 
 DESCRIPTION
-    set the link policy requirements based on current device audio state 
-    
+    set the link policy requirements based on current device audio state
+
 RETURNS
     void
 */
 void linkPolicyUseHfpSettings(hfp_link_priority priority, Sink slcSink)
 {
     Sink audioSink;
-    
+
     /* determine if there are any sco sinks */
     if(HfpLinkGetAudioSink(priority, &audioSink))
     {
         /* Set up our sniff sub rate params for SCO */
         ssr_params* sco_params = &theSink.conf2->ssr_data.sco_params;
         ConnectionSetSniffSubRatePolicy(slcSink, sco_params->max_remote_latency, sco_params->min_remote_timeout, sco_params->min_local_timeout);
-       
+
         /* is there a user power table available from ps ? */
         if((theSink.user_power_table) && (theSink.user_power_table->SCOEntries))
-        {                
-            LP_DEBUG(("LP: SetLinkP - sco user table \n" ));    
+        {
+            LOGD("SetLinkP - sco user table \n" );
             /* User supplied power table for SCO role */
-            ConnectionSetLinkPolicy(slcSink, 
+            ConnectionSetLinkPolicy(slcSink,
                                     theSink.user_power_table->SCOEntries ,
                                     &theSink.user_power_table->powertable[ theSink.user_power_table->normalEntries ]
-                                    );               
+                                    );
         }
         /* no user power table so use default SCO table */
         else
-        {    
-            LP_DEBUG(("LP: SetLinkP - sco default table \n" ));    
+        {
+            LOGD("SetLinkP - sco default table \n" );
             ConnectionSetLinkPolicy(slcSink, 2 ,lp_powertable_sco);
-        }              
+        }
     }
     /* default of no a2dp streaming and no sco link */
     else
     {
         /* set normal link policy settings */
         linkPolicyUseDefaultSettings(slcSink);
-    }           
+    }
 }
 
 #ifdef ENABLE_AVRCP
@@ -353,39 +351,39 @@ void linkPolicyUseAvrcpSettings( Sink slcSink )
 {
     if(slcSink)
     {
-        ConnectionSetLinkPolicy(slcSink, 2 ,lp_powertable_avrcp); 
+        ConnectionSetLinkPolicy(slcSink, 2 ,lp_powertable_avrcp);
     }
 }
 #endif /*ENABLE_AVRCP*/
 
 #if defined ENABLE_PBAP || defined ENABLE_GAIA
 /****************************************************************************
-NAME	
+NAME
 	linkPolicyDataAccessComplete
 
 DESCRIPTION
 	set the link policy requirements back after data access, based on current
-    device audio state 
-	
+    device audio state
+
 RETURNS
 	void
 */
 static void linkPolicyDataAccessComplete(Sink sink)
 {
     tp_bdaddr tpaddr;
-    uint16 DeviceId;
-    uint16 StreamId;
-    uint8 i;
+    u16 DeviceId;
+    u16 StreamId;
+    u8 i;
     bool  a2dpSetting = FALSE;
-        
-    LP_DEBUG(("LP: data access complete\n"));
-    
+
+    LOGD("data access complete\n");
+
     /* If device is in the stream a2dp state, use a2dp link policy */
     for_all_a2dp(i)
     {
         DeviceId = theSink.a2dp_link_data->device_id[i];
         StreamId = theSink.a2dp_link_data->stream_id[i];
-           
+
         if( SinkGetBdAddr(sink, &tpaddr) &&
             BdaddrIsSame(&theSink.a2dp_link_data->bd_addr[i], &tpaddr.taddr.addr) )
         {
@@ -396,33 +394,33 @@ static void linkPolicyDataAccessComplete(Sink sink)
                 linkPolicyUseHfpSettings(hfp_primary_link, sink);
         }
     }
-        
+
     /* Otherwise, use hfp link policy */
     if(!a2dpSetting)
     {
-        linkPolicyUseHfpSettings(hfp_primary_link, sink); 
+        linkPolicyUseHfpSettings(hfp_primary_link, sink);
     }
 }
 
 static void linkPolicySetDataActiveMode(Sink sink)
 {
-    LP_DEBUG(("LP: Set Link in Active Mode for data access\n"));
+    LOGD("Set Link in Active Mode for data access\n");
 
     if(SinkIsValid(sink))
     {
         ConnectionSetLinkPolicy(sink, 1 , lp_powertable_data_access);
-    } 
+    }
 }
 #endif /* defined ENABLE_PBAP || defined ENABLE_GAIA */
 
 #ifdef ENABLE_PBAP
 /****************************************************************************
-NAME	
+NAME
 	linkPolicyPhonebookAccessComplete
 
 DESCRIPTION
-	set the link policy requirements back after phonebook access 
-	
+	set the link policy requirements back after phonebook access
+
 RETURNS
 	void
 */
@@ -430,48 +428,48 @@ void linkPolicyPhonebookAccessComplete(Sink sink)
 {
     if (theSink.pbap_access)
     {
-        LP_DEBUG(("LP: PBAP access complete\n"));
-        
+        LOGD("PBAP access complete\n");
+
         if (!theSink.dfu_access)
         {
             linkPolicyDataAccessComplete(sink);
         }
-    
+
         theSink.pbap_access = FALSE;
     }
 }
 
 /****************************************************************************
-NAME	
+NAME
 	linkPolicySetLinkinActiveMode
 
 DESCRIPTION
-	set the link as active mode for phonebook access 
-	
+	set the link as active mode for phonebook access
+
 RETURNS
 	void
 */
 void linkPolicySetLinkinActiveMode(Sink sink)
 {
-    LP_DEBUG(("LP: Set Link in Active Mode for PBAP\n"));
+    LOGD("Set Link in Active Mode for PBAP\n");
 
     if (!theSink.pbap_access && !theSink.dfu_access)
     {
         linkPolicySetDataActiveMode(sink);
     }
-    
+
     theSink.pbap_access = TRUE;
 }
 #endif /* ENABLE_PBAP */
 
 #ifdef ENABLE_GAIA
 /****************************************************************************
-NAME	
+NAME
 	linkPolicyDfuAccessComplete
 
 DESCRIPTION
-	set the link policy requirements back after DFU access 
-	
+	set the link policy requirements back after DFU access
+
 RETURNS
 	void
 */
@@ -479,45 +477,45 @@ void linkPolicyDfuAccessComplete(Sink sink)
 {
     if (theSink.dfu_access)
     {
-        LP_DEBUG(("LP: DFU access complete\n"));
-        
+        LOGD("DFU access complete\n");
+
         if (!theSink.pbap_access)
         {
             linkPolicyDataAccessComplete(sink);
         }
-        
+
         theSink.dfu_access = FALSE;
     }
 }
 
 /****************************************************************************
-NAME	
+NAME
 	linkPolicySetDfuActiveMode
 
 DESCRIPTION
-	set the link as active mode for DFU access 
-	
+	set the link as active mode for DFU access
+
 RETURNS
 	void
 */
 void linkPolicySetDfuActiveMode(Sink sink)
 {
-    LP_DEBUG(("LP: Set Link in Active Mode for DFU\n"));
+    LOGD("Set Link in Active Mode for DFU\n");
 
     if (!theSink.pbap_access && !theSink.dfu_access)
     {
         linkPolicySetDataActiveMode(sink);
     }
-    
+
     theSink.dfu_access = TRUE;
 }
 #endif
 
 
 /****************************************************************************
-NAME    
+NAME
     linkPolicyGetRole
-    
+
 DESCRIPTION
     Request CL to get the role for a specific sink if one passed, or all
     connected HFP sinks if NULL passed.
@@ -527,26 +525,26 @@ RETURNS
 */
 void linkPolicyGetRole(Sink* sink_passed)
 {
-    /* no specific sink to check, check all available - happens on the back of each hfp connect cfm 
+    /* no specific sink to check, check all available - happens on the back of each hfp connect cfm
      * and handleA2DPSignallingConnected
      */
-    LP_DEBUG(("LP: linkPolicyGetRole - sink = %x\n",(uint16)*sink_passed));
+    LOGD("linkPolicyGetRole - sink = %p\n",*sink_passed);
     if (sink_passed)
     {
         if (SinkIsValid(*sink_passed) )
         {
             /*only attempt to switch the sink that has failed to switch*/
             ConnectionGetRole(&theSink.task , *sink_passed) ;
-            LP_DEBUG(("LP: GET 1 role[%x]\n", (int)*sink_passed));
+            LOGD("GET 1 role %p\n", *sink_passed);
         }
     }
 }
 
 
 /****************************************************************************
-NAME    
+NAME
     linkPolicyHandleRoleInd
-    
+
 DESCRIPTION
     this is a function handles notification of a role change by a remote device
 
@@ -555,20 +553,20 @@ RETURNS
 */
 void linkPolicyHandleRoleInd (CL_DM_ROLE_IND_T *ind)
 {
-    LP_DEBUG(("RoleInd, status=%u  role=%s\n", ind->status,  (ind->role == hci_role_master) ? "master" : "slave"));
-    
+    LOGD("RoleInd, status=%u  role=%s\n", ind->status,  (ind->role == hci_role_master) ? "master" : "slave");
+
     if (ind->status == hci_success)
     {
-        uint16 num_sinks;
+        u16 num_sinks;
         Sink sink;
         tp_bdaddr tp_bd_addr;
 
         tp_bd_addr.taddr.type = TYPED_BDADDR_PUBLIC;
         tp_bd_addr.taddr.addr = ind->bd_addr;
-        
+
         num_sinks = 1;
         sink = NULL;
-        
+
         if (StreamSinksFromBdAddr(&num_sinks, &sink, &tp_bd_addr))
         {
             sinkA2dpSetLinkRole(sink, ind->role);
@@ -578,9 +576,9 @@ void linkPolicyHandleRoleInd (CL_DM_ROLE_IND_T *ind)
 
 
 /****************************************************************************
-NAME    
+NAME
     linkPolicyHandleRoleCfm
-    
+
 DESCRIPTION
     this is a function checks the returned role of the device and makes the decision of
     whether to change it or not, if it  needs changing it sends a role change reuest
@@ -591,9 +589,9 @@ RETURNS
 void linkPolicyHandleRoleCfm(CL_DM_ROLE_CFM_T *cfm)
 {
     hci_role requiredRole = hci_role_dont_care;
-    
-    LP_DEBUG(("RoleConfirm, status=%u  sink=0x%X  role=%s\n", cfm->status, (unsigned int)cfm->sink, (cfm->role == hci_role_master) ? "master" : "slave"));
-   
+
+    LOGD("RoleConfirm, status=%u  sink=%p  role=%s\n", cfm->status, cfm->sink, (cfm->role == hci_role_master) ? "master" : "slave");
+
     /* ensure role read successfully */
     if ((cfm->status == hci_success)&&(!theSink.features.DisableRoleSwitching))
     {
@@ -602,13 +600,13 @@ void linkPolicyHandleRoleCfm(CL_DM_ROLE_CFM_T *cfm)
         if((theSink.MultipointEnable) && (linkPolicyNumberPhysicalConnections() > 1))
         {
 #if defined ENABLE_PEER
-            uint16 priority;
-            
+            u16 priority;
+
             if (getA2dpIndexFromSink(cfm->sink, &priority) && (theSink.a2dp_link_data->peer_device[priority] == remote_device_peer))
             {
                 if (A2dpMediaGetRole(theSink.a2dp_link_data->device_id[priority], theSink.a2dp_link_data->stream_id[priority]) == a2dp_source)
                 {
-                    LP_DEBUG(("LP: Multipoint: Peer (relaying), require Master role\n")) ;
+                    LOGD("Multipoint: Peer (relaying), require Master role\n");
                     requiredRole = hci_role_master;
                     /* Set the link supervision timeout as the role switch will have reset it back
                        to firmware defaults */
@@ -616,7 +614,7 @@ void linkPolicyHandleRoleCfm(CL_DM_ROLE_CFM_T *cfm)
                 }
                 else
                 {
-                    LP_DEBUG(("LP: Multipoint: Peer, don't change role\n")) ;
+                    LOGD("Multipoint: Peer, don't change role\n");
                     requiredRole = hci_role_dont_care;
                 }
             }
@@ -626,13 +624,13 @@ void linkPolicyHandleRoleCfm(CL_DM_ROLE_CFM_T *cfm)
 #if defined ENABLE_PEER && defined PEER_SCATTERNET_DEBUG   /* Scatternet debugging only */
                 if (getA2dpIndexFromSink(cfm->sink, &priority) && theSink.a2dp_link_data->invert_ag_role[priority])
                 {
-                    LP_DEBUG(("LP: Multipoint: Non-peer, require Slave role (inverted)\n")) ;
+                    LOGD("Multipoint: Non-peer, require Slave role (inverted)\n");
                     requiredRole = hci_role_slave;
                 }
                 else
 #endif
                 {
-                    LP_DEBUG(("LP: Multipoint: Non-peer, require Master role\n")) ;
+                    LOGD("Multipoint: Non-peer, require Master role\n");
                     requiredRole = hci_role_master;
                     /* Set the link supervision timeout as the role switch will have reset it back
                        to firmware defaults */
@@ -645,32 +643,32 @@ void linkPolicyHandleRoleCfm(CL_DM_ROLE_CFM_T *cfm)
            to maintain stable connections */
         else if((cfm->status == hci_success)&&(SwatGetSignallingSink(theSink.rundata->subwoofer.dev_id)))
         {
-            LP_DEBUG(("LP: Subwoofer, require Master role\n")) ;
+            LOGD("Subwoofer, require Master role\n");
             requiredRole = hci_role_master;
 
             /* Restore the Set link supervision timeout to 1 second as this is reset after a role change */
             ConnectionSetLinkSupervisionTimeout(SwatGetSignallingSink(theSink.rundata->subwoofer.dev_id), SUBWOOFER_LINK_SUPERVISION_TIMEOUT);
-        }        
-#endif        
+        }
+#endif
         /* non multipoint case, device needs to be slave */
         else
         {
             /* Set required role to slave as only one AG connected */
             if((theSink.user_power_table)&&(theSink.user_power_table->normalEntries))
             {   /* if user supplied role request then use that */
-                LP_DEBUG(("LP: Singlepoint, require Master role\n")) ;
+                LOGD("Singlepoint, require Master role\n");
                 requiredRole = theSink.user_power_table->normalRole;
             }
-            else 
+            else
             {
 #if defined ENABLE_PEER
-                uint16 priority;
-            
+                u16 priority;
+
                 if (getA2dpIndexFromSink(cfm->sink, &priority) && (theSink.a2dp_link_data->peer_device[priority] == remote_device_peer))
                 {
                     if (A2dpMediaGetRole(theSink.a2dp_link_data->device_id[priority], theSink.a2dp_link_data->stream_id[priority]) == a2dp_source)
                     {
-                        LP_DEBUG(("LP: Singlepoint: Peer (relaying), require Master role\n")) ;
+                        LOGD("Singlepoint: Peer (relaying), require Master role\n");
                         requiredRole = hci_role_master;
                         /* Set the link supervision timeout as the role switch will have reset it back
                            to firmware defaults */
@@ -678,14 +676,14 @@ void linkPolicyHandleRoleCfm(CL_DM_ROLE_CFM_T *cfm)
                     }
                     else
                     {
-                        LP_DEBUG(("LP: Singlepoint: Peer, don't change role\n")) ;
+                        LOGD("Singlepoint: Peer, don't change role\n");
                         requiredRole = hci_role_dont_care;
                     }
                 }
                 else
 #endif
                 {   /* otherwise don't change the role */
-                    LP_DEBUG(("LP: Singlepoint, don't change role\n")) ;
+                    LOGD("Singlepoint, don't change role\n");
                     requiredRole = hci_role_dont_care;
                 }
             }
@@ -695,18 +693,18 @@ void linkPolicyHandleRoleCfm(CL_DM_ROLE_CFM_T *cfm)
     reschedule the role switch until it is successfull or fails completely */
     else if((cfm->status == hci_error_role_change_not_allowed)&&(!theSink.features.DisableRoleSwitching))
     {
-        LP_DEBUG(("LP: hci_error_role_change_not_allowed on sink = %x\n",(uint16)cfm->sink));    
+        LOGD("hci_error_role_change_not_allowed on sink = %p\n",cfm->sink);
     }
     /* check if the role switch is pending, possibly due to congestion. */
     else if(cfm->status == hci_error_role_switch_pending)
     {
-        LP_DEBUG(("LP: hci_error_role_switch_pending on sink = %x\n",(uint16)cfm->sink));  
+        LOGD("hci_error_role_switch_pending on sink = %p\n",cfm->sink);
     }
     /* automatic role switching is disabled, use the hfp_power_table pskey role requirements
        instead */
     else if(cfm->status == hci_success)
     {
-        LP_DEBUG(("LP: Bypass Automatic role sw, use hfp_power_table role requirements\n")) ;
+        LOGD("Bypass Automatic role sw, use hfp_power_table role requirements\n");
 
         /* check for the prescence of a user configured role requirement */
         if(theSink.user_power_table)
@@ -715,43 +713,43 @@ void linkPolicyHandleRoleCfm(CL_DM_ROLE_CFM_T *cfm)
                if available */
             if((stateManagerGetState() == deviceA2DPStreaming)&&(theSink.user_power_table->A2DPStreamEntries))
             {
-                LP_DEBUG(("LP: Bypass: use A2dp role\n")) ;
+                LOGD("Bypass: use A2dp role\n");
                 requiredRole = theSink.user_power_table->A2DPStreamRole;
             }
             /* or if in call and sco is present check for sco power table entry and use role from that */
             else if((stateManagerGetState() > deviceConnected)&&(theSink.routed_audio)&&(theSink.user_power_table->SCOEntries))
             {
-                LP_DEBUG(("LP: Bypass: use SCO role\n")) ;
+                LOGD("Bypass: use SCO role\n");
                 requiredRole = theSink.user_power_table->SCORole;
             }
             /* or default to normal role power table entry and use role from that */
             else if(theSink.user_power_table->normalEntries)
-            {                    
-                LP_DEBUG(("LP: Bypass: use Normal role\n")) ;
+            {
+                LOGD("Bypass: use Normal role\n");
                 requiredRole = theSink.user_power_table->normalRole;
             }
             /* if no suitable power table entries available then default to slave role */
             else
             {
-                LP_DEBUG(("LP: Bypass: use default slave role\n")) ;
+                LOGD("Bypass: use default slave role\n");
                 requiredRole = hci_role_slave;
             }
         }
-    }        
-    
+    }
+
     /* Request a role change if required */
-    if (requiredRole == hci_role_dont_care) 
+    if (requiredRole == hci_role_dont_care)
     {
         /* Only set the local link role if not a 'pending' status */
         if(cfm->status == hci_error_role_switch_pending)
         {
             /* Pending status, ignore */
-            LP_DEBUG(("LP: Role switch pending\n")) ;
+            LOGD("Role switch pending\n");
         }
         else
         {
-            LP_DEBUG(("LP: Role change set locally %s %x\n",(cfm->role == hci_role_master) ? "master" : "slave", (unsigned int)cfm->sink)) ;
-            
+            LOGD("Role change set locally %s %p\n",(cfm->role == hci_role_master) ? "master" : "slave", cfm->sink);
+
             /* Set the local role, even on error status */
             sinkA2dpSetLinkRole(cfm->sink, cfm->role);
         }
@@ -760,17 +758,17 @@ void linkPolicyHandleRoleCfm(CL_DM_ROLE_CFM_T *cfm)
     {
         if (cfm->role == requiredRole)
         {
-            LP_DEBUG(("LP: Role set locally, already %s %x\n",(requiredRole == hci_role_master) ? "master" : "slave", (unsigned int)cfm->sink)) ;
-            
+            LOGD("Role set locally, already %s %p\n",(requiredRole == hci_role_master) ? "master" : "slave", cfm->sink);
+
             /* Set the local role */
             sinkA2dpSetLinkRole(cfm->sink, cfm->role);
         }
         else
         {
-            LP_DEBUG(("LP: Set dev as %s %x\n",(requiredRole == hci_role_master) ? "master" : "slave", (unsigned int)cfm->sink)) ;
+            LOGD("Set dev as %s %p\n",(requiredRole == hci_role_master) ? "master" : "slave", cfm->sink);
 
             /* Request role change to the 'requiredRole' */
-            ConnectionSetRole(&theSink.task, cfm->sink, requiredRole);             
+            ConnectionSetRole(&theSink.task, cfm->sink, requiredRole);
         }
     }
 
@@ -778,9 +776,9 @@ void linkPolicyHandleRoleCfm(CL_DM_ROLE_CFM_T *cfm)
 
 
 /****************************************************************************
-NAME    
+NAME
     linkPolicyCheckRoles
-    
+
 DESCRIPTION
     this function obtains the sinks of any connection and performs a role check
     on them
@@ -794,31 +792,32 @@ void linkPolicyCheckRoles(void)
     /* obtain any hfp link sinks */
     HfpLinkGetSlcSink(hfp_primary_link, &sink_pri);
     HfpLinkGetSlcSink(hfp_secondary_link, &sink_sec);
-    
+
     /* obtain sinks for any a2dp links */
     sink_a2dp_pri = A2dpSignallingGetSink(theSink.a2dp_link_data->device_id[a2dp_primary]);
     sink_a2dp_sec = A2dpSignallingGetSink(theSink.a2dp_link_data->device_id[a2dp_secondary]);
-    
-    LP_DEBUG(("LP: linkPolicyCheckRoles: Hfp pri = %x, sec = %x, A2dp pri = %x, sec = %x\n",(uint16)sink_pri
-                                                                                           ,(uint16)sink_sec
-                                                                                           ,(uint16)sink_a2dp_pri
-                                                                                           ,(uint16)sink_a2dp_sec)) ;
+
+    LOGD("linkPolicyCheckRoles: Hfp pri = %x, sec = %x, A2dp pri = %x, sec = %x\n",
+         (uintptr_t)sink_pri ,
+         (uintptr_t)sink_sec ,
+         (uintptr_t)sink_a2dp_pri ,
+         (uintptr_t)sink_a2dp_sec);
 
     /* if primary hfp exists then check its role */
-    if(sink_pri)        
+    if(sink_pri)
         linkPolicyGetRole(&sink_pri);
-        
-    /* if secondary hfp connection then check its role */    
-    if(sink_sec)        
+
+    /* if secondary hfp connection then check its role */
+    if(sink_sec)
         linkPolicyGetRole(&sink_sec);
 
     /* if primary a2dp exists and it is not the same device as pri or sec hfp connections */
     if((sink_a2dp_pri)&&(!deviceManagerIsSameDevice(a2dp_primary, hfp_primary_link))&&(!deviceManagerIsSameDevice(a2dp_primary, hfp_secondary_link)))
         linkPolicyGetRole(&sink_a2dp_pri);
-    
+
     /* if secondary a2dp exists and it is not the same device as pri or sec hfp connections */
     if((sink_a2dp_sec)&&(!deviceManagerIsSameDevice(a2dp_secondary, hfp_primary_link))&&(!deviceManagerIsSameDevice(a2dp_secondary, hfp_secondary_link)))
-        linkPolicyGetRole(&sink_a2dp_sec);    
+        linkPolicyGetRole(&sink_a2dp_sec);
 
 #ifdef ENABLE_SUBWOOFER
     /* check the subwoofer signalling sink if connected, this will have an impact of the role required for AG connections to prevent
@@ -828,13 +827,13 @@ void linkPolicyCheckRoles(void)
         Sink sink = SwatGetSignallingSink(theSink.rundata->subwoofer.dev_id);
         linkPolicyGetRole(&sink);
     }
-#endif        
+#endif
 }
 
 /****************************************************************************
-NAME    
+NAME
     linkPolicyUpdateSwatLink
-    
+
 DESCRIPTION
     this function checks the current swat connection state and updates
     the link policy of the link
@@ -850,15 +849,15 @@ void linkPolicyUpdateSwatLink(void)
     /* determine if subwoofer is available */
     if(sink)
     {
-        LP_DEBUG(("LP: SetLinkPolicy Swat\n" ));                 
+        LOGD("SetLinkPolicy Swat\n" );
         ConnectionSetLinkPolicy(sink, 2 , lp_powertable_subwoofer);
-    }   
+    }
     else
     {
         /* no swat link */
-        LP_DEBUG(("LP: SetLinkPolicy Swat - no link\n" ));                 
-    }   
-#endif      
+        LOGD("SetLinkPolicy Swat - no link\n" );
+    }
+#endif
 }
 
 

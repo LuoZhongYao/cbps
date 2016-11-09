@@ -95,12 +95,12 @@ typedef struct
 { 
     /* data takes the form of:
        {
-           uint8 packet_length;
-           uint8 volume_level_offset_within_packet;   ***if applicable***
-           uint8 packet_data[packet_length];
+           u8 packet_length;
+           u8 volume_level_offset_within_packet;   ***if applicable***
+           u8 packet_data[packet_length];
        }
     */  
-    uint8 data[1];
+    u8 data[1];
 } i2s_data_config_t;
 
 /* configuration in pskey format */
@@ -138,12 +138,12 @@ DESCRIPTION: CsrI2SAudioOutputConnectConfigureSink :
 PARAMETERS:
     
     Sink sink   - The Sink to configure
-    uint32 rate - Sample rate of the data coming from the DSP
+    u32 rate - Sample rate of the data coming from the DSP
 
 RETURNS:
     Nothing.
 */
-void CsrI2SAudioOutputConnectConfigureSink(Sink sink, uint32 rate);
+void CsrI2SAudioOutputConnectConfigureSink(Sink sink, u32 rate);
 
 
 /****************************************************************************
@@ -154,7 +154,7 @@ DESCRIPTION: CsrI2SAudioOutputConnect :
 
 PARAMETERS:
     
-    uint32 rate - sample rate of data coming from dsp
+    u32 rate - sample rate of data coming from dsp
     bool   stereo - indicates whether to connect left or left and right channels
     Source dsp_left_port - audio stream from dsp for the left channel audio
     Source dsp_right_port - audio stream from dsp for the left channel audio
@@ -162,7 +162,7 @@ PARAMETERS:
 RETURNS:
     Sink sink to the left channel
 */
-Sink CsrI2SAudioOutputConnect(uint32 rate, bool stereo, Source left_port, Source right_port);
+Sink CsrI2SAudioOutputConnect(u32 rate, bool stereo, Source left_port, Source right_port);
 
 /****************************************************************************
 DESCRIPTION::
@@ -191,7 +191,7 @@ PARAMETERS:
 RETURNS:
     none
 */
-void CsrI2SAudioOutputSetVolume(bool stereo, int16 left_volume, int16 right_volume, bool volume_in_dB);
+void CsrI2SAudioOutputSetVolume(bool stereo, i16 left_volume, i16 right_volume, bool volume_in_dB);
 
 /****************************************************************************
 DESCRIPTION: CsrI2SAudioOutputConnectAdpcm :
@@ -201,7 +201,7 @@ DESCRIPTION: CsrI2SAudioOutputConnectAdpcm :
 
 PARAMETERS:
     
-    uint32 rate - sample rate of data coming from dsp
+    u32 rate - sample rate of data coming from dsp
     bool   stereo - indicates whether to connect left or left and right channels
     Source dsp_left_port - audio stream from dsp for the left channel audio
     
@@ -209,7 +209,7 @@ PARAMETERS:
 RETURNS:
     sink
 */
-Sink CsrI2SAudioOutputConnectAdpcm(uint32 rate, bool stereo, Source left_port);
+Sink CsrI2SAudioOutputConnectAdpcm(u32 rate, bool stereo, Source left_port);
 
 /****************************************************************************
 DESCRIPTION: CsrInitialiseI2SDevice :
@@ -218,12 +218,12 @@ DESCRIPTION: CsrInitialiseI2SDevice :
 
 PARAMETERS:
     
-    uint32 sample_rate - sample rate of data coming from dsp
+    u32 sample_rate - sample rate of data coming from dsp
 
 RETURNS:
     none
 */    
-void CsrInitialiseI2SDevice(uint32 sample_rate);
+void CsrInitialiseI2SDevice(u32 sample_rate);
 
 /****************************************************************************
 DESCRIPTION: CsrShutdownI2SDevice :
@@ -249,13 +249,13 @@ DESCRIPTION: CsrSetVolumeI2SChannel
 
 PARAMETERS:
     i2s_out_t channel   The I2S device and channel to set the volume of.
-    int16 volume        The volume level required, in dB/60 or CODEC_STEPS.
+    i16 volume        The volume level required, in dB/60 or CODEC_STEPS.
     bool volume_in_dB   Set to TRUE if volume passed in dB, FALSE otherwise.
 
 RETURNS:
     Whether volume was successfully changed for the requested device channel.
 */
-bool CsrSetVolumeI2SChannel(i2s_out_t channel, int16 vol, bool volume_in_dB);
+bool CsrSetVolumeI2SChannel(i2s_out_t channel, i16 vol, bool volume_in_dB);
 
 /******************************************************************************
 DESCRIPTION: CsrSetVolumeI2SDevice
@@ -264,14 +264,14 @@ DESCRIPTION: CsrSetVolumeI2SDevice
     use in stereo mode.
 
 PARAMETERS:
-    int16 left_vol    - Volume level for primary left channel.
-    int16 right_vol   - Volume level for primary left channel.
+    i16 left_vol    - Volume level for primary left channel.
+    i16 right_vol   - Volume level for primary left channel.
     bool volume_in_dB - Whether the volume is passed in in dB or CODEC_STEPS.
 
 RETURNS:
     none
 */
-void CsrSetVolumeI2SDevice(int16 left_vol, int16 right_vol, bool volume_in_dB);
+void CsrSetVolumeI2SDevice(i16 left_vol, i16 right_vol, bool volume_in_dB);
 
 /****************************************************************************
 DESCRIPTION: CsrI2SMusicResamplingFrequency 
@@ -285,7 +285,7 @@ PARAMETERS:
 RETURNS:
     frequency or 0 indicating no resampling required
 */    
-uint16 CsrI2SMusicResamplingFrequency(void);
+u16 CsrI2SMusicResamplingFrequency(void);
 
 /****************************************************************************
 DESCRIPTION: CsrI2SVoiceResamplingFrequency 
@@ -299,7 +299,7 @@ PARAMETERS:
 RETURNS:
     frequency or 0 indicating no resampling required
 */    
-uint16 CsrI2SVoiceResamplingFrequency(void);
+u16 CsrI2SVoiceResamplingFrequency(void);
 
 /****************************************************************************
 DESCRIPTION: CsrI2SAudioInputConnect 
@@ -313,7 +313,7 @@ PARAMETERS:
 RETURNS:
     none
 */    
-void CsrI2SAudioInputConnect(uint32 rate, bool stereo, Sink left_port, Sink right_port );
+void CsrI2SAudioInputConnect(u32 rate, bool stereo, Sink left_port, Sink right_port );
 
 /****************************************************************************
 DESCRIPTION: CsrI2SMasterIsEnabled 
@@ -332,6 +332,6 @@ RETURNS:
 */    
 bool CsrI2SMasterIsEnabled(void);
 
-uint16 CsrI2SGetOutputResamplingFrequencyForI2s(const uint16 requested_rate);
+u16 CsrI2SGetOutputResamplingFrequencyForI2s(const u16 requested_rate);
         
 #endif

@@ -33,7 +33,7 @@ DESCRIPTION
 
 /*  A2DP Service Search Pattern    
     DataEl(0x35), Length(0x03), UUID(0x19), Advanced Audio Distribution(0x110D) */
-static const uint8 a2dp_service_search_pattern[] = {0x35, 0x03, 0x19, 0x11, 0x0D};
+static const u8 a2dp_service_search_pattern[] = {0x35, 0x03, 0x19, 0x11, 0x0D};
 
 
 #ifdef DEBUG_A2DP
@@ -58,11 +58,11 @@ static const uint8 a2dp_service_search_pattern[] = {0x35, 0x03, 0x19, 0x11, 0x0D
     
     
 /* Display unhandled states in Debug Mode */
-#define a2dp_unhandled_state(inst) A2DP_DEBUG(("    A2DP Unhandled State [%d] inst[0x%x]\n", a2dp_get_state(inst), (uint16)inst));    
+#define a2dp_unhandled_state(inst) A2DP_DEBUG(("    A2DP Unhandled State [%d] inst[0x%x]\n", a2dp_get_state(inst), (u16)inst));    
 
     
 /* SBC Stream-End Point Capabilities */ 
-static const uint8 a2dp_sbc_caps_source[] = {
+static const u8 a2dp_sbc_caps_source[] = {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
     AVDTP_SERVICE_MEDIA_CODEC,
@@ -91,7 +91,7 @@ static const uint8 a2dp_sbc_caps_source[] = {
 
 
 /* Faststream Stream-End Point Capabilities */ 
-static const uint8 a2dp_faststream_caps_source[] = {
+static const u8 a2dp_faststream_caps_source[] = {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
     AVDTP_SERVICE_MEDIA_CODEC,
@@ -115,7 +115,7 @@ static const uint8 a2dp_faststream_caps_source[] = {
 
 
 /* APT-X Stream-End Point Capabilities */ 
-static const uint8 a2dp_aptx_caps_source[] = {
+static const u8 a2dp_aptx_caps_source[] = {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
     AVDTP_SERVICE_MEDIA_CODEC,
@@ -144,7 +144,7 @@ static const uint8 a2dp_aptx_caps_source[] = {
 
 
 /* APT-X Low Latency Stream-End Point Capabilities */ 
-static const uint8 a2dp_aptxLowLatency_caps_source[] = {
+static const u8 a2dp_aptxLowLatency_caps_source[] = {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
     AVDTP_SERVICE_MEDIA_CODEC,
@@ -236,9 +236,9 @@ static const sep_config_type aptxLowLatency_sep = {A2DP_SEID_APTX_LOW_LATENCY, A
 #endif /*INCLUDE_APPLICATION_A2DP_CODEC_CONFIGURATION */
 
 /* The max bitpools for the different audio qualities */
-static const uint16 a2dp_max_bitpool_array[] = {A2DP_SBC_BITPOOL_LOW_QUALITY, A2DP_SBC_BITPOOL_MEDIUM_QUALITY, A2DP_SBC_BITPOOL_GOOD_QUALITY, A2DP_SBC_BITPOOL_HIGH_QUALITY};
+static const u16 a2dp_max_bitpool_array[] = {A2DP_SBC_BITPOOL_LOW_QUALITY, A2DP_SBC_BITPOOL_MEDIUM_QUALITY, A2DP_SBC_BITPOOL_GOOD_QUALITY, A2DP_SBC_BITPOOL_HIGH_QUALITY};
 /* The max bitpools for the different audio qualities under pool link conditions */
-static const uint16 a2dp_max_bitpool_poor_link_array[] = {A2DP_SBC_BITPOOL_LOW_QUALITY-10, A2DP_SBC_BITPOOL_MEDIUM_QUALITY, A2DP_SBC_BITPOOL_GOOD_QUALITY-15, A2DP_SBC_BITPOOL_HIGH_QUALITY};
+static const u16 a2dp_max_bitpool_poor_link_array[] = {A2DP_SBC_BITPOOL_LOW_QUALITY-10, A2DP_SBC_BITPOOL_MEDIUM_QUALITY, A2DP_SBC_BITPOOL_GOOD_QUALITY-15, A2DP_SBC_BITPOOL_HIGH_QUALITY};
 
 
 /***************************************************************************
@@ -253,8 +253,8 @@ NAME
 void a2dp_init(void)
 {
     sep_data_type seps[A2DP_MAX_ENDPOINTS];   
-    uint16 index;
-    uint16 num_endpoints = 0;
+    u16 index;
+    u16 num_endpoints = 0;
     
     /* allocate memory for A2DP instances */
     theSource->a2dp_data.inst = (a2dpInstance *)memory_get_block(MEMORY_GET_BLOCK_PROFILE_A2DP);
@@ -372,9 +372,9 @@ void a2dp_start_connection(void)
 NAME    
     a2dp_get_instance_from_device_id - Returns A2DP instance from Device ID
 */
-a2dpInstance *a2dp_get_instance_from_device_id(uint16 device_id)
+a2dpInstance *a2dp_get_instance_from_device_id(u16 device_id)
 {
-    uint16 index;
+    u16 index;
     a2dpInstance *inst = theSource->a2dp_data.inst;
     
     if (inst)
@@ -400,7 +400,7 @@ NAME
 */
 a2dpInstance *a2dp_get_instance_from_bdaddr(const bdaddr addr)
 {
-    uint16 index;
+    u16 index;
     a2dpInstance *inst = theSource->a2dp_data.inst;
     
     if (inst)
@@ -426,7 +426,7 @@ NAME
 */
 a2dpInstance *a2dp_get_free_instance(void)
 {
-    uint16 index;
+    u16 index;
     a2dpInstance *inst = theSource->a2dp_data.inst;
     
     if (inst)
@@ -454,7 +454,7 @@ NAME
 */
 void a2dp_init_instance(a2dpInstance *inst)
 {
-    A2DP_DEBUG(("A2DP: a2dp_init_instance inst[0x%x]\n", (uint16)inst));
+    A2DP_DEBUG(("A2DP: a2dp_init_instance inst[0x%x]\n", (u16)inst));
     inst->a2dpTask.handler = a2dp_msg_handler;
     a2dp_set_state(inst, A2DP_STATE_DISCONNECTED);
     inst->a2dp_device_id = A2DP_INVALID_ID;
@@ -475,10 +475,10 @@ void a2dp_init_instance(a2dpInstance *inst)
 NAME    
     a2dp_get_number_connections - Returns the number of A2DP connections
 */
-uint16 a2dp_get_number_connections(void)
+u16 a2dp_get_number_connections(void)
 {
-    uint16 connections = 0;
-    uint16 index;
+    u16 connections = 0;
+    u16 index;
     a2dpInstance *inst = theSource->a2dp_data.inst;
     
     if (inst)
@@ -501,17 +501,17 @@ NAME
 */
 void a2dp_disconnect_all(void)
 {
-    uint16 index;
+    u16 index;
     a2dpInstance *inst = theSource->a2dp_data.inst;
     
     if (inst)
     {
         for_all_a2dp_instance(index)
         {
-            A2DP_DEBUG(("A2DP: inst[0x%x]\n", (uint16)inst));
+            A2DP_DEBUG(("A2DP: inst[0x%x]\n", (u16)inst));
             if (a2dp_is_connected(a2dp_get_state(inst)))
             {
-                A2DP_DEBUG(("A2DP: CONNECTED inst[0x%x] state[0x%d]\n", (uint16)inst, a2dp_get_state(inst)));
+                A2DP_DEBUG(("A2DP: CONNECTED inst[0x%x] state[0x%d]\n", (u16)inst, a2dp_get_state(inst)));
                 /* cancel any suspending attempt */
                 inst->a2dp_suspending = 0;
                 /* cancel any reconfigure attempt */
@@ -549,7 +549,7 @@ void a2dp_set_sbc_config(bool use_defaults)
     {        
         if (theSource->a2dp_data.sbc_codec_config)
         {         
-            uint16 i;
+            u16 i;
             /* copy the original codec settings to the memory location */
             for (i = 0; i < sizeof(a2dp_sbc_caps_source); i++)
             { 
@@ -597,7 +597,7 @@ void a2dp_set_faststream_config(bool use_defaults)
     {        
         if (theSource->a2dp_data.faststream_codec_config)
         {           
-            uint16 i;
+            u16 i;
             /* copy the original codec settings to the memory location */
             for (i = 0; i < sizeof(a2dp_faststream_caps_source); i++)
             { 
@@ -629,7 +629,7 @@ void a2dp_set_aptx_config(bool use_defaults)
     {
         if (theSource->a2dp_data.aptx_codec_config)
         {        
-            uint16 i;
+            u16 i;
             /* copy the original codec settings to the memory location */
             for (i = 0; i < sizeof(a2dp_aptx_caps_source); i++)
             { 
@@ -660,7 +660,7 @@ void a2dp_set_aptxLowLatency_config(bool use_defaults)
     {
         if (theSource->a2dp_data.aptxLowLatency_codec_config)
         {        
-            uint16 i;
+            u16 i;
             /* copy the original codec settings to the memory location */
             for (i = 0; i < sizeof(a2dp_aptxLowLatency_caps_source); i++)
             { 
@@ -685,7 +685,7 @@ void a2dp_set_aptxLowLatency_config(bool use_defaults)
 NAME    
     a2dp_get_sbc_caps_size - Returns the SBC Stream-End Point configuration size
 */
-uint16 a2dp_get_sbc_caps_size(void)
+u16 a2dp_get_sbc_caps_size(void)
 {
     return sizeof(a2dp_sbc_caps_source);
 }
@@ -695,7 +695,7 @@ uint16 a2dp_get_sbc_caps_size(void)
 NAME    
     a2dp_get_faststream_caps_size - Returns the Faststream Stream-End Point configuration size
 */
-uint16 a2dp_get_faststream_caps_size(void)
+u16 a2dp_get_faststream_caps_size(void)
 {
     return sizeof(a2dp_faststream_caps_source);
 }
@@ -705,7 +705,7 @@ uint16 a2dp_get_faststream_caps_size(void)
 NAME    
     a2dp_get_aptx_caps_size - Returns the APT-X Stream-End Point configuration size
 */
-uint16 a2dp_get_aptx_caps_size(void)
+u16 a2dp_get_aptx_caps_size(void)
 {
     return sizeof(a2dp_aptx_caps_source);
 }
@@ -715,7 +715,7 @@ uint16 a2dp_get_aptx_caps_size(void)
 NAME    
     a2dp_get_aptxLowLatency_caps_size - Returns the APT-X Low Latency Stream-End Point configuration size
 */
-uint16 a2dp_get_aptxLowLatency_caps_size(void)
+u16 a2dp_get_aptxLowLatency_caps_size(void)
 {
     return sizeof(a2dp_aptxLowLatency_caps_source);
 }
@@ -812,7 +812,7 @@ NAME
 void a2dp_resume_audio(void)
 {
     a2dpInstance *inst = theSource->a2dp_data.inst;
-    uint16 index = 0;
+    u16 index = 0;
     
     A2DP_DEBUG(("A2DP a2dp_resume_audio\n"));
     
@@ -862,7 +862,7 @@ NAME
 */
 void a2dp_route_all_audio(void)
 {
-    uint16 index;
+    u16 index;
     a2dpInstance *inst = theSource->a2dp_data.inst;
     
     if (inst)
@@ -889,7 +889,7 @@ NAME
 */
 void a2dp_suspend_all_audio(void)
 {
-    uint16 index;
+    u16 index;
     a2dpInstance *inst = theSource->a2dp_data.inst;
     
     if (inst)
@@ -914,10 +914,10 @@ NAME
 */
 bool a2dp_configure_sbc(A2DP_CODEC_CONFIGURE_IND_T *message)
 {
-    uint16 local_index = 6;
-    uint16 remote_index = 4;    
-    uint8 min_bitpool = 0;
-    uint8 max_bitpool = 0;
+    u16 local_index = 6;
+    u16 remote_index = 4;    
+    u8 min_bitpool = 0;
+    u8 max_bitpool = 0;
     
     /* Select Sample rate */
     if ((theSource->a2dp_data.sbc_caps.caps[local_index] & 0x10) && 
@@ -1083,8 +1083,8 @@ NAME
 */
 bool a2dp_configure_faststream(A2DP_CODEC_CONFIGURE_IND_T *message)
 {
-    uint16 local_index = 12;
-    uint16 remote_index = 10;
+    u16 local_index = 12;
+    u16 remote_index = 10;
     bool audio_in_mic = FALSE;
     bool audio_out_music = FALSE;
     
@@ -1162,8 +1162,8 @@ NAME
 */
 bool a2dp_configure_aptx(A2DP_CODEC_CONFIGURE_IND_T *message)
 {
-    uint16 local_index = 12;
-    uint16 remote_index = 10; 
+    u16 local_index = 12;
+    u16 remote_index = 10; 
     
     /* Check Sample Rates */
     if ((theSource->a2dp_data.aptx_caps.caps[local_index] & 0x10) &&
@@ -1237,8 +1237,8 @@ NAME
 */
 bool a2dp_configure_aptxLowLatency(A2DP_CODEC_CONFIGURE_IND_T *message)
 {
-    uint16 local_index = 12;
-    uint16 remote_index = 10; 
+    u16 local_index = 12;
+    u16 remote_index = 10; 
     
     /* Check Sample Rates */
     if ((theSource->a2dp_data.aptxLowLatency_caps.caps[local_index] & 0x10) &&
@@ -1332,19 +1332,19 @@ bool a2dp_configure_aptxLowLatency(A2DP_CODEC_CONFIGURE_IND_T *message)
 NAME    
     a2dp_get_sbc_bitpool - Gets the SBC bitpool that should be used for the audio stream
 */
-bool a2dp_get_sbc_bitpool(uint8 *bitpool, uint8 *bad_link_bitpool, bool *multiple_streams)
+bool a2dp_get_sbc_bitpool(u8 *bitpool, u8 *bad_link_bitpool, bool *multiple_streams)
 {
     a2dp_codec_settings *settings = NULL;
-    uint16 index;
+    u16 index;
     a2dpInstance *inst = theSource->a2dp_data.inst;
-    uint8 min_bitpool = 0;
-    uint8 max_bitpool = 0;
-    uint8 min_configured_bp = 0;
-    uint8 max_configured_bp = 0;
-    uint8 optimal_bitpool = 0;
+    u8 min_bitpool = 0;
+    u8 max_bitpool = 0;
+    u8 min_configured_bp = 0;
+    u8 max_configured_bp = 0;
+    u8 optimal_bitpool = 0;
     hci_role role = hci_role_master;
     A2DP_AUDIO_QUALITY_T quality = A2DP_AUDIO_QUALITY_HIGH;
-    uint16 a2dp_media_streams = 0;
+    u16 a2dp_media_streams = 0;
     
     *bitpool = 0;
     *bad_link_bitpool = 0;
@@ -1474,8 +1474,8 @@ NAME
 */
 void a2dp_update_sbc_bitpool(void)
 {
-    uint8 bitpool;
-    uint8 bad_link_bitpool;
+    u8 bitpool;
+    u8 bad_link_bitpool;
     bool multiple_streams;
           
     if (A2DP_DUALSTREAM_ENABLED)
@@ -1517,7 +1517,7 @@ NAME
 */
 bool a2dp_is_connecting(void)
 {
-    uint16 index;
+    u16 index;
     a2dpInstance *inst = theSource->a2dp_data.inst;
     A2DP_STATE_T state;
     
@@ -1558,7 +1558,7 @@ NAME
 */
 bool a2dp_disconnect_media(void)
 {
-    uint16 index;
+    u16 index;
     a2dpInstance *inst = theSource->a2dp_data.inst;
     A2DP_STATE_T state;
     bool disconnect_required = FALSE;
@@ -1587,7 +1587,7 @@ NAME
 */
 bool a2dp_any_media_connections(void)
 {
-    uint16 index;
+    u16 index;
     a2dpInstance *inst = theSource->a2dp_data.inst;
     A2DP_STATE_T state;
  
@@ -1615,10 +1615,10 @@ NAME
 */
 bool a2dp_get_connected_addr(bdaddr *addr_a, bdaddr *addr_b)
 {
-    uint16 index;
+    u16 index;
     a2dpInstance *inst = theSource->a2dp_data.inst;
     bool result = FALSE;
-    uint16 count = 0;
+    u16 count = 0;
 
     if (inst)
     {
@@ -2128,15 +2128,15 @@ NAME
 */
 static void a2dp_enter_state_connecting_media_local(a2dpInstance *inst, A2DP_STATE_T old_state)
 {
-    uint8 a2dp_seid_list[A2DP_MAX_ENDPOINTS];
-    uint8 a2dp_seid_preference[A2DP_MAX_ENDPOINTS];
-    uint16 current_endpoint = 0;
-    uint16 i = 0;
-    uint16 j = 0;
-    uint16 k = 0;
-    uint16 temp_id;
-    uint16 temp_pref;
-    uint16 preference = 1;
+    u8 a2dp_seid_list[A2DP_MAX_ENDPOINTS];
+    u8 a2dp_seid_preference[A2DP_MAX_ENDPOINTS];
+    u16 current_endpoint = 0;
+    u16 i = 0;
+    u16 j = 0;
+    u16 k = 0;
+    u16 temp_id;
+    u16 temp_pref;
+    u16 preference = 1;
     
     if (inst->a2dp_reconfiguring)
     {
@@ -2344,8 +2344,8 @@ static bool a2dp_is_dualstream_reconfigure_needed(void)
     a2dpInstance *inst = &theSource->profile_memory->a2dp[0];
     a2dp_codec_settings *codec_settings[A2DP_MAX_INSTANCES];
     bool reconfigure_needed = FALSE;
-    uint16 index = 0;
-    uint16 reconfigure_codec = A2DP_SEID_SBC;
+    u16 index = 0;
+    u16 reconfigure_codec = A2DP_SEID_SBC;
     codec_settings[0] = codec_settings[1] = NULL;
     
     if (inst)
@@ -2443,7 +2443,7 @@ NAME
 */
 static A2DP_AUDIO_QUALITY_T a2dp_get_lowest_quality(void)
 {
-    uint16 index = 0;
+    u16 index = 0;
     a2dpInstance *inst = &theSource->profile_memory->a2dp[0];
     A2DP_AUDIO_QUALITY_T lowest_quality = A2DP_AUDIO_QUALITY_UNKNOWN;
     

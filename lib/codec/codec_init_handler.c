@@ -24,8 +24,8 @@ DESCRIPTION
 void sendInitCfmToApp(Task codecTask, 
 					  Task clientTask, 
 					  codec_status_code status, 
-					  uint16 inputGainRange, 
-					  uint16 outputGainRange)
+					  u16 inputGainRange, 
+					  u16 outputGainRange)
 {
 	MAKE_CODEC_MESSAGE(CODEC_INIT_CFM);
 	message->status = status;

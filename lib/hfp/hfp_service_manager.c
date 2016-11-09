@@ -31,7 +31,7 @@ DESCRIPTION
     Initialise a single service record with profile and channel number. This
     function returns a pointer service + 1
 */
-static hfp_service_data* hfpServiceInit(hfp_service_data* service, hfp_profile profile, uint8 channel)
+static hfp_service_data* hfpServiceInit(hfp_service_data* service, hfp_profile profile, u8 channel)
 {
     service->rfc_server_channel = channel;
     service->profile = profile;
@@ -89,7 +89,7 @@ RETURNS
     Pointer to the corresponding hfp_service_data if successful. 
     Otherwise NULL.
 */
-hfp_service_data* hfpGetServiceFromChannel(uint8 channel)
+hfp_service_data* hfpGetServiceFromChannel(u8 channel)
 {
     hfp_service_data*  service;
     
@@ -112,7 +112,7 @@ RETURNS
     Pointer to the corresponding hfp_service_data if successful. 
     Otherwise NULL.
 */
-hfp_service_data* hfpGetServiceFromHandle(uint32 service_handle)
+hfp_service_data* hfpGetServiceFromHandle(u32 service_handle)
 {
     hfp_service_data*  service;
     

@@ -82,9 +82,9 @@ void CsrA2dpDecoderPluginDisconnectMic(A2dpPluginConnectParams *codecData)
 DESCRIPTION
     Send the volume to the DSP
 */
-static void csrA2dpDecoderPluginSendLlDspGain(uint16 master, uint16 tone)
+static void csrA2dpDecoderPluginSendLlDspGain(u16 master, u16 tone)
 {
-    uint16 digital_dsp = 0;
+    u16 digital_dsp = 0;
     
     if (CsrMultiChanGainGetType(multi_channel_group_main) == multi_channel_gain_digital)
     {
@@ -105,7 +105,7 @@ static void csrA2dpDecoderPluginSendLlDspGain(uint16 master, uint16 tone)
 DESCRIPTION
     Set hardware volume when codec message received from DSP
 */
-static void csrA2dpDecoderPluginSetLlHwGain(uint16 master)
+static void csrA2dpDecoderPluginSetLlHwGain(u16 master)
 {
     if (CsrMultiChanGainGetType(multi_channel_group_main) == multi_channel_gain_digital)
     {
@@ -130,9 +130,9 @@ void csrA2dpDecoderPluginSetLowLatencyMode(AUDIO_MODE_T mode, A2dpPluginTaskdata
     DECODER_t * DECODER = CsrA2dpDecoderGetDecoderData();
     /* pre-initialise with the most common parameters and adjust below as necessary */
     A2dpPluginConnectParams *codecData = (A2dpPluginConnectParams *) DECODER->params;
-    uint16 sysmode;
-    uint16 call_state = CALLST_CONNECTED;
-    uint16 volume;
+    u16 sysmode;
+    u16 call_state = CALLST_CONNECTED;
+    u16 volume;
 
     if (!DECODER)
         Panic() ;
@@ -263,11 +263,11 @@ DESCRIPTION
 
     @return void
 */
-void CsrA2dpDecoderPluginSetLowLatencyGain(int16 master_gain, int16 tone_gain)
+void CsrA2dpDecoderPluginSetLowLatencyGain(i16 master_gain, i16 tone_gain)
 {
     /* convert from dB values back to DAC gains */
-    int16 volume = (CODEC_STEPS + (master_gain / DB_TO_DAC));
-    int16 tone_volume = (CODEC_STEPS + (tone_gain / DB_TO_DAC));
+    i16 volume = (CODEC_STEPS + (master_gain / DB_TO_DAC));
+    i16 tone_volume = (CODEC_STEPS + (tone_gain / DB_TO_DAC));
     
     /* DAC gain only goes down to -45dB, dsp volume control goes to -60dB */
     if(volume < 0) volume = 0;
@@ -288,7 +288,7 @@ DESCRIPTION
 void CvcMicSetGain(audio_instance instance, audio_channel channel, bool digital, T_mic_gain gain)
 {
     Source mic_source = AudioPluginGetMic(instance, channel, digital);
-    uint8 mic_gain = (digital ? gain.digital_gain : gain.analogue_gain);
+    u8 mic_gain = (digital ? gain.digital_gain : gain.analogue_gain);
     AudioPluginSetMicGain(mic_source, digital, mic_gain, gain.preamp_enable);
 }
 
@@ -377,7 +377,7 @@ DESCRIPTION
     message handler is required   
     
 ****************************************************************************/
-void CsrA2dpDecoderPluginLowLatencyInternalMessage(A2dpPluginTaskdata *task ,uint16 id , Message message)
+void CsrA2dpDecoderPluginLowLatencyInternalMessage(A2dpPluginTaskdata *task ,u16 id , Message message)
 {
     A2DP_DECODER_PLUGIN_TYPE_T variant = task->a2dp_plugin_variant;
     DECODER_t * DECODER = CsrA2dpDecoderGetDecoderData();
@@ -444,7 +444,7 @@ void CsrA2dpDecoderPluginLowLatencyInternalMessage(A2dpPluginTaskdata *task ,uin
                             MAKE_AUDIO_MESSAGE_WITH_LEN(AUDIO_PLUGIN_DSP_READY_FOR_DATA, 0);
                             PRINT(("DECODER: Send CLOCK_MISMATCH_RATE\n"));
                             message->plugin = (TaskData *)task;
-                            message->AUDIO_BUSY = (uint16)IsAudioBusy();
+                            message->AUDIO_BUSY = IsAudioBusy();
                             message->dsp_status = GetCurrentDspStatus();
                             message->media_sink = DECODER->media_sink;
                             MessageSend(DECODER->app_task, AUDIO_PLUGIN_DSP_READY_FOR_DATA, message);
@@ -553,7 +553,7 @@ void CsrA2dpDecoderPluginLowLatencyInternalMessage(A2dpPluginTaskdata *task ,uin
                 */
 
                 {
-                    uint16 signal = m->a;
+                    u16 signal = m->a;
                     PRINT(("SIGNAL_DETECTOR_STATUS_RESP: PARAM1 %x \n", signal));
 
                     {
@@ -613,7 +613,7 @@ void CsrA2dpDecoderPluginLowLatencyInternalMessage(A2dpPluginTaskdata *task ,uin
                 case LOW_LATENCY_STOREPERSIST_MSG:
                     /* Set the DSP app's pblock */
                    PRINT(("CVC: StorePersist key[0x%x], data[0x%x] \n", m->buf[0], m->buf[1]));
-                   PblockSet(m->buf[0], m->size-1, (uint16*)m->buf+1);
+                   PblockSet(m->buf[0], m->size-1, (u16*)m->buf+1);
                 break;
                 
                 default:

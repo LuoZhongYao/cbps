@@ -26,7 +26,7 @@ DESCRIPTION
 */
 void avrcpSendVendordependentCfmToClient(AVRCP *avrcp, 
                                         avrcp_status_code status, 
-                                        uint8 response);
+                                        u8 response);
 
 /****************************************************************************
 NAME    
@@ -37,8 +37,8 @@ DESCRIPTION
     received from a remote device.
 */
 void avrcpHandleVendorResponse(AVRCP *avrcp, 
-                         const uint8 *ptr, 
-                               uint16 packet_size);
+                         const u8 *ptr, 
+                               u16 packet_size);
 
 
 /****************************************************************************
@@ -75,8 +75,8 @@ DESCRIPTION
     a remote device.
 */
 void avrcpHandleVendorCommand(AVRCP *avrcp, 
-                              const uint8 *ptr, 
-                              uint16 packet_size);
+                              const u8 *ptr, 
+                              u16 packet_size);
 
 #endif /* !AVRCP_CT_ONLY_LIB*/
 

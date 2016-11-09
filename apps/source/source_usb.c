@@ -40,7 +40,7 @@ DESCRIPTION
 
 
 /* USB HID class descriptor - Consumer Transport Control Device*/
-static const uint8 usb_interface_descriptor_hid_consumer_transport[] =
+static const u8 usb_interface_descriptor_hid_consumer_transport[] =
 {
     USB_HID_DESCRIPTOR_LENGTH,                              /* bLength */
     USB_B_DESCRIPTOR_TYPE_HID,                              /* bDescriptorType */
@@ -53,7 +53,7 @@ static const uint8 usb_interface_descriptor_hid_consumer_transport[] =
 };
 
 /* HID Report Descriptor - Consumer Transport Control Device */
-static const uint8 usb_report_descriptor_hid_consumer_transport[USB_HID_CONSUMER_TRANSPORT_REPORT_DESCRIPTOR_LENGTH] = 
+static const u8 usb_report_descriptor_hid_consumer_transport[USB_HID_CONSUMER_TRANSPORT_REPORT_DESCRIPTOR_LENGTH] = 
 {
     0x05, 0x0C,                  /* USAGE_PAGE (Consumer Devices) */
     0x09, 0x01,                  /* USAGE (Consumer Control) */
@@ -132,7 +132,7 @@ static const usb_device_class_hid_consumer_transport_config usb_descriptor_hid_c
 
 
 /* USB Audio Class Descriptors */
-static const uint8 usb_interface_descriptor_control_mic_and_speaker[] =
+static const u8 usb_interface_descriptor_control_mic_and_speaker[] =
 {
     /* Class Specific Header */
     0x0A,         /* bLength */
@@ -223,7 +223,7 @@ static const uint8 usb_interface_descriptor_control_mic_and_speaker[] =
     0x00          /* iTerminal = same as USB product string */  
 };
 
-static const uint8 usb_interface_descriptor_control_mic[] =
+static const u8 usb_interface_descriptor_control_mic[] =
 {
     /* Class Specific Header */
     0x09,         /* bLength */
@@ -270,7 +270,7 @@ static const uint8 usb_interface_descriptor_control_mic[] =
 };
 
 
-static const uint8 usb_interface_descriptor_control_speaker[] =
+static const u8 usb_interface_descriptor_control_speaker[] =
 {
     /* Class Specific Header */
     0x09,         /* bLength */
@@ -328,7 +328,7 @@ static const uint8 usb_interface_descriptor_control_speaker[] =
 };
 
 
-static const uint8 usb_interface_descriptor_streaming_mic[] =
+static const u8 usb_interface_descriptor_streaming_mic[] =
 {
     /* Class Specific AS interface descriptor */
     0x07,         /* bLength */
@@ -360,7 +360,7 @@ static const uint8 usb_interface_descriptor_streaming_mic[] =
     0x00, 0x00     /* wLockDelay */
 };
 
-static const uint8 usb_interface_descriptor_streaming_speaker[] =
+static const u8 usb_interface_descriptor_streaming_speaker[] =
 {
     /* Class Specific AS interface descriptor */
     0x07,         /* bLength */
@@ -392,7 +392,7 @@ static const uint8 usb_interface_descriptor_streaming_speaker[] =
     0x00, 0x00    /* wLockDelay */
 };
 
-static const uint8 usb_audio_endpoint_user_data[] =
+static const u8 usb_audio_endpoint_user_data[] =
 {
     0, /* bRefresh */
     0  /* bSyncAddress */
@@ -479,7 +479,7 @@ static const usb_device_class_audio_volume_config usb_audio_levels = {  0xf100, 
 
 /* Mic table for converting USB volume to local volume */
 #define MIC_VOLUME_TABLE_START (9)
-static const uint16 micVolumeTable[VOLUME_MAX_MIC_VALUE + 1] =
+static const u16 micVolumeTable[VOLUME_MAX_MIC_VALUE + 1] =
 {
     MIC_VOLUME_TABLE_START,
     MIC_VOLUME_TABLE_START,
@@ -526,7 +526,7 @@ Functions
 NAME    
     usb_unhandled_host_command - Unhandled command received from the Host
 */
-static void usb_unhandled_host_command(uint8 cmd, uint8 sub_cmd)
+static void usb_unhandled_host_command(u8 cmd, u8 sub_cmd)
 {
     USB_DEBUG(("    USB Host Command Unhandled: Cmd[%d] Sub[%d]\n", cmd, sub_cmd));    
 }
@@ -536,9 +536,9 @@ static void usb_unhandled_host_command(uint8 cmd, uint8 sub_cmd)
 NAME    
     usb_vol_mic_rounded - Convert USB Microphone volume to local volume level
 */
-static uint16 usb_vol_mic_rounded(uint16 volume)
+static u16 usb_vol_mic_rounded(u16 volume)
 {
-    int16 newVol = volume >> 8;
+    i16 newVol = volume >> 8;
     
     if (newVol & 0x80)
     {
@@ -565,10 +565,10 @@ static uint16 usb_vol_mic_rounded(uint16 volume)
 NAME    
     usb_vol_speaker_rounded - Convert USB Speaker volume to local volume level
 */
-static uint16 usb_vol_speaker_rounded(uint16 volume)
+static u16 usb_vol_speaker_rounded(u16 volume)
 {
     /* convert USB volume to a volume index that can be sent to the remote side (0 - 16) */
-    int16 newVol = volume >> 8;
+    i16 newVol = volume >> 8;
     
     if (newVol & 0x80)
     {
@@ -629,9 +629,9 @@ static USB_DEVICE_DATA_STATE_T usb_convert_report_state(SOURCE_STATE_T state)
 NAME    
     usb_clear_report_data - Clears a report by setting values to 0
 */
-static void usb_clear_report_data(uint8 *report, uint16 report_size)
+static void usb_clear_report_data(u8 *report, u16 report_size)
 {
-    uint16 index = 0;
+    u16 index = 0;
     
     for (index = 0; index < report_size; index++)
     {
@@ -647,7 +647,7 @@ NAME
 static bool usb_send_device_command_status(void)
 {
     USB_DEVICE_DATA_STATE_T status;
-    uint8 report_bytes[USB_CONSUMER_REPORT_SIZE];    
+    u8 report_bytes[USB_CONSUMER_REPORT_SIZE];    
     
     /* Expected Report (ID=2) sent to Host is to be the expected format:
            
@@ -696,7 +696,7 @@ static bool usb_send_device_command_status(void)
 NAME    
     usb_process_host_command_connection - Handles the Host command for current Host connection state
 */
-static void usb_process_host_command_connection(uint8 data)
+static void usb_process_host_command_connection(u8 data)
 {
     if (data)
     {
@@ -715,7 +715,7 @@ static void usb_process_host_command_connection(uint8 data)
 NAME    
     usb_process_host_command_status - Handles the Host command for current status
 */
-static void usb_process_host_command_status(uint8 data)
+static void usb_process_host_command_status(u8 data)
 {
     switch (data)
     {
@@ -803,7 +803,7 @@ static void usb_process_host_command_status(uint8 data)
 NAME    
     usb_process_host_command_call - Handles the Host command for current call state
 */
-static void usb_process_host_command_call(uint8 call_state, uint16 size_data, const uint8 *data)
+static void usb_process_host_command_call(u8 call_state, u16 size_data, const u8 *data)
 {
     switch (call_state)
     {
@@ -869,7 +869,7 @@ static void usb_process_host_command_call(uint8 call_state, uint16 size_data, co
 NAME    
     usb_process_host_command_signal_strength - Handles the Host command for signal strength
 */
-static void usb_process_host_command_signal_strength(uint8 sub_cmd, uint16 size_data, const uint8 *data)
+static void usb_process_host_command_signal_strength(u8 sub_cmd, u16 size_data, const u8 *data)
 {
     if (sub_cmd == USB_HOST_DATA_AG_SIGNAL_STRENGTH_VALUE)
     {
@@ -886,7 +886,7 @@ static void usb_process_host_command_signal_strength(uint8 sub_cmd, uint16 size_
 NAME    
     usb_process_host_command_battery_level - Handles the Host command for battery level
 */
-static void usb_process_host_command_battery_level(uint8 sub_cmd, uint16 size_data, const uint8 *data)
+static void usb_process_host_command_battery_level(u8 sub_cmd, u16 size_data, const u8 *data)
 {
     if (sub_cmd == USB_HOST_DATA_AG_BATTERY_LEVEL_VALUE)
     {
@@ -903,7 +903,7 @@ static void usb_process_host_command_battery_level(uint8 sub_cmd, uint16 size_da
 NAME    
     usb_process_host_command_audio - Handles the Host command for audio
 */
-static void usb_process_host_command_audio(uint8 command, uint16 size_data, const uint8 *data)
+static void usb_process_host_command_audio(u8 command, u16 size_data, const u8 *data)
 {
     switch (command)
     {
@@ -939,7 +939,7 @@ static void usb_process_host_command_audio(uint8 command, uint16 size_data, cons
 NAME    
     usb_process_host_command_network - Handles the Host command for network state
 */
-static void usb_process_host_command_network(uint8 command, uint16 size_data, const uint8 *data)
+static void usb_process_host_command_network(u8 command, u16 size_data, const u8 *data)
 {
     switch (command)
     {
@@ -983,7 +983,7 @@ static void usb_process_host_command_network(uint8 command, uint16 size_data, co
 NAME    
     usb_process_host_command_ag_error - Handles the Host command for AG error status
 */
-static void usb_process_host_command_ag_error(uint8 command)
+static void usb_process_host_command_ag_error(u8 command)
 {
     switch (command)
     {
@@ -1014,7 +1014,7 @@ static void usb_process_host_command_ag_error(uint8 command)
 NAME    
     usb_process_host_command_ag_ok - Handles the Host command for AG ok status
 */
-static void usb_process_host_command_ag_ok(uint8 command)
+static void usb_process_host_command_ag_ok(u8 command)
 {
     switch (command)
     {            
@@ -1052,7 +1052,7 @@ static void usb_process_host_command_ag_ok(uint8 command)
 NAME    
     usb_process_host_command_current_call - Handles the Host command for current call status
 */
-static void usb_process_host_command_current_call(uint8 sub_cmd, uint16 size_data, const uint8 *data)
+static void usb_process_host_command_current_call(u8 sub_cmd, u16 size_data, const u8 *data)
 {
     if (sub_cmd == USB_HOST_DATA_AG_CURRENT_CALL_DETAILS)
     {
@@ -1066,7 +1066,7 @@ static void usb_process_host_command_current_call(uint8 sub_cmd, uint16 size_dat
 NAME    
     usb_process_host_command_ag_voice - Handles the Host command for voice recognition
 */
-static void usb_process_host_command_ag_voice(uint8 command)
+static void usb_process_host_command_ag_voice(u8 command)
 {
     USB_DEBUG(("    --- Voice Recognition ---\n"));
     aghfp_voice_recognition_ind(command ? TRUE : FALSE);
@@ -1077,7 +1077,7 @@ static void usb_process_host_command_ag_voice(uint8 command)
 NAME    
     usb_process_vendor_report - Handle host report
 */
-static void usb_process_vendor_report(const uint16 size_data, const uint8 *data)
+static void usb_process_vendor_report(const u16 size_data, const u8 *data)
 {
     if (size_data >= 2) /* expect SET_REPORT to have 2 bytes - first byte is report ID, second byte is command type */
     {        
@@ -1177,7 +1177,7 @@ NAME
 */
 void usb_time_critical_init(void)
 {
-    uint16 device_class = 0;
+    u16 device_class = 0;
     usb_device_class_status status = usb_device_class_status_invalid_param_value;
     
     /* must retrieve USB configuration from PS now */
@@ -1191,7 +1191,7 @@ void usb_time_critical_init(void)
         device_class |= USB_DEVICE_CLASS_TYPE_HID_CONSUMER_TRANSPORT_CONTROL;
           
         /* configure HID consumer transport */
-        status = UsbDeviceClassConfigure(USB_DEVICE_CLASS_CONFIG_HID_CONSUMER_TRANSPORT_DESCRIPTORS, 0, 0, (const uint8*)&usb_descriptor_hid_consumer_transport); 
+        status = UsbDeviceClassConfigure(USB_DEVICE_CLASS_CONFIG_HID_CONSUMER_TRANSPORT_DESCRIPTORS, 0, 0, (const u8*)&usb_descriptor_hid_consumer_transport); 
         
         if(status != usb_device_class_status_success)
         {
@@ -1220,15 +1220,15 @@ void usb_time_critical_init(void)
         
         if (theSource->ps_config->usb_config.usb_mic_interface && theSource->ps_config->usb_config.usb_speaker_interface)
         {
-            status = UsbDeviceClassConfigure(USB_DEVICE_CLASS_CONFIG_AUDIO_INTERFACE_DESCRIPTORS, 0, 0, (const uint8*)&usb_descriptor_audio);
+            status = UsbDeviceClassConfigure(USB_DEVICE_CLASS_CONFIG_AUDIO_INTERFACE_DESCRIPTORS, 0, 0, (const u8*)&usb_descriptor_audio);
         }
         else if (theSource->ps_config->usb_config.usb_mic_interface)
         {
-            status = UsbDeviceClassConfigure(USB_DEVICE_CLASS_CONFIG_AUDIO_INTERFACE_DESCRIPTORS, 0, 0, (const uint8*)&usb_descriptor_mic);
+            status = UsbDeviceClassConfigure(USB_DEVICE_CLASS_CONFIG_AUDIO_INTERFACE_DESCRIPTORS, 0, 0, (const u8*)&usb_descriptor_mic);
         }
         else if (theSource->ps_config->usb_config.usb_speaker_interface)
         {
-            status = UsbDeviceClassConfigure(USB_DEVICE_CLASS_CONFIG_AUDIO_INTERFACE_DESCRIPTORS, 0, 0, (const uint8*)&usb_descriptor_speaker);
+            status = UsbDeviceClassConfigure(USB_DEVICE_CLASS_CONFIG_AUDIO_INTERFACE_DESCRIPTORS, 0, 0, (const u8*)&usb_descriptor_speaker);
         }
     
         if(status != usb_device_class_status_success)
@@ -1238,7 +1238,7 @@ void usb_time_critical_init(void)
         } 
        
         /* configure Audio to set volume levels */
-        status = UsbDeviceClassConfigure(USB_DEVICE_CLASS_CONFIG_AUDIO_VOLUMES, 0, 0, (const uint8*)&usb_audio_levels); 
+        status = UsbDeviceClassConfigure(USB_DEVICE_CLASS_CONFIG_AUDIO_VOLUMES, 0, 0, (const u8*)&usb_audio_levels); 
     
         if(status != usb_device_class_status_success)
         {
@@ -1273,7 +1273,7 @@ Source usb_get_speaker_source(void)
     if (theSource->ps_config->usb_config.usb_speaker_interface)
     {    
         /* Speaker will be the USB Source data */
-        UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_SOURCE, (uint16*)(&speaker_src));
+        UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_SOURCE, (u16*)(&speaker_src));
     }
     
     return speaker_src;
@@ -1291,7 +1291,7 @@ Sink usb_get_mic_sink(void)
     if (theSource->ps_config->usb_config.usb_mic_interface)
     {
         /* Mic will be the USB Sink data */
-        UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_SINK, (uint16*)(&mic_sink));
+        UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_SINK, (u16*)(&mic_sink));
     }
     
     return mic_sink;
@@ -1309,7 +1309,7 @@ void usb_get_audio_levels_update_headset(bool only_if_volumes_changed)
     if (theSource->ps_config->usb_config.usb_speaker_interface || theSource->ps_config->usb_config.usb_mic_interface)
     {
         /* get the current USB audio levels */ 
-        UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_LEVELS, (uint16*)&levels);
+        UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_LEVELS, (u16*)&levels);
     
         /* convert raw USB audio levels to local volume settings */
         levels.out_l_vol = usb_vol_speaker_rounded(levels.out_l_vol);
@@ -1497,7 +1497,7 @@ void usb_send_media_hid_command(avc_operation_id op_id, bool state)
                 if (theSource->ps_config->usb_config.usb_hid_consumer_interface)
                 {
                     /* get the current USB audio levels */ 
-                    UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_LEVELS, (uint16*)&levels);
+                    UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_LEVELS, (u16*)&levels);
                 
                     if (levels.out_mute)
                     {
@@ -1523,7 +1523,7 @@ void usb_send_media_hid_command(avc_operation_id op_id, bool state)
                 if (theSource->ps_config->usb_config.usb_hid_consumer_interface)
                 {    
                     /* get the current USB audio levels */ 
-                    UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_LEVELS, (uint16*)&levels);
+                    UsbDeviceClassGetValue(USB_DEVICE_CLASS_GET_VALUE_AUDIO_LEVELS, (u16*)&levels);
                 
                     if (levels.out_mute)
                     {
@@ -1676,7 +1676,7 @@ NAME
 */
 bool usb_send_device_command_accept_call(void)
 {
-    uint8 report_bytes[USB_CONSUMER_REPORT_SIZE];
+    u8 report_bytes[USB_CONSUMER_REPORT_SIZE];
     
     if (usb_get_hid_mode() != USB_HID_MODE_HOST)
     {
@@ -1719,7 +1719,7 @@ NAME
 */
 bool usb_send_device_command_reject_call(void)
 {
-    uint8 report_bytes[USB_CONSUMER_REPORT_SIZE];
+    u8 report_bytes[USB_CONSUMER_REPORT_SIZE];
     
     if (usb_get_hid_mode() != USB_HID_MODE_HOST)
     {
@@ -1760,10 +1760,10 @@ bool usb_send_device_command_reject_call(void)
 NAME    
     usb_send_device_command_dial_number - Send number to dial to the Host
 */
-bool usb_send_device_command_dial_number(uint16 size_number, uint8 *number)
+bool usb_send_device_command_dial_number(u16 size_number, u8 *number)
 {
-    uint16 index;
-    uint8 report_bytes[USB_CONSUMER_REPORT_SIZE];
+    u16 index;
+    u8 report_bytes[USB_CONSUMER_REPORT_SIZE];
     
     if (usb_get_hid_mode() != USB_HID_MODE_HOST)
     {
@@ -1813,10 +1813,10 @@ bool usb_send_device_command_dial_number(uint16 size_number, uint8 *number)
 NAME    
     usb_send_device_command_dial_memory - Send memory location to dial to the Host
 */
-bool usb_send_device_command_dial_memory(uint16 size_number, uint8 *number)
+bool usb_send_device_command_dial_memory(u16 size_number, u8 *number)
 {
-    uint16 index;
-    uint8 report_bytes[USB_CONSUMER_REPORT_SIZE];
+    u16 index;
+    u8 report_bytes[USB_CONSUMER_REPORT_SIZE];
     
     if (usb_get_hid_mode() != USB_HID_MODE_HOST)
     {
@@ -1869,7 +1869,7 @@ NAME
 */
 bool usb_send_device_command_dial_last(void)
 {
-    uint8 report_bytes[USB_CONSUMER_REPORT_SIZE];
+    u8 report_bytes[USB_CONSUMER_REPORT_SIZE];
     
     if (usb_get_hid_mode() != USB_HID_MODE_HOST)
     {
@@ -1913,7 +1913,7 @@ NAME
 */
 bool usb_send_device_command_audio_state(USB_DEVICE_DATA_AG_AUDIO_STATE_T state)
 {
-    uint8 report_bytes[USB_CONSUMER_REPORT_SIZE];
+    u8 report_bytes[USB_CONSUMER_REPORT_SIZE];
     
     if (usb_get_hid_mode() != USB_HID_MODE_HOST)
     {
@@ -1956,7 +1956,7 @@ NAME
 */
 bool usb_send_device_command_current_calls(void)
 {
-    uint8 report_bytes[USB_CONSUMER_REPORT_SIZE];
+    u8 report_bytes[USB_CONSUMER_REPORT_SIZE];
     
     if (usb_get_hid_mode() != USB_HID_MODE_HOST)
     {
@@ -2000,7 +2000,7 @@ NAME
 */
 bool usb_send_device_command_voice_recognition(bool enable)
 {
-    uint8 report_bytes[USB_CONSUMER_REPORT_SIZE];
+    u8 report_bytes[USB_CONSUMER_REPORT_SIZE];
     
     if (usb_get_hid_mode() != USB_HID_MODE_HOST)
     {
@@ -2041,7 +2041,7 @@ bool usb_send_device_command_voice_recognition(bool enable)
 NAME    
     usb_get_speaker_sample_rate - Gets the configured USB sample rate for the speaker
 */    
-uint32 usb_get_speaker_sample_rate(void)
+u32 usb_get_speaker_sample_rate(void)
 {
 #ifdef USB_AUDIO_SAMPLE_RATE_SPEAKER
     return USB_AUDIO_SAMPLE_RATE_SPEAKER;

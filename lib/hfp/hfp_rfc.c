@@ -438,7 +438,7 @@ void hfpHandleRfcommLinkLossComplete(hfp_link_data* link, hfp_connect_status sta
     else
     {
         /* Default to no delay (if timed out/aborted) */
-        uint32 delay = 0;
+        u32 delay = 0;
         message_id = hfpGetLinkTimeoutMessage(link, HFP_RFCOMM_LINK_LOSS_RECONNECT_LINK_0_IND);
         
         /* Try and connect again in 10 seconds if still in recovery state */

@@ -16,11 +16,11 @@ DESCRIPTION
     Send an access response to the GATT Manager library.
 */
 void sendDeviceInfoAccessRsp(Task task,
-                                    uint16 cid,
-                                    uint16 handle,
-                                    uint16 result,
-                                    uint16 size_value,
-                                    const uint8 *value)
+                                    u16 cid,
+                                    u16 handle,
+                                    u16 result,
+                                    u16 size_value,
+                                    const u8 *value)
 {
     if (!GattManagerServerAccessResponse(task, cid, handle, result, size_value, value))
     {
@@ -36,7 +36,7 @@ NAME
 DESCRIPTION
     Send an error access response to the GATT Manager library.
 */
-static void sendDeviceInfoAccessErrorRsp(const gdiss_t *dev_info_server, const GATT_MANAGER_SERVER_ACCESS_IND_T *access_ind, uint16 error)
+static void sendDeviceInfoAccessErrorRsp(const gdiss_t *dev_info_server, const GATT_MANAGER_SERVER_ACCESS_IND_T *access_ind, u16 error)
 {
     sendDeviceInfoAccessRsp((Task)&dev_info_server->lib_task, access_ind->cid, access_ind->handle, error, 0, NULL);
 }
@@ -51,9 +51,9 @@ DESCRIPTION
 
 static void handleDeviceInfoReadRequest(const gdiss_t *dev_info_server, const GATT_MANAGER_SERVER_ACCESS_IND_T *access_ind)
 {
-    uint16 size = 0;
-    uint16 result = gatt_status_success;
-    uint8 *value = NULL;
+    u16 size = 0;
+    u16 result = gatt_status_success;
+    u8 *value = NULL;
     gatt_dis_strings_t* dis_strings = dev_info_server->dis_params.dis_strings;
     
     switch(access_ind->handle)
@@ -63,7 +63,7 @@ static void handleDeviceInfoReadRequest(const gdiss_t *dev_info_server, const GA
             if((dis_strings != NULL) && (dis_strings->manufacturer_name_string != NULL))
             {
                 size = strlen(dev_info_server->dis_params.dis_strings->manufacturer_name_string);
-                value = (uint8*)dev_info_server->dis_params.dis_strings->manufacturer_name_string;
+                value = (u8*)dev_info_server->dis_params.dis_strings->manufacturer_name_string;
             }
             break;
 
@@ -71,7 +71,7 @@ static void handleDeviceInfoReadRequest(const gdiss_t *dev_info_server, const GA
             if((dis_strings != NULL) && (dis_strings->model_num_string != NULL))
             {
                 size = strlen(dev_info_server->dis_params.dis_strings->model_num_string);
-                value = (uint8*)dev_info_server->dis_params.dis_strings->model_num_string;
+                value = (u8*)dev_info_server->dis_params.dis_strings->model_num_string;
             }
             break;
 
@@ -79,7 +79,7 @@ static void handleDeviceInfoReadRequest(const gdiss_t *dev_info_server, const GA
             if((dis_strings != NULL) && (dis_strings->serial_num_string != NULL))
             {
                 size = strlen(dev_info_server->dis_params.dis_strings->serial_num_string);
-                value = (uint8*)dev_info_server->dis_params.dis_strings->serial_num_string;
+                value = (u8*)dev_info_server->dis_params.dis_strings->serial_num_string;
             }
             break;
 
@@ -87,7 +87,7 @@ static void handleDeviceInfoReadRequest(const gdiss_t *dev_info_server, const GA
             if((dis_strings != NULL) && (dis_strings->hw_revision_string != NULL))
             {
                 size = strlen(dev_info_server->dis_params.dis_strings->hw_revision_string);
-                value = (uint8*)dev_info_server->dis_params.dis_strings->hw_revision_string;
+                value = (u8*)dev_info_server->dis_params.dis_strings->hw_revision_string;
             }
             break;
 
@@ -95,7 +95,7 @@ static void handleDeviceInfoReadRequest(const gdiss_t *dev_info_server, const GA
             if((dis_strings != NULL) && (dis_strings->fw_revision_string != NULL))
             {
                 size = strlen(dev_info_server->dis_params.dis_strings->fw_revision_string);
-                value = (uint8*)dev_info_server->dis_params.dis_strings->fw_revision_string;
+                value = (u8*)dev_info_server->dis_params.dis_strings->fw_revision_string;
             }
             break;
 
@@ -103,7 +103,7 @@ static void handleDeviceInfoReadRequest(const gdiss_t *dev_info_server, const GA
             if((dis_strings != NULL) && (dis_strings->sw_revision_string != NULL))
             {
                 size = strlen(dev_info_server->dis_params.dis_strings->sw_revision_string);
-                value = (uint8*)dev_info_server->dis_params.dis_strings->sw_revision_string;
+                value = (u8*)dev_info_server->dis_params.dis_strings->sw_revision_string;
             }
             break;
 
@@ -111,7 +111,7 @@ static void handleDeviceInfoReadRequest(const gdiss_t *dev_info_server, const GA
             if(dev_info_server->dis_params.system_id !=NULL)
             {
                 size = sizeof(dev_info_server->dis_params.system_id);
-                value = (uint8*)dev_info_server->dis_params.system_id;
+                value = (u8*)dev_info_server->dis_params.system_id;
             }
             break;
 
@@ -119,7 +119,7 @@ static void handleDeviceInfoReadRequest(const gdiss_t *dev_info_server, const GA
             if(dev_info_server->dis_params.ieee_data !=NULL)
             {
                 size = sizeof(dev_info_server->dis_params.ieee_data);
-                value = (uint8*)dev_info_server->dis_params.ieee_data;
+                value = (u8*)dev_info_server->dis_params.ieee_data;
             }
             break;
 
@@ -127,7 +127,7 @@ static void handleDeviceInfoReadRequest(const gdiss_t *dev_info_server, const GA
             if(dev_info_server->dis_params.pnp_id !=NULL)
             {
                 size = sizeof(dev_info_server->dis_params.pnp_id);
-                value = (uint8*)dev_info_server->dis_params.pnp_id;
+                value = (u8*)dev_info_server->dis_params.pnp_id;
             }
             break;
 

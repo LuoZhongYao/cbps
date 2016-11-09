@@ -3,7 +3,7 @@ Copyright (c) 2004 - 2015 Qualcomm Technologies International, Ltd.
 
 FILE NAME
     sink_pio.c
-    
+
 DESCRIPTION
 
 
@@ -18,61 +18,59 @@ DESCRIPTION
 #include <psu.h>
 
 #ifdef DEBUG_PIO
-#define PIO_DEBUG(x)  DEBUG (x)
 #else
-#define PIO_DEBUG(x) 
 #endif
 
 
 /****************************************************************************
-NAME	
+NAME
 	PioSetPio
 
 DESCRIPTION
     Fn to change a PIO
     Set drive pio_drive to drive PIO, pio_pull to pull PIO
     Set dir TRUE to set high, FALSE to set low
-    
+
 RETURNS
 	void
 */
-void PioSetPio(uint16 pio, pio_common_dir drive, bool dir) 
+void PioSetPio(u16 pio, pio_common_dir drive, bool dir)
 {
-    PIO_DEBUG(("PIO: %s pin %d %s\n", (drive ? "Drive" : "Pull"), pio, (dir ? "high" : "low")));
+    LOGD("PIO: %s pin %d %s\n", (drive ? "Drive" : "Pull"), pio, (dir ? "high" : "low"));
     PioCommonSetPin(pio, drive, dir);
 }
 
 
 /****************************************************************************
-NAME	
+NAME
 	PioGetPio
 
 DESCRIPTION
     Fn to read a PIO
-    
+
 RETURNS
 	TRUE if set, FALSE if not
 */
-bool PioGetPio(uint16 pio)
+bool PioGetPio(u16 pio)
 {
-    PIO_DEBUG(("PIO: Read pin %d\n", pio));
+    LOGD("PIO: Read pin %d\n", pio);
     return PioCommonGetPin(pio);
 }
 
 
 /****************************************************************************
-NAME	
+NAME
 	PioDrivePio
 
 DESCRIPTION
 	Drive a PIO to the passed state if configured. PIOs may be active high or
     active low depending on the pio_invert bitmap.
-    
+
 RETURNS
 	void
-    
+
 */
-void PioDrivePio(uint16 pio, bool state)
+void PioDrivePio(u16 pio, bool state)
 {
     if (pio != NO_PIO)
     {
@@ -80,23 +78,23 @@ void PioDrivePio(uint16 pio, bool state)
         {
             state = !state;
         }
-        
+
         PioSetPio(pio, pio_drive, state);
     }
 }
 
 
 /****************************************************************************
-NAME	
+NAME
 	PioSetPowerPin
 
 DESCRIPTION
     controls the internal regulators to latch / remove the power on state
-    
+
 RETURNS
 	void
 */
-void PioSetPowerPin ( bool enable ) 
+void PioSetPowerPin ( bool enable )
 {
     /* power on or off the smps */
 #ifdef BC5_MULTIMEDIA
@@ -106,5 +104,5 @@ void PioSetPowerPin ( bool enable )
     if(!enable)
         PsuConfigure(PSU_ALL, PSU_ENABLE, enable);
 #endif
-    PIO_DEBUG(("PIO : PowerOnSMPS %X\n", enable)) ;      
+    LOGD("PIO : PowerOnSMPS %X\n", enable);
 }

@@ -18,7 +18,7 @@ void gattManagerWaitForRemoteClientInternal(GATT_MANAGER_INTERNAL_MSG_WAIT_FOR_R
 
 /* Called when GATT has started advertising
  * */
-void gattManagerServerAdvertising(uint16 cid);
+void gattManagerServerAdvertising(u16 cid);
 
 /* Connect indication received and should be passed on to the application
  * */

@@ -11,7 +11,7 @@ Part of ADK 4.0
 
 
 /*******************************************************************************/
-void AghfpSendUserSpecificData(AGHFP *aghfp, uint16 size_data, uint8 *data)
+void AghfpSendUserSpecificData(AGHFP *aghfp, u16 size_data, u8 *data)
 {
     if (size_data)
     {

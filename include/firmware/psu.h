@@ -42,6 +42,6 @@ bool PsuGetVregEn(void);
     This means the actual power supply controlled by any psu_id may change between different
     BlueCore models. Consult the datasheet for your BlueCore variant for more information.
 */
-bool PsuConfigure(psu_id psu, psu_config_key key, uint16 value);
+bool PsuConfigure(psu_id psu, psu_config_key key, u16 value);
 
 #endif

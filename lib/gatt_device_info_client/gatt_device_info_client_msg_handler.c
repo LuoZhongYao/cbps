@@ -15,7 +15,7 @@
 /****************************************************************************
 Internal functions
 ****************************************************************************/
-uint16 getDeviceInfoCharHandle(GDISC *const device_info_client, gatt_device_info_type_t device_info_type)
+u16 getDeviceInfoCharHandle(GDISC *const device_info_client, gatt_device_info_type_t device_info_type)
 {
     if(device_info_client != NULL)
     {
@@ -55,7 +55,7 @@ uint16 getDeviceInfoCharHandle(GDISC *const device_info_client, gatt_device_info
     return INVALID_DEVICE_INFO_HANDLE;
 }
 /****************************************************************************/
-static gatt_device_info_type_t getDeviceInfoTypeFromHandle(GDISC *const device_info_client, uint16 device_info_char_handle)
+static gatt_device_info_type_t getDeviceInfoTypeFromHandle(GDISC *const device_info_client, u16 device_info_char_handle)
 {
     GATT_DEVICE_INFO_DEBUG_INFO(("getDeviceInfoTypeFromHandle (Char handle= %x)\n",device_info_char_handle));
     
@@ -97,9 +97,9 @@ NAME
 DESCRIPTION
    Utility function to return bitmask of supported device info characteristics 
 */
-static uint16 supportedDeviceInfoCharHandles(GDISC *const device_info_client)
+static u16 supportedDeviceInfoCharHandles(GDISC *const device_info_client)
 {
-    uint16 supported_char_mask = 0x0000;
+    u16 supported_char_mask = 0x0000;
 
     if(device_info_client->manufacturer_name_handle != INVALID_DEVICE_INFO_HANDLE)
         supported_char_mask |= MANUFACTURER_NAME_CHAR;
@@ -153,7 +153,7 @@ DESCRIPTION
    Utility function to send confirmation responses to application  
 */
 static void sendDeviceInfoClientDiscoverCharCfm(GDISC *const device_info_client,
-              const uint16 cid, gatt_device_info_client_status_t status)
+              const u16 cid, gatt_device_info_client_status_t status)
 {
     /* Characteristic handle discovery confirmation */
     MAKE_DEVICE_INFO_CLIENT_MESSAGE(GATT_DEVICE_INFO_CLIENT_INIT_CFM);

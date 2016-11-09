@@ -57,7 +57,7 @@ void usb_msg_handler(Task task, MessageId id, Message message)
         /* message that indicates an alternative setting is applied on a USB interface */
         case MESSAGE_USB_ALT_INTERFACE:
         {
-            uint16 interface_id;
+            u16 interface_id;
             MessageUsbAltInterface* ind = (MessageUsbAltInterface*)message;
             bool audio_active = FALSE;
             USB_MSG_DEBUG(("MESSAGE_USB_ALT_INTERFACE %d %d\n", ind->interface, ind->altsetting));

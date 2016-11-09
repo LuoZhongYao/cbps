@@ -35,12 +35,12 @@ NOTES
 DESCRIPTION
     This function connects APTX standard delay audio 
 ****************************************************************************/
-void MusicConnectAptxSource(A2dpPluginConnectParams *codecData, uint8 content_protection)
+void MusicConnectAptxSource(A2dpPluginConnectParams *codecData, u8 content_protection)
 {
     DECODER_t * DECODER = CsrA2dpDecoderGetDecoderData();
     
     /* Initialise PCM. Output stereo at 44k1Hz or 48kHz. */
-    PRINT(("DECODER: aptX rate=%u Hz\n",(uint16)DECODER->rate));
+    PRINT(("DECODER: aptX rate=%u Hz\n",(u16)DECODER->rate));
 
     /* ensure sample rate is set to a valid value */
     if (DECODER->rate)

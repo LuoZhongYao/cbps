@@ -29,7 +29,7 @@ NOTES
 
 
 /*****************************************************************************/
-void ConnectionWriteClassOfDevice(uint32 cod)
+void ConnectionWriteClassOfDevice(u32 cod)
 {
     /* All requests are sent through the internal state handler */
     MAKE_CL_MESSAGE(CL_INTERNAL_DM_WRITE_CLASS_OF_DEVICE_REQ);

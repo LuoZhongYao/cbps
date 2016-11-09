@@ -45,7 +45,7 @@ RETURNS
     TRUE if the GATT server task was initialised, FALSE otherwise.
 */
 #ifdef GATT_ENABLED
-bool sinkGattServerInitialiseTask(uint16 **ptr);
+bool sinkGattServerInitialiseTask(u16 **ptr);
 #else
 #define sinkGattServerInitialiseTask(ptr) (FALSE)
 #endif
@@ -87,7 +87,7 @@ RETURNS
     TRUE if the message was handled, FALSE otherwise
 */
 #ifdef GATT_ENABLED
-void sinkGattServerSendServiceChanged(uint16 cid);
+void sinkGattServerSendServiceChanged(u16 cid);
 #else
 #define sinkGattServerSendServiceChanged(cid) ((void)(0))
 #endif

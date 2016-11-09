@@ -22,11 +22,11 @@ NOTES
 /* DSP message structure */
 typedef struct
 {
-    uint16 id;
-    uint16 a;
-    uint16 b;
-    uint16 c;
-    uint16 d;
+    u16 id;
+    u16 a;
+    u16 b;
+    u16 c;
+    u16 d;
 } DSP_REGISTER_T;
 
 /*the local kalimba message handling function*/
@@ -92,7 +92,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
                 {                
                     MAKE_AUDIO_MESSAGE( AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG) ; 
                     memmove(message, prompt_message, sizeof(AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG_T));
-                    MessageSendConditionally ( task , AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG, message ,(const uint16 *)AudioBusyPtr() ) ;
+                    MessageSendConditionally ( task , AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG, message ,(const u16 *)AudioBusyPtr() ) ;
                     PRINT(("VP:Queue\n")); 
                 }
             }
@@ -124,7 +124,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
 	
 					PRINT(("VP: tone Q\n"));
 					
-					MessageSendConditionally ( task , AUDIO_PLUGIN_PLAY_TONE_MSG, message ,(const uint16 *)AudioBusyPtr() ) ;			
+					MessageSendConditionally ( task , AUDIO_PLUGIN_PLAY_TONE_MSG, message ,(const u16 *)AudioBusyPtr() ) ;			
 				}
 			}
 			else

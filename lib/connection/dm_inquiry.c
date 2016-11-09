@@ -53,7 +53,7 @@ void ConnectionWriteInquiryMode(Task theAppTask, inquiry_mode mode)
 
 
 /*****************************************************************************/
-void ConnectionWriteEirData(uint8 fec_required, uint8 size_eir_data, const uint8 *eir_data)
+void ConnectionWriteEirData(u8 fec_required, u8 size_eir_data, const u8 *eir_data)
 {
 #ifdef CONNECTION_DEBUG_LIB
     if (connectionGetBtVersion() < bluetooth2_1)
@@ -69,7 +69,7 @@ void ConnectionWriteEirData(uint8 fec_required, uint8 size_eir_data, const uint8
 
         if (message->size_eir_data)
         {
-            message->eir_data = (uint8 *)PanicUnlessMalloc(message->size_eir_data);
+            message->eir_data = (u8 *)PanicUnlessMalloc(message->size_eir_data);
             memmove(message->eir_data, eir_data, message->size_eir_data);
         }
         else

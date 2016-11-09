@@ -20,8 +20,8 @@
 #define HANDLE_IEEE_DATA                (0x0011)
 #define HANDLE_PNP_ID                   (0x0013)
 
-uint16 *GattGetDatabase(uint16 *len);
-uint16 GattGetDatabaseSize(void);
+u16 *GattGetDatabase(u16 *len);
+u16 GattGetDatabaseSize(void);
 
 #endif
 

@@ -36,8 +36,8 @@ typedef enum __gatt_manager_advertising_state
 typedef struct __gatt_manager_server_lookup_data
 {
     Task        task;
-    uint16      start_handle;
-    uint16      end_handle;
+    u16      start_handle;
+    u16      end_handle;
     bool        pending_write;
 
 } gatt_manager_server_lookup_data_t;
@@ -45,22 +45,22 @@ typedef struct __gatt_manager_server_lookup_data
 typedef struct __gatt_manager_client_lookup_data
 {
     Task        task;
-    uint16      cid;
-    uint16      start_handle;
-    uint16      end_handle;
+    u16      cid;
+    u16      start_handle;
+    u16      end_handle;
 } gatt_manager_client_lookup_data_t;
 
 typedef struct __gatt_manager_resolve_server_handle
 {
     Task        task;
-    uint16      handle;
-    uint16      adjusted;
+    u16      handle;
+    u16      adjusted;
 
 } gatt_manager_resolve_server_handle_t;
 
 typedef struct __gatt_manager_data_iterator
 {
-    uint16  iterator;
+    u16  iterator;
 } gatt_manager_data_iterator_t;
 
 typedef struct __gatt_manager_data *gatt_manager_data_t;
@@ -115,7 +115,7 @@ void gattManagerDataAdvertisingState_Advertising(void);
 
 gatt_manager_advertising_state_t gattManagerDataGetAdvertisingState(void);
 
-uint16 * gattManagerDataGetAdvertisingRequestedFlag(void);
+u16 * gattManagerDataGetAdvertisingRequestedFlag(void);
 
 /*
  * GATT Manager Cancel pending connection functions
@@ -133,11 +133,11 @@ bool gattManagerDataIsCancelPending(void);
 
 bool gattManagerDataAddServer(const gatt_manager_server_registration_params_t *server);
 
-uint16 gattManagerDataServerCount(void);
+u16 gattManagerDataServerCount(void);
 
-uint16 gattManagerDataGetServerDatabaseHandle(Task task, uint16 handle);
+u16 gattManagerDataGetServerDatabaseHandle(Task task, u16 handle);
 
-gatt_manager_server_lookup_data_t * gattManagerDataFindServerTask(uint16 handle);
+gatt_manager_server_lookup_data_t * gattManagerDataFindServerTask(u16 handle);
 
 bool gattManagerDataResolveServerHandle(gatt_manager_resolve_server_handle_t * data);
 
@@ -145,7 +145,7 @@ bool gattManagerDataServerIteratorStart(gatt_manager_data_iterator_t *iter);
 
 const gatt_manager_server_lookup_data_t * gattManagerDataServerIteratorNext(gatt_manager_data_iterator_t *iter);
 
-void gattManagerDataSetServerPendingWriteFlag(uint16 handle);
+void gattManagerDataSetServerPendingWriteFlag(u16 handle);
 
 void gattManagerDataSetApplicationPendingWriteFlag(void);
 
@@ -153,9 +153,9 @@ bool gattManagerDataServerIteratorPrepareWriteFlagsNext(gatt_manager_server_look
 
 bool gattManagerDataServerGetPrepareWriteFlag(Task task);
 
-void gattManagerDataServerSetExecuteWriteResult(uint16 result);
+void gattManagerDataServerSetExecuteWriteResult(u16 result);
 
-uint16 gattManagerDataServerGetExecuteWriteResult(void);
+u16 gattManagerDataServerGetExecuteWriteResult(void);
 
 bool gattManagerDataServerClearPrepareWriteFlag(Task task);
 
@@ -169,18 +169,18 @@ bool gattManagerDataRemoveClient(const Task client);
 
 const gatt_manager_client_lookup_data_t * gattManagerDataGetClientByTask(const Task client);
 
-Task gattManagerDataGetClientByCid(uint16 handle, uint16 cid);
+Task gattManagerDataGetClientByCid(u16 handle, u16 cid);
 
 
 /*
  * GATT Manager GATT DB functions
  * *****************************************************************************/
 
-void gattManagerDataSetConstDB(const uint16* db_ptr, uint16 size);
+void gattManagerDataSetConstDB(const u16* db_ptr, u16 size);
 
 const void * gattManagerDataGetDB(void);
 
-uint16 gattManagerDataGetDBSize(void);
+u16 gattManagerDataGetDBSize(void);
 
 
 /*
@@ -201,8 +201,8 @@ Task gattManagerDataGetRemoteClientConnectTask(void);
 
 void gattManagerDataSetRemoteClientConnectTask(Task task);
 
-uint16 gattManagerDataGetRemoteClientConnectCid(void);
+u16 gattManagerDataGetRemoteClientConnectCid(void);
 
-void gattManagerDataSetRemoteClientConnectCid(uint16 cid);
+void gattManagerDataSetRemoteClientConnectCid(u16 cid);
 
 #endif /* GATTMANAGER_DATA_H_ */

@@ -86,7 +86,7 @@ DESCRIPTION
 	disconnected.
 
 */
-void a2dpHandleL2capDisconnect(uint16 cid, Sink sink, l2cap_disconnect_status status);
+void a2dpHandleL2capDisconnect(u16 cid, Sink sink, l2cap_disconnect_status status);
 
 
 #endif /* A2DP_L2CAP_HANDLER_H_ */

@@ -92,8 +92,8 @@ typedef enum __gatt_gatt_server_message_id
  */
 typedef struct PACK_STRUCT __GATT_SERVER_READ_CLIENT_CONFIG_IND
 {
-    uint16 cid;
-    uint16 handle;
+    u16 cid;
+    u16 handle;
 
 } GATT_SERVER_READ_CLIENT_CONFIG_IND_T;
 
@@ -109,8 +109,8 @@ typedef struct PACK_STRUCT __GATT_SERVER_READ_CLIENT_CONFIG_IND
 */
 typedef struct PACK_STRUCT __GATT_SERVER_WRITE_CLIENT_CONFIG_IND
 {
-    uint16 cid;
-    uint16 config_value;
+    u16 cid;
+    u16 config_value;
     
 } GATT_SERVER_WRITE_CLIENT_CONFIG_IND_T;
 
@@ -131,7 +131,7 @@ typedef struct PACK_STRUCT __GATT_SERVER_WRITE_CLIENT_CONFIG_IND
 typedef struct PACK_STRUCT __GATT_SERVER_SERVICE_CHANGED_INDICATION_CFM
 {
     gatt_status_t   status;
-    uint16          cid;
+    u16          cid;
     
 } GATT_SERVER_SERVICE_CHANGED_INDICATION_CFM_T;
 
@@ -148,7 +148,7 @@ typedef struct PACK_STRUCT __GATT_SERVER_SERVICE_CHANGED_INDICATION_CFM
     @return The status result of calling the API.
 
 */
-gatt_server_status_t GattServerInit(GGATTS *gatt_server, Task app_task, uint16 start_handle, uint16 end_handle);
+gatt_server_status_t GattServerInit(GGATTS *gatt_server, Task app_task, u16 start_handle, u16 end_handle);
 
 
 /*!
@@ -162,7 +162,7 @@ gatt_server_status_t GattServerInit(GGATTS *gatt_server, Task app_task, uint16 s
     
     @return TRUE if the indication was sent, FALSE otherwise.
 */
-bool GattServerSendServiceChangedIndication(GGATTS *gatt_server, uint16 cid);
+bool GattServerSendServiceChangedIndication(GGATTS *gatt_server, u16 cid);
 
 /*!
     @brief Send a response to the remote device for the GATT Service
@@ -178,7 +178,7 @@ bool GattServerSendServiceChangedIndication(GGATTS *gatt_server, uint16 cid);
 
     @return TRUE if the response was sent, FALSE otherwise.
 */
-bool GattServerReadClientConfigResponse(GGATTS *gatt_server, uint16 cid, uint16 handle, uint16 config);
+bool GattServerReadClientConfigResponse(GGATTS *gatt_server, u16 cid, u16 handle, u16 config);
 
 
 #endif

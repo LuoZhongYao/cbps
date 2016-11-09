@@ -40,7 +40,7 @@ typedef enum
 
 
 /* Request the service handle(s) of the HSP service at the AG */
-static const uint8 SdpPingServiceRequest [] =
+static const u8 SdpPingServiceRequest [] =
 {
     0x35, /* type = DataElSeq */
     0x05, /* size ...5 bytes in DataElSeq */
@@ -384,7 +384,7 @@ void connectionHandleSdpOpenSearchCfm(connectionSdpState *state, const SDC_OPEN_
 	if(state->sdpLock == connectionGetCmTask())
 	{
 		/* Request was internal, start SDP Ping */
-		uint8* sdp_ptr = (uint8 *) SdpPingServiceRequest;
+		u8* sdp_ptr = (u8 *) SdpPingServiceRequest;
 		if (cfm->result == SDC_OPEN_SEARCH_OK)
 			ConnectionSdpServiceSearchRequest(connectionGetCmTask(), &state->sdpServerAddr, 1, sizeof(SdpPingServiceRequest), sdp_ptr);
 	}
@@ -514,7 +514,7 @@ void connectionHandleSdpServiceSearchRequest(connectionSdpState *state, const CL
 
 		if (req->length)
         {
-            uint8* search_pattern = PanicUnlessMalloc(req->length);
+            u8* search_pattern = PanicUnlessMalloc(req->length);
             memmove(search_pattern, req->search_pattern, req->length);
             prim->srch_pttrn = VmGetHandleFromPointer(search_pattern);
         }
@@ -570,8 +570,8 @@ RETURNS
 void connectionHandleSdpServiceSearchCfm(connectionSdpState *state, const SDC_SERVICE_SEARCH_CFM_T *cfm)
 {
     connectionState *cstate = (connectionState*)connectionGetCmTask();
-    uint16 len;
-    uint16 msgid;
+    u16 len;
+    u16 msgid;
 
     /* extra length required for a message */
     if (cstate->flags & CONNECTION_FLAG_SDP_REFERENCE)
@@ -589,7 +589,7 @@ void connectionHandleSdpServiceSearchCfm(connectionSdpState *state, const SDC_SE
 	if (state->sdpSearchLock == connectionGetCmTask())
 	{
 		/* Internal CFM means we're SDP Pinging */
-		uint8* sdp_ptr = (uint8 *) SdpPingServiceRequest;
+		u8* sdp_ptr = (u8 *) SdpPingServiceRequest;
 		
 		/* Create next request */
         MAKE_CL_MESSAGE_WITH_LEN(CL_INTERNAL_SDP_SERVICE_SEARCH_REQ, sizeof(SdpPingServiceRequest));
@@ -607,7 +607,7 @@ void connectionHandleSdpServiceSearchCfm(connectionSdpState *state, const SDC_SE
 		/* Tidy up memory in cfm */
 		if (cfm->size_rec_list)
         {
-            uint8 *record_list = VmGetPointerFromHandle(cfm->rec_list);
+            u8 *record_list = VmGetPointerFromHandle(cfm->rec_list);
             free(record_list);
         }
         
@@ -626,7 +626,7 @@ void connectionHandleSdpServiceSearchCfm(connectionSdpState *state, const SDC_SE
         
         if (cfm->size_rec_list)
         {
-            uint8 *record_list = VmGetPointerFromHandle(cfm->rec_list);
+            u8 *record_list = VmGetPointerFromHandle(cfm->rec_list);
 
             if (msgid == CL_SDP_SERVICE_SEARCH_CFM)
             {
@@ -652,7 +652,7 @@ void connectionHandleSdpServiceSearchCfm(connectionSdpState *state, const SDC_SE
     {
         if (cfm->size_rec_list)
         {
-            uint8 *record_list = VmGetPointerFromHandle(cfm->rec_list);
+            u8 *record_list = VmGetPointerFromHandle(cfm->rec_list);
             free(record_list);
         }
     }
@@ -683,7 +683,7 @@ void connectionHandleSdpAttributeSearchRequest(connectionSdpState *state, const 
 		prim->size_attr_list = req->size_attribute_list;
 		if (req->size_attribute_list)
 		{
-			uint8* attrs = (uint8 *)PanicUnlessMalloc(req->size_attribute_list);
+			u8* attrs = (u8 *)PanicUnlessMalloc(req->size_attribute_list);
             memmove(attrs, req->attribute_list, req->size_attribute_list);
             prim->attr_list = VmGetHandleFromPointer(attrs);
         }
@@ -741,8 +741,8 @@ RETURNS
 void connectionHandleSdpAttributeSearchCfm(connectionSdpState *state, const SDC_SERVICE_ATTRIBUTE_CFM_T *cfm)
 {
     connectionState *cstate = (connectionState*)connectionGetCmTask();
-    uint16 len;
-    uint16 msgid;
+    u16 len;
+    u16 msgid;
 
     /* extra length required for a message */
     if (cstate->flags & CONNECTION_FLAG_SDP_REFERENCE)
@@ -768,7 +768,7 @@ void connectionHandleSdpAttributeSearchCfm(connectionSdpState *state, const SDC_
         
         if (cfm->size_attr_list)
         {
-            uint8 *attribute_list = VmGetPointerFromHandle(cfm->attr_list);
+            u8 *attribute_list = VmGetPointerFromHandle(cfm->attr_list);
 
             if (msgid == CL_SDP_ATTRIBUTE_SEARCH_CFM)
             {
@@ -794,7 +794,7 @@ void connectionHandleSdpAttributeSearchCfm(connectionSdpState *state, const SDC_
     {
         if (cfm->size_attr_list)
         {
-            uint8 *attribute_list = VmGetPointerFromHandle(cfm->attr_list);
+            u8 *attribute_list = VmGetPointerFromHandle(cfm->attr_list);
             free(attribute_list);
         }
     }
@@ -826,7 +826,7 @@ void connectionHandleSdpServiceSearchAttrRequest(connectionSdpState *state, cons
 
         if( req->size_search_pattern )
         {
-            uint8* pattern = (uint8 *)PanicUnlessMalloc(req->size_search_pattern);
+            u8* pattern = (u8 *)PanicUnlessMalloc(req->size_search_pattern);
 			memmove( pattern , req->search_attr, req->size_search_pattern);
             prim->srch_pttrn = VmGetHandleFromPointer( pattern ); 
 		}
@@ -839,7 +839,7 @@ void connectionHandleSdpServiceSearchAttrRequest(connectionSdpState *state, cons
 
 		if (req->size_attribute_list)
 		{
-			uint8* attrs = (uint8 *)PanicUnlessMalloc(req->size_attribute_list);
+			u8* attrs = (u8 *)PanicUnlessMalloc(req->size_attribute_list);
             memmove(attrs, req->search_attr + req->size_search_pattern, 
                     req->size_attribute_list);
             prim->attr_list = VmGetHandleFromPointer(attrs);
@@ -861,7 +861,7 @@ void connectionHandleSdpServiceSearchAttrRequest(connectionSdpState *state, cons
 	else
 	{
 		Task *c = 0;
-        uint16 len =req->size_search_pattern + req->size_attribute_list;
+        u16 len =req->size_search_pattern + req->size_attribute_list;
 
 		/* Queue up the search request */
 		MAKE_CL_MESSAGE_WITH_LEN(CL_INTERNAL_SDP_SERVICE_SEARCH_ATTRIBUTE_REQ, 
@@ -899,8 +899,8 @@ RETURNS
 void connectionHandleSdpServiceSearchAttributeCfm(connectionSdpState *state, const SDC_SERVICE_SEARCH_ATTRIBUTE_CFM_T *cfm)
 {	
     connectionState *cstate = (connectionState*)connectionGetCmTask();
-    uint16 len;
-    uint16 msgid;
+    u16 len;
+    u16 msgid;
 
     /* extra length required for a message */
     if (cstate->flags & CONNECTION_FLAG_SDP_REFERENCE)
@@ -927,7 +927,7 @@ void connectionHandleSdpServiceSearchAttributeCfm(connectionSdpState *state, con
         
         if (cfm->size_attr_list)
         {
-            uint8 *attribute_list = VmGetPointerFromHandle(cfm->attr_list);
+            u8 *attribute_list = VmGetPointerFromHandle(cfm->attr_list);
             
             if (msgid == CL_SDP_SERVICE_SEARCH_ATTRIBUTE_CFM)
             {
@@ -954,7 +954,7 @@ void connectionHandleSdpServiceSearchAttributeCfm(connectionSdpState *state, con
     {
         if (cfm->size_attr_list)
         {
-            uint8 *attribute_list = VmGetPointerFromHandle(cfm->attr_list);
+            u8 *attribute_list = VmGetPointerFromHandle(cfm->attr_list);
             free(attribute_list);
         }
     }

@@ -41,10 +41,10 @@ DESCRIPTION
 RETURNS
     TRUE if volume was sent successfully, FALSE otherwise. This does not take
     account of the AG's response. HFP will limit the volume sent to be in the
-    range 0-15. The uint8 pointed to by volume will be updated with the actual 
+    range 0-15. The u8 pointed to by volume will be updated with the actual 
     volume that was sent to the AG if successful.
 */
-bool HfpVolumeSyncSpeakerGainRequest(hfp_link_priority priority, uint8* volume)
+bool HfpVolumeSyncSpeakerGainRequest(hfp_link_priority priority, u8* volume)
 {
     /* Get the link */
     hfp_link_data* link = hfpGetLinkFromPriority(priority);
@@ -80,10 +80,10 @@ DESCRIPTION
 RETURNS
     TRUE if volume was sent successfully, FALSE otherwise. This does not take
     account of the AG's response. HFP will limit the volume sent to be in the
-    range 0-15. The uint8 pointed to by volume will be updated with the actual 
+    range 0-15. The u8 pointed to by volume will be updated with the actual 
     volume that was sent to the AG if successful.
 */
-bool HfpVolumeSyncMicrophoneGainRequest(hfp_link_priority priority, uint8* volume)
+bool HfpVolumeSyncMicrophoneGainRequest(hfp_link_priority priority, u8* volume)
 {
     /* Get the link */
     hfp_link_data* link = hfpGetLinkFromPriority(priority);

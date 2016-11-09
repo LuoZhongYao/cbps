@@ -10,12 +10,13 @@ Part of ADK 4.0
 #include <stream.h>
 #include <stdio.h>
 #include <print.h>
+#include <stdlib.h>
 #include <memory.h>
 #include <string.h>
 
 #ifndef AVRCP_TG_ONLY_LIB /* Disable CT for TG only lib */
 /* Static for now - need StreamRegionSource which actually owns the data */
-static uint8 op_data[] = {
+static u8 op_data[] = {
     0x31, 
     0x32, 
     0x33, 
@@ -24,7 +25,7 @@ static uint8 op_data[] = {
 };
 #endif 
 
-static uint8 *gdata;
+static u8 *gdata;
 
 static TaskData cleanUpTask;
 
@@ -49,9 +50,9 @@ static void avrcpDataCleanUp(Task task, MessageId id, Message message)
     }
 }
 
-static Source avrcpSourceFromData(AVRCP *avrcp, uint8 *data, uint16 length)
+static Source avrcpSourceFromData(AVRCP *avrcp, u8 *data, u16 length)
 {
-    uint16 i;
+    u16 i;
     Source src;
 
     if(!length || !data)
@@ -59,7 +60,7 @@ static Source avrcpSourceFromData(AVRCP *avrcp, uint8 *data, uint16 length)
         return 0;
     }
   
-    gdata = (uint8*) malloc(length);
+    gdata = (u8*) malloc(length);
     for (i=0;i<length;i++)
         gdata[i] = data[i];
     
@@ -82,7 +83,7 @@ void AvrcpHandleComplexMessage(Task task, MessageId id, Message message)
     }
 }
 
-void AvrcpInitTestExtra(Task theAppTask, uint16 dev_type)
+void AvrcpInitTestExtra(Task theAppTask, u16 dev_type)
 {
     avrcp_init_params config;
     config.device_type = dev_type;
@@ -100,11 +101,11 @@ void AvrcpInitTestExtra(Task theAppTask, uint16 dev_type)
     AvrcpInit(theAppTask, &config);
 }
 
-void AvrcpInitBrowseTest(Task theAppTask, uint16 dev_type, 
-                       uint16 extensions)
+void AvrcpInitBrowseTest(Task theAppTask, u16 dev_type, 
+                       u16 extensions)
 {
     avrcp_init_params config;
-    uint8 supp_feature=0;
+    u8 supp_feature=0;
     config.device_type = dev_type;
 
     if(extensions & AVRCP_VERSION_1_3) 
@@ -167,8 +168,8 @@ void AvrcpPassthroughVendorTestExtra(AVRCP *avrcp,
 {
     Source data_source;
     avc_operation_id opid= opid_vendor_unique;
-    uint8 *op_data = PanicUnlessMalloc(100);
-    uint8 i, length=100;
+    u8 *op_data = PanicUnlessMalloc(100);
+    u8 i, length=100;
 
     /* set some value instead of keeping junk */
     for(i=0; i< length; i++)
@@ -188,7 +189,7 @@ void AvrcpPassthroughVendorTestExtra(AVRCP *avrcp,
 void AvrcpVendorDependentTestExtra(AVRCP *avrcp, 
                                    avc_subunit_type subunit_type,
                                    avc_subunit_id subunit_id,
-                                   uint8 ctype, uint32 company_id)
+                                   u8 ctype, u32 company_id)
 {
     Source data_source = StreamRegionSource(op_data, 5);
     AvrcpVendorDependentRequest(avrcp, subunit_type, subunit_id, ctype, 
@@ -205,8 +206,8 @@ void AvrcpPassthroughTestNull(AVRCP *avrcp, avc_subunit_type subunit_type,
 
 /*****************************************************************************/
 void AvrcpGetCurrentAppSettingValueTestExtra(AVRCP *avrcp,
-                                             uint16 size_attributes,
-                                             uint8 *attributes)
+                                             u16 size_attributes,
+                                             u8 *attributes)
 {
     Source pdu_src = avrcpSourceFromData(avrcp, attributes, size_attributes);
     AvrcpGetAppValueRequest(avrcp, size_attributes, pdu_src);
@@ -214,8 +215,8 @@ void AvrcpGetCurrentAppSettingValueTestExtra(AVRCP *avrcp,
 
 /*****************************************************************************/
 void AvrcpSetAppSettingValueTestExtra(AVRCP *avrcp,
-                                      uint16 size_attributes,
-                                      uint8 *attributes)
+                                      u16 size_attributes,
+                                      u8 *attributes)
 {
     Source pdu_src = avrcpSourceFromData(avrcp, attributes, size_attributes);
     AvrcpSetAppValueRequest(avrcp, size_attributes, pdu_src);
@@ -223,10 +224,10 @@ void AvrcpSetAppSettingValueTestExtra(AVRCP *avrcp,
 
 /*****************************************************************************/
 void AvrcpGetElementAttributesTestExtra(AVRCP *avrcp, 
-                                        uint32 identifier_high,
-                                        uint32 identifier_low, 
-                                        uint16 size_attributes,
-                                         uint8 *attributes)
+                                        u32 identifier_high,
+                                        u32 identifier_low, 
+                                        u16 size_attributes,
+                                         u8 *attributes)
 {
     Source pdu_src = avrcpSourceFromData(avrcp, attributes, size_attributes);
     AvrcpGetElementAttributesRequest(avrcp, identifier_high, identifier_low,
@@ -236,8 +237,8 @@ void AvrcpGetElementAttributesTestExtra(AVRCP *avrcp,
 /*****************************************************************************/
 
 void AvrcpInformDisplayableCharacterSetTestExtra(AVRCP *avrcp, 
-                                                uint16 size_attributes, 
-                                                uint8 *attributes)
+                                                u16 size_attributes, 
+                                                u8 *attributes)
 {
     Source pdu_src = avrcpSourceFromData(avrcp, attributes, size_attributes);
     AvrcpInformCharacterSetRequest(avrcp, size_attributes, pdu_src);
@@ -245,8 +246,8 @@ void AvrcpInformDisplayableCharacterSetTestExtra(AVRCP *avrcp,
 /*****************************************************************************/
 
 void AvrcpGetAppSettingAttributeTextTestExtra(AVRCP *avrcp, 
-                                              uint16 size_attributes, 
-                                              uint8 *attributes)
+                                              u16 size_attributes, 
+                                              u8 *attributes)
 {
     Source pdu_src = avrcpSourceFromData(avrcp, attributes, size_attributes);
     AvrcpGetAppAttributeTextRequest(avrcp, size_attributes, pdu_src);
@@ -254,9 +255,9 @@ void AvrcpGetAppSettingAttributeTextTestExtra(AVRCP *avrcp,
 
 /*****************************************************************************/
 void AvrcpGetAppSettingValueTextTestExtra(AVRCP *avrcp, 
-                                          uint16 attribute_id, 
-                                          uint16 size_values, 
-                                          uint8 *values)
+                                          u16 attribute_id, 
+                                          u16 size_values, 
+                                          u8 *values)
 {
     Source pdu_src = avrcpSourceFromData(avrcp, values, size_values);
     AvrcpGetAppValueTextRequest(avrcp, attribute_id, size_values, pdu_src);
@@ -282,8 +283,8 @@ void AvrcpGetAppSettingValueTextTestExtra(AVRCP *avrcp,
 void AvrcpBrowseGetFolderItemsTest(AVRCP                *avrcp,  
                                    avrcp_browse_scope   scope)
 {
-    uint8 num_attr = 2;
-    uint8 attr[] = {0, 0, 0, 1, 0, 0, 0, 2};
+    u8 num_attr = 2;
+    u8 attr[] = {0, 0, 0, 1, 0, 0, 0, 2};
     Source pdu_src = avrcpSourceFromData(avrcp, attr, 8);
 
     AvrcpBrowseGetFolderItemsRequest(avrcp, scope, 0, 10, num_attr, pdu_src);
@@ -300,18 +301,18 @@ void AvrcpBrowseGetFolderItemsTest(AVRCP                *avrcp,
 *   avrcp                  - Task
 *   avrcp_browse_scope     - Scope
 *   avrcp_browse_uid       - Browse UID of the item requested 
-*   uint16                 - UID counter in TG FS
+*   u16                 - UID counter in TG FS
 *   num_attr               - 0 ...255 ( 255 for all attributes).
 *RETURN
 *   AVRCP_BROWSE_GET_ITEM_ATTRIBUTES_CFM
 *****************************************************************************/
 void AvrcpBrowseGetItemAttributesTest(AVRCP*               avrcp, 
                                       avrcp_browse_scope   scope,  
-                                      uint16               uid_counter)  
+                                      u16               uid_counter)  
 {
     avrcp_browse_uid uid;
-    uint8 num_attr = 2;
-    uint8 attr[] = {0, 0, 0, 1, 0, 0, 0, 2};
+    u8 num_attr = 2;
+    u8 attr[] = {0, 0, 0, 1, 0, 0, 0, 2};
     Source pdu_src =  avrcpSourceFromData(avrcp, attr, 8);
     uid.msb = 0x4578;
     uid.lsb = 0x3421;
@@ -335,8 +336,8 @@ void AvrcpBrowseGetItemAttributesTest(AVRCP*               avrcp,
 *   AVRCP_BROWSE_SEARCH_CFM
 *****************************************************************************/
 void AvrcpBrowseSearchTest( AVRCP*          avrcp, 
-                            uint16          str_length, 
-                            uint8*          string) 
+                            u16          str_length, 
+                            u8*          string) 
 {
     Source pdu_src = avrcpSourceFromData(avrcp, string, str_length);
     AvrcpBrowseSearchRequest(avrcp, avrcp_char_set_utf_8, str_length, pdu_src);
@@ -358,7 +359,7 @@ void AvrcpBrowseSearchTest( AVRCP*          avrcp,
 *   AVRCP_BROWSE_CHANGE_PATH_CFM
 *****************************************************************************/
 void AvrcpBrowseChangePathTest(AVRCP*                  avrcp,  
-                               uint16                  uid_counter,
+                               u16                  uid_counter,
                                avrcp_browse_direction  direction)
 {
     avrcp_browse_uid folder_uid;
@@ -379,11 +380,11 @@ void AvrcpBrowseChangePathTest(AVRCP*                  avrcp,
 *PARAMETRS
 *   avrcp              - Task
 *   avrcp_browse_scope  - scope                
-*  uint16               - uid_counter
+*  u16               - uid_counter
 *****************************************************************************/
 void AvrcpPlayItemTest( AVRCP*              avrcp, 
                         avrcp_browse_scope  scope,    
-                          uint16            uid_counter)
+                          u16            uid_counter)
 {
     avrcp_browse_uid uid;
     uid.msb = 0x4578;
@@ -402,11 +403,11 @@ void AvrcpPlayItemTest( AVRCP*              avrcp,
 *PARAMETRS
 *   avrcp              - Task
 *   avrcp_browse_scope  - scope                
-*  uint16               - uid_counter
+*  u16               - uid_counter
 *****************************************************************************/
 void AvrcpAddToNowPlayingTest( AVRCP*              avrcp, 
                                avrcp_browse_scope  scope,    
-                               uint16            uid_counter)
+                               u16            uid_counter)
 {
     avrcp_browse_uid uid;
     uid.msb = 0x4578;
@@ -422,8 +423,8 @@ void AvrcpAddToNowPlayingTest( AVRCP*              avrcp,
 void AvrcpGetCapabilitiesResponseTestExtra(AVRCP *avrcp, 
                                            avrcp_response_type response, 
                                            avrcp_capability_id caps,
-                                           uint16 size_caps_list, 
-                                           uint8* caps_list)
+                                           u16 size_caps_list, 
+                                           u8* caps_list)
 {
     Source pdu_src;
 
@@ -436,8 +437,8 @@ void AvrcpGetCapabilitiesResponseTestExtra(AVRCP *avrcp,
 /*****************************************************************************/
 void AvrcpListAppSettingAttributeResponseTestExtra(AVRCP *avrcp, 
                                                 avrcp_response_type response,
-                                                uint16 size_attributes,
-                                                uint8 *attributes)
+                                                u16 size_attributes,
+                                                u8 *attributes)
 {
     Source pdu_src = avrcpSourceFromData(avrcp, attributes, size_attributes);
     AvrcpListAppAttributeResponse(avrcp, response,
@@ -448,7 +449,7 @@ void AvrcpListAppSettingAttributeResponseTestExtra(AVRCP *avrcp,
 /*****************************************************************************/
 void AvrcpListAppSettingValueResponseTestExtra(AVRCP *avrcp,
                                              avrcp_response_type response, 
-                                             uint16 size_values, uint8 *values)
+                                             u16 size_values, u8 *values)
 {
     Source pdu_src = avrcpSourceFromData(avrcp, values, size_values);
     AvrcpListAppValueResponse(avrcp, response, size_values, pdu_src);
@@ -459,7 +460,7 @@ void AvrcpListAppSettingValueResponseTestExtra(AVRCP *avrcp,
 /*****************************************************************************/
 void AvrcpGetCurrentAppSettingValueResponseTestExtra(AVRCP *avrcp, 
                                             avrcp_response_type response, 
-                                            uint16 size_values, uint8 *values)
+                                            u16 size_values, u8 *values)
 {
     Source pdu_src = avrcpSourceFromData(avrcp, values, size_values);
     AvrcpGetAppValueResponse(avrcp, response,
@@ -471,9 +472,9 @@ void AvrcpGetCurrentAppSettingValueResponseTestExtra(AVRCP *avrcp,
 /*****************************************************************************/
 void AvrcpGetElementAttributesResponseTestExtra(AVRCP *avrcp, 
                                                 avrcp_response_type response, 
-                                                uint16 number_of_attributes,
-                                                uint16 size_attributes,
-                                                 uint8 *attributes)
+                                                u16 number_of_attributes,
+                                                u16 size_attributes,
+                                                 u8 *attributes)
 {
     Source pdu_src = avrcpSourceFromData(avrcp, attributes, size_attributes);
     AvrcpGetElementAttributesResponse(avrcp, response, 
@@ -485,15 +486,15 @@ void AvrcpGetElementAttributesResponseTestExtra(AVRCP *avrcp,
 void AvrcpGetElementAttributesFragmentedResponseTestExtra(
                                       AVRCP               *avrcp,
                                       avrcp_response_type response,
-                                      uint16              number_of_attributes) 
+                                      u16              number_of_attributes) 
 {
-    uint8* attr_data=NULL;
+    u8* attr_data=NULL;
     Source pdu_src;
-    uint16 attr_len;
-    uint16 length= 510;
+    u16 attr_len;
+    u16 length= 510;
  
     /* Allocate Memory greater than 502 to test Meta data fragmentation */
-    attr_data = (uint8*)PanicUnlessMalloc(length);
+    attr_data = (u8*)PanicUnlessMalloc(length);
 
     /* calculate the size of attribute values */
     attr_len = (length - 8);
@@ -524,8 +525,8 @@ void AvrcpGetElementAttributesFragmentedResponseTestExtra(
 /*****************************************************************************/
 void AvrcpEventPlayerAppSettingChangedResponseTestExtra(AVRCP *avrcp, 
                                                 avrcp_response_type response, 
-                                                uint16 size_attributes, 
-                                                uint8 *attributes)
+                                                u16 size_attributes, 
+                                                u8 *attributes)
 {
     Source pdu_src = avrcpSourceFromData(avrcp, attributes, size_attributes);
     AvrcpEventPlayerAppSettingChangedResponse(avrcp, response, 
@@ -535,9 +536,9 @@ void AvrcpEventPlayerAppSettingChangedResponseTestExtra(AVRCP *avrcp,
 
 void AvrcpGetAppSettingAttributeTextResponseTestExtra(AVRCP *avrcp, 
                                         avrcp_response_type response, 
-                                        uint16 number_of_attributes, 
-                                        uint16 size_attributes, 
-                                        uint8 *attributes)
+                                        u16 number_of_attributes, 
+                                        u16 size_attributes, 
+                                        u8 *attributes)
 {
     Source pdu_src = avrcpSourceFromData(avrcp, attributes, size_attributes);
     AvrcpGetAppAttributeTextResponse(avrcp, response, 
@@ -548,9 +549,9 @@ void AvrcpGetAppSettingAttributeTextResponseTestExtra(AVRCP *avrcp,
 
 void AvrcpGetAppSettingValueTextResponseTestExtra(AVRCP *avrcp, 
                                         avrcp_response_type response, 
-                                        uint16 number_of_values, 
-                                        uint16 size_values, 
-                                        uint8 *values)
+                                        u16 number_of_values, 
+                                        u16 size_values, 
+                                        u8 *values)
 {
     Source pdu_src = avrcpSourceFromData(avrcp, values, size_values);
     AvrcpGetAppValueTextResponse(avrcp, response,
@@ -570,17 +571,17 @@ void AvrcpGetAppSettingValueTextResponseTestExtra(AVRCP *avrcp,
 *PARAMETRS
 *   avrcp              - Task
 *   avrcp_response_type- response. avctp_response_browsing_success on Success.
-*   uint16             - uid counter 
-*   uint32             - number of items in the folder
+*   u16             - uid counter 
+*   u32             - number of items in the folder
 *****************************************************************************/
 void AvrcpBrowseSetPlayerResponseTest(AVRCP*               avrcp, 
                                       avrcp_response_type  response,
-                                      uint16               uid_counter,   
-                                      uint32               num_items)
+                                      u16               uid_counter,   
+                                      u32               num_items)
 {
     if(response == avrcp_response_browsing_success)
     {
-        uint8 folder[] = {0x01, 'A', 0x02, 'B', 'C' , 0x03, 'D', 'E', 'F'};
+        u8 folder[] = {0x01, 'A', 0x02, 'B', 'C' , 0x03, 'D', 'E', 'F'};
         Source pdu_src = avrcpSourceFromData(avrcp, folder, 9);
 
         AvrcpBrowseSetPlayerResponse(avrcp, response, uid_counter, num_items, 
@@ -603,19 +604,19 @@ void AvrcpBrowseSetPlayerResponseTest(AVRCP*               avrcp,
 *PARAMETRS
 *   avrcp              - Task
 *   avrcp_response_type- response. avctp_response_browsing_success on Success.
-*   uint16             - UID Counter. 0 for non database aware players
-*   uint8 - Item_type  - 1 for Media player , 2 for file systam and any other
+*   u16             - UID Counter. 0 for non database aware players
+*   u8 - Item_type  - 1 for Media player , 2 for file systam and any other
 *                        value for media element item
 *****************************************************************************/
 void AvrcpBrowseGetFolderItemsResponseTest(AVRCP*               avrcp,
                                            avrcp_response_type  response, 
-                                           uint16               uid_counter,
-                                           uint8                item_type)
+                                           u16               uid_counter,
+                                           u8                item_type)
 {
     Source src_pdu=0;
-    uint16 num_items=0;
-    uint16 item_list_size=0;
-    uint8 *item=NULL;
+    u16 num_items=0;
+    u16 item_list_size=0;
+    u8 *item=NULL;
 
     if(response != avrcp_response_browsing_success)
     {
@@ -725,9 +726,9 @@ void AvrcpBrowseGetItemAttributesResponseTest(  AVRCP*               avrcp,
                                                 avrcp_response_type  response)
 {
     Source  src_pdu=0;
-    uint16  size_attr_list=0;
-    uint16  num_attributes=0;
-    uint8 *item = NULL;
+    u16  size_attr_list=0;
+    u16  num_attributes=0;
+    u8 *item = NULL;
 
     if(response == avrcp_response_browsing_success)
     {

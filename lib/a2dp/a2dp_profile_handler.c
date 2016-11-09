@@ -34,7 +34,7 @@ NOTES
 #endif
 
 /*****************************************************************************/
-static void handleUnexpected(uint16 type)
+static void handleUnexpected(u16 type)
 {
     A2DP_DEBUG(("A2DP handleUnexpected - MsgId 0x%x\n", type));
 }

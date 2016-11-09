@@ -19,7 +19,7 @@ void CsrDutAudioPluginDisconnect(void);
 
 void CsrDutAudioPluginSetMode(const AUDIO_MODE_T mode);
 
-void CsrDutAudioPluginSetVolume(const uint16 volume);
+void CsrDutAudioPluginSetVolume(const u16 volume);
 
 void CsrDutAudioPluginPlayTone(const AUDIO_PLUGIN_PLAY_TONE_MSG_T * const tone_message);
 

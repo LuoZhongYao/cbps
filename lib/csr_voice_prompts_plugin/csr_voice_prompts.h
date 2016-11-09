@@ -16,7 +16,7 @@ NOTES
 
 #define OUTPUT_RATE_48K   48000
 
-void CsrVoicePromptsPluginInit(uint16 no_prompts, uint16 no_languages);
+void CsrVoicePromptsPluginInit(u16 no_prompts, u16 no_languages);
 
 typedef enum
 {
@@ -27,10 +27,10 @@ typedef enum
 
 void CsrVoicePromptPluginPlayDsp(kalimba_state state);
 
-void CsrVoicePromptsPluginPlayPhrase(uint16 id , uint16 language, Task codec_task , uint16 prompt_volume , AudioPluginFeatures features);
+void CsrVoicePromptsPluginPlayPhrase(u16 id , u16 language, Task codec_task , u16 prompt_volume , AudioPluginFeatures features);
 void CsrVoicePromptsPluginStopPhrase ( void ) ;
-void CsrVoicePromptsPluginPlayTone ( TaskData *task, ringtone_note * tone, Task codec_task, uint16 tone_volume, AudioPluginFeatures features);
-void CsrVoicePromptsPluginSetVolume(int16 prompt_volume, bool using_tone_port);
+void CsrVoicePromptsPluginPlayTone ( TaskData *task, ringtone_note * tone, Task codec_task, u16 tone_volume, AudioPluginFeatures features);
+void CsrVoicePromptsPluginSetVolume(i16 prompt_volume, bool using_tone_port);
 void CsrVoicePromptsPluginHandleStreamDisconnect(void);
 
 #endif

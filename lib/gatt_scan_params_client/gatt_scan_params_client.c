@@ -76,7 +76,7 @@ bool GattScanParamsClientInit(Task appTask ,
 
 /****************************************************************************/
 bool GattScanParamsSetIntervalWindow(GSPC_T *scan_params_client,
-                                        uint16 scan_interval, uint16 scan_window)
+                                        u16 scan_interval, u16 scan_window)
 {
     /* Validate the input parameters */
     if(scan_params_client == NULL)

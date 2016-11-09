@@ -27,11 +27,11 @@ DESCRIPTION
     Sends a server access read response back to the GATT Manager.
 */
 void sendDeviceInfoAccessRsp(Task task,
-                                    uint16 cid,
-                                    uint16 handle,
-                                    uint16 result,
-                                    uint16 size_value,
-                                    const uint8 *value);
+                                    u16 cid,
+                                    u16 handle,
+                                    u16 result,
+                                    u16 size_value,
+                                    const u8 *value);
 
 #endif
 

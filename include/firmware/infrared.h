@@ -22,6 +22,6 @@
 
     More detailed information on the keys and values can be found in irfrared_if.h
 */
-bool InfraredConfigure(infrared_config_key key, uint32 value);
+bool InfraredConfigure(infrared_config_key key, u32 value);
 
 #endif

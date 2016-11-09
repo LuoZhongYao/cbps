@@ -32,31 +32,29 @@ DESCRIPTION
 #ifdef GATT_IAS_SERVER
 
 #ifdef DEBUG_GATT
-#define GATT_DEBUG(x) DEBUG(x)
 #else
-#define GATT_DEBUG(x) 
 #endif
 
 /*******************************************************************************
 NAME
     sinkGattImmAlertServerInitialise
-    
+
 DESCRIPTION
     Initialise IAS server task.
-    
+
 PARAMETERS
     ptr - pointer to allocated memory to store server tasks rundata.
-    
+
 RETURNS
     TRUE if the IAS server task was initialised, FALSE otherwise.
 */
-bool sinkGattImmAlertServerInitialise(uint16 **ptr)
+bool sinkGattImmAlertServerInitialise(u16 **ptr)
 {
     if (gatt_imm_alert_server_status_success == GattImmAlertServiceServerInit( sinkGetBleTask(),  (GIASS_T *)*ptr,
                                                                      HANDLE_IMM_ALERT_SERVICE,
                                                                      HANDLE_IMM_ALERT_SERVICE_END))
     {
-        GATT_DEBUG(("GATT Immediate Alert Server initialised\n"));
+        LOGD("GATT Immediate Alert Server initialised\n");
         /* The size of IAS is also calculated and memory is alocated.
          * So advance the ptr so that the next Server while initializing.
          * shall not over write the same memory */
@@ -65,7 +63,7 @@ bool sinkGattImmAlertServerInitialise(uint16 **ptr)
     }
     else
     {
-        GATT_DEBUG(("GATT Immediate Alert Server init failed \n"));
+        LOGD("GATT Immediate Alert Server init failed \n");
         return FALSE;
     }
 }
@@ -74,19 +72,19 @@ bool sinkGattImmAlertServerInitialise(uint16 **ptr)
 /*******************************************************************************
 NAME
     handleWriteAlertLevel
-    
+
 DESCRIPTION
     Handle when a GATT_IMM_ALERT_SERVER_WRITE_LEVEL_IND message is recieved.
-    
+
 PARAMETERS
     ind Pointer to a GATT_IMM_ALERT_SERVER_WRITE_LEVEL_IND message.
-    
+
 RETURNS
     void
 */
 static void handleWriteAlertLevel(GATT_IMM_ALERT_SERVER_WRITE_LEVEL_IND_T * ind)
-{    
-    GATT_DEBUG(("GATT_IMM_ALERT_SERVER_WRITE_LEVEL_IND IAS=[0x%p] cid=[0x%x]\n", (void *)ind->imm_alert_service, ind->cid));
+{
+    LOGD("GATT_IMM_ALERT_SERVER_WRITE_LEVEL_IND IAS=[0x%p] cid=[0x%x]\n", (void *)ind->imm_alert_service, ind->cid);
 
     sinkGattImmAlertLocalAlert(ind->alert_level);
 }
@@ -94,7 +92,7 @@ static void handleWriteAlertLevel(GATT_IMM_ALERT_SERVER_WRITE_LEVEL_IND_T * ind)
 /******************************************************************************/
 void sinkGattImmAlertLocalAlert(gatt_imm_alert_level alert_level)
 {
-   
+
     bool alertStopTimer = FALSE;
 
     /* Write Immediate Alert level */
@@ -134,7 +132,7 @@ void sinkGattImmAlertLocalAlert(gatt_imm_alert_level alert_level)
     {
         MessageSendLater(&theSink.task, EventSysImmAlertTimeout , 0, D_SEC(theSink.conf1->timeouts.ImmediateAlertStopTimeout_s));
     }
-    GATT_DEBUG(("   Alert  level=[%u]\n", alert_level));
+    LOGD("   Alert  level=[%u]\n", alert_level);
 }
 
 /******************************************************************************/

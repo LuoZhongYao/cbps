@@ -73,8 +73,8 @@ typedef enum
     audio_route_fm					= 0x80
 } audio_route_available;
 
-audio_gating audioGateAudio (uint16 audio_gated_mask);
-audio_gating audioUngateAudio (uint16 audio_ungated_mask);
+audio_gating audioGateAudio (u16 audio_gated_mask);
+audio_gating audioUngateAudio (u16 audio_ungated_mask);
 
 
 /****************************************************************************

@@ -42,7 +42,7 @@ typedef enum
  This function is called as a result of a message arriving when this
  library was not expecting it.
 */
-static void handleUnexpected(aghfpUnexpectedReasonCode code, aghfp_state state, uint16 type)
+static void handleUnexpected(aghfpUnexpectedReasonCode code, aghfp_state state, u16 type)
 {
 	state = state;
 	type = type;
@@ -238,7 +238,7 @@ static void handleAghfpMessages(Task task, MessageId id, Message message)
 			{
 				case aghfp_slc_connecting:
 				{
-					uint16 hf_supported_features = ((AGHFP_INTERNAL_AT_BRSF_REQ_T *)message)->hf_supported_features;
+					u16 hf_supported_features = ((AGHFP_INTERNAL_AT_BRSF_REQ_T *)message)->hf_supported_features;
 
 					/* Only allowed if we are an HFP device */
 					if (!supportedProfileIsHfp(aghfp->supported_profile)) Panic();

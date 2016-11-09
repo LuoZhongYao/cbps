@@ -121,8 +121,8 @@ void hfpCsrFeaturesHandleModifyIndicatorsInd(Task link_ptr, const struct hfpCsrF
 {
     hfp_link_data* link = (hfp_link_data*)link_ptr;
     
-    uint16 num = inds->p.count;
-    uint16 cnt;
+    u16 num = inds->p.count;
+    u16 cnt;
     struct value_hfpCsrFeaturesHandleModifyIndicatorsInd_p ind;
     
     for (cnt = 0; cnt < num; cnt++)
@@ -189,7 +189,7 @@ void hfpCsrFeaturesHandleBatteryLevelRequestInd(Task link_ptr)
 /*! 
     Send a power status report to the AG
 */
-void HfpCsrFeaturesBatteryLevelRequest(hfp_link_priority priority, uint16 batt_level)
+void HfpCsrFeaturesBatteryLevelRequest(hfp_link_priority priority, u16 batt_level)
 {
     MAKE_HFP_MESSAGE(HFP_INTERNAL_CSR_BATTERY_LEVEL_REQ);
     message->link = hfpGetLinkFromPriority(priority);
@@ -261,7 +261,7 @@ void hfpCsrFeaturesHandleTextInd(Task link_ptr, const struct hfpCsrFeaturesHandl
     if (csrFeatureEnabled(link, raw_text))
     {
         /* Leave space to NULL terminate string */
-        uint16 length = ((text->text.length < HFP_MAX_ARRAY_LEN) ? text->text.length : (HFP_MAX_ARRAY_LEN - 1));
+        u16 length = ((text->text.length < HFP_MAX_ARRAY_LEN) ? text->text.length : (HFP_MAX_ARRAY_LEN - 1));
         MAKE_HFP_MESSAGE_WITH_LEN(HFP_CSR_FEATURES_TEXT_IND, length + 1);
         message->priority = hfpGetLinkPriority(link);
         message->size_text = length;
@@ -278,8 +278,8 @@ void hfpCsrFeaturesHandleTextInd(Task link_ptr, const struct hfpCsrFeaturesHandl
 void hfpCsrFeaturesHandleSmsInd(Task link_ptr, const struct hfpCsrFeaturesHandleSmsInd *sms)
 {
     hfp_link_data* link = (hfp_link_data*)link_ptr;
-    uint16 size_number  = sms->senderNum.length;
-    uint16 size_name    = sms->senderName.length;
+    u16 size_number  = sms->senderNum.length;
+    u16 size_name    = sms->senderName.length;
     
     /* Make sure strings don't take over the max limit */
     if(size_number >= HFP_MAX_ARRAY_LEN)
@@ -317,7 +317,7 @@ void hfpCsrFeaturesHandleSmsInd(Task link_ptr, const struct hfpCsrFeaturesHandle
 /*
     Retreive an SMS from the AG.
 */
-void HfpCsrFeaturesGetSmsRequest(hfp_link_priority priority, uint16 index)
+void HfpCsrFeaturesGetSmsRequest(hfp_link_priority priority, u16 index)
 {
     MAKE_HFP_MESSAGE(HFP_INTERNAL_CSR_GET_SMS_REQ);
     message->link  = hfpGetLinkFromPriority(priority);
@@ -345,7 +345,7 @@ bool hfpHandleCsrGetSmsReq(HFP_INTERNAL_CSR_GET_SMS_REQ_T *req)
 }
 
 
-static void hfpCsrFeaturesSendSmsCfm(hfp_link_data* link, hfp_lib_status status, const uint8 size_sms, const uint8* sms)
+static void hfpCsrFeaturesSendSmsCfm(hfp_link_data* link, hfp_lib_status status, const u8 size_sms, const u8* sms)
 {
     /* Allow space to add NULL to the end of the SMS string */
     MAKE_HFP_MESSAGE_WITH_LEN(HFP_CSR_FEATURES_GET_SMS_CFM, size_sms + 2);

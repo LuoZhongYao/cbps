@@ -60,7 +60,7 @@ DESCRIPTION
 RETURNS
 
 **************************************************************************/
-void linklossSendLinkLossTone(bdaddr *bd_addr, uint32 delay);
+void linklossSendLinkLossTone(bdaddr *bd_addr, u32 delay);
 
 /*************************************************************************
 NAME    
@@ -98,6 +98,6 @@ DESCRIPTION
     In any other case linklossProtectStreaming should be called.
 
 **************************************************************************/
-void linklossResetStreamProtection(uint16 a2dp_index);
+void linklossResetStreamProtection(u16 a2dp_index);
 
 #endif  /* _SINK_LINKLOSS_H_ */

@@ -16,12 +16,12 @@ DESCRIPTION
 struct __SPP 
 {
     SPP_COMMON      c;
-    uint16          security_channel;
+    u16          security_channel;
 };
 
 
 /* Spp service search request */
-static const uint8 SppServiceRequest [] =
+static const u8 SppServiceRequest [] =
 {
     0x35, 0x05,                     /* type = DataElSeq, 5 bytes in DataElSeq */
     0x1a, 0x00, 0x00, 0x11, 0x01    /* 4 byte UUID */
@@ -29,7 +29,7 @@ static const uint8 SppServiceRequest [] =
 
 
 /* Spp protocol search request */
-static const uint8 protocolAttributeRequest [] =
+static const u8 protocolAttributeRequest [] =
 {
     0x35, 0x06,         /* type = DataElSeq, 6 bytes in DataElSeq */
     0x09, 0x00, 0x04,    /* 2 byte UINT attrID ProtocolDescriptorList */     
@@ -41,9 +41,9 @@ static const uint8 protocolAttributeRequest [] =
                     bd_addr,\
                     0x40,\
                     sizeof(SppServiceRequest),\
-                    (uint8 *)SppServiceRequest,\
+                    (u8 *)SppServiceRequest,\
                     sizeof(protocolAttributeRequest),\
-                    (uint8 *)protocolAttributeRequest\
+                    (u8 *)protocolAttributeRequest\
                     )
 
 #define SEND_CONNECT_CFM(spp,status) sppSendConnectCfm(spp,SPP_CLIENT_CONNECT_CFM,status)
@@ -67,9 +67,9 @@ static void sppcHandleSdpServiceSearchAttributeCfm(SPP *spp, CL_SDP_SERVICE_SEAR
 {
     if (cfm->status == sdp_response_success)
     {
-        uint8 rfcomm_channel;
-        uint8 channels_found;
-        uint8 *p_rfcomm_channel = &rfcomm_channel;
+        u8 rfcomm_channel;
+        u8 channels_found;
+        u8 *p_rfcomm_channel = &rfcomm_channel;
         
 		/* If the remote device responds with SPP version 1.2 or greater for SDP request, the client may use this information for 
 		* Enhanced L2CAP retransmission mode negotiation for channel bearing RFCOMM
@@ -78,7 +78,7 @@ static void sppcHandleSdpServiceSearchAttributeCfm(SPP *spp, CL_SDP_SERVICE_SEAR
         if (
             SdpParseGetMultipleRfcommServerChannels(
                 cfm->size_attributes,
-                (uint8 *)cfm->attributes,
+                (u8 *)cfm->attributes,
                 1,
                 &p_rfcomm_channel,
                 &channels_found
@@ -290,7 +290,7 @@ static void sppcConnectionHandler(Task task, MessageId id, Message message)
 
 /*****************************************************************************/
 
-void SppConnectRequest(Task theAppTask, const bdaddr *bd_addr, const uint16 security_channel, const uint16 max_payload_size)
+void SppConnectRequest(Task theAppTask, const bdaddr *bd_addr, const u16 security_channel, const u16 max_payload_size)
 {
     /* Create the Sppc task */
     SPP *spp = PanicUnlessNew(SPP);

@@ -103,7 +103,7 @@ void obexSendResponse( Obex session, ObexResponse response )
  **************************************************************************/
 static void obexHandleDisconnectRequest( Obex session,
                                          Source source, 
-                                         uint16 pktLen )
+                                         u16 pktLen )
 {
     if( obexValidateConnectionID( session, source, &pktLen ) ) 
     {
@@ -129,11 +129,11 @@ static void obexHandleDisconnectRequest( Obex session,
  * RETURNS
  *  Length of unprocessed packet. 
  **************************************************************************/
-static uint16 obexHandleConnectRequest( Obex session, 
+static u16 obexHandleConnectRequest( Obex session, 
                                         Source source, 
-                                        uint16 pktLen )
+                                        u16 pktLen )
 {
-    const uint8* pkt = SourceMap( source );
+    const u8* pkt = SourceMap( source );
     ObexResponse response = obex_remote_success;
 
     if( pktLen < OBEX_PKT_CONNECT_HDR_SIZE )
@@ -143,7 +143,7 @@ static uint16 obexHandleConnectRequest( Obex session,
     }
     else if( (IsObexConnecting( session ) ))
     {
-        uint16 maxPktLen;
+        u16 maxPktLen;
 
         /* Not interested in OBEX Version and Flags now. 
            Extract the maximum  packet length from bytes 5,6 */
@@ -206,11 +206,11 @@ static uint16 obexHandleConnectRequest( Obex session,
  * RETURNS
  *  Length of unprocessed packet. 
  **************************************************************************/
-static uint16 obexHandleSetPathRequest( Obex session, 
+static u16 obexHandleSetPathRequest( Obex session, 
                                         Source source, 
-                                        uint16 pktLen )
+                                        u16 pktLen )
 {
-    const uint8* pkt = SourceMap( source );
+    const u8* pkt = SourceMap( source );
     ObexResponse response = obex_remote_success;
     ObexFolderPath path = 0;
 
@@ -268,13 +268,13 @@ static uint16 obexHandleSetPathRequest( Obex session,
  * RETURNS
  *  Length of unprocessed packet. 
  **************************************************************************/
-static uint16 obexHandlePutGetRequest( Obex session, 
+static u16 obexHandlePutGetRequest( Obex session, 
                                       Source source, 
-                                      uint16 pktLen )
+                                      u16 pktLen )
 {
-    const uint8* pkt = SourceMap( source );
+    const u8* pkt = SourceMap( source );
     ObexResponse response = obex_remote_success;
-    uint8 cmd = pkt[0];
+    u8 cmd = pkt[0];
     
     if( IsObexReady( session ) )
     {
@@ -364,10 +364,10 @@ void obexSendErrorResponse( Obex session, ObexResponse response )
  * RETURNS
  *  Length of unprocessed packet
  ***************************************************************************/
-uint16 obexHandleCommand( Obex session, Source source, uint16 pktLen )
+u16 obexHandleCommand( Obex session, Source source, u16 pktLen )
 {
-    const uint8* pkt = SourceMap( source );
-    uint16  rspLen = 0;
+    const u8* pkt = SourceMap( source );
+    u16  rspLen = 0;
     
     switch( pkt[0] )
     {

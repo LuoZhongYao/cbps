@@ -121,13 +121,13 @@ host.See section 9.6.6 of the USB2.0 specification for more details. The
 required in some USB device classes (for example the Audio device class). */
 typedef struct
 {
-    uint8 bEndpointAddress;
+    u8 bEndpointAddress;
     EndPointAttr bmAttributes;
-    uint16 wMaxPacketSize;          
-    uint8 bInterval;
-    const uint8 *extended;      /*!< Data to be appended to
+    u16 wMaxPacketSize;          
+    u8 bInterval;
+    const u8 *extended;      /*!< Data to be appended to
                                  * Endpoint Descriptor */
-    uint16 extended_length;     /*!< Length of data to be
+    u16 extended_length;     /*!< Length of data to be
                                  * appended to Endpoint Descriptor */
 } EndPointInfo;
 
@@ -138,10 +138,10 @@ string descriptor index in the range 5 to 255 can be used as 1 to 4 are
 reserved. */
 typedef struct
 {
-    uint8 bInterfaceClass;     /*!< Class code.*/
-    uint8 bInterfaceSubClass;  /*!< Sub-class code.*/
-    uint8 bInterfaceProtocol;  /*!< Protocol code.*/
-    uint8 iInterface;          /*!< String descriptor index */
+    u8 bInterfaceClass;     /*!< Class code.*/
+    u8 bInterfaceSubClass;  /*!< Sub-class code.*/
+    u8 bInterfaceProtocol;  /*!< Protocol code.*/
+    u8 iInterface;          /*!< String descriptor index */
 } UsbCodes;
 
 
@@ -151,12 +151,12 @@ StreamUsbClassSource, StreamUsbVendorSource and SourceMapHeader.
 See section 9.3 of the USB2.0 specification. */
 typedef struct
 {
-    uint8 id;                 /*!< Identifier.*/
-    uint8 bmRequestType;      /*!< Request Type.*/
-    uint8 bRequest;           /*!< Request.*/
-    uint16 wValue;            /*!< Value.*/
-    uint16 wIndex;            /*!< Index.*/
-    uint16 wLength;           /*!< Length.*/
+    u8 id;                 /*!< Identifier.*/
+    u8 bmRequestType;      /*!< Request Type.*/
+    u8 bRequest;           /*!< Request.*/
+    u16 wValue;            /*!< Value.*/
+    u16 wIndex;            /*!< Index.*/
+    u16 wLength;           /*!< Length.*/
 } UsbRequest;
 
 
@@ -167,7 +167,7 @@ typedef struct
 {
     UsbRequest original_request;     /*!< The original request.*/
     bool success;                    /*!< Success(TRUE) or Failure(FALSE)*/
-    uint16 data_length;              /*!< Length of the data.*/
+    u16 data_length;              /*!< Length of the data.*/
 } UsbResponse;
 
 
@@ -177,9 +177,9 @@ meaning that the corresponding value for the new configuration should just
 be copied over from the first configuration. */
 typedef struct
 {
-    uint16 iConfiguration;
-    uint16 bmAttributes;
-    uint16 bMaxPower;
+    u16 iConfiguration;
+    u16 bmAttributes;
+    u16 bMaxPower;
 } ConfigDescriptorInfo;
 #define SAME_AS_FIRST_CONFIG 0xffff  /*!< Can be used within ConfigDescriptorInfo */
 #endif /* __APP_USB_IF_H__  */

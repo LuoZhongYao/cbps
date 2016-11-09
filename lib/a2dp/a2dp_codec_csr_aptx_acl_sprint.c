@@ -24,7 +24,7 @@ NOTES
 
 
 /**************************************************************************/
-void selectOptimalCsrAptxAclSprintCapsSink(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalCsrAptxAclSprintCapsSink(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
 	/* Choose what is supported at both sides */
     remote_codec_caps[10] = (remote_codec_caps[10]) & (local_codec_caps[10]);
@@ -49,7 +49,7 @@ void selectOptimalCsrAptxAclSprintCapsSink(const uint8 *local_codec_caps, uint8 
 
 
 /**************************************************************************/
-void selectOptimalCsrAptxAclSprintCapsSource(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalCsrAptxAclSprintCapsSource(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
    	/* Choose what is supported at both sides */
     remote_codec_caps[10] = (remote_codec_caps[10]) & (local_codec_caps[10]);
@@ -88,7 +88,7 @@ void selectOptimalCsrAptxAclSprintCapsSource(const uint8 *local_codec_caps, uint
 }
 
 /*************************************************************************/
-void getCsrAptxAclSprintConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_settings)
+void getCsrAptxAclSprintConfigSettings(const u8 *service_caps, a2dp_codec_settings *codec_settings)
 {
     if (!service_caps)
     {

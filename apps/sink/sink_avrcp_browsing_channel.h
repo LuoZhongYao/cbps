@@ -22,10 +22,10 @@ void sinkAvrcpBrowsingChannelDisconnectInd(AVRCP_BROWSE_DISCONNECT_IND_T *msg);
 
 void sinkAvrcpBrowsingChannelDisconnectRequest(AVRCP *avrcp);
 
-bool sinkAvrcpBrowsingChannelGetIndexFromInstance(AVRCP *avrcp, uint16 *Index);
+bool sinkAvrcpBrowsingChannelGetIndexFromInstance(AVRCP *avrcp, u16 *Index);
 
 /* initialisation */
-void sinkAvrcpBrowsingChannelInit(bool all_links, uint16 link_index);
+void sinkAvrcpBrowsingChannelInit(bool all_links, u16 link_index);
 
 /* connection/disconnection */
 void sinkAvrcpBrowsingChannelConnectRequest(AVRCP *avrcp);
@@ -33,13 +33,13 @@ void sinkAvrcpBrowsingChannelConnectRequest(AVRCP *avrcp);
 void sinkAvrcpBrowsingChannelConnectCfm(AVRCP_BROWSE_CONNECT_CFM_T *msg);
 
 /* Utility function to check if Browsing channel is connected */
-bool sinkAvrcpBrowsingChannelIsConnected(uint16 index);
+bool sinkAvrcpBrowsingChannelIsConnected(u16 index);
 
 /* Utility function to check if Browsing channel is disconnected */
-bool sinkAvrcpBrowsingChannelIsDisconnected(uint16 index);
+bool sinkAvrcpBrowsingChannelIsDisconnected(u16 index);
 
 /* Utility function to send the message on connection */
-void sinkAvrcpBrowsingChannelSendMessageWhenConnected(Task task, MessageId id, void* message, uint16 index);
+void sinkAvrcpBrowsingChannelSendMessageWhenConnected(Task task, MessageId id, void* message, u16 index);
 
 #endif /* _SINK_AVRCP_BROWSING_CHANNEL_H_ */
 

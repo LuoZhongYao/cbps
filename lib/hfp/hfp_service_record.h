@@ -22,7 +22,7 @@ DESCRIPTION
 #define HFP_DEFAULT_FEATURES_LSB    (0xFF & (HFP_DEFAULT_FEATURES))
 
 
-static const uint8 hfp_service_record[] =
+static const u8 hfp_service_record[] =
 {
     /* Service class ID list */
     0x09,0x00,0x01, /* AttrID , ServiceClassIDList */
@@ -71,7 +71,7 @@ static const uint8 hfp_service_record[] =
                                                                 /* Wide-band Speech         - 0 */
 };
 
-static const uint8 hfp_service_record_2[] =
+static const u8 hfp_service_record_2[] =
 {
     /* Service class ID list */
     0x09,0x00,0x01, /* AttrID , ServiceClassIDList */

@@ -59,9 +59,9 @@ void AghfpCallIndicatorsStatusResponse(AGHFP *aghfp, aghfp_service_availability 
                                                      aghfp_call_status call_status, \
                                                      aghfp_call_setup_status call_setup_status, \
                                                      aghfp_call_held_status call_held_status, \
-                                                     uint16 signal, \
+                                                     u16 signal, \
                                                      aghfp_roam_status roam_status, \
-                                                     uint16 batt)
+                                                     u16 batt)
 {
     char buf[16];
     
@@ -262,7 +262,7 @@ void aghfpHandleSendCallHeldIndicator(AGHFP *aghfp, aghfp_call_held_status statu
  The app has asked to send a signal level indicator to the HF - create an
  internal message that the profile handler will deal with.
 */
-void AghfpSendSignalIndicator(AGHFP *aghfp, uint16 level)
+void AghfpSendSignalIndicator(AGHFP *aghfp, u16 level)
 {
     if (supportedProfileHasHfp15Features(aghfp->supported_profile) && 
          (aghfp->active_indicators & aghfp_signal_strength_indicator) &&
@@ -283,7 +283,7 @@ void AghfpSendSignalIndicator(AGHFP *aghfp, uint16 level)
  The app has asked to send a signal level indicator to the HF - the profile
  handler has instructed us to act on that request.
 */
-void aghfpHandleSendSignalIndicator(AGHFP *aghfp, uint16 level)
+void aghfpHandleSendSignalIndicator(AGHFP *aghfp, u16 level)
 {
 	char buf[2];
 
@@ -340,7 +340,7 @@ void aghfpHandleSendRoamIndicator(AGHFP *aghfp, aghfp_roam_status status)
  The app has asked to send a battery charge indicator to the HF - create an
  internal message that the profile handler will deal with.
 */
-void AghfpSendBattChgIndicator(AGHFP *aghfp, uint16 level)
+void AghfpSendBattChgIndicator(AGHFP *aghfp, u16 level)
 {
     if ( supportedProfileHasHfp15Features(aghfp->supported_profile) && 
          (aghfp->active_indicators & aghfp_battery_charge_indicator) &&
@@ -361,7 +361,7 @@ void AghfpSendBattChgIndicator(AGHFP *aghfp, uint16 level)
  The app has asked to send a battery charge indicator to the HF - the profile
  handler has instructed us to act on that request.
 */
-void aghfpHandleSendBattChgIndicator(AGHFP *aghfp, uint16 level)
+void aghfpHandleSendBattChgIndicator(AGHFP *aghfp, u16 level)
 {
 	char buf[2];
 
@@ -417,7 +417,7 @@ void aghfpHandleCallWaitingSetupReq(AGHFP *aghfp, bool enable)
  App wants to send a call waiting notification to the HF. Pass the request on
  to the profile handler
 */
-void AghfpSendCallWaitingNotification(AGHFP *aghfp, uint8 type_number, uint16 size_number, const uint8 *number, uint16 size_string, const uint8 *string)
+void AghfpSendCallWaitingNotification(AGHFP *aghfp, u8 type_number, u16 size_number, const u8 *number, u16 size_string, const u8 *string)
 {
 	bool error = FALSE;
 
@@ -478,7 +478,7 @@ void AghfpSendCallWaitingNotification(AGHFP *aghfp, uint8 type_number, uint16 si
  App wants to send a call waiting notification to the HF. Profile handler
  has asked us to act on this request.
 */
-void aghfpHandleSendCallWaitingNotification(AGHFP *aghfp, uint8 type, uint16 size_number, uint8 *number, uint16 size_string, uint8 *string)
+void aghfpHandleSendCallWaitingNotification(AGHFP *aghfp, u8 type, u16 size_number, u8 *number, u16 size_string, u8 *string)
 {
 	char buf[4];
 

@@ -103,7 +103,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
 				message->power      = connect_message->power ;
 				message->params     = connect_message->params;
                 message->app_task   = connect_message->app_task;
-			    MessageSendConditionally ( task, AUDIO_PLUGIN_CONNECT_MSG , message , (const uint16 *)AudioBusyPtr() ) ;
+			    MessageSendConditionally ( task, AUDIO_PLUGIN_CONNECT_MSG , message , (const u16 *)AudioBusyPtr() ) ;
 				PRINT(("CVC: audio connect requeued\n"));				
 			} 
 			else
@@ -135,7 +135,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
 			if (audio_busy)
 			{
    				PRINT(("CVC: audio disconnect requeued\n"));				
-				MessageSendConditionally ( task, AUDIO_PLUGIN_DISCONNECT_MSG , 0 ,(const uint16 *)AudioBusyPtr() ) ;
+				MessageSendConditionally ( task, AUDIO_PLUGIN_DISCONNECT_MSG , 0 ,(const u16 *)AudioBusyPtr() ) ;
     		}
 			else
 			{		
@@ -155,7 +155,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
                 message->mode   = mode_message->mode ;
                 message->params = mode_message->params ;
         
-        		MessageSendConditionally ( task, AUDIO_PLUGIN_SET_MODE_MSG , message ,(const uint16 *)AudioBusyPtr()) ;
+        		MessageSendConditionally ( task, AUDIO_PLUGIN_SET_MODE_MSG , message ,(const u16 *)AudioBusyPtr()) ;
     	    }
             else
             {
@@ -174,7 +174,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
                 MAKE_AUDIO_MESSAGE( AUDIO_PLUGIN_SET_SOFT_MUTE_MSG );
                 memcpy(message, mute_message, sizeof(AUDIO_PLUGIN_SET_SOFT_MUTE_MSG_T));
                 
-                MessageSendConditionally(task, AUDIO_PLUGIN_SET_SOFT_MUTE_MSG, message, (const uint16*)AudioBusyPtr());
+                MessageSendConditionally(task, AUDIO_PLUGIN_SET_SOFT_MUTE_MSG, message, (const u16*)AudioBusyPtr());
             }
             else
             {
@@ -193,7 +193,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
 			     message->volume = volume_message->volume ;
                  message->tone_volume = volume_message->tone_volume;
 			     
-		         MessageSendConditionally ( task, AUDIO_PLUGIN_SET_VOLUME_MSG , message ,(const uint16 *)AudioBusyPtr() ) ;    	
+		         MessageSendConditionally ( task, AUDIO_PLUGIN_SET_VOLUME_MSG , message ,(const u16 *)AudioBusyPtr() ) ;    	
             }
             else
             {
@@ -206,7 +206,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
 		{
 			if (audio_busy)
 			{
-		         MessageSendConditionally ( task, AUDIO_PLUGIN_RESET_VOLUME_MSG , 0 ,(const uint16 *)AudioBusyPtr() ) ;    	
+		         MessageSendConditionally ( task, AUDIO_PLUGIN_RESET_VOLUME_MSG , 0 ,(const u16 *)AudioBusyPtr() ) ;    	
             }
             else
             {
@@ -233,7 +233,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
 	
 					PRINT(("TONE:Q\n"));
 					
-					MessageSendConditionally ( task , AUDIO_PLUGIN_PLAY_TONE_MSG, message ,(const uint16 *)AudioBusyPtr() ) ;			
+					MessageSendConditionally ( task , AUDIO_PLUGIN_PLAY_TONE_MSG, message ,(const u16 *)AudioBusyPtr() ) ;			
 				}
 			}
 			else
@@ -262,7 +262,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
         {
             if (audio_busy)
             {
-                MessageSendConditionally ( task, AUDIO_PLUGIN_MIC_SWITCH_MSG , 0 ,(const uint16 *)AudioBusyPtr()) ;
+                MessageSendConditionally ( task, AUDIO_PLUGIN_MIC_SWITCH_MSG , 0 ,(const u16 *)AudioBusyPtr()) ;
             }
             else
             {
@@ -277,7 +277,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
         {
             if (audio_busy)
             {
-                MessageSendConditionally ( task, AUDIO_PLUGIN_OUTPUT_SWITCH_MSG , 0 ,(const uint16 *)AudioBusyPtr()) ;
+                MessageSendConditionally ( task, AUDIO_PLUGIN_OUTPUT_SWITCH_MSG , 0 ,(const u16 *)AudioBusyPtr()) ;
             }
             else
             {
@@ -305,7 +305,7 @@ static void handleAudioMessage ( Task task , MessageId id, Message message )
                 MAKE_AUDIO_MESSAGE ( AUDIO_PLUGIN_START_ASR) ;
                 message->mode   = asr_message->mode ;
         
-        		MessageSendConditionally ( task, AUDIO_PLUGIN_START_ASR , message ,(const uint16 *)AudioBusyPtr()) ;
+        		MessageSendConditionally ( task, AUDIO_PLUGIN_START_ASR , message ,(const u16 *)AudioBusyPtr()) ;
     	    }
             else
             {

@@ -24,7 +24,7 @@ NOTES
 
 
 /*****************************************************************************/
-void ConnectionDmAclDetach(const bdaddr* bd_addr, uint8 reason, bool detach_all)
+void ConnectionDmAclDetach(const bdaddr* bd_addr, u8 reason, bool detach_all)
 {   
 
     MAKE_CL_MESSAGE(CL_INTERNAL_DM_ACL_FORCE_DETACH_REQ);

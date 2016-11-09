@@ -77,8 +77,8 @@ void ConnectionDmBleSetScanParametersReq(
         bool    enable_active_scanning,
         bool    random_own_address,
         bool    white_list_only,
-        uint16  scan_interval,
-        uint16  scan_window
+        u16  scan_interval,
+        u16  scan_window
         );
 
 /*!
@@ -109,8 +109,8 @@ typedef struct
     This is a BT4.0 only feature.
 */
 void ConnectionDmBleSetScanResponseDataReq(
-        uint8 size_sr_data, 
-        const uint8 *sr_data
+        u8 size_sr_data, 
+        const u8 *sr_data
         );
 
 /*!
@@ -254,9 +254,9 @@ typedef enum
 */
 bool ConnectionBleAddAdvertisingReportFilter(
             ble_ad_type ad_type, 
-            uint16 interval, 
-            uint16 size_pattern, 
-            const uint8* pattern
+            u16 interval, 
+            u16 size_pattern, 
+            const u8* pattern
             );
 
 
@@ -291,8 +291,8 @@ bool ConnectionBleClearAdvertisingReportFilter(void);
     This is a BT4.0 only feature.
 */
 void ConnectionDmBleSetAdvertisingDataReq(
-        uint8 size_ad_data, 
-        const uint8 *ad_data
+        u8 size_ad_data, 
+        const u8 *ad_data
         );
 
 
@@ -362,7 +362,7 @@ typedef enum
 typedef struct
 {
     /*! Number of reports in this ind. */
-    uint8                           num_reports;         
+    u8                           num_reports;         
     /*! What type of advert report has been received. */
     ble_advertising_event_type      event_type;
     /*! Current device address. */
@@ -370,11 +370,11 @@ typedef struct
     /*! Permanent device address. */
     typed_bdaddr                    permanent_taddr;
     /*! Received Signal Strength Indication of the advertising message. */
-    int8                            rssi;
+    i8                            rssi;
     /*! Length of advertising data. */
-    uint8                           size_advertising_data;
+    u8                           size_advertising_data;
     /*! Advertising data. */
-    uint8                           advertising_data[1];
+    u8                           advertising_data[1];
 }
 CL_DM_BLE_ADVERTISING_REPORT_IND_T;
 
@@ -461,12 +461,12 @@ typedef struct
     /*! Minimum advertising interval. 
         Range: 0x0020..0x4000 
         Default: 0x0800 (1.28s) */
-    uint16 adv_interval_min;
+    u16 adv_interval_min;
 
     /*! Maximum advertising interval. 
         Range: 0x0020..0x4000 
         Default: 0x0800 (1.28s) */
-    uint16 adv_interval_max;
+    u16 adv_interval_max;
 
     /*! Filter policy  - Default: ble_adv_ind */
     ble_adv_filter_policy filter_policy;  
@@ -518,7 +518,7 @@ typedef union
 void ConnectionDmBleSetAdvertisingParamsReq( 
         ble_adv_type adv_type,
         bool random_own_address,
-        uint8  channel_map,
+        u8  channel_map,
         const ble_adv_params_t *adv_params 
         ); 
 
@@ -668,7 +668,7 @@ typedef struct
 
     Scan interval in units of 0.625 ms. The allowed range is between
     0x0004 (2.5 ms) and 0x4000 (10240 ms). */
-    uint16 scan_interval;
+    u16 scan_interval;
     /*! \brief LE scan window
 
     Amount of time for the duration of the LE scan. LE Scan Window shall be
@@ -676,53 +676,53 @@ typedef struct
     
     Scan window in units of 0.625 ms. The allowed range is between
     0x0004 (2.5 ms) and 0x4000 (10.240 s). */
-    uint16 scan_window;
+    u16 scan_window;
     /*! \brief Minimum value for the connection event interval.
 
     This shall be less than or equal to Conn Interval Max.
 
     Connection interval in units of 1.25 ms. The allowed range is between
     0x0006 (7.5 ms) and 0x0c80 (4 s). */
-    uint16 conn_interval_min;
+    u16 conn_interval_min;
     /*! \brief Maximum value for the connection event interval.
 
     This shall be greater than or equal to Conn Interval Min.
 
     Connection interval in units of 1.25 ms. The allowed range is between
     0x0006 (7.5 ms) and 0x0c80 (4 s). */
-    uint16 conn_interval_max;
+    u16 conn_interval_max;
     /*! \brief Slave latency for the connection in number of connection events.
 
     The allowed range is between 0x0000 and 0x01f4. */
-    uint16 conn_latency;
+    u16 conn_latency;
     /*! \brief Supervision timeout for the LE Link
 
     Supervision timeout in units of 10 ms. The allowed range is between
     0x000a (100 ms) and 0x0c80 (32 s). */
-    uint16 supervision_timeout;
+    u16 supervision_timeout;
     /*! \brief LE connection attempt timeout
 
     Equivalent of Page Timeout in BR/EDR. */
-    uint16 conn_attempt_timeout;
+    u16 conn_attempt_timeout;
     /*! \brief Minimum advertising interval for non-directed advertising.
 
     The maximum allowed slave latency that is accepted if slave requests
     connection parameter update once connected. */
-    uint16 conn_latency_max;
+    u16 conn_latency_max;
     /*! \brief Minimum allowed supervision timeout
 
     The minimum allowed supervision timeout that is accepted if slave requests
     connection parameter update once connected. */
-    uint16 supervision_timeout_min;
+    u16 supervision_timeout_min;
     /*! \brief Maximum allowed supervision timeout
 
     The maximum allowed supervision timeout that is accepted if slave requests
     connection parameter update once connected. */
-    uint16 supervision_timeout_max;
+    u16 supervision_timeout_max;
     /*! \brief Own Address type used  in LE connnect requests by the device. 
     
     Available types are TYPED_BDADDR_PUBLIC or TYPED_BDADDR_RANDOM.*/
-    uint8 own_address_type;
+    u8 own_address_type;
 } ble_connection_params;
 
 /*!
@@ -784,12 +784,12 @@ typedef struct
 void ConnectionDmBleConnectionParametersUpdateReq(
         Task theAppTask,
         typed_bdaddr *taddr,
-        uint16 min_interval,
-        uint16 max_interval,
-        uint16 latency,
-        uint16 timeout,
-        uint16 min_ce_length,
-        uint16 max_ce_length
+        u16 min_interval,
+        u16 max_interval,
+        u16 latency,
+        u16 timeout,
+        u16 min_ce_length,
+        u16 max_ce_length
         );
 
 /*!
@@ -823,7 +823,7 @@ typedef struct
     /*! Status of request. */
     connection_lib_status           status;
     /*! Total size of entries that can be stored in the controller. */
-    uint8                           white_list_size;
+    u8                           white_list_size;
 } CL_DM_BLE_READ_WHITE_LIST_SIZE_CFM_T;
 
 
@@ -877,7 +877,7 @@ typedef struct
     response.
 */
 void ConnectionDmBleAddDeviceToWhiteListReq(
-        uint8 bd_addr_type, 
+        u8 bd_addr_type, 
         const bdaddr *bd_addr
         );
 
@@ -913,7 +913,7 @@ typedef struct
     response.
 */
 void ConnectionDmBleRemoveDeviceFromWhiteListReq(
-        uint8 bd_addr_type, 
+        u8 bd_addr_type, 
         const bdaddr *bd_addr
         );
 
@@ -963,7 +963,7 @@ typedef struct
     /*! Address of the remote Bluetooth Device. */
     tp_bdaddr                   tpaddr;
     /*! Flags. */
-    uint16                      flags;
+    u16                      flags;
     /*! The remote device permanent address when using a Resolvable Random
         address.
      */
@@ -1064,15 +1064,15 @@ typedef struct
     /*! The remote device address. */
     typed_bdaddr    taddr;
     /*! L2CAP signal identifier of the connection. */
-    uint16          id;             
+    u16          id;             
     /*! The minimum allowed connection interval. */
-    uint16          conn_interval_min;
+    u16          conn_interval_min;
     /*! The maximum allowed connection interval. */
-    uint16          conn_interval_max;
+    u16          conn_interval_max;
     /*! The connection slave latency. */
-    uint16          conn_latency;
+    u16          conn_latency;
     /*! Link supervision time out. */
-    uint16          supervision_timeout;
+    u16          supervision_timeout;
 } CL_DM_BLE_ACCEPT_CONNECTION_PAR_UPDATE_IND_T;
 
 /*!
@@ -1097,11 +1097,11 @@ typedef struct
 void ConnectionDmBleAcceptConnectionParUpdateResponse(
         bool                accept_update,
         const typed_bdaddr  *taddr,
-        uint16              id,
-        uint16              conn_interval_min,
-        uint16              conn_interval_max,
-        uint16              conn_latency,
-        uint16              supervision_timeout
+        u16              id,
+        u16              conn_interval_min,
+        u16              conn_interval_max,
+        u16              conn_latency,
+        u16              supervision_timeout
         );
 
 /*! 
@@ -1117,22 +1117,22 @@ typedef struct
 {
     /*! Minimum advertising interval.  Range: 0x0020..0x4000,
         Default: 0x0800 (1.28s) */
-    uint16          adv_interval_min;
+    u16          adv_interval_min;
     /*! Maximum advertising interval.  Range: 0x0020..0x4000,
         Default: 0x0800 (1.28s) */
-    uint16          adv_interval_max;
+    u16          adv_interval_max;
     /*! Advertising type. */
     ble_adv_type    advertising_type;
     /*! Own address type: #TYPED_BDADDR_PUBLIC or #TYPED_BDADDR_RANDOM. */
-    uint8           own_address_type;
+    u8           own_address_type;
     /*! Direct address type: #TYPED_BDADDR_PUBLIC or #TYPED_BDADDR_RANDOM. */
-    uint8           direct_address_type;
+    u8           direct_address_type;
     /*! Directed advertising Bluetooth device address. */
     bdaddr          direct_bd_addr;
     /*! Advertising channel map. */
-    uint8           advertising_channel_map;
+    u8           advertising_channel_map;
     /*! Advertising filter policy. */
-    uint8           advertising_filter_policy;
+    u8           advertising_filter_policy;
 } CL_DM_BLE_ADVERTISING_PARAM_UPDATE_IND_T;
 
 

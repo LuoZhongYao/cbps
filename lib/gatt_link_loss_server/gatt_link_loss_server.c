@@ -16,8 +16,8 @@
 /****************************************************************************/
 gatt_link_loss_server_status GattLinkLossServerInit(Task appTask,
                                                          GLLSS_T *const link_loss_server,
-                                                         uint16 start_handle,
-                                                         uint16 end_handle)
+                                                         u16 start_handle,
+                                                         u16 end_handle)
 {
     gatt_link_loss_server_status retval = gatt_link_loss_server_status_invalid_parameter;
 

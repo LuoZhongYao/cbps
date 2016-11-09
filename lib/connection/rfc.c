@@ -74,7 +74,7 @@ static void initConfigParams(const rfcomm_config_params *from, rfcomm_config_par
 
 
 /*****************************************************************************/
-void ConnectionRfcommAllocateChannel(Task theAppTask, uint8 suggested_server_channel)
+void ConnectionRfcommAllocateChannel(Task theAppTask, u8 suggested_server_channel)
 {
     MAKE_CL_MESSAGE(CL_INTERNAL_RFCOMM_REGISTER_REQ);
     message->theAppTask = theAppTask;
@@ -84,7 +84,7 @@ void ConnectionRfcommAllocateChannel(Task theAppTask, uint8 suggested_server_cha
 
 
 /*****************************************************************************/
-void ConnectionRfcommDeallocateChannel(Task theAppTask, uint8 local_server_channel)
+void ConnectionRfcommDeallocateChannel(Task theAppTask, u8 local_server_channel)
 {
     MAKE_CL_MESSAGE(CL_INTERNAL_RFCOMM_UNREGISTER_REQ);
     message->theAppTask = theAppTask;
@@ -94,7 +94,7 @@ void ConnectionRfcommDeallocateChannel(Task theAppTask, uint8 local_server_chann
 
 
 /*****************************************************************************/
-void ConnectionRfcommConnectRequest(Task theAppTask, const bdaddr* bd_addr, uint16 security_channel, uint8 remote_server_chan, const rfcomm_config_params *config)
+void ConnectionRfcommConnectRequest(Task theAppTask, const bdaddr* bd_addr, u16 security_channel, u8 remote_server_chan, const rfcomm_config_params *config)
 {
 #ifdef CONNECTION_DEBUG_LIB
     if(bd_addr == NULL)
@@ -118,7 +118,7 @@ void ConnectionRfcommConnectRequest(Task theAppTask, const bdaddr* bd_addr, uint
 
 
 /*****************************************************************************/
-void ConnectionRfcommConnectResponse(Task theAppTask, bool response, const Sink sink, uint8 local_server_channel, const rfcomm_config_params *config)
+void ConnectionRfcommConnectResponse(Task theAppTask, bool response, const Sink sink, u8 local_server_channel, const rfcomm_config_params *config)
 {
     /* Send an internal message */
     MAKE_CL_MESSAGE(CL_INTERNAL_RFCOMM_CONNECT_RES);
@@ -184,7 +184,7 @@ void ConnectionRfcommPortNegResponse(Task appTask, Sink sink, port_par* port_par
 }
 
 /*****************************************************************************/
-void ConnectionRfcommControlSignalRequest(Task appTask, Sink sink, uint8 break_signal, uint8 modem_signal)
+void ConnectionRfcommControlSignalRequest(Task appTask, Sink sink, u8 break_signal, u8 modem_signal)
 {
 	/* Send an internal message */
 	MAKE_CL_MESSAGE(CL_INTERNAL_RFCOMM_CONTROL_REQ);

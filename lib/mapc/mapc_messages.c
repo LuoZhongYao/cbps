@@ -29,7 +29,7 @@ DESCRIPTION
  *  channel     - RFCOMM Channel for MNS service.
  *  handle      - SDP Record handle
  **************************************************************************/
-void mapcMnsStartCfm( MapcStatus status, uint8 channel, uint32 handle ) 
+void mapcMnsStartCfm( MapcStatus status, u8 channel, u32 handle ) 
 {
     MAKE_MAPC_MESSAGE( MAPC_MNS_START_CFM );
 
@@ -96,7 +96,7 @@ void mapcMnsConnectInd( OBEX_CONNECT_IND_T* msg )
 void mapcConnectCfm( MAPC*        mapSession,  
                      MapcStatus   status,
                     const bdaddr  *addr,
-                     uint8        channel)
+                     u8        channel)
 {   
     MapcMessageId id;
     MAKE_MAPC_MESSAGE(MAPC_CONNECT_CFM);
@@ -175,7 +175,7 @@ void mapcStatusCfm( MAPC* session,  MapcMessageId id, MapcStatus status)
  *  len     - Length of the data in the source
  *  src     - Source containing the message 
  **************************************************************************/
-void mapcMnsSendEventInd( MAPC* session, bool final, uint16 len, Source src )
+void mapcMnsSendEventInd( MAPC* session, bool final, u16 len, Source src )
 {
     MAKE_MAPC_MESSAGE( MAPC_MNS_SEND_EVENT_IND );
     message->mnsSession = session;
@@ -202,7 +202,7 @@ void mapcMnsSendEventInd( MAPC* session, bool final, uint16 len, Source src )
  **************************************************************************/
 void mapcMasGetMessageCfm( MAPC* session, 
                            MapcStatus status , 
-                           uint16 len, 
+                           u16 len, 
                            Source src )
 {
     MAKE_MAPC_MESSAGE( MAPC_MAS_GET_MESSAGE_CFM );
@@ -230,11 +230,11 @@ void mapcMasGetMessageCfm( MAPC* session,
  **************************************************************************/
 void mapcMasPutMessageCfm( MAPC* session, 
                            MapcStatus status , 
-                           uint16 len, 
-                           const uint8* nameHdr )
+                           u16 len, 
+                           const u8* nameHdr )
 {
-    uint16 handleLen = (len+1)/2;
-    uint8 i,j ;
+    u16 handleLen = (len+1)/2;
+    u8 i,j ;
     MAKE_MAPC_MESSAGE_WITH_LEN( MAPC_MAS_PUT_MESSAGE_CFM, handleLen );
 
     message->masSession = session;
@@ -268,8 +268,8 @@ void mapcMasPutMessageCfm( MAPC* session,
 void mapcMasListingCfm( MAPC* session, 
                          MapcMessageId id,
                          MapcStatus status , 
-                         uint16 remainLen,
-                         uint16 len, 
+                         u16 remainLen,
+                         u16 len, 
                          Source src )
 {
     MAKE_MAPC_MESSAGE( MAPC_INT_FUNCTION_CFM );
@@ -301,7 +301,7 @@ void mapcMasListingCfm( MAPC* session,
  ************************************************************************/
 void mapcPostConnectResp(  Task theAppTask, 
                            const bdaddr* addr,
-                           uint8  channel,
+                           u8  channel,
                            bool   accept,
                            Sink   connectID )
 {
@@ -328,7 +328,7 @@ void mapcPostConnectResp(  Task theAppTask,
  *   MnsSession     - The session 
  *   ObexResponse   - Obex Response.
  ************************************************************************/
-void mapcPostMnsSendEventResp( MAPC* session, uint16 response)
+void mapcPostMnsSendEventResp( MAPC* session, u16 response)
 {
     MAKE_MAPC_MESSAGE( MAPC_INT_SEND_EVENT_RESP );
 
@@ -355,7 +355,7 @@ void mapcPostMnsSendEventResp( MAPC* session, uint16 response)
  * bdaddr       - The MSE BDADDR
  * channel      - The MAS Session server channel 
  ************************************************************************/
-void mapcPostConnectReq( Task theAppTask, const bdaddr* addr, uint8 channel )
+void mapcPostConnectReq( Task theAppTask, const bdaddr* addr, u8 channel )
 {
     MAKE_MAPC_MESSAGE( MAPC_INT_CONNECT_REQ );
 
@@ -402,7 +402,7 @@ void mapcPostRegisterNotification( MAPC* session, bool regStatus )
     MAKE_MAPC_MESSAGE( MAPC_INT_SET_NOTIFICATION );
 
     message->session = session;
-    message->status =  (uint8) regStatus;
+    message->status =  (u8) regStatus;
 
     MessageSend( mapcGetProfileTask() , MAPC_INT_SET_NOTIFICATION, message );
 }
@@ -422,8 +422,8 @@ void mapcPostRegisterNotification( MAPC* session, bool regStatus )
 **************************************************************************/
 void mapcPostMasSetFolder( MAPC* session, 
                            bool up, 
-                           const uint8* name, 
-                           uint16 nameLen )
+                           const u8* name, 
+                           u16 nameLen )
 {
     MAKE_MAPC_MESSAGE_WITH_LEN( MAPC_INT_SET_FOLDER, nameLen );
 
@@ -448,8 +448,8 @@ void mapcPostMasSetFolder( MAPC* session,
 *   listStartOffset - Offset of the first folder in the list
 **************************************************************************/
 void mapcPostMasGetFolderListing( MAPC* session, 
-                                  uint16 maxListCount, 
-                                  uint16 listStartOffset)
+                                  u16 maxListCount, 
+                                  u16 listStartOffset)
 {
     MAKE_MAPC_MESSAGE( MAPC_INT_GET_FOLDER );
 
@@ -476,10 +476,10 @@ void mapcPostMasGetFolderListing( MAPC* session,
 *   unread   - Retrieve only the unread messages
 **************************************************************************/
 void mapcPostMasGetMessagesListing( Mas session, 
-                                   const uint8* name,
-                                   uint16 nameLen,
-                                   uint16 maxListCount, 
-                                   uint16 listStartOffset,
+                                   const u8* name,
+                                   u16 nameLen,
+                                   u16 maxListCount, 
+                                   u16 listStartOffset,
                                    MapcMessageFilter filter)
 {
     MAKE_MAPC_MESSAGE_WITH_LEN( MAPC_INT_GET_MSG_LIST, nameLen );
@@ -506,7 +506,7 @@ void mapcPostMasGetMessagesListing( Mas session,
 *   handle  - 8 byte handle
 *   native  - TRUE for Native and FALSE for UPF-8
 **************************************************************************/
-void mapcPostMasGetMessage( Mas session, const uint8* handle, bool native )
+void mapcPostMasGetMessage( Mas session, const u8* handle, bool native )
 {
     MAKE_MAPC_MESSAGE( MAPC_INT_GET_MSG );
 
@@ -554,9 +554,9 @@ void mapcPostMasContinue( Mas masSession, bool proceed )
 *   value     - Status Indicator Value
 **************************************************************************/
 void mapcPostMasSetMessageStatus( MAPC* session,
-                                  const uint8* handle, 
-                                  uint8 indicator, 
-                                  uint8 value )
+                                  const u8* handle, 
+                                  u8 indicator, 
+                                  u8 value )
 {
     MAKE_MAPC_MESSAGE( MAPC_INT_SET_MSG_STATUS );
 
@@ -603,8 +603,8 @@ void mapcPostMasUpdateInbox( MAPC* session )
 *   data  - Source containing the message data.
 **************************************************************************/
 void mapcPostMasPutMessage( Mas session, 
-                            const uint8* name,
-                            uint16 nameLen,
+                            const u8* name,
+                            u16 nameLen,
                             bool native,
                             bool moreData,
                             Source data )

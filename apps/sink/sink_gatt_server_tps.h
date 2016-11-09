@@ -49,7 +49,7 @@ RETURNS
     TRUE if the Transmit Power server task was initialised, FALSE otherwise.
 */
 #ifdef GATT_TPS_SERVER
-bool sinkGattTxPowerServerInitialiseTask(uint16 **ptr);
+bool sinkGattTxPowerServerInitialiseTask(u16 **ptr);
 #else
 #define sinkGattTxPowerServerInitialiseTask(ptr) (TRUE)
 #endif

@@ -40,7 +40,7 @@ DESCRIPTION
     Note: The returned pointer will only be guaranteed to remain valid until a subsequent call to
           blocksAdd or blockRemove is made.
 */
-uint8 *blockAdd (uint8 device_id, data_block_id id, uint8 element_count, uint8 element_size);
+u8 *blockAdd (u8 device_id, data_block_id id, u8 element_count, u8 element_size);
 
 
 /****************************************************************************
@@ -50,7 +50,7 @@ NAME
 DESCRIPTION
     Remove an existing data block from the pool.
 */
-void blockRemove (uint8 device_id, data_block_id id);
+void blockRemove (u8 device_id, data_block_id id);
 
 
 /****************************************************************************
@@ -63,7 +63,7 @@ DESCRIPTION
     
     Note: The base of a data block is equilalent to element zero.
 */
-uint8 *blockGetBase (uint8 device_id, data_block_id id);
+u8 *blockGetBase (u8 device_id, data_block_id id);
 
 
 /****************************************************************************
@@ -74,7 +74,7 @@ DESCRIPTION
     Return a pointer to the current element within the data block.
     NULL is retured if the data block does not exist.
 */
-uint8 *blockGetCurrent (uint8 device_id, data_block_id id);
+u8 *blockGetCurrent (u8 device_id, data_block_id id);
 
 
 /****************************************************************************
@@ -85,7 +85,7 @@ DESCRIPTION
     Set which element is marked as the current element in the sepcified data block.
     Returns TRUE on success or FALSE otherwise.
 */
-uint8 *blockSetCurrent (uint8 device_id, data_block_id id, uint8 element);
+u8 *blockSetCurrent (u8 device_id, data_block_id id, u8 element);
 
 
 /****************************************************************************
@@ -98,7 +98,7 @@ DESCRIPTION
     
     Note:  An element index of zero is equilalent to the base address of the data block.
 */
-uint8 *blockGetIndexed (uint8 device_id, data_block_id id, uint8 element);
+u8 *blockGetIndexed (u8 device_id, data_block_id id, u8 element);
 
 
 /****************************************************************************
@@ -109,7 +109,7 @@ DESCRIPTION
     Returns the size, in bytes, of the specified data block.
     A size of zero will be returned for blocks that do not exist.
 */
-uint16 blockGetSize (uint8 device_id, data_block_id id);
+u16 blockGetSize (u8 device_id, data_block_id id);
 
 
 #endif /* A2DP_DATA_BLOCK_H_ */

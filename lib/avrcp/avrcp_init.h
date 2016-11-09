@@ -72,9 +72,9 @@ void avrcpResetValues(AVRCP* avrcp);
 */
 void avrcpInitTaskData( AVRCP               *avrcp,
                         avrcp_device_type   dev, 
-                        uint8               controller_features, 
-                        uint8               target_features, 
-                        uint8               extensions);
+                        u8               controller_features, 
+                        u8               target_features, 
+                        u8               extensions);
 
 /****************************************************************************
 *NAME    
@@ -105,7 +105,7 @@ void avrcpHandleInternalInitReq(const AVRCP_INTERNAL_INIT_REQ_T   *req);
 *    Send an AVRCP_INIT_CFM message to the client task.
 */
 void avrcpSendInitCfmToClient( avrcp_unreg_status   state,
-                               uint32             sdp_handle, 
+                               u32             sdp_handle, 
                                avrcp_status_code  status);
 
 /****************************************************************************

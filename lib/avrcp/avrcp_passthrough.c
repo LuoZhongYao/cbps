@@ -32,11 +32,11 @@ NOTES
 * DESCRIPTION
 * Send a Group request to the TG. 
 *******************************************************************************/
-static void sendGroupRequest(AVRCP *avrcp, uint16 vendor_id, bool state)
+static void sendGroupRequest(AVRCP *avrcp, u16 vendor_id, bool state)
 {
     Source src;    
-    const uint16 length = 5;
-    uint8 *data = (uint8 *) PanicUnlessMalloc(length);
+    const u16 length = 5;
+    u8 *data = (u8 *) PanicUnlessMalloc(length);
 
     /* Send a group request as part of the Passthrough command. */
     data[0] = (AVRCP_BT_COMPANY_ID >> 16) & 0xff;
@@ -67,7 +67,7 @@ static void sendGroupRequest(AVRCP *avrcp, uint16 vendor_id, bool state)
         MessageSendConditionally(&avrcp->task, 
                                 AVRCP_INTERNAL_PASSTHROUGH_REQ, 
                                 message, 
-                                (uint16*)&avrcp->pending);
+                                (u16*)&avrcp->pending);
     }
 }
 
@@ -115,7 +115,7 @@ void AvrcpPassthroughRequest(  AVRCP               *avrcp,
                                avc_subunit_id      subunit_id, 
                                bool                state, 
                                avc_operation_id    opid, 
-                               uint16              operation_data_length, 
+                               u16              operation_data_length, 
                                Source              operation_data )
 {
     
@@ -159,7 +159,7 @@ void AvrcpPassthroughRequest(  AVRCP               *avrcp,
         MessageSendConditionally(&avrcp->task, 
                                 AVRCP_INTERNAL_PASSTHROUGH_REQ, 
                                 message, 
-                                (uint16*)&avrcp->pending);
+                                (u16*)&avrcp->pending);
     }
     else
     {

@@ -51,11 +51,11 @@ typedef struct audio_Tag
    /*! The link_type being used*/
    sync_link_type link_type;
    /*! The current volume level*/
-   uint16 volume;
+   u16 volume;
    /*! The current tone volume level*/
-   uint16 tone_volume;
+   u16 tone_volume;
    /*! Over the air rate  */
-   uint32  dac_rate;	
+   u32  dac_rate;	
    /*! Left microphone gain */
    T_mic_gain mic_gain_left;
    /*! Right microphone gain */
@@ -127,7 +127,7 @@ static bool isPluginVariantSbc(const ExamplePluginTaskdata * const task)
     return FALSE;
 }
 
-static uint32 calculateDacRate (const ExamplePluginTaskdata * const task, const uint32 rate)
+static u32 calculateDacRate (const ExamplePluginTaskdata * const task, const u32 rate)
 {
     if(isPluginVariantSbc(task))
     {
@@ -159,7 +159,7 @@ static void populatePluginFromAudioConnectData(const AUDIO_PLUGIN_CONNECT_MSG_T 
 static void setMicrophoneInstanceGain(const audio_instance instance, const audio_channel channel, const bool digital, const T_mic_gain gain)
 {
     Source mic_source = AudioPluginGetMic(instance, channel, digital);
-    uint8 mic_gain = (digital ? gain.digital_gain : gain.analogue_gain);
+    u8 mic_gain = (digital ? gain.digital_gain : gain.analogue_gain);
     AudioPluginSetMicGain(mic_source, digital, mic_gain, gain.preamp_enable);
 }
 
@@ -174,7 +174,7 @@ static void updateMicrophoneGains(const ExamplePluginTaskdata * const task)
     }
 }
 
-static void setHardwareGain(const uint16 output_gain)
+static void setHardwareGain(const u16 output_gain)
 {
     PRINT(("CSR_COMMON_EXAMPLE: Output gain = 0x%x\n" , output_gain));
 
@@ -195,9 +195,9 @@ static void sendBluetoothAddressMessage(void)
     KalimbaSendMessage(MESSAGE_REM_BT_ADDRESS, rem_addr.taddr.addr.nap, (rem_addr.taddr.addr.lap >> 16) | (((unsigned int)rem_addr.taddr.addr.uap) << 8), rem_addr.taddr.addr.lap & 0xffff, 0 );
 }
 
-static void sendVolumeMessage(const uint16 volume)
+static void sendVolumeMessage(const u16 volume)
 {
-    uint16 digital_dsp = 0;
+    u16 digital_dsp = 0;
     if(CsrMultiChanGainGetType(multi_channel_group_main) == multi_channel_gain_digital)
     {
         multi_channel_gain_t gain;
@@ -215,14 +215,14 @@ static void sendVolumeMessage(const uint16 volume)
     }
 }
 
-static void sendDelayedVolumeMessage(const ExamplePluginTaskdata * const task, const uint16 volume)
+static void sendDelayedVolumeMessage(const ExamplePluginTaskdata * const task, const u16 volume)
 {
     MAKE_AUDIO_MESSAGE (AUDIO_PLUGIN_SET_VOLUME_MSG ) ;
     message->volume = volume;
     MessageSendLater((TaskData *)task, AUDIO_PLUGIN_SET_VOLUME_MSG , message, VOLUME_MESSAGE_SEND_DELAY ) ;
 }
 
-static void connectMicrophones(const ExamplePluginTaskdata * const task, const uint16 mic_rate)
+static void connectMicrophones(const ExamplePluginTaskdata * const task, const u16 mic_rate)
 {
     Source mic_src = AudioPluginGetMic(AudioPluginGetInstance(CSR_COMMON_EXAMPLE->digital->mic_a),
                                 AUDIO_CHANNEL_A, CSR_COMMON_EXAMPLE->digital->mic_a.digital);
@@ -277,7 +277,7 @@ static void connectAudio(const ExamplePluginTaskdata * const task)
 
     if(CSR_COMMON_EXAMPLE->audio_sink)
     {
-        uint16 adc_rate;
+        u16 adc_rate;
         multi_channel_params_t params;
         memset(&params, 0, sizeof(multi_channel_params_t));
 
@@ -404,7 +404,7 @@ void CsrExamplePluginDisconnect(const ExamplePluginTaskdata * const task)
     SetAudioInUse(FALSE);
 }
 
-void CsrExamplePluginSetVolume(const uint16 volume)
+void CsrExamplePluginSetVolume(const u16 volume)
 {
     PanicNull(CSR_COMMON_EXAMPLE);
 
@@ -476,7 +476,7 @@ void CsrExamplePluginPlayTone(const ExamplePluginTaskdata * const task,
     Sink lSink;
     Source lSource = StreamRingtoneSource((const ringtone_note *)(tone_message->tone));
 
-    uint16 volume = ((tone_message->tone_volume > VOLUME_0DB) ?
+    u16 volume = ((tone_message->tone_volume > VOLUME_0DB) ?
                                                 VOLUME_0DB : tone_message->tone_volume);
         
     if(isPluginRunning() == FALSE)
@@ -522,7 +522,7 @@ DESCRIPTION
    handles the internal cvc messages /  messages from the dsp
 */
 void CsrExamplePluginInternalMessage(const ExamplePluginTaskdata * const task,
-                                            const uint16 id, const Message message)
+                                            const u16 id, const Message message)
 {
     switch(id)
     {

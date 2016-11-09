@@ -26,7 +26,7 @@ DESCRIPTION
     design decision and not specified by the A2DP profiles.
 
 */
-void selectOptimalMp3CapsSink(const uint8 *local_caps, uint8 *caps);
+void selectOptimalMp3CapsSink(const u8 *local_caps, u8 *caps);
 
 
 /*************************************************************************
@@ -41,7 +41,7 @@ DESCRIPTION
     design decision and not specified by the A2DP profiles.
 
 */
-void selectOptimalMp3CapsSource(const uint8 *local_caps, uint8 *caps);
+void selectOptimalMp3CapsSource(const u8 *local_caps, u8 *caps);
 
 
 /*************************************************************************
@@ -52,7 +52,7 @@ DESCRIPTION
     Return the codec configuration settings (rate and channel mode) for the physical codec based
     on the A2DP codec negotiated settings.
 */
-void getMp3ConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_settings);
+void getMp3ConfigSettings(const u8 *service_caps, a2dp_codec_settings *codec_settings);
 
 #endif  /* A2DP_SBC_ONLY */
 

@@ -66,7 +66,7 @@ NOTES
 */
 typedef struct
 {
-    uint16                      order[MAX_NO_DEVICES_TO_MANAGE];
+    u16                      order[MAX_NO_DEVICES_TO_MANAGE];
 }td_index_t;
 
 
@@ -94,7 +94,7 @@ typedef enum
 
 #define SIZE_ENC_BREDR      (sizeof(DM_SM_KEY_ENC_BREDR_T))
 #define SIZE_ENC_CENTRAL    (sizeof(DM_SM_KEY_ENC_CENTRAL_T))
-#define SIZE_DIV            (sizeof(uint16))
+#define SIZE_DIV            (sizeof(u16))
 #define SIZE_ID             (sizeof(DM_SM_KEY_ID_T))
 
 /* Indicates the contents of the packed link key store. */
@@ -121,22 +121,22 @@ typedef struct _content_t
      ((TDP)->content.key_size = ((EKS) - 6) & 0xF)
      
 #define UNPACK_TD_ENC_KEY_SIZE(EKS, TDP) \
-     ((EKS) = (uint16)(TDP)->content.key_size + 6)
+     ((EKS) = (u16)(TDP)->content.key_size + 6)
 
 /* Trusted Device data - in packed format. The 'content' field dictates the 
  * size and content of the data field.
  */
 typedef struct _td_data_t
 {
-    uint16              bdaddr[3];
+    u16              bdaddr[3];
     content_t           content;
-    uint16              data[1];
+    u16              data[1];
 } td_data_t;
 
 /* Size of the td_data_t type without the data e.g. just the packed bdaddr 
  * and content fields. 
  */
-#define SIZE_TD         (sizeof(td_data_t)-sizeof(uint16))
+#define SIZE_TD         (sizeof(td_data_t)-sizeof(u16))
 
 #define SIZE_TD_DATA_T (SIZE_ENC_BREDR + \
                         SIZE_ENC_CENTRAL + \
@@ -161,7 +161,7 @@ DESCRIPTION
 */
 static void read_trusted_device_index(td_index_t *tdi)
 {
-    uint16  ps_tdi[TDI_SIZE];
+    u16  ps_tdi[TDI_SIZE];
 
     if (PsRetrieve(TRUSTED_DEVICE_INDEX, ps_tdi, TDI_SIZE) != TDI_SIZE)
     {
@@ -169,7 +169,7 @@ static void read_trusted_device_index(td_index_t *tdi)
     }
     else
     {    
-        uint16 i;
+        u16 i;
 
         for (i = 0; i < MAX_NO_DEVICES_TO_MANAGE; i++)
             tdi->order[i] = (ps_tdi[i / 4] >> (4 * (i % 4))) & 0x0F;
@@ -185,13 +185,13 @@ FUNCTION
     Returns how many devices are in the trusted device list
 
 RETURNS
-    uint8 
+    u8 
 */
-uint16 ConnectionTrustedDeviceListSize()
+u16 ConnectionTrustedDeviceListSize()
 {
     td_index_t  tdi;
-    uint16      count;
-    uint16 max_trusted_devices = MAX_TRUSTED_DEVICES;
+    u16      count;
+    u16 max_trusted_devices = MAX_TRUSTED_DEVICES;
 
     read_trusted_device_index( &tdi );
 
@@ -211,8 +211,8 @@ DESCRIPTION
 */
 static void store_trusted_device_index(const td_index_t *tdi)
 {
-    uint16  ps_tdi[TDI_SIZE];
-    uint16 i;
+    u16  ps_tdi[TDI_SIZE];
+    u16 i;
 
     memset(ps_tdi, 0, TDI_SIZE);
 
@@ -258,10 +258,10 @@ FUNCTION
     Returns the size of the associated key data.
 
 RETURNS
-    uint16
+    u16
 
 */
-static uint16 get_data_type_size(TDL_DATA_TYPE_T key_type)
+static u16 get_data_type_size(TDL_DATA_TYPE_T key_type)
 {
     switch (key_type)
     {
@@ -285,13 +285,13 @@ FUNCTION
 RETURNS
 
 */
-static void pack_td_bdaddr(td_data_t *td, uint8 type, const bdaddr *addr)
+static void pack_td_bdaddr(td_data_t *td, u8 type, const bdaddr *addr)
 {
     td->content.addr_type = type;
     td->bdaddr[0] = addr->nap;
-    td->bdaddr[1] = (uint16)addr->uap << 8 | 
-                    (uint16)((addr->lap & 0x00FF0000) >> 16);
-    td->bdaddr[2] = (uint16)addr->lap;
+    td->bdaddr[1] = (u16)addr->uap << 8 | 
+                    (u16)((addr->lap & 0x00FF0000) >> 16);
+    td->bdaddr[2] = (u16)addr->lap;
 }
 
 /****************************************************************************
@@ -304,12 +304,12 @@ FUNCTION
 RETURNS
     bdaddr type (TYPED_BDADDR_*).
 */
-static uint8 unpack_td_bdaddr(bdaddr *addr, const td_data_t *td)
+static u8 unpack_td_bdaddr(bdaddr *addr, const td_data_t *td)
 {
-    addr->nap = (uint16)td->bdaddr[0];
-    addr->uap = (uint8)(td->bdaddr[1] >> 8);
-    addr->lap = (uint32)(td->bdaddr[1] & 0xFF) << 16 | td->bdaddr[2];
-    return (uint8)td->content.addr_type;
+    addr->nap = (u16)td->bdaddr[0];
+    addr->uap = (u8)(td->bdaddr[1] >> 8);
+    addr->lap = (u32)(td->bdaddr[1] & 0xFF) << 16 | td->bdaddr[2];
+    return (u8)td->content.addr_type;
 }
 
 
@@ -349,7 +349,7 @@ RETURNS
 */
 static void pack_td_security_requirements(
                     td_data_t   *td,
-                    uint16      security_requirements
+                    u16      security_requirements
                     )
 {
     /* copy bits 3 and 1. */
@@ -368,10 +368,10 @@ FUNCTION
 RETURNS
 
 */
-static uint16 unpack_td_security_requirements(const td_data_t *td)
+static u16 unpack_td_security_requirements(const td_data_t *td)
 {
     /* copy bits 3 and 1 */
-    uint16 sec_req = td->content.security_req & 0x05;
+    u16 sec_req = td->content.security_req & 0x05;
     /* Relocate bit 2 back to bit 15 */
     sec_req |= (td->content.security_req & 0x2) << 13;
 
@@ -389,10 +389,10 @@ FUNCTION
 RETURNS
 
 */
-static uint16 calc_td_data_size(content_t content)
+static u16 calc_td_data_size(content_t content)
 {
-    uint16 size = 0;
-    uint16 dt;
+    u16 size = 0;
+    u16 dt;
 
     for (dt = TDL_KEY_ENC_BREDR; dt < TDL_KEY_UNKNOWN; dt++)
         if (content.data_flags & (1<<dt))
@@ -416,10 +416,10 @@ FUNCTION
     in that type the changes must also be reflected here.
     
 RETURNS
-    uint16
+    u16
 */
   
-static uint16 calc_td_data_offset(
+static u16 calc_td_data_offset(
                     content_t       content, 
                     TDL_DATA_TYPE_T data_type
                     )
@@ -451,7 +451,7 @@ RETURNS
 */
 static void pack_td_key(
             td_data_t               **tdp, 
-            const uint16            *key, 
+            const u16            *key, 
             DM_SM_KEY_TYPE_T        dm_sm_key_type)
 {
     td_data_t *td = *tdp;
@@ -500,7 +500,7 @@ RETURNS
 
 */ 
 static void unpack_td_key(
-                uint16                  *key, 
+                u16                  *key, 
                 const td_data_t         *td,    
                 const TDL_DATA_TYPE_T   key_type
                 )
@@ -528,15 +528,15 @@ RETURNS
 */
 static void dm_sm_add_device_req( const td_data_t *td )
 {   
-    uint16 key_present[DM_SM_MAX_NUM_KEYS] = {
+    u16 key_present[DM_SM_MAX_NUM_KEYS] = {
         DM_SM_KEY_NONE,
         DM_SM_KEY_NONE,
         DM_SM_KEY_NONE,
         DM_SM_KEY_NONE,
         DM_SM_KEY_NONE
     };
-    uint16  key_idx = 0;
-    uint16  dt;
+    u16  key_idx = 0;
+    u16  dt;
 
     MAKE_PRIM_T(DM_SM_ADD_DEVICE_REQ);
 
@@ -557,20 +557,20 @@ static void dm_sm_add_device_req( const td_data_t *td )
 
     for (dt = TDL_KEY_ENC_BREDR; dt < TDL_KEY_UNKNOWN; dt++)
     {
-        uint16 *key;
+        u16 *key;
         if (td->content.data_flags & (1<<dt))
         {
             switch(dt)
             {
                 case TDL_KEY_ENC_BREDR:
                     key_present[key_idx] = DM_SM_KEY_ENC_BREDR;
-                    key = (uint16 *) PanicUnlessMalloc(
+                    key = (u16 *) PanicUnlessMalloc(
                             sizeof(DM_SM_KEY_ENC_BREDR_T)
                             );
                     break;
                 case TDL_KEY_ENC_CENTRAL:
                     key_present[key_idx] = DM_SM_KEY_ENC_CENTRAL;
-                    key = (uint16 *) PanicUnlessMalloc(
+                    key = (u16 *) PanicUnlessMalloc(
                             sizeof(DM_SM_KEY_ENC_CENTRAL_T)
                             );
                     break;
@@ -580,7 +580,7 @@ static void dm_sm_add_device_req( const td_data_t *td )
                     break;
                 case TDL_KEY_ID:
                     key_present[key_idx] = DM_SM_KEY_ID;
-                    key = (uint16 *) PanicUnlessMalloc(
+                    key = (u16 *) PanicUnlessMalloc(
                             sizeof(DM_SM_KEY_ID_T)
                             );
                     break;
@@ -592,7 +592,7 @@ static void dm_sm_add_device_req( const td_data_t *td )
 
             if (dt == TDL_KEY_DIV)
             {
-                unpack_td_key((uint16 *)&key, td, dt);
+                unpack_td_key((u16 *)&key, td, dt);
             }
             else
             {
@@ -630,18 +630,18 @@ RETURNS
     index of the current position
 */
 static td_data_t *tdl_find_device(
-                        uint8                   addr_type,
+                        u8                   addr_type,
                         const bdaddr            *addr, 
-                        uint16                  *pp, 
-                        uint16                  *pi
+                        u16                  *pp, 
+                        u16                  *pi
                         )
 {
     td_data_t *td = (td_data_t *) PanicUnlessMalloc(SIZE_TD_DATA_T);
     one_slot *os = PanicUnlessNew(one_slot);
-    uint16 used = 0;
-    uint16 pos;
-    uint16 idx;
-    uint16 max_trusted_devices = MAX_TRUSTED_DEVICES;
+    u16 used = 0;
+    u16 pos;
+    u16 idx;
+    u16 max_trusted_devices = MAX_TRUSTED_DEVICES;
     
     read_trusted_device_index(&os->tdi);
 
@@ -718,12 +718,12 @@ DESCRIPTION
     This function updates the Trusted Device Index
 */
 static void update_trusted_device_index(    
-    const uint16 pos, 
-    const uint16 idx
+    const u16 pos, 
+    const u16 idx
     )
 {
     td_index_t      tdi;
-    uint16                      index;
+    u16                      index;
     
     /* Read the TDI from persistent store */
     read_trusted_device_index(&tdi);
@@ -749,11 +749,11 @@ DESCRIPTION
     This function will delete an entry from the trusted device index and
     then delete the list entry itself.
 */
-static uint16 delete_from_trusted_device_list(uint16 pos, uint16 idx)
+static u16 delete_from_trusted_device_list(u16 pos, u16 idx)
 {
     td_index_t tdi;
-    uint16 i;
-    uint16 max_trusted_devices = MAX_TRUSTED_DEVICES;
+    u16 i;
+    u16 max_trusted_devices = MAX_TRUSTED_DEVICES;
     
     /* Read the TDI from persistent store */
     read_trusted_device_index(&tdi);
@@ -788,13 +788,13 @@ FUNCTION
 RETURNS
     The number of devices registered with Bluestack
 */
-uint16 connectionInitTrustedDeviceList(void)
+u16 connectionInitTrustedDeviceList(void)
 {
-    uint16 i;
-    uint16 pos; /* TRUSTED_DEVICE_LIST + pos */
+    u16 i;
+    u16 pos; /* TRUSTED_DEVICE_LIST + pos */
     td_index_t tdi;
     td_data_t *td;
-    uint16 max_trusted_devices = MAX_TRUSTED_DEVICES;
+    u16 max_trusted_devices = MAX_TRUSTED_DEVICES;
     
     /* read the device index */
     read_trusted_device_index(&tdi);
@@ -815,7 +815,7 @@ uint16 connectionInitTrustedDeviceList(void)
          */
         else
         {
-            uint16 j;
+            u16 j;
 
 
             /* Delete the index */
@@ -852,12 +852,12 @@ FUNCTION
 */
 bool connectionAuthAddDevice(const CL_INTERNAL_SM_ADD_AUTH_DEVICE_REQ_T *req)
 {
-    uint16          pos; /* TRUSTED_DEVICE_LIST + pos */
-    uint16          idx; /* tdi.order[idx] */
+    u16          pos; /* TRUSTED_DEVICE_LIST + pos */
+    u16          idx; /* tdi.order[idx] */
     td_data_t       *td     = NULL;
-    uint16          ok      = TRUE;
+    u16          ok      = TRUE;
                     /* If there is a link key, there is encryption. */
-    uint16          sec_req = DM_SM_SECURITY_ENCRYPTION;
+    u16          sec_req = DM_SM_SECURITY_ENCRYPTION;
 
     td = tdl_find_device(TBDADDR_PUBLIC, &req->bd_addr, &pos, &idx);
 
@@ -876,7 +876,7 @@ bool connectionAuthAddDevice(const CL_INTERNAL_SM_ADD_AUTH_DEVICE_REQ_T *req)
     }
 
     /* Update the stored link key */
-    pack_td_key(&td, (uint16 *)&req->enc_bredr ,DM_SM_KEY_ENC_BREDR);
+    pack_td_key(&td, (u16 *)&req->enc_bredr ,DM_SM_KEY_ENC_BREDR);
     td->content.trusted = req->trusted ? TRUE : FALSE;
     
     /* 
@@ -942,8 +942,8 @@ FUNCTION
 bool connectionAuthGetDevice(
             const bdaddr *peer_bd_addr,
             cl_sm_link_key_type *link_key_type,
-            uint16 *link_key,
-            uint16 *trusted
+            u16 *link_key,
+            u16 *trusted
             )
 {
     td_data_t *td;
@@ -952,7 +952,7 @@ bool connectionAuthGetDevice(
     {
         DM_SM_KEY_ENC_BREDR_T enc_bredr;
 
-        unpack_td_key((uint16 *)&enc_bredr, td, TDL_KEY_ENC_BREDR);
+        unpack_td_key((u16 *)&enc_bredr, td, TDL_KEY_ENC_BREDR);
         
         *link_key_type = connectionConvertLinkKeyType(enc_bredr.link_key_type);
         memmove(link_key, &enc_bredr.link_key, BREDR_KEY_SIZE);
@@ -979,12 +979,12 @@ FUNCTION
     removed is returned. Priority devices are not deleted.
 */
 bool connectionAuthDeleteDevice(
-        uint8           type,
+        u8           type,
         const bdaddr*   peer_bd_addr
         )
 {
-    uint16 pos; /* TRUSTED_DEVICE_LIST + pos */
-    uint16 idx; /* tdi.order[idx] */
+    u16 pos; /* TRUSTED_DEVICE_LIST + pos */
+    u16 idx; /* tdi.order[idx] */
     td_data_t *td;
 
     /* Search the trusted device list for the specified device */
@@ -1026,20 +1026,20 @@ FUNCTION
 RETURNS
     TRUE if even one link key is deleted, returns FALSE if the TDL is empty.
 */
-bool connectionAuthDeleteAllDevice(uint16 ps_base)
+bool connectionAuthDeleteAllDevice(u16 ps_base)
 {
     /* Flag to indicate if the devices were deleted */
     bool            deleted = FALSE;
     
     /* Trusted device list record index */
-    uint16          rec = 0;
+    u16          rec = 0;
 
     /* Trusted device record */
     td_data_t       *td =  (td_data_t *) PanicUnlessMalloc(SIZE_TD_DATA_T);
     
     /* trusted device index */
     td_index_t      tdi;
-    uint16 max_trusted_devices = MAX_TRUSTED_DEVICES;
+    u16 max_trusted_devices = MAX_TRUSTED_DEVICES;
     
     /* Read the TDI from persistent store in case we end up deleting devices */
     read_trusted_device_index(&tdi);
@@ -1102,9 +1102,9 @@ FUNCTION
 RETURNS
     TRUE is record updated, otherwise FALSE
 */
-bool connectionAuthSetTrustLevel(const bdaddr* peer_bd_addr, uint16 trusted)
+bool connectionAuthSetTrustLevel(const bdaddr* peer_bd_addr, u16 trusted)
 {
-    uint16 pos; /* TRUSTED_DEVICE_LIST + pos */
+    u16 pos; /* TRUSTED_DEVICE_LIST + pos */
     td_data_t *td;
 
     if ((td = tdl_find_device(TYPED_BDADDR_PUBLIC, peer_bd_addr, &pos, NULL)))
@@ -1145,8 +1145,8 @@ bool ConnectionAuthSetPriorityDevice(
         bool is_priority_device
         )
 {
-    uint16      pos;
-    uint16      idx; 
+    u16      pos;
+    u16      idx; 
     td_data_t   *td;
 
     if ((td = tdl_find_device(TYPED_BDADDR_PUBLIC, bd_addr, &pos, &idx)))
@@ -1170,8 +1170,8 @@ bool ConnectionAuthSetPriorityDevice(
         */
         if (!is_priority_device)
         {
-            uint16      temp;
-            uint16      index;
+            u16      temp;
+            u16      index;
             td_index_t  tdi;
 
             /* Read the TDI from persistent store */
@@ -1241,8 +1241,8 @@ bool ConnectionAuthGetPriorityDeviceStatus(
         bool *is_priority_device
         )
 {
-    uint16      pos;
-    uint16      idx; 
+    u16      pos;
+    u16      idx; 
     td_data_t   *td;
 
     if ((td = tdl_find_device(TYPED_BDADDR_PUBLIC, bd_addr, &pos, &idx)))
@@ -1272,8 +1272,8 @@ bool ConnectionAuthIsPriorityDevice(
         const bdaddr* bd_addr
         )
 {
-    uint16      pos;
-    uint16      idx; 
+    u16      pos;
+    u16      idx; 
     td_data_t   *td;
 
     if ((td = tdl_find_device(TYPED_BDADDR_PUBLIC, bd_addr, &pos, &idx)))
@@ -1295,10 +1295,10 @@ FUNCTION
     The TDI index is updated provided that the device specified is currently
     stored in the TDL.
 */
-uint16 connectionAuthUpdateMru(const bdaddr* peer_bd_addr)
+u16 connectionAuthUpdateMru(const bdaddr* peer_bd_addr)
 {
-    uint16 pos; /* TRUSTED_DEVICE_LIST + pos */
-    uint16 idx; /* tdi.order[idx] */
+    u16 pos; /* TRUSTED_DEVICE_LIST + pos */
+    u16 idx; /* tdi.order[idx] */
     td_data_t *td;
 
     if ((td = tdl_find_device(TYPED_BDADDR_PUBLIC, peer_bd_addr, &pos, &idx)))
@@ -1326,14 +1326,14 @@ FUNCTION
 RETURNS
 */
 void connectionAuthPutAttribute(
-        uint16          ps_base,
-        uint8           addr_type,
+        u16          ps_base,
+        u8           addr_type,
         const bdaddr*   bd_addr,
-        uint16          size_psdata,
-        const uint8*    psdata
+        u16          size_psdata,
+        const u8*    psdata
         )
 {
-    uint16 pos; /* TRUSTED_DEVICE_LIST + pos */
+    u16 pos; /* TRUSTED_DEVICE_LIST + pos */
     td_data_t *td;
 
     if ((td = tdl_find_device(addr_type, bd_addr, &pos, NULL)))
@@ -1357,10 +1357,10 @@ RETURNS
 */
 void connectionAuthGetAttribute(
         Task appTask,
-        uint16 ps_base,
-        uint8 addr_type,
+        u16 ps_base,
+        u8 addr_type,
         const bdaddr* bd_addr,
-        uint16 size_psdata
+        u16 size_psdata
         )
 {
     if (appTask)
@@ -1405,14 +1405,14 @@ FUNCTION
 RETURNS
 */
 bool connectionAuthGetAttributeNow(
-        uint16 ps_base,
-        uint8 addr_type,
+        u16 ps_base,
+        u8 addr_type,
         const bdaddr* bd_addr,
-        uint16 size_psdata,
-        uint8* psdata
+        u16 size_psdata,
+        u8* psdata
         )
 {
-    uint16 pos; /* TRUSTED_DEVICE_LIST + pos */
+    u16 pos; /* TRUSTED_DEVICE_LIST + pos */
     td_data_t *td;
 
     if ((td = tdl_find_device(addr_type, bd_addr, &pos, NULL)))
@@ -1450,9 +1450,9 @@ RETURNS
 */
 void connectionAuthGetIndexedAttribute(
     Task appTask,
-    uint16 ps_base,
-    uint16 mru_index, 
-    uint16 size_psdata
+    u16 ps_base,
+    u16 mru_index, 
+    u16 size_psdata
     )
 {
     /* Send a message back to the application task */
@@ -1493,16 +1493,16 @@ FUNCTION
 RETURNS
 */
 bool connectionAuthGetIndexedAttributeNow(
-        uint16          ps_base,
-        uint16          mru_index,
-        uint16          size_psdata,
-        uint8           *psdata,
+        u16          ps_base,
+        u16          mru_index,
+        u16          size_psdata,
+        u8           *psdata,
         typed_bdaddr    *taddr
         )
 {
     td_index_t      tdi;    
     bool            success = FALSE;
-    uint16          max_trusted_devices = MAX_TRUSTED_DEVICES;
+    u16          max_trusted_devices = MAX_TRUSTED_DEVICES;
     
     /* Read Trusted Device Index from Persistent store */
     read_trusted_device_index(&tdi);
@@ -1568,11 +1568,11 @@ void connectionAuthUpdateTdl(
     const DM_SM_KEYS_T      *keys
     )
 {
-    uint16          pos; /* TRUSTED_DEVICE_LIST + pos */
-    uint16          idx; /* tdi.order[idx] */
+    u16          pos; /* TRUSTED_DEVICE_LIST + pos */
+    u16          idx; /* tdi.order[idx] */
     td_data_t       *td;
-    uint16          key_idx;
-    uint16          key_type;
+    u16          key_idx;
+    u16          key_type;
 
     typed_bdaddr *taddr = PanicUnlessNew(typed_bdaddr);
     BdaddrConvertTypedBluestackToVm(taddr, addrt);
@@ -1606,7 +1606,7 @@ void connectionAuthUpdateTdl(
         }
         else
         {
-            pack_td_key(&td, (uint16 *)keys->u[key_idx].none, key_type);
+            pack_td_key(&td, (u16 *)keys->u[key_idx].none, key_type);
         }
     }
 
@@ -1633,8 +1633,8 @@ RETURNS
 
 void connectionAuthDeleteDeviceFromTdl(const TYPED_BD_ADDR_T *addrt)
 {
-    uint16          idx;
-    uint16          pos;
+    u16          idx;
+    u16          pos;
     td_data_t       *td;
     typed_bdaddr    taddr;
 
@@ -1662,13 +1662,13 @@ RETURNS
 */
 void ConnectionDmBleAddTdlDevicesToWhiteListReq(bool ble_only_devices)
 {
-    uint16      i;
-    uint16      pos; /* TRUSTED_DEVICE_LIST + pos */
+    u16      i;
+    u16      pos; /* TRUSTED_DEVICE_LIST + pos */
     td_index_t  tdi;
     td_data_t   *td;
     bdaddr      addr;
-    uint8       addr_type;
-    uint16      max_trusted_devices = MAX_TRUSTED_DEVICES;
+    u8       addr_type;
+    u16      max_trusted_devices = MAX_TRUSTED_DEVICES;
     
     /* read the device index */
     read_trusted_device_index(&tdi);
@@ -1713,12 +1713,12 @@ RETURNS
 */
 bool ConnectionBondedToPrivacyEnabledDevice(void)
 {
-    uint16      i;
-    uint16      pos; /* TRUSTED_DEVICE_LIST + pos */
+    u16      i;
+    u16      pos; /* TRUSTED_DEVICE_LIST + pos */
     td_index_t  tdi;
     td_data_t*  td;
     bool        result = FALSE;
-    uint16      max_trusted_devices = MAX_TRUSTED_DEVICES;
+    u16      max_trusted_devices = MAX_TRUSTED_DEVICES;
 
     /* Read the device index */
     read_trusted_device_index(&tdi);

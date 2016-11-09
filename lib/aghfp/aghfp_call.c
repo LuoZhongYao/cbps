@@ -20,7 +20,7 @@ Part of ADK 4.0
 
 /****************************************************************************
 */
-void AghfpSetRingRepeatInterval(AGHFP *aghfp, uint16 interval)
+void AghfpSetRingRepeatInterval(AGHFP *aghfp, u16 interval)
 {
 	aghfp->ring_repeat_interval = interval;
 }
@@ -61,7 +61,7 @@ void aghfpHandleSendRingAlert(AGHFP *aghfp)
  The app has asked us to send caller ID information to the HF. Pass this
  request on to the profile hadler
 */
-void AghfpSendCallerId(AGHFP *aghfp, uint8 type_number, uint16 size_number, const uint8 *number, uint16 size_string, const uint8 *string)
+void AghfpSendCallerId(AGHFP *aghfp, u8 type_number, u16 size_number, const u8 *number, u16 size_string, const u8 *string)
 {
 	MAKE_AGHFP_MESSAGE_WITH_ARRAY(AGHFP_INTERNAL_SEND_CALLER_ID, size_number+size_string);
 
@@ -87,7 +87,7 @@ void AghfpSendCallerId(AGHFP *aghfp, uint8 type_number, uint16 size_number, cons
  The app has asked us to send caller ID information to the HF. The profile
  handler has asked us to act on this request.
 */
-void aghfpSendCallerId(AGHFP *aghfp, uint8 type, uint16 size_number, uint16 size_string, uint8 *data)
+void aghfpSendCallerId(AGHFP *aghfp, u8 type, u16 size_number, u16 size_string, u8 *data)
 {
 	char buf[4];
 	
@@ -117,7 +117,7 @@ void aghfpSendCallerId(AGHFP *aghfp, uint8 type, uint16 size_number, uint16 size
  The app has asked us to send caller ID information to the HF. The profile
  handler has asked us to act on this request.
 */
-void aghfpHandleSendCallerId(AGHFP *aghfp, uint8 type, uint16 size_number, uint16 size_string, uint8 *data)
+void aghfpHandleSendCallerId(AGHFP *aghfp, u8 type, u16 size_number, u16 size_string, u8 *data)
 {
 	aghfpSendCallerId(aghfp, type, size_number, size_string, data);
 	
@@ -220,7 +220,7 @@ void aghfpHandleCallHangUpReq(AGHFP *aghfp)
  HF has request that a number be dialed. Profile handler has asked us to handle
  this request.
 */
-void aghfpHandleDialReq(AGHFP *aghfp, uint8 *number, uint16 number_len)
+void aghfpHandleDialReq(AGHFP *aghfp, u8 *number, u16 number_len)
 {
 	MAKE_AGHFP_MESSAGE_WITH_ARRAY(AGHFP_DIAL_IND, number_len);
 
@@ -233,7 +233,7 @@ void aghfpHandleDialReq(AGHFP *aghfp, uint8 *number, uint16 number_len)
     {
         message->aghfp = aghfp;
 	    message->size_number = number_len;
-		memmove(message->number, number, number_len * sizeof(uint8));
+		memmove(message->number, number, number_len * sizeof(u8));
 
 		/* Acknowledge the HF's request */
 		aghfpSendOk(aghfp);
@@ -248,7 +248,7 @@ void aghfpHandleDialReq(AGHFP *aghfp, uint8 *number, uint16 number_len)
  HF has request that a number be dialed from AG memory. Profile handler has
  asked us to handle this request.
 */
-void aghfpHandleMemoryDialReq(AGHFP *aghfp, uint8 *number, uint16 number_len)
+void aghfpHandleMemoryDialReq(AGHFP *aghfp, u8 *number, u16 number_len)
 {
 	MAKE_AGHFP_MESSAGE_WITH_ARRAY(AGHFP_MEMORY_DIAL_IND, number_len);
 
@@ -261,7 +261,7 @@ void aghfpHandleMemoryDialReq(AGHFP *aghfp, uint8 *number, uint16 number_len)
     {
         message->aghfp = aghfp;
 	    message->size_number = number_len;
-		memmove(message->number, number, number_len * sizeof(uint8));
+		memmove(message->number, number, number_len * sizeof(u8));
 
 		/* Tell the app */
 		MessageSend(aghfp->client_task, AGHFP_MEMORY_DIAL_IND, message);
@@ -287,7 +287,7 @@ void aghfpHandleLastNumberRedialReq(AGHFP *aghfp)
  HF has requested that we perform some action to do with a waiting call.
  Profile handler has asked us to handle this request.
 */
-void aghfpHandleCallHoldReq(AGHFP *aghfp, uint16 action, uint16 index)
+void aghfpHandleCallHoldReq(AGHFP *aghfp, u16 action, u16 index)
 {
 	if (aghfp->features_status & aghfp_feature_call_waiting_notification)
     {

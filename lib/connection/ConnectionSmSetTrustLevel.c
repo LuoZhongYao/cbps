@@ -25,7 +25,7 @@ NOTES
 
 
 /*****************************************************************************/
-void ConnectionSmSetTrustLevel(Task theAppTask, const bdaddr* bd_addr, uint16 trusted)
+void ConnectionSmSetTrustLevel(Task theAppTask, const bdaddr* bd_addr, u16 trusted)
 {
     /* Update the Trusted Device List */
     MAKE_CL_MESSAGE(CL_INTERNAL_SM_SET_TRUST_LEVEL_REQ)

@@ -19,13 +19,13 @@ Copyright (c) 2010 - 2016 Qualcomm Technologies International, Ltd.
 #define PR_PROTOCOL_UNDEFINED 0x00
 
 #define SUPPORTED_FREQUENCIES 6
-#define SAMPLE_RATE_48K ((uint32) 48000)
-#define SAMPLE_RATE_44K1 ((uint32) 44100)
-#define SAMPLE_RATE_32K ((uint32) 32000)
-#define SAMPLE_RATE_22K05 ((uint32) 22050)
-#define SAMPLE_RATE_16K ((uint32) 16000)
-#define SAMPLE_RATE_8K ((uint32) 8000)
-#define SAMPLE_RATE ((uint32) 48000)
+#define SAMPLE_RATE_48K ((u32) 48000)
+#define SAMPLE_RATE_44K1 ((u32) 44100)
+#define SAMPLE_RATE_32K ((u32) 32000)
+#define SAMPLE_RATE_22K05 ((u32) 22050)
+#define SAMPLE_RATE_16K ((u32) 16000)
+#define SAMPLE_RATE_8K ((u32) 8000)
+#define SAMPLE_RATE ((u32) 48000)
 
 /*! Audio Device Class Request Types */
 #define SET       0x00
@@ -121,20 +121,20 @@ Copyright (c) 2010 - 2016 Qualcomm Technologies International, Ltd.
 
 typedef struct
 {
-    uint8 length;
-    uint8 type;
-    uint8 sub_type;
+    u8 length;
+    u8 type;
+    u8 sub_type;
 } usb_descriptor_header;
 
 typedef struct
 {
     usb_descriptor_header header;
-    uint8 type;
-    uint8 num_channels;
-    uint8 subframe_size;
-    uint8 resolution;
-    uint8 num_freq;
-    uint8 freq[SUPPORTED_FREQUENCIES*3];             
+    u8 type;
+    u8 num_channels;
+    u8 subframe_size;
+    u8 resolution;
+    u8 num_freq;
+    u8 freq[SUPPORTED_FREQUENCIES*3];             
 } usb_format_descriptor;
 
 
@@ -142,18 +142,18 @@ bool usbConfigureAudioDescriptors(usb_device_class_config config, const usb_devi
 
 bool usbConfigureAudioVolume(usb_device_class_config config, const usb_device_class_audio_volume_config* params);
 
-bool usbEnumerateAudio(uint16 usb_device_class);
+bool usbEnumerateAudio(u16 usb_device_class);
         
 Sink usbAudioMicSink(void);
 
 Source usbAudioSpeakerSource(void);
 
-void usbAudioGetLevels(uint16* levels);
+void usbAudioGetLevels(u16* levels);
 
 UsbInterface usbAudioGetInterfaceId(usb_device_class_get_value interface);
 
-uint32 usbAudioGetSpeakerSampleFreq(void);
-uint32 usbAudioGetMicSampleFreq(void);
+u32 usbAudioGetSpeakerSampleFreq(void);
+u32 usbAudioGetMicSampleFreq(void);
 
 
 #endif /* _USB_DEVICE_AUDIO_H */

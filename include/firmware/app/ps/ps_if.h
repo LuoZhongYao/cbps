@@ -5,7 +5,7 @@
 #ifndef __APP_PS_IF_H__
 #define __APP_PS_IF_H__
 
-typedef uint16 pskey;
+typedef u16 pskey;
 
 #define PSKEY_HOST_INTERFACE (((500))+5)
 #define PSKEY_MKT_TASK_ACTIVE (((500))+6)

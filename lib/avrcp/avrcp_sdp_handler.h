@@ -61,7 +61,7 @@ DESCRIPTION
 */
 void avrcpSendGetSupportedFeaturesCfm(AVRCP            *avrcp, 
                                       avrcp_status_code status, 
-                                      uint16            features);
+                                      u16            features);
 
 /****************************************************************************
 NAME    
@@ -72,7 +72,7 @@ DESCRIPTION
 */
 void avrcpSendGetExtensionsCfm(AVRCP             *avrcp, 
                                avrcp_status_code status, 
-                               uint16            extensions);
+                               u16            extensions);
 
 /****************************************************************************
 NAME    

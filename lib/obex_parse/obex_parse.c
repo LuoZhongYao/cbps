@@ -24,7 +24,7 @@ DESCRIPTION
 ObexParseStatus ObexParseCreateTree ( ObexParseTree *object,
                                       ObexParseObject objType,
                                       const char *data,
-                                      uint16     dataLen )
+                                      u16     dataLen )
 {
     const char *s = data , *e = data + dataLen ;
     opHandle handle;
@@ -112,8 +112,8 @@ ObexParseStatus ObexParseCreateTree ( ObexParseTree *object,
  ************************************************************************/ 
 char*   ObexParseDecode( ObexParseData* element, 
                          const char*    tag,
-                         uint16         tagLen,
-                         uint16         *maxValLen )
+                         u16         tagLen,
+                         u16         *maxValLen )
 {
     if( !element ) return NULL;
 

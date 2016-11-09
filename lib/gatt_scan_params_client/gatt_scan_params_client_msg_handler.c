@@ -16,8 +16,8 @@
 /****************************************************************************/
 static void writeScanIntervalWindow(GSPC_T *scan_params_client)
 {
-    uint16 value[4];
-    uint16 len = 4;
+    u16 value[4];
+    u16 len = 4;
     
     value[0] = scan_params_client->scan_interval & 0x00ff;
     value[1] = (scan_params_client->scan_interval >> 8);
@@ -30,7 +30,7 @@ static void writeScanIntervalWindow(GSPC_T *scan_params_client)
     GattManagerWriteWithoutResponse((Task)&scan_params_client->lib_task,
                                     scan_params_client->scan_interval_window_handle,
                                     len,
-                                    (uint8 *)&value);
+                                    (u8 *)&value);
 }
 
 /***************************************************************************/
@@ -163,9 +163,9 @@ static void  handleScanParamsInternalMsg(Task task, MessageId id, Message msg)
 }
 
 /****************************************************************************/
-void scanRefreshEnableNotification(GSPC_T *scan_params_client, uint16 handle)
+void scanRefreshEnableNotification(GSPC_T *scan_params_client, u16 handle)
 {
-    uint8 value[2];
+    u8 value[2];
     
     value[0] = ENABLE_SCAN_REFRESH_NOTIFICATION;
     value[1] = 0;
@@ -176,7 +176,7 @@ void scanRefreshEnableNotification(GSPC_T *scan_params_client, uint16 handle)
 }
 
 /******************************************************************************/
-void scanParamsSendInitSuccessCfm(GSPC_T *scan_params_client, uint16 scan_interval_window_handle, uint16 scan_refresh_handle)
+void scanParamsSendInitSuccessCfm(GSPC_T *scan_params_client, u16 scan_interval_window_handle, u16 scan_refresh_handle)
 {
     MAKE_SCAN_PARAMS_CLIENT_MESSAGE(GATT_SCAN_PARAMS_CLIENT_INIT_CFM);
 

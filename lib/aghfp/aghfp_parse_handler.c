@@ -22,7 +22,7 @@ Part of ADK 4.0
 	commands, we only send the unrecognised data to the app if we have the
 	resources, otherwise we silently ignore it!
 */
-void handleUnrecognised(const uint8 *data, uint16 length, Task task)
+void handleUnrecognised(const u8 *data, u16 length, Task task)
 {
 	AGHFP *aghfp = (AGHFP *) task;
 
@@ -108,7 +108,7 @@ void aghfpHandleChldSupportReqParse(Task task)
 void aghfpHandleChldParse(Task task, const struct aghfpHandleChldParse *data)
 {
 	MAKE_AGHFP_MESSAGE(AGHFP_INTERNAL_CALL_HOLD_REQ);
-    message->action = (uint16)(*data->cmd.data - '0');
+    message->action = (u16)(*data->cmd.data - '0');
     if ( data->cmd.length>1 )
     {
         (void)UtilGetNumber(data->cmd.data+1,data->cmd.data+data->cmd.length-1, &message->index);
@@ -157,7 +157,7 @@ void aghfpHandleDialParse(Task task, const struct aghfpHandleDialParse *data)
     if (message)
     {
     	message->size_number = data->number.length;
-        memmove(message->number, data->number.data, data->number.length * sizeof(uint8));
+        memmove(message->number, data->number.data, data->number.length * sizeof(u8));
 		MessageSend(task, AGHFP_INTERNAL_DIAL_REQ, message);
     }
     else
@@ -175,7 +175,7 @@ void aghfpHandleMemoryDialParse(Task task, const struct aghfpHandleMemoryDialPar
     if (message)
     {
     	message->size_number = data->number.length;
-    	memmove(message->number, data->number.data, data->number.length * sizeof(uint8));
+    	memmove(message->number, data->number.data, data->number.length * sizeof(u8));
         MessageSend(task, AGHFP_INTERNAL_MEMORY_DIAL_REQ, message);
     }
     else
@@ -281,7 +281,7 @@ void aghfpHandleCopsStatusParse(Task task)
 void aghfpHandleBiaParse(Task task, const struct aghfpHandleBiaParse *data)
 {
     struct sequence indicators = data->indicators;
-    uint16 i, indicator_idx=0;    
+    u16 i, indicator_idx=0;    
     bool success = TRUE;
     
     MAKE_AGHFP_MESSAGE(AGHFP_INTERNAL_INDICATORS_ACTIVATION_REQ);
@@ -384,8 +384,8 @@ void aghfpHandleAvailableCodecs(Task task, const struct aghfpHandleAvailableCode
 {
 	/* Immediately extract the data. Once we return from this
 	   function the data is lost, so parse now. */
-	uint16 num_of_entries = availableCodecs->codecs.count;
-	uint16 counter1;
+	u16 num_of_entries = availableCodecs->codecs.count;
+	u16 counter1;
 	struct value_aghfpHandleAvailableCodecs_codecs value;
 
 	MAKE_AGHFP_MESSAGE(AGHFP_INTERNAL_CODEC_NEGOTIATION_REQ);

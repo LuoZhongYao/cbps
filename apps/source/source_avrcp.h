@@ -46,7 +46,7 @@ DESCRIPTION
 #define AVRCP_REGISTER_NOTIFICATION_PDU_ID      0x31 /* the AVRCP 1.4 defined commands for volume sync */
 #define AVRCP_SET_ABSOLUTE_VOLUME_PDU_ID        0x50 /* the AVRCP 1.4 defined commands for volume sync */
 #define AVRCP_EVENT_VOLUME_CHANGED              0x0D /* the AVRCP 1.4 defined commands for volume sync */
-#define AVRCP_BLUETOOTH_SIG_COMPANY_ID          ((uint32)6488) /* the AVRCP 1.4 defined BT SIG company ID */
+#define AVRCP_BLUETOOTH_SIG_COMPANY_ID          ((u32)6488) /* the AVRCP 1.4 defined BT SIG company ID */
 #define AVRCP_ABS_VOL_STEP_CHANGE               8 /* absolute volume steps */
 
 /* loop through all AVRCP connection instances */
@@ -89,11 +89,11 @@ typedef struct
     AVRCP_STATE_T avrcp_state;
     AVRCP *avrcp;
     bdaddr addr;
-    uint8 *vendor_data;
-    uint16 pending_vendor_command;
+    u8 *vendor_data;
+    u16 pending_vendor_command;
     AVRCP_SUPPORT_T remote_vendor_support;
     AVRCP_SUPPORT_T avrcp_support;
-    uint16 avrcp_connection_retries;
+    u16 avrcp_connection_retries;
 } avrcpInstance;
 
 /* structure holding the AVRCP data */
@@ -230,7 +230,7 @@ DESCRIPTION
     The command will contain the data that is passed into this function.
 
 */
-void avrcp_send_internal_vendor_command(avrcpInstance *inst, avc_subunit_type subunit_type, avc_subunit_id subunit_id, uint8 ctype, uint32 company_id, uint16 cmd_id, uint16 size_data, Source data);
+void avrcp_send_internal_vendor_command(avrcpInstance *inst, avc_subunit_type subunit_type, avc_subunit_id subunit_id, u8 ctype, u32 company_id, u16 cmd_id, u16 size_data, Source data);
 
 
 /****************************************************************************
@@ -276,7 +276,7 @@ DESCRIPTION
     Handle AVRCP Vendor command sent from remote device.
     
 */
-void avrcp_handle_vendor_ind(uint8 mic_mute_eq);
+void avrcp_handle_vendor_ind(u8 mic_mute_eq);
 
 
 /****************************************************************************
@@ -309,7 +309,7 @@ DESCRIPTION
     Build AVRCP Vendor command to send to remote device.
     
 */
-void avrcp_source_vendor_command(avrcpInstance *inst, uint32 company_id, uint16 cmd_id, uint16 size_data, const uint8 *data);
+void avrcp_source_vendor_command(avrcpInstance *inst, u32 company_id, u16 cmd_id, u16 size_data, const u8 *data);
 
 
 #endif /* _SOURCE_AVRCP_H_ */

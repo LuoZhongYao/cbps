@@ -78,14 +78,14 @@ typedef struct
     power_boost_enable  chg_boost:2;            /* Boost internal/external/disable */
     power_chg_cycle     chg_cycle_complete:2;   /* Boost cycle complete */
     unsigned            pmu_mon_enabled:1;      /* Enable PMU temperature monitoring */
-    uint16              vref;                   /* Most recent VREF measurement */
-    uint16				vbat;                   /* Most recent VBAT measurement */
-	int16				vbat_trend;				/* Current trend of VBAT measurements */
-    uint16              vchg;                   /* Most recent VCHG measurement */
-    uint16              vthm;                   /* Most recent VTHM measurement */
-    uint8               ps_chg_trim;            /* Charger trim from PS */
-    uint16              charger_i_target;       /* Requested charger current */
-    uint16              charger_i_setting;      /* Current value that has been set */
+    u16              vref;                   /* Most recent VREF measurement */
+    u16				vbat;                   /* Most recent VBAT measurement */
+	i16				vbat_trend;				/* Current trend of VBAT measurements */
+    u16              vchg;                   /* Most recent VCHG measurement */
+    u16              vthm;                   /* Most recent VTHM measurement */
+    u8               ps_chg_trim;            /* Charger trim from PS */
+    u16              charger_i_target;       /* Requested charger current */
+    u16              charger_i_setting;      /* Current value that has been set */
 } power_type;
 
 extern power_type*      power;

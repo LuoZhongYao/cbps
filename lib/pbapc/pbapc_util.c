@@ -14,19 +14,19 @@ DESCRIPTION
 #include "pbapc_util.h"
 
 /* String for the vCard Listing mime Type */
-static const uint8 pbapcVcardlistingType[] =  {"x-bt/vcard-listing"};
+static const u8 pbapcVcardlistingType[] =  {"x-bt/vcard-listing"};
 
 /* String for the Phonebook mime Type */
-static const uint8 pbapcPhonebookType[] =  {"x-bt/phonebook"};
+static const u8 pbapcPhonebookType[] =  {"x-bt/phonebook"};
 
 /* String for the vCard Entry mime Type */
-static const uint8 pbapcVcardType[] =  {"x-bt/vcard"};
+static const u8 pbapcVcardType[] =  {"x-bt/vcard"};
 
 /* This must match with the enum values of pbapcPhoneBbook in pbapc.h */
 static const char* const pbapcPbDir[] = {"telecom","pb","ich","och","mch","cch"};
 
 /* Sim String */
-static const uint8 sim1Str[] = "sim1";
+static const u8 sim1Str[] = "sim1";
 
 #define PBAPC_PB_DIR_SIZE   6
 
@@ -37,7 +37,7 @@ static const uint8 sim1Str[] = "sim1";
  * DESCRIPTION
  *  Frame application parameters of 2 Byte length
  ************************************************************************/
-void pbapcFrame2ByteAppParams( uint8* ptr, uint8 param, uint16 value ) 
+void pbapcFrame2ByteAppParams( u8* ptr, u8 param, u16 value ) 
 {
     ptr[0] = param;
     ptr[1] = 2; /* Two byte length */
@@ -52,7 +52,7 @@ void pbapcFrame2ByteAppParams( uint8* ptr, uint8 param, uint16 value )
  * DESCRIPTION
  *  Frame One byte application parameter
  *************************************************************************/
-void pbapcFrameByteAppParams( uint8* ptr, uint8 param, uint8 value )
+void pbapcFrameByteAppParams( u8* ptr, u8 param, u8 value )
 {
     ptr[0] = param;
     ptr[1] = 1; /* one byte length */
@@ -66,7 +66,7 @@ void pbapcFrameByteAppParams( uint8* ptr, uint8 param, uint8 value )
  * DESCRIPTION
  *  Frame One byte application parameter
  *************************************************************************/
-void pbapcFrame4ByteAppParams( uint8* ptr, uint8 param, uint32 value )
+void pbapcFrame4ByteAppParams( u8* ptr, u8 param, u32 value )
 {
     ptr[0] = param;
     ptr[1] = 4; /* four byte length */
@@ -83,13 +83,13 @@ void pbapcFrame4ByteAppParams( uint8* ptr, uint8 param, uint32 value )
  * Frame the vCard List app Params. Size of listData must be 
  * validated before calling this function.
  ************************************************************************/
-uint16 pbapcFramevCardListAppParams( uint8 order ,
-                                     const uint8* srchVal,
-                                     uint16 srchValLen,
-                                     uint8 srchAttr,
-                                     uint8* listData )
+u16 pbapcFramevCardListAppParams( u8 order ,
+                                     const u8* srchVal,
+                                     u16 srchValLen,
+                                     u8 srchAttr,
+                                     u8* listData )
 {
-    uint16 len = 0;
+    u16 len = 0;
 
     /* add order */
     if( order )
@@ -128,11 +128,11 @@ uint16 pbapcFramevCardListAppParams( uint8 order ,
  * Frame the common application parameters like max list size 
  * and offset. list data must have space for 6 Bytes.
  ************************************************************************/
-uint16 pbapcFrameListAppParams( uint16 maxListCount,
-                              uint16 startOffset,
-                              uint8* listData )
+u16 pbapcFrameListAppParams( u16 maxListCount,
+                              u16 startOffset,
+                              u8* listData )
 {
-    uint16 len = 0;
+    u16 len = 0;
 
    /* Create the application header for 2 headers*/
    pbapcFrame2ByteAppParams( &listData[len], 
@@ -159,12 +159,12 @@ uint16 pbapcFrameListAppParams( uint16 maxListCount,
  * Frame the common application parameters like filter and format.
  * The buffer must have 13 bytes free space.
  ************************************************************************/
-uint16 pbapcFrameFilterFormat( uint32  filterHi,
-                               uint32  filterLo,
-                               uint8   format,
-                               uint8* listData )
+u16 pbapcFrameFilterFormat( u32  filterHi,
+                               u32  filterLo,
+                               u8   format,
+                               u8* listData )
 {
-    uint16 len = 0;
+    u16 len = 0;
 
     if( filterLo || filterHi )
     {
@@ -195,10 +195,10 @@ uint16 pbapcFrameFilterFormat( uint32  filterHi,
  *     Returns Pointer to the book name.  
  *  len contains the length of the returned name. 
  ************************************************************************/
-const uint8 *pbapcGetPbNameFromID(uint8 book, uint16 *len)
+const u8 *pbapcGetPbNameFromID(u8 book, u16 *len)
 {
     *len = strlen(pbapcPbDir[book]);
-    return (const uint8*)pbapcPbDir[book];
+    return (const u8*)pbapcPbDir[book];
 }
 
 /**************************************************************************
@@ -208,7 +208,7 @@ const uint8 *pbapcGetPbNameFromID(uint8 book, uint16 *len)
  * DESCRIPTION
  *  Returns the SIM repository name.
  ************************************************************************/
-const uint8* pbapcGetSimName( uint16 *len )
+const u8* pbapcGetSimName( u16 *len )
 {
     *len = sizeof(sim1Str);
     return sim1Str;
@@ -224,11 +224,11 @@ const uint8* pbapcGetSimName( uint16 *len )
  *  len contains the length of the returned name. 
  *  The path must be of size 16 bytes for local and 21 for SIM.
  ************************************************************************/
-uint16 pbapcGetPbPathFromID( bool  sim,  uint8 book, uint8* path) 
+u16 pbapcGetPbPathFromID( bool  sim,  u8 book, u8* path) 
 {
-    uint16 length = 0;
-    uint16* len = &length;
-    uint16 offset= 0;
+    u16 length = 0;
+    u16* len = &length;
+    u16 offset= 0;
 
     /* Copy the SIM Path */
     if( sim )
@@ -268,7 +268,7 @@ uint16 pbapcGetPbPathFromID( bool  sim,  uint8 book, uint8* path)
  * Returns Pointer to the string. 
  * len contains the length of the returned string.
  ************************************************************************/
-const uint8 *pbapcGetPhonebookMimeType(uint16 *len)
+const u8 *pbapcGetPhonebookMimeType(u16 *len)
 {
     *len = sizeof(pbapcPhonebookType);
     return pbapcPhonebookType;
@@ -282,7 +282,7 @@ const uint8 *pbapcGetPhonebookMimeType(uint16 *len)
  * Returns Pointer to the string. 
  * len contains the length of the returned string.
  ************************************************************************/
-const uint8 *pbapcGetvCardListingMimeType(uint16 *len)
+const u8 *pbapcGetvCardListingMimeType(u16 *len)
 {
     *len = sizeof( pbapcVcardlistingType );
     return  pbapcVcardlistingType;
@@ -297,7 +297,7 @@ const uint8 *pbapcGetvCardListingMimeType(uint16 *len)
  * Returns Pointer to the string. 
  * len contains the length of the returned string.
  ************************************************************************/
-const uint8 *pbapcGetvCardMimeType(uint16 *len)
+const u8 *pbapcGetvCardMimeType(u16 *len)
 {
     *len = sizeof( pbapcVcardType );
     return  pbapcVcardType;

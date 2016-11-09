@@ -53,7 +53,7 @@ Source AudioPluginGetMic(audio_instance instance, audio_channel channel, bool di
 DESCRIPTION
     Configure Mic channel
 */
-void AudioPluginSetMicRate(Source mic_source, bool digital, uint32 adc_rate)
+void AudioPluginSetMicRate(Source mic_source, bool digital, u32 adc_rate)
 {
     PanicFalse(SourceConfigure(mic_source, digital ? STREAM_DIGITAL_MIC_INPUT_RATE : STREAM_CODEC_INPUT_RATE, adc_rate));
 }
@@ -63,7 +63,7 @@ void AudioPluginSetMicRate(Source mic_source, bool digital, uint32 adc_rate)
 DESCRIPTION
     Set mic gain
 */
-void AudioPluginSetMicGain(Source mic_source, bool digital, uint16 gain, bool preamp)
+void AudioPluginSetMicGain(Source mic_source, bool digital, u16 gain, bool preamp)
 {
     if (digital)
     {
@@ -104,7 +104,7 @@ void AudioPluginSetMicPio(const audio_mic_params params, bool set)
 DESCRIPTION
     Apply mic configuration and set mic PIO
 */
-Source AudioPluginMicSetup(audio_channel channel, const audio_mic_params params, uint32 rate)
+Source AudioPluginMicSetup(audio_channel channel, const audio_mic_params params, u32 rate)
 {
     Source mic_source = AudioPluginGetMic(AudioPluginGetInstance(params), channel, params.digital);
     AudioPluginSetMicRate(mic_source, params.digital, rate);

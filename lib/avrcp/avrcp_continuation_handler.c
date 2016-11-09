@@ -55,7 +55,7 @@ void abortContinuation(AVRCP *avrcp)
  * avrcp        -       AVRCP Entity
  * pdu          -       PDU ID of the Continuation response.
  *****************************************************************************/
-void avrcpHandleRequestContinuingCommand(AVRCP *avrcp, uint16 pdu)
+void avrcpHandleRequestContinuingCommand(AVRCP *avrcp, u16 pdu)
 {
     /* Make sure the continuing PDU requested is the same as the one we 
        are storing data for. */
@@ -82,7 +82,7 @@ void avrcpHandleRequestContinuingCommand(AVRCP *avrcp, uint16 pdu)
  * avrcp        -       AVRCP Entity
  * pdu          -       PDU ID of the Continuation response to be aborted.
  *****************************************************************************/
-void avrcpHandleAbortContinuingCommand(AVRCP *avrcp, uint16 pdu)
+void avrcpHandleAbortContinuingCommand(AVRCP *avrcp, u16 pdu)
 {
     /* Send response back stating if the abort was successful. */
     MAKE_AVRCP_MESSAGE(AVRCP_INTERNAL_ABORT_CONTINUING_RES);
@@ -140,9 +140,9 @@ void avrcpHandleInternalAbortContinuingResponse(AVRCP       *avrcp,
  *****************************************************************************/
 void avrcpStoreNextContinuationPacket(  AVRCP               *avrcp, 
                                         Source              data, 
-                                        uint16              param_length, 
-                                        uint16              pdu_id, 
-                                        uint16              response)
+                                        u16              param_length, 
+                                        u16              pdu_id, 
+                                        u16              response)
 {
     /* Store futher fragments until the CT request them. */
     MAKE_AVRCP_MESSAGE(AVRCP_INTERNAL_NEXT_CONTINUATION_PACKET);
@@ -182,7 +182,7 @@ void avrcpHandleNextContinuationPacket(AVRCP                    *avrcp,
                 const AVRCP_INTERNAL_NEXT_CONTINUATION_PACKET_T *ind)
 {
     /* The next fragment has been requested, so send it. */
-    uint16 data_length = avrcp->av_max_data_size;
+    u16 data_length = avrcp->av_max_data_size;
     avrcp_packet_type packet_type = avrcp_packet_type_continue;
 
     if (ind->param_length < data_length)

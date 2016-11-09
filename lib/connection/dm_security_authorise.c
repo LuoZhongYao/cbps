@@ -29,7 +29,7 @@ NOTES
 void ConnectionSmAuthoriseResponse(
         const bdaddr*   bd_addr,
         dm_protocol_id  protocol_id,
-        uint32          channel,
+        u32          channel,
         bool            incoming,
         bool            authorised
         )
@@ -81,8 +81,8 @@ void ConnectionSmAuthoriseResponse(
 /*****************************************************************************/
 void ConnectionSmPinCodeResponse(
         const typed_bdaddr* taddr,
-        uint16              length,
-        const uint8*        pin_code
+        u16              length,
+        const u8*        pin_code
         )
 {   
 #ifdef CONNECTION_DEBUG_LIB
@@ -113,10 +113,10 @@ void ConnectionSmIoCapabilityResponse(
         cl_sm_io_capability io_capability,
         mitm_setting        mitm,
         bool                bonding,
-        uint16              key_distribution,
-        uint16              oob_data,
-        uint8*              oob_hash_c,
-        uint8*              oob_rand_r
+        u16              key_distribution,
+        u16              oob_data,
+        u8*              oob_hash_c,
+        u8*              oob_rand_r
         )
 {
 #ifdef CONNECTION_DEBUG_LIB
@@ -134,8 +134,8 @@ void ConnectionSmIoCapabilityResponse(
     }
 #endif
     {
-        uint16 rand_r_len = 0;
-        uint16 hash_c_len = 0;
+        u16 rand_r_len = 0;
+        u16 hash_c_len = 0;
         MAKE_CL_MESSAGE(CL_INTERNAL_SM_IO_CAPABILITY_REQUEST_RES);
 
         message->tpaddr = *tpaddr;
@@ -229,7 +229,7 @@ void ConnectionSmUserConfirmationResponse(
 void ConnectionSmUserPasskeyResponse(
         const tp_bdaddr* tpaddr,
         bool cancelled,
-        uint32 passkey
+        u32 passkey
         )
 {
     MAKE_CL_MESSAGE(CL_INTERNAL_SM_USER_PASSKEY_REQUEST_RES);
@@ -245,7 +245,7 @@ void ConnectionSmUserPasskeyResponse(
 
 
 /*****************************************************************************/
-void ConnectionSmDeleteAuthDeviceReq(uint8 type, const bdaddr* bd_addr)
+void ConnectionSmDeleteAuthDeviceReq(u8 type, const bdaddr* bd_addr)
 {
     /* Remove the device from the trusted device list if not priority device */
     connectionAuthDeleteDevice(type, bd_addr);
@@ -254,7 +254,7 @@ void ConnectionSmDeleteAuthDeviceReq(uint8 type, const bdaddr* bd_addr)
 
 
 /*****************************************************************************/
-void ConnectionSmDeleteAllAuthDevices(uint16 ps_base)
+void ConnectionSmDeleteAllAuthDevices(u16 ps_base)
 {
     /* Remove all but priority devices from the trusted device list */
     connectionAuthDeleteAllDevice(ps_base);

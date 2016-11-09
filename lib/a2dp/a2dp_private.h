@@ -308,9 +308,9 @@ typedef struct signalling_channel
     {
         struct
         {   /* Only be valid during an channel establishment */
-            uint16      outbound_cid;
-            uint16      inbound_cid;                  
-            uint8       inbound_id;
+            u16      outbound_cid;
+            u16      inbound_cid;                  
+            u8       inbound_id;
         } setup;
         struct
         {   /* Only valid once a channel has been established */
@@ -319,7 +319,7 @@ typedef struct signalling_channel
             unsigned    issued_transaction_label:4;
             unsigned    received_transaction_label:4;
             unsigned    received_packet_length:12;
-            uint8      *received_packet;
+            u8      *received_packet;
         } active;
     } connection;
 
@@ -341,9 +341,9 @@ typedef struct media_channel
     {
         struct
         {   /* Only be valid during an channel establishment */
-            uint16      outbound_cid;
-            uint16      inbound_cid;                  
-            uint8       inbound_id;
+            u16      outbound_cid;
+            u16      inbound_cid;                  
+            u8       inbound_id;
         } setup;
         struct
         {   /* Only valid once a channel has been established */
@@ -384,8 +384,8 @@ typedef struct
     sep_info                remote_sep;                             /* Holds the current remote stream endpoint information */
     sep_info                local_sep;                              /* Holds the current local stream endpoint information */
 #endif
-    const uint8            *reconfig_caps;                          /* Pointer to reconfiguration data */
-    uint16                  reconfig_caps_size;                     /* Size of reconfiguration data */
+    const u8            *reconfig_caps;                          /* Pointer to reconfiguration data */
+    u16                  reconfig_caps_size;                     /* Size of reconfiguration data */
     signalling_channel      signal_conn;                            /* Single signalling channel per device */
     media_channel           media_conn[A2DP_MAX_MEDIA_CHANNELS];    /* One or more media channels per device */
 } remote_device;
@@ -412,7 +412,7 @@ typedef enum
 
 typedef struct
 {
-    uint16          size_blocks;
+    u16          size_blocks;
 #ifdef SINGLE_MEM_SLOT
     data_block_info block[A2DP_MAX_REMOTE_DEVICES_DEFAULT][max_data_blocks];
 #else
@@ -429,7 +429,7 @@ struct __A2DP
     unsigned             sdp_register_outstanding:2;
     unsigned             profile_role:2;
     unsigned             unused:9;
-    uint16               linkloss_timeout;
+    u16               linkloss_timeout;
     remote_device        remote_conn[A2DP_MAX_REMOTE_DEVICES_DEFAULT];
 #ifdef SINGLE_MEM_SLOT
     data_block_header    data_blocks;
@@ -442,8 +442,8 @@ struct __A2DP
 typedef struct
 {
     remote_device *device;
-    uint16         conftab_size;
-    uint16        *conftab;
+    u16         conftab_size;
+    u16        *conftab;
 } A2DP_INTERNAL_L2CAP_CONNECT_REQ_T;
 
 
@@ -470,17 +470,17 @@ typedef struct
 {
     remote_device  *device;
     bool            accept;
-    uint8           local_seid;
-    uint16          size_codec_service_caps;
-    uint8           codec_service_caps[1];
+    u8           local_seid;
+    u16          size_codec_service_caps;
+    u8           codec_service_caps[1];
 } A2DP_INTERNAL_CODEC_CONFIGURE_RSP_T;
 
 
 typedef struct
 {
     remote_device  *device;
-    uint16          size_seid_list;
-    uint8           seid_list[1];
+    u16          size_seid_list;
+    u8           seid_list[1];
 } A2DP_INTERNAL_MEDIA_OPEN_REQ_T;
 
 
@@ -524,24 +524,24 @@ typedef struct
 {
     remote_device  *device;
     media_channel  *media;
-    uint16          service_caps_size;
-    const uint8    *service_caps;
+    u16          service_caps_size;
+    const u8    *service_caps;
 } A2DP_INTERNAL_MEDIA_RECONFIGURE_REQ_T;
 
 
 typedef struct
 {
     remote_device  *device;
-    uint8           seid;
-    uint16          delay;
+    u8           seid;
+    u16          delay;
 } A2DP_INTERNAL_MEDIA_AV_SYNC_DELAY_REQ_T;
 
 
 typedef struct
 {
     remote_device  *device;
-    uint8           seid;
-    uint16          delay;
+    u8           seid;
+    u16          delay;
 } A2DP_INTERNAL_MEDIA_AV_SYNC_DELAY_RES_T;
 
 

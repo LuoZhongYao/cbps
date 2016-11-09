@@ -100,7 +100,7 @@ typedef struct{
     MAPC*       session;        /* The session handle. Invalid on failure */ 
     MapcStatus  status;         /* The Status of the MAP session. */
     bdaddr      addr;           /* BD Address of the remote device */
-    uint8       channel;        /* rfcChannel associated with the session */
+    u8       channel;        /* rfcChannel associated with the session */
  
 }MAPC_CONNECT_CFM_T;
 
@@ -113,8 +113,8 @@ typedef struct{
 typedef struct{
     MAPC*      session;      /* The session handle. */
     MapcStatus status;       /* The function status */
-    uint16     remainLen;    /* Only valid for the first packet. */
-    uint16     srcLen;       /* Source len */
+    u16     remainLen;    /* Only valid for the first packet. */
+    u16     srcLen;       /* Source len */
     Source     src;          /* Source containing the OBEX headers*/
 
 } MAPC_INT_FUNCTION_CFM_T;
@@ -123,63 +123,63 @@ typedef struct{
 /**************************************************************************
  Internal functions exposed to the APIs
 ***************************************************************************/
-bool mapcRegisterMnsApp( Task theAppTask, bool popSdpRec, uint8 mnsChannel);
-void mapcUnregisterMnsApp( uint32 recordHandle, uint8 mnsChannel );
+bool mapcRegisterMnsApp( Task theAppTask, bool popSdpRec, u8 mnsChannel);
+void mapcUnregisterMnsApp( u32 recordHandle, u8 mnsChannel );
 Task mapcGetRegAppTask( void );
 Task mapcGetProfileTask( void );
 void mapcUnregMnsApp( void );
 void mapcSdpSearch( Task theTask, const bdaddr* addr );
-void mapcPostConnectReq( Task theTask, const bdaddr* addr, uint8 channel);
+void mapcPostConnectReq( Task theTask, const bdaddr* addr, u8 channel);
 void mapcPostTaskDelete( MAPC* session );
 void mapcPostRegisterNotification( MAPC* session, bool regStatus );
 void mapcPostConnectResp(  Task theAppTask, 
                            const bdaddr* addr,
-                           uint8  channel,
+                           u8  channel,
                            bool   accept,
                            Sink   connectID );
-void mapcPostMnsSendEventResp( MAPC* session, uint16 response);
+void mapcPostMnsSendEventResp( MAPC* session, u16 response);
 void mapcPostMasSetFolder( MAPC* session, 
                            bool up, 
-                           const uint8* name, 
-                           uint16 len );
+                           const u8* name, 
+                           u16 len );
 void mapcPostMasGetFolderListing( MAPC* masSession, 
-                                  uint16 maxListCount, 
-                                  uint16 listStartOffset);
+                                  u16 maxListCount, 
+                                  u16 listStartOffset);
 
 void mapcPostMasGetMessagesListing( Mas masSession, 
-                                   const uint8* name,
-                                   uint16 nameLen,
-                                   uint16 maxListCount, 
-                                   uint16 listStartOffset,
+                                   const u8* name,
+                                   u16 nameLen,
+                                   u16 maxListCount, 
+                                   u16 listStartOffset,
                                    MapcMessageFilter  filter);
-void mapcPostMasGetMessage( Mas session, const uint8* handle, bool native );
+void mapcPostMasGetMessage( Mas session, const u8* handle, bool native );
 void mapcPostMasContinue( Mas masSession, bool proceed );
 void mapcPostMasUpdateInbox( MAPC* session ); 
 void mapcPostMasSetMessageStatus( MAPC* session,
-                                  const uint8* handle, 
-                                  uint8 indicator, 
-                                  uint8 value );
+                                  const u8* handle, 
+                                  u8 indicator, 
+                                  u8 value );
 
 void mapcMasListingCfm( MAPC* session, 
                          MapcMessageId id,
                          MapcStatus status , 
-                         uint16  totalLen,
-                         uint16 len, 
+                         u16  totalLen,
+                         u16 len, 
                          Source src );
 
 void mapcMasGetMessageCfm( MAPC* session, 
                            MapcStatus status , 
-                           uint16 len, 
+                           u16 len, 
                            Source src );
 
 void mapcMasPutMessageCfm( MAPC* session, 
                            MapcStatus status , 
-                           uint16 len, 
-                           const uint8* nameHdr );
+                           u16 len, 
+                           const u8* nameHdr );
 
 void mapcPostMasPutMessage( Mas session, 
-                            const uint8* name,
-                            uint16 nameLen,
+                            const u8* name,
+                            u16 nameLen,
                             bool native,
                             bool moreData,
                             Source message );
@@ -193,14 +193,14 @@ void mapcPostMasPutContinue( Mas session,
  Function prototypes for Message API despatcher routines. These functions 
  are defined in mapc_messages.c
 ***************************************************************************/
-void mapcMnsStartCfm( MapcStatus status , uint8 channel, uint32 handle );
+void mapcMnsStartCfm( MapcStatus status , u8 channel, u32 handle );
 void mapcConnectCfm( MAPC*        mapSession,  
                      MapcStatus   status,
                     const bdaddr  *addr,
-                     uint8        channel);
+                     u8        channel);
 void mapcDisconnectInd( MAPC* mapSession); 
 void mapcStatusCfm( MAPC* session, MapcMessageId id, MapcStatus status); 
-void mapcMnsSendEventInd( MAPC* session, bool final, uint16 len, Source src);
+void mapcMnsSendEventInd( MAPC* session, bool final, u16 len, Source src);
 void mapcMnsShutdownCfm( MapcStatus status );
 #endif /* MAPC_EXTERN_H */
 

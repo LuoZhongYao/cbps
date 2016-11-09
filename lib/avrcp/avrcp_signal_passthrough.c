@@ -45,7 +45,7 @@ NOTES
 * RETURNS
 *    void
 *******************************************************************************/
-static void avrcpSetPassthroughPacketHeader(uint8 *ptr, 
+static void avrcpSetPassthroughPacketHeader(u8 *ptr, 
             const AVRCP_INTERNAL_PASSTHROUGH_REQ_T *req)
 {
     /* AVRCP header */
@@ -91,10 +91,10 @@ static void avrcpSetPassthroughPacketHeader(uint8 *ptr,
 void avrcpHandleInternalPassThroughReq( AVRCP           *avrcp, 
                const AVRCP_INTERNAL_PASSTHROUGH_REQ_T   *req)
 {
-    uint8* ptr;
-    uint16 header_size;
-    uint16 avctp_header_size= AVCTP_SINGLE_PKT_HEADER_SIZE; 
-    uint16 packet_size = req->operation_data_length+ 
+    u8* ptr;
+    u16 header_size;
+    u16 avctp_header_size= AVCTP_SINGLE_PKT_HEADER_SIZE; 
+    u16 packet_size = req->operation_data_length+ 
                         AVRCP_PASSTHROUGH_HEADER_SIZE;
     avrcp_status_code result = avrcp_success;
 
@@ -183,8 +183,8 @@ void avrcpHandleInternalPassThroughReq( AVRCP           *avrcp,
  *    
  * PARAMETERS
  *   avrcp                   - AVRCP Task.
- *   const uint8*            - Ptr to the received AVRCP command
- *   uint16                  - packet_size
+ *   const u8*            - Ptr to the received AVRCP command
+ *   u16                  - packet_size
  *    
  *  Expected Response looks like
  *                    -----------------------------------------------
@@ -208,8 +208,8 @@ void avrcpHandleInternalPassThroughReq( AVRCP           *avrcp,
  *     
  ***************************************************************************/
 void avrcpHandlePassthroughResponse(AVRCP *avrcp, 
-                                    const uint8 *ptr, 
-                                    uint16 packet_size)
+                                    const u8 *ptr, 
+                                    u16 packet_size)
 {
 
     /* If it is Group, Handle seperate */
@@ -227,7 +227,7 @@ void avrcpHandlePassthroughResponse(AVRCP *avrcp,
     else if(avrcp->pending == avrcp_passthrough)
     {
 
-        uint16 total_pkt_len = ptr[AVRCP_DATA_LEN_OFFSET] +
+        u16 total_pkt_len = ptr[AVRCP_DATA_LEN_OFFSET] +
                                 AVRCP_PASSTHROUGH_HEADER_SIZE;
 
         
@@ -299,7 +299,7 @@ void avrcpHandlePassthroughResponse(AVRCP *avrcp,
  *MESSAGE RETURNED
  *     
  ******************************************************************************/
-void avrcpHandleGroupResponse(AVRCP *avrcp, const uint8* ptr, uint16 packet_size)
+void avrcpHandleGroupResponse(AVRCP *avrcp, const u8* ptr, u16 packet_size)
 {
     avrcp_status_code status = avrcp_fail;
 
@@ -309,7 +309,7 @@ void avrcpHandleGroupResponse(AVRCP *avrcp, const uint8* ptr, uint16 packet_size
         (ptr[AVRCP_DATA_LEN_OFFSET] == 0x05) && 
         (avrcpGetCompanyId(ptr, AVRCP_COMPANY_ID_OFFSET) == AVRCP_BT_COMPANY_ID))
     {
-        uint16 id;
+        u16 id;
 
         if (ptr[AVRCP_CTYPE_OFFSET] == avctp_response_accepted)
             status = avrcp_success;
@@ -394,8 +394,8 @@ void avrcpHandleInternalPassThroughRes(AVRCP *avrcp,
  *    
  * PARAMETERS
  *   avrcp                   - AVRCP Task.
- *   const uint8*            - Ptr to the received AVRCP command
- *   uint16                  - packet_size
+ *   const u8*            - Ptr to the received AVRCP command
+ *   u16                  - packet_size
  *    
  *  Expected Command looks like
  *                     -----------------------------------------------
@@ -419,12 +419,12 @@ void avrcpHandleInternalPassThroughRes(AVRCP *avrcp,
  *     
  *******************************************************************************/
 void avrcpHandlePassthroughCommand(AVRCP *avrcp, 
-                                   const uint8 *ptr, 
-                                   uint16 packet_size)
+                                   const u8 *ptr, 
+                                   u16 packet_size)
 {
-   uint16 op_data_len;
-   uint16 total_pkt_len;
-   uint8  transaction;
+   u16 op_data_len;
+   u16 total_pkt_len;
+   u8  transaction;
 
     /* Check the Request has Valid length */
     if(packet_size <  AVRCP_PASSTHROUGH_HEADER_SIZE) 
@@ -461,7 +461,7 @@ void avrcpHandlePassthroughCommand(AVRCP *avrcp,
           AVRCP_BT_COMPANY_ID))
        
     {
-        uint16 vendor_unique_id = (ptr[AVRCP_VENDOR_UNIQUE_ID_OFFSET]<< 8) |
+        u16 vendor_unique_id = (ptr[AVRCP_VENDOR_UNIQUE_ID_OFFSET]<< 8) |
                                    ptr[AVRCP_VENDOR_UNIQUE_ID_OFFSET+1];
         avrcpSendGroupIndToClient(avrcp, vendor_unique_id, transaction);
     }
@@ -538,7 +538,7 @@ void avrcpHandleInternalGroupResponse(AVRCP *avrcp,
 
 
 /**************************************************************************/
-void avrcpSendGroupIndToClient(AVRCP *avrcp, uint16 vendor_id, uint8 transaction)
+void avrcpSendGroupIndToClient(AVRCP *avrcp, u16 vendor_id, u8 transaction)
 {
     if (!(avrcpGetDeviceTask()->local_target_features & 
          AVRCP_GROUP_NAVIGATION))

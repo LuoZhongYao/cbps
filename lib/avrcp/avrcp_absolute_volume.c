@@ -47,11 +47,11 @@ NOTES
 *    
 *PARAMETERS
 *   avrcp            - Task
-*   uint8            - Requested volume change.0x0 as Minimum and 0x7F as Max 
+*   u8            - Requested volume change.0x0 as Minimum and 0x7F as Max 
 *
 *RETURN
 *******************************************************************************/
-void  AvrcpSetAbsoluteVolumeRequest( AVRCP *avrcp, uint8  volume)
+void  AvrcpSetAbsoluteVolumeRequest( AVRCP *avrcp, u8  volume)
 {
     avrcp_status_code status;
 
@@ -90,7 +90,7 @@ void  AvrcpSetAbsoluteVolumeRequest( AVRCP *avrcp, uint8  volume)
 ******************************************************************************/
 void avrcpSendAbsoluteVolumeCfm(AVRCP               *avrcp,
                                 avrcp_status_code   status,
-                                const uint8         *data)
+                                const u8         *data)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_SET_ABSOLUTE_VOLUME_CFM);
 
@@ -127,13 +127,13 @@ void avrcpSendAbsoluteVolumeCfm(AVRCP               *avrcp,
 *   avrcp_response_code     - response.  Expected responses are 
 *                             avctp_response_accepted or avctp_response_rejected
 *                             or avrcp_response_rejected_internal_error.
-*   uint8                   - Volume at TG. 0x0 as Minimum and 0x7F as Max 
+*   u8                   - Volume at TG. 0x0 as Minimum and 0x7F as Max 
 *
 *RETURN
 *******************************************************************************/
 void AvrcpSetAbsoluteVolumeResponse(AVRCP               *avrcp, 
                                     avrcp_response_type response, 
-                                    uint8               volume) 
+                                    u8               volume) 
 {
 
     if (avrcp->block_received_data == avrcp_absolute_volume)
@@ -173,13 +173,13 @@ void AvrcpSetAbsoluteVolumeResponse(AVRCP               *avrcp,
 *                             rejected. 
 *                             Expected response values avctp_response_changed, 
 *                             avrcp_response_interim or avctp_response_rejected.
-*   uint8                   - Volume at TG. 0x0 as Minimum and 0x7F as Max 
+*   u8                   - Volume at TG. 0x0 as Minimum and 0x7F as Max 
 *
 *RETURN
 *******************************************************************************/
 void AvrcpEventVolumeChangedResponse(AVRCP               *avrcp, 
                                      avrcp_response_type response,
-                                     uint8               volume)
+                                     u8               volume)
 {
       /* Only send a response if this event was registered by the CT. */
     if (isEventRegistered(avrcp,EVENT_VOLUME_CHANGED))
@@ -215,7 +215,7 @@ void AvrcpEventVolumeChangedResponse(AVRCP               *avrcp,
 *
 *RETURN
 ******************************************************************************/
-void avrcpHandleSetAbsoluteVolumeCommand(AVRCP *avrcp, uint8 volume)
+void avrcpHandleSetAbsoluteVolumeCommand(AVRCP *avrcp, u8 volume)
 {
     volume &= AVRCP_MAX_VOL_MASK;
 
@@ -245,7 +245,7 @@ void avrcpHandleSetAbsoluteVolumeCommand(AVRCP *avrcp, uint8 volume)
 void avrcpHandleInternalAbsoluteVolumeRsp(AVRCP                 *avrcp,
                   const AVRCP_INTERNAL_SET_ABSOLUTE_VOL_RES_T   *res)
 {
-    uint8 mandatory_data[AVRCP_ERROR_CODE_SIZE]; /* 1 byte */
+    u8 mandatory_data[AVRCP_ERROR_CODE_SIZE]; /* 1 byte */
     avrcp_response_type response = res->response;
 
    /* Get the error status code */

@@ -23,6 +23,6 @@ void csr2csrHandleTxtInd(void);
 void csr2csrHandleSmsInd(void);   
 void csr2csrHandleSmsCfm(void);
 void csr2csrHandleAgBatteryRequestInd(void);
-void csr2csrHandleAgBatteryRequestRes(uint8 idx);
+void csr2csrHandleAgBatteryRequestRes(u8 idx);
     
 #endif

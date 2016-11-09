@@ -29,7 +29,7 @@ NOTES
 
 
 /*****************************************************************************/
-void ConnectionChangeLocalName(uint16 size_local_name, const uint8 *local_name)
+void ConnectionChangeLocalName(u16 size_local_name, const u8 *local_name)
 {
 	/* Check params are within allowed values - debug build only */
 #ifdef CONNECTION_DEBUG_LIB	
@@ -47,7 +47,7 @@ void ConnectionChangeLocalName(uint16 size_local_name, const uint8 *local_name)
 		/* Check local name length is valid and less than MAX_NAME_LENGTH chars */
 		if (size_local_name && size_local_name <= MAX_NAME_LENGTH)
 		{
-			uint16 name_length = 0;
+			u16 name_length = 0;
 
 			/* Make sure the name is null terminated */
 			if (local_name[size_local_name-1] != '\0')
@@ -56,7 +56,7 @@ void ConnectionChangeLocalName(uint16 size_local_name, const uint8 *local_name)
 				name_length = size_local_name;
 
 			message->length_name = name_length;
-			message->name = (uint8 *)PanicUnlessMalloc(name_length);
+			message->name = (u8 *)PanicUnlessMalloc(name_length);
 			memmove(message->name, local_name, size_local_name);
 			message->name[name_length-1] = '\0';
 		}

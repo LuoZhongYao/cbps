@@ -25,7 +25,7 @@ NOTES
 
 
 /******************************************************************************/
-bool gattGapServerSendReadDeviceNameInd(GGAPS *gap_server, uint16 cid, uint16 offset)
+bool gattGapServerSendReadDeviceNameInd(GGAPS *gap_server, u16 cid, u16 offset)
 {
     if (gap_server->app_task)
     {
@@ -41,7 +41,7 @@ bool gattGapServerSendReadDeviceNameInd(GGAPS *gap_server, uint16 cid, uint16 of
 
 
 /******************************************************************************/
-bool gattGapServerSendReadAppearanceInd(const GGAPS *gap_server, uint16 cid)
+bool gattGapServerSendReadAppearanceInd(const GGAPS *gap_server, u16 cid)
 {
     if (gap_server->app_task)
     {

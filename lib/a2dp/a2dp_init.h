@@ -46,7 +46,7 @@ DESCRIPTION
     Initialise a remote_device structure by setting .device_id member
     to given value and zeroing the rest.
 */
-void a2dpInitialiseRemoteDevice(remote_device *device, uint8 device_id);
+void a2dpInitialiseRemoteDevice(remote_device *device, u8 device_id);
 
 
 #endif /* A2DP_INIT_H_ */

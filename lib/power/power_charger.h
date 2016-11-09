@@ -54,7 +54,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void powerChargerHandleVoltageReading(uint16 reading);
+void powerChargerHandleVoltageReading(u16 reading);
 
 
 /****************************************************************************

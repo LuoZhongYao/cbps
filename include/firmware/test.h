@@ -17,7 +17,7 @@
   Don't call this function directly.
   Don't rely on this being present.
 */
-bool TestPerform_(uint16 len, const uint16 *args);
+bool TestPerform_(u16 len, const u16 *args);
 
 /*!
     @brief Radio test pause.
@@ -31,7 +31,7 @@ bool TestPause(void);
    The upper 8 bits are the external gain.
    @param mod_freq The mod_freq to use.
 */
-bool TestTxStart(uint16 lo_freq, uint16 level, uint16 mod_freq);
+bool TestTxStart(u16 lo_freq, u16 level, u16 mod_freq);
 
 /*!
   @brief Radio test tx data 1.
@@ -39,7 +39,7 @@ bool TestTxStart(uint16 lo_freq, uint16 level, uint16 mod_freq);
   @param level    Transmit level to use. The lower 8 bits are the internal gain. 
   The upper 8 bits are the external gain.
 */
-bool TestTxData1(uint16 lo_freq, uint16 level);
+bool TestTxData1(u16 lo_freq, u16 level);
 
 /*!
    @brief Radio test tx data 2.
@@ -47,7 +47,7 @@ bool TestTxData1(uint16 lo_freq, uint16 level);
    @param level The level to use. The lower 8 bits are the internal gain. 
    The upper 8 bits are the external gain.
 */
-bool TestTxData2(uint16 cc, uint16 level);
+bool TestTxData2(u16 cc, u16 level);
 
 /*!
    @brief Radio test rx.
@@ -55,7 +55,7 @@ bool TestTxData2(uint16 cc, uint16 level);
    @param highside The high side to use.
    @param attn The attn to use. 
 */
-bool TestRxStart(uint16 lo_freq, uint16 highside, uint16 attn);
+bool TestRxStart(u16 lo_freq, u16 highside, u16 attn);
 
 /*!
    @brief Radio test deep sleep.
@@ -66,14 +66,14 @@ bool TestDeepSleep(void);
    @brief  Configure hardware loopback for PCM port.
    @param  pcm_mode  Chosen loopback mode. Valid values: 0, 1, 2
 */
-bool TestPcmLb(uint16 pcm_mode);
+bool TestPcmLb(u16 pcm_mode);
 
 /*!
    @brief  Radio test loop back.
    @param lo_freq The lo_freq to use.
    @param level The level to use.
 */
-bool TestLoopback(uint16 lo_freq, uint16 level);
+bool TestLoopback(u16 lo_freq, u16 level);
 
 /*!
    @brief  Configure external hardware loopback for PCM port.
@@ -81,13 +81,13 @@ bool TestLoopback(uint16 lo_freq, uint16 level);
            port and is read back again on the PCM input port. 
    @param pcm_mode  Chosen loopback mode. Valid values: 0, 1, 2
 */
-bool TestPcmExtLb(uint16 pcm_mode);
+bool TestPcmExtLb(u16 pcm_mode);
 
 /*!
    @brief  Radio test for configuring the crystal trim value.
    @param  xtal_ftrim Selected crystal trim value.
 */
-bool TestCfgXtalFtrim(uint16 xtal_ftrim);
+bool TestCfgXtalFtrim(u16 xtal_ftrim);
 
 /*!
    @brief  Play a constant tone on the PCM port (or the codec for
@@ -96,7 +96,7 @@ bool TestCfgXtalFtrim(uint16 xtal_ftrim);
    @param  ampl  Chosen amplitude.
    @param  dc    Specifies a constant offset to add to the audio data.
 */
-bool TestPcmTone(uint16 freq, uint16 ampl, uint16 dc);
+bool TestPcmTone(u16 freq, u16 ampl, u16 dc);
 
 /*!
    @brief  Turn on codec hardware for stereo loopback 
@@ -104,7 +104,7 @@ bool TestPcmTone(uint16 freq, uint16 ampl, uint16 dc);
                          16000, 22050, 24000, 32000 and 44100
    @param  reroute_optn  Routing option. Valid values: 0, 1, 2, 3
 */ 
-bool TestCodecStereoLb(uint16 samp_rate, uint16 reroute_optn);
+bool TestCodecStereoLb(u16 samp_rate, u16 reroute_optn);
 
 /*!
    @brief  Play a constant tone on the PCM port (or the codec for
@@ -115,7 +115,7 @@ bool TestCodecStereoLb(uint16 samp_rate, uint16 reroute_optn);
    @param  interface Chosen PCM interface. A value from the #audio_instance enumeration.
    @return TRUE if successful, else FALSE.
 */
-bool TestPcmToneIf(uint16 freq, uint16 ampl, uint16 dc, uint16 interface);
+bool TestPcmToneIf(u16 freq, u16 ampl, u16 dc, u16 interface);
 
 /*!
    @brief  Configure hardware loopback for PCM port.
@@ -123,7 +123,7 @@ bool TestPcmToneIf(uint16 freq, uint16 ampl, uint16 dc, uint16 interface);
    @param  interface Chosen PCM interface. A value from the #audio_instance enumeration.
    @return TRUE if successful, else FALSE.
 */
-bool TestPcmLbIf(uint16 pcm_mode, uint16 interface);
+bool TestPcmLbIf(u16 pcm_mode, u16 interface);
 
 /*!
    @brief  Configure external hardware loopback for PCM port.
@@ -133,6 +133,6 @@ bool TestPcmLbIf(uint16 pcm_mode, uint16 interface);
    @param  interface Chosen PCM interface. A value from the #audio_instance enumeration.
    @return TRUE if successful, else FALSE.
 */
-bool TestPcmExtLbIf(uint16 pcm_mode, uint16 interface);
+bool TestPcmExtLbIf(u16 pcm_mode, u16 interface);
 
 #endif

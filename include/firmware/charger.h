@@ -22,7 +22,7 @@
   Consult the datasheet for your BlueCore variant and the documentation for the
   #charger_config_key type for more information.
 */
-bool ChargerConfigure(charger_config_key key, uint16 value);
+bool ChargerConfigure(charger_config_key key, u16 value);
 
 /*!
   @brief Get the status of the charging hardware.
@@ -55,7 +55,7 @@ charger_status ChargerStatus(void);
     request being rejected. Returns 0 on success.
 
 */
-charger_events ChargerDebounce(charger_events events_to_enable, uint16 count, uint16 period);
+charger_events ChargerDebounce(charger_events events_to_enable, u16 count, u16 period);
 
 /*!
     @brief Returns the state of the battery recorded at boot time.

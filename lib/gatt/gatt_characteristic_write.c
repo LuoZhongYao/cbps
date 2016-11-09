@@ -36,12 +36,12 @@ static void handleInternalWriteReqPrepare(
                       GATT_WRITE_RELIABLE))
 
 static void internalWriteReq(Task theAppTask,
-                             uint16 id,
-                             uint16 cid,
-                             uint16 handle,
-                             uint16 offs,
-                             uint16 size_value,
-                             uint8 *value)
+                             u16 id,
+                             u16 cid,
+                             u16 handle,
+                             u16 offs,
+                             u16 size_value,
+                             u8 *value)
 {
     cid_map_t *conn;
     
@@ -114,10 +114,10 @@ static void internalWriteReq(Task theAppTask,
 
 #if (GATT_FEATURES & GATT_WRITE_COMMAND)
 void GattWriteWithoutResponseRequest(Task theAppTask,
-                                     uint16 cid,
-                                     uint16 handle,
-                                     uint16 size_value,
-                                     uint8 *value)
+                                     u16 cid,
+                                     u16 handle,
+                                     u16 size_value,
+                                     u8 *value)
 {
     internalWriteReq(theAppTask, gatt_ms_write_without_response, cid,
                      handle, 0 /* offs */, size_value, value);
@@ -126,10 +126,10 @@ void GattWriteWithoutResponseRequest(Task theAppTask,
 
 #if (GATT_FEATURES & GATT_WRITE_SIGNED)
 void GattSignedWriteWithoutResponseRequest(Task theAppTask,
-                                           uint16 cid,
-                                           uint16 handle,
-                                           uint16 size_value,
-                                           uint8 *value)
+                                           u16 cid,
+                                           u16 handle,
+                                           u16 size_value,
+                                           u8 *value)
 {
     internalWriteReq(theAppTask, gatt_ms_signed_write_without_response, cid,
                      handle, 0 /* offs */, size_value, value);
@@ -138,10 +138,10 @@ void GattSignedWriteWithoutResponseRequest(Task theAppTask,
 
 #if (GATT_FEATURES & GATT_WRITE)
 void GattWriteCharacteristicValueRequest(Task theAppTask,
-                                         uint16 cid,
-                                         uint16 handle,
-                                         uint16 size_value,
-                                         uint8 *value)
+                                         u16 cid,
+                                         u16 handle,
+                                         u16 size_value,
+                                         u8 *value)
 {
     internalWriteReq(theAppTask, gatt_ms_write_characteristic_value, cid,
                      handle, 0 /* offs */, size_value, value);
@@ -167,7 +167,7 @@ void gattHandleInternalWriteReq(GATT_INTERNAL_WRITE_REQ_T *m)
 {
     cid_map_t *conn = PanicNull(gattFindConn(m->common.cid)); /* never NULL */
     STASH(conn, stash, WRITE_CHARACTERISTIC_VALUE);
-    uint16 flags;
+    u16 flags;
 
     switch (m->id)
     {
@@ -233,7 +233,7 @@ void gattHandleAttWriteCfm(ATT_WRITE_CFM_T *m)
 {
     cid_map_t *conn = PanicNull(gattFindConn(m->cid)); /* never NULL */
     STASH(conn, stash, WRITE_CHARACTERISTIC_VALUE);
-    uint16 id;
+    u16 id;
 
     stash->status = gatt_message_status(m->result);
 
@@ -271,10 +271,10 @@ void gattHandleAttWriteCfm(ATT_WRITE_CFM_T *m)
 
 #if (GATT_FEATURES & GATT_WRITE_LONG)
 void GattWriteLongCharacteristicValueRequest(Task theAppTask,
-                                             uint16 cid,
-                                             uint16 handle,
-                                             uint16 size_value,
-                                             uint8 *value)
+                                             u16 cid,
+                                             u16 handle,
+                                             u16 size_value,
+                                             u8 *value)
 {
     internalWriteReq(theAppTask, gatt_ms_write_long_characteristic_value, cid,
                      handle, 0 /* offs */, size_value, value);
@@ -408,11 +408,11 @@ static void handleAttExecuteWriteCfmLong(cid_map_t *conn,
 
 #if (GATT_FEATURES & GATT_WRITE_RELIABLE)
 void GattReliableWritePrepareRequest(Task theAppTask,
-                                     uint16 cid,
-                                     uint16 handle,
-                                     uint16 offset,
-                                     uint16 size_value,
-                                     uint8 *value)
+                                     u16 cid,
+                                     u16 handle,
+                                     u16 offset,
+                                     u16 size_value,
+                                     u8 *value)
 {
     internalWriteReq(theAppTask, gatt_ms_prepare_write, cid,
                      handle, offset, size_value, value);
@@ -478,7 +478,7 @@ static void handleAttPrepareWriteCfmPrepare(cid_map_t *conn,
         /* check that the value matches */
         (m->offset != data->offs ||
          m->size_value != data->size_value ||
-         memcmp8(m->value, data->value, m->size_value)))
+         memcmp(m->value, data->value, m->size_value)))
     {
         stash->status = gatt_status_value_mismatch;
     }
@@ -509,8 +509,8 @@ RETURNS
 
 */
 static void sendReliableWriteExecuteCfm(Task task,
-                                        uint16 cid,
-                                        uint16 handle, 
+                                        u16 cid,
+                                        u16 handle, 
                                         gatt_status_t status)
 {
     MAKE_GATT_MESSAGE(GATT_RELIABLE_WRITE_EXECUTE_CFM);
@@ -523,7 +523,7 @@ static void sendReliableWriteExecuteCfm(Task task,
 }
 
 void GattReliableWriteExecuteRequest(Task theAppTask,
-                                     uint16 cid,
+                                     u16 cid,
                                      bool execute)
 {
     cid_map_t *conn;

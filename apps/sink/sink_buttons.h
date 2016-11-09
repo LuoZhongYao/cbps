@@ -16,12 +16,12 @@ DESCRIPTION
 #define CHG_PIN     (25)
 
     /*the mask values for the charger pins*/
-#define VREG_PIN_MASK ((uint32)1 << VREG_PIN)
-#define CHG_PIN_MASK ((uint32)1 << CHG_PIN)
+#define VREG_PIN_MASK ((u32)1 << VREG_PIN)
+#define CHG_PIN_MASK ((u32)1 << CHG_PIN)
 
     /*the mask values for the charger pin events*/
-#define CHARGER_VREG_VALUE ( (uint32)((PsuGetVregEn()) ? VREG_PIN_MASK:0 ) )
-#define CHARGER_CONNECT_VALUE ( (uint32)( (powerManagerIsChargerConnected())  ? CHG_PIN_MASK:0 ) )
+#define CHARGER_VREG_VALUE ( (u32)((PsuGetVregEn()) ? VREG_PIN_MASK:0 ) )
+#define CHARGER_CONNECT_VALUE ( (u32)( (powerManagerIsChargerConnected())  ? CHG_PIN_MASK:0 ) )
 
 #define DOUBLE_PRESS 2
 #define TRIPLE_PRESS 3
@@ -56,7 +56,7 @@ DESCRIPTION
     pios of anywhere from 0 to 31 and cap sense 0 to 5
 
 */ 
-uint32 ButtonsTranslate(uint16 CapSenseState, uint32 PioState);
+u32 ButtonsTranslate(u16 CapSenseState, u32 PioState);
 
 
 /*
@@ -65,7 +65,7 @@ DESCRIPTION
     pattern specified by pskey user 10
 
 */ 
-uint32 ButtonsTranslateInput(uint16 block, uint16 index, bool include_cap_sense);
+u32 ButtonsTranslateInput(u16 block, u16 index, bool include_cap_sense);
 
 
 

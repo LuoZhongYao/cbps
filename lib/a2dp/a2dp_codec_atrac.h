@@ -25,7 +25,7 @@ DESCRIPTION
     on the A2DP codec negotiated settings.
 
 */
-void getAtracConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_settings);
+void getAtracConfigSettings(const u8 *service_caps, a2dp_codec_settings *codec_settings);
 
 
 /*************************************************************************
@@ -40,7 +40,7 @@ DESCRIPTION
     design decision and not specified by the A2DP profiles.
 
 */
-void selectOptimalAtracCapsSink(const uint8 *local_codec_caps, uint8 *remote_codec_caps);
+void selectOptimalAtracCapsSink(const u8 *local_codec_caps, u8 *remote_codec_caps);
 
 
 #endif /* INCLUDE_ATRAC */

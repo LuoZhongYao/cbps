@@ -82,8 +82,8 @@ typedef enum __gatt_manager_status
 typedef struct __gatt_manager_server_registration_params
 {
    Task             task;          /*! The task to associate with the handles in the database */
-   uint16           start_handle;  /*! This is the first handle in the pre-built GATT database that the server task is interested in */
-   uint16           end_handle;    /*! This is the last handle in the pre-built GATT database that the server task is interested in */
+   u16           start_handle;  /*! This is the first handle in the pre-built GATT database that the server task is interested in */
+   u16           end_handle;    /*! This is the last handle in the pre-built GATT database that the server task is interested in */
 
 } gatt_manager_server_registration_params_t;
 
@@ -97,9 +97,9 @@ typedef struct __gatt_manager_server_registration_params
 typedef struct __gatt_manager_client_registration_params
 {
     Task            client_task;    /*! The task to associated with the handles in the database */
-    uint16          cid;            /*! The CID of the device on which the service side of the service is to be accessed */
-    uint16          start_handle;   /*! The first handle which the service wishes to access */
-    uint16          end_handle;     /*! The last handle which the service wishes to access */
+    u16          cid;            /*! The CID of the device on which the service side of the service is to be accessed */
+    u16          start_handle;   /*! The first handle which the service wishes to access */
+    u16          end_handle;     /*! The last handle which the service wishes to access */
 
 } gatt_manager_client_registration_params_t;
 
@@ -111,8 +111,8 @@ typedef struct __gatt_manager_client_registration_params
 */
 typedef struct __gatt_manager_client_service_data
 {
-    uint16  start_handle;  /*! The first handle registered by the client */
-    uint16  end_handle;    /*! The last handle registered by the client */
+    u16  start_handle;  /*! The first handle registered by the client */
+    u16  end_handle;    /*! The last handle registered by the client */
 
 } gatt_manager_client_service_data_t;
 
@@ -133,12 +133,12 @@ typedef struct __gatt_manager_client_service_data
 */
 typedef struct PACK_STRUCT __GATT_MANAGER_SERVER_ACCESS_IND
 {
-    uint16  cid;
-    uint16  handle;
-    uint16  flags;
-    uint16  offset;
-    uint16  size_value;
-    uint8   value[1];
+    u16  cid;
+    u16  handle;
+    u16  flags;
+    u16  offset;
+    u16  size_value;
+    u8   value[1];
 
 } GATT_MANAGER_SERVER_ACCESS_IND_T;
 
@@ -157,10 +157,10 @@ typedef struct PACK_STRUCT __GATT_MANAGER_SERVER_ACCESS_IND
 */
 typedef struct PACK_STRUCT __GATT_MANAGER_REMOTE_SERVER_NOTIFICATION_IND
 {
-    uint16 cid;
-    uint16 handle;
-    uint16 size_value;
-    uint8 value[1];
+    u16 cid;
+    u16 handle;
+    u16 size_value;
+    u8 value[1];
 
 } GATT_MANAGER_REMOTE_SERVER_NOTIFICATION_IND_T;
 
@@ -179,10 +179,10 @@ typedef struct PACK_STRUCT __GATT_MANAGER_REMOTE_SERVER_NOTIFICATION_IND
 */
 typedef struct PACK_STRUCT __GATT_MANAGER_REMOTE_SERVER_INDICATION_IND
 {
-    uint16  cid;
-    uint16  handle;
-    uint16  size_value;
-    uint8   value[1];
+    u16  cid;
+    u16  handle;
+    u16  size_value;
+    u8   value[1];
 
 } GATT_MANAGER_REMOTE_SERVER_INDICATION_IND_T;
 
@@ -197,7 +197,7 @@ typedef struct PACK_STRUCT __GATT_MANAGER_REMOTE_SERVER_INDICATION_IND
 typedef struct PACK_STRUCT __GATT_MANAGER_DISCONNECT_IND
 {
     gatt_status_t   status;
-    uint16          cid;
+    u16          cid;
 
 } GATT_MANAGER_DISCONNECT_IND_T;
 
@@ -252,7 +252,7 @@ void GattManagerDeInit(void);
 
     @return TRUE on success
 */
-bool GattManagerRegisterConstDB(const uint16* db_ptr, uint16 size);
+bool GattManagerRegisterConstDB(const u16* db_ptr, u16 size);
 
 
 /*!
@@ -334,9 +334,9 @@ typedef struct PACK_STRUCT __GATT_MANAGER_REMOTE_CLIENT_CONNECT_CFM
 {
     gatt_status_t           status;
     typed_bdaddr            taddr;
-    uint16                  flags;
-    uint16                  cid;
-    uint16                  mtu;
+    u16                  flags;
+    u16                  cid;
+    u16                  mtu;
 
 } GATT_MANAGER_REMOTE_CLIENT_CONNECT_CFM_T;
 
@@ -384,11 +384,11 @@ typedef struct PACK_STRUCT __GATT_MANAGER_CANCEL_REMOTE_CLIENT_CONNECT_CFM
 */
 bool GattManagerServerAccessResponse(
         Task   task,
-        uint16 cid,
-        uint16 handle,
-        uint16 result,
-        uint16 size_value,
-        const uint8 *value
+        u16 cid,
+        u16 handle,
+        u16 result,
+        u16 size_value,
+        const u8 *value
         );
 
 
@@ -413,10 +413,10 @@ bool GattManagerServerAccessResponse(
 */
 void GattManagerRemoteClientNotify(
         Task   task,
-        uint16 cid,
-        uint16 handle,
-        uint16 size_value,
-        const uint8 *value
+        u16 cid,
+        u16 handle,
+        u16 size_value,
+        const u8 *value
         );
 
 /*!
@@ -432,8 +432,8 @@ void GattManagerRemoteClientNotify(
 typedef struct PACK_STRUCT __GATT_MANAGER_REMOTE_CLIENT_NOTIFICATION_CFM
 {
     gatt_status_t   status;
-    uint16          cid;
-    uint16          handle;
+    u16          cid;
+    u16          handle;
 
 } GATT_MANAGER_REMOTE_CLIENT_NOTIFICATION_CFM_T;
 
@@ -460,10 +460,10 @@ typedef struct PACK_STRUCT __GATT_MANAGER_REMOTE_CLIENT_NOTIFICATION_CFM
 */
 void GattManagerRemoteClientIndicate(
         Task   task,
-        uint16 cid,
-        uint16 handle,
-        uint16 size_value,
-        const uint8 *value
+        u16 cid,
+        u16 handle,
+        u16 size_value,
+        const u8 *value
         );
 
 /*!
@@ -483,8 +483,8 @@ void GattManagerRemoteClientIndicate(
 typedef struct PACK_STRUCT __GATT_MANAGER_REMOTE_CLIENT_INDICATION_CFM
 {
     gatt_status_t   status;
-    uint16          cid;
-    uint16          handle;
+    u16          cid;
+    u16          handle;
 
 } GATT_MANAGER_REMOTE_CLIENT_INDICATION_CFM_T;
 
@@ -560,9 +560,9 @@ typedef struct PACK_STRUCT __GATT_MANAGER_REMOTE_SERVER_CONNECT_CFM
 {
     gatt_status_t           status;
     typed_bdaddr            taddr;
-    uint16                  flags;
-    uint16                  cid;
-    uint16                  mtu;
+    u16                  flags;
+    u16                  cid;
+    u16                  mtu;
 
 } GATT_MANAGER_REMOTE_SERVER_CONNECT_CFM_T;
 
@@ -594,10 +594,10 @@ void GattManagerDiscoverAllCharacteristics(const Task client);
 */
 typedef struct PACK_STRUCT __GATT_MANAGER_DISCOVER_ALL_CHARACTERISTICS_CFM
 {
-    uint16 cid;
-    uint16 declaration;
-    uint16 handle;
-    uint8 properties;
+    u16 cid;
+    u16 declaration;
+    u16 handle;
+    u8 properties;
     gatt_uuid_type_t uuid_type;
     gatt_uuid_t uuid[4];
     bool more_to_come;
@@ -620,8 +620,8 @@ typedef struct PACK_STRUCT __GATT_MANAGER_DISCOVER_ALL_CHARACTERISTICS_CFM
             to the client.
 */
 void GattManagerDiscoverAllCharacteristicDescriptors(const Task client,
-                                                     uint16 start_handle,
-                                                     uint16 end_handle);
+                                                     u16 start_handle,
+                                                     u16 end_handle);
 
 /*!
     @brief Response message for GattManagerDiscoverAllCharacteristicDescriptors()
@@ -635,8 +635,8 @@ void GattManagerDiscoverAllCharacteristicDescriptors(const Task client,
 */
 typedef struct PACK_STRUCT __GATT_MANAGER_DISCOVER_ALL_CHARACTERISTIC_DESCRIPTORS_CFM
 {
-    uint16 cid;
-    uint16 handle;
+    u16 cid;
+    u16 handle;
     gatt_uuid_type_t uuid_type;
     gatt_uuid_t uuid[4];
     bool more_to_come;
@@ -660,7 +660,7 @@ typedef struct PACK_STRUCT __GATT_MANAGER_DISCOVER_ALL_CHARACTERISTIC_DESCRIPTOR
 
     @return void
 */
-void GattManagerReadCharacteristicValue(const Task client, uint16 handle);
+void GattManagerReadCharacteristicValue(const Task client, u16 handle);
 
 /*!
     @brief Response message for GattManagerReadCharacteristicValue()
@@ -673,11 +673,11 @@ void GattManagerReadCharacteristicValue(const Task client, uint16 handle);
 */
 typedef struct PACK_STRUCT __GATT_MANAGER_READ_CHARACTERISTIC_VALUE_CFM
 {
-    uint16 cid;
-    uint16 handle;
+    u16 cid;
+    u16 handle;
     gatt_status_t status;
-    uint16 size_value;
-    uint8 value[1];
+    u16 size_value;
+    u8 value[1];
 
 } GATT_MANAGER_READ_CHARACTERISTIC_VALUE_CFM_T;
 
@@ -704,8 +704,8 @@ typedef struct PACK_STRUCT __GATT_MANAGER_READ_CHARACTERISTIC_VALUE_CFM
             client.
 */
 void GattManagerReadUsingCharacteristicUuid(const Task client,
-                                            uint16 start_handle,
-                                            uint16 end_handle,
+                                            u16 start_handle,
+                                            u16 end_handle,
                                             gatt_uuid_type_t uuid_type,
                                             const gatt_uuid_t *uuid);
 
@@ -721,12 +721,12 @@ void GattManagerReadUsingCharacteristicUuid(const Task client,
 */
 typedef struct PACK_STRUCT __GATT_MANAGER_READ_USING_CHARACTERISTIC_UUID_CFM
 {
-    uint16 cid;
-    uint16 handle;
+    u16 cid;
+    u16 handle;
     bool more_to_come;
     gatt_status_t status;
-    uint16 size_value;
-    uint8 value[1];
+    u16 size_value;
+    u8 value[1];
 
 } GATT_MANAGER_READ_USING_CHARACTERISTIC_UUID_CFM_T;
 
@@ -748,7 +748,7 @@ typedef struct PACK_STRUCT __GATT_MANAGER_READ_USING_CHARACTERISTIC_UUID_CFM
     @return a GATT_MANAGER_READ_LONG_CHARACTERISTIC_VALUE_CFM message is sent to the
             client.
 */
-void GattManagerReadLongCharacteristicValue(Task client, uint16 handle);
+void GattManagerReadLongCharacteristicValue(Task client, u16 handle);
 
 /*!
     @brief Response message for GattManagerReadLongCharacteristicValue()
@@ -763,13 +763,13 @@ void GattManagerReadLongCharacteristicValue(Task client, uint16 handle);
 */
 typedef struct PACK_STRUCT __GATT_MANAGER_READ_LONG_CHARACTERISTIC_VALUE_CFM
 {
-    uint16 cid;
-    uint16 handle;
+    u16 cid;
+    u16 handle;
     bool more_to_come;
     gatt_status_t status;
-    uint16 offset;
-    uint16 size_value;
-    uint8 value[1];
+    u16 offset;
+    u16 size_value;
+    u8 value[1];
 
 } GATT_MANAGER_READ_LONG_CHARACTERISTIC_VALUE_CFM_T;
 
@@ -795,9 +795,9 @@ typedef struct PACK_STRUCT __GATT_MANAGER_READ_LONG_CHARACTERISTIC_VALUE_CFM
     @return a GATT_MANAGER_WRITE_WITHOUT_RESPONSE_CFM message is sent to the client.
 */
 void GattManagerWriteWithoutResponse(const Task client,
-                                     uint16 handle,
-                                     uint16 size_value,
-                                     uint8 *value);
+                                     u16 handle,
+                                     u16 size_value,
+                                     u8 *value);
 
 /*!
     @brief Response message for GattManagerWriteWithoutResponse()
@@ -808,8 +808,8 @@ void GattManagerWriteWithoutResponse(const Task client,
 */
 typedef struct PACK_STRUCT __GATT_MANAGER_WRITE_WITHOUT_RESPONSE_CFM
 {
-    uint16 cid;
-    uint16 handle;
+    u16 cid;
+    u16 handle;
     gatt_status_t status;
 
 } GATT_MANAGER_WRITE_WITHOUT_RESPONSE_CFM_T;
@@ -837,9 +837,9 @@ typedef struct PACK_STRUCT __GATT_MANAGER_WRITE_WITHOUT_RESPONSE_CFM
     @return a GATT_MANAGER_SIGNED_WRITE_WITHOUT_RESPONSE_CFM is sent to the client.
 */
 void GattManagerSignedWriteWithoutResponse(const Task client,
-                                           uint16 handle,
-                                           uint16 size_value,
-                                           uint8 *value);
+                                           u16 handle,
+                                           u16 size_value,
+                                           u8 *value);
 
 /*!
     @brief Response message for GattManagerSignedWriteWithoutResponse()
@@ -850,8 +850,8 @@ void GattManagerSignedWriteWithoutResponse(const Task client,
 */
 typedef struct PACK_STRUCT __GATT_MANAGER_SIGNED_WRITE_WITHOUT_RESPONSE_CFM
 {
-    uint16 cid;
-    uint16 handle;
+    u16 cid;
+    u16 handle;
     gatt_status_t status;
 
 } GATT_MANAGER_SIGNED_WRITE_WITHOUT_RESPONSE_CFM_T;
@@ -879,9 +879,9 @@ typedef struct PACK_STRUCT __GATT_MANAGER_SIGNED_WRITE_WITHOUT_RESPONSE_CFM
     @return a GATT_MANAGER_WRITE_CHARACTERISTIC_VALUE_CFM message is sent to the client.
 */
 void GattManagerWriteCharacteristicValue(const Task client,
-                                         uint16 handle,
-                                         uint16 size_value,
-                                         uint8 *value);
+                                         u16 handle,
+                                         u16 size_value,
+                                         u8 *value);
 
 /*!
     @brief Response message for GattManagerWriteCharacteristicValue()
@@ -892,8 +892,8 @@ void GattManagerWriteCharacteristicValue(const Task client,
 */
 typedef struct PACK_STRUCT __GATT_MANAGER_WRITE_CHARACTERISTIC_VALUE_CFM
 {
-    uint16 cid;
-    uint16 handle;
+    u16 cid;
+    u16 handle;
     gatt_status_t status;
 
 } GATT_MANAGER_WRITE_CHARACTERISTIC_VALUE_CFM_T;
@@ -917,9 +917,9 @@ typedef struct PACK_STRUCT __GATT_MANAGER_WRITE_CHARACTERISTIC_VALUE_CFM
             client.
 */
 void GattManagerWriteLongCharacteristicValue(const Task client,
-                                             uint16 handle,
-                                             uint16 size_value,
-                                             uint8 *value);
+                                             u16 handle,
+                                             u16 size_value,
+                                             u8 *value);
 
 /*!
     @brief Response message for GattManagerWriteLongCharacteristicValue()
@@ -930,8 +930,8 @@ void GattManagerWriteLongCharacteristicValue(const Task client,
 */
 typedef struct PACK_STRUCT __GATT_MANAGER_WRITE_LONG_CHARACTERISTIC_VALUE_CFM
 {
-    uint16 cid;
-    uint16 handle;
+    u16 cid;
+    u16 handle;
     gatt_status_t status;
 
 } GATT_MANAGER_WRITE_LONG_CHARACTERISTIC_VALUE_CFM_T;
@@ -965,10 +965,10 @@ typedef struct PACK_STRUCT __GATT_MANAGER_WRITE_LONG_CHARACTERISTIC_VALUE_CFM
     @return a GATT_MANAGER_RELIABLE_WRITE_PREPARE_CFM message is sent to the client.
 */
 void GattManagerReliableWritePrepare(const Task client,
-                                     uint16 handle,
-                                     uint16 offset,
-                                     uint16 size_value,
-                                     uint8 *value);
+                                     u16 handle,
+                                     u16 offset,
+                                     u16 size_value,
+                                     u8 *value);
 
 /*!
     @brief Response message for GattManagerReliableWritePrepare()
@@ -979,8 +979,8 @@ void GattManagerReliableWritePrepare(const Task client,
 */
 typedef struct PACK_STRUCT __GATT_MANAGER_RELIABLE_WRITE_PREPARE_CFM
 {
-    uint16 cid;
-    uint16 handle;
+    u16 cid;
+    u16 handle;
     gatt_status_t status;
 
 } GATT_MANAGER_RELIABLE_WRITE_PREPARE_CFM_T;
@@ -1011,8 +1011,8 @@ void GattManagerReliableWriteExecute(const Task client, bool execute);
 */
 typedef struct PACK_STRUCT __GATT_MANAGER_RELIABLE_WRITE_EXECUTE_CFM
 {
-    uint16 cid;
-    uint16 handle;
+    u16 cid;
+    u16 handle;
     gatt_status_t status;
 } GATT_MANAGER_RELIABLE_WRITE_EXECUTE_CFM_T;
 
@@ -1029,7 +1029,7 @@ typedef struct PACK_STRUCT __GATT_MANAGER_RELIABLE_WRITE_EXECUTE_CFM
 
     @param cid          Connection identifier of the remote device
 */
-void GattManagerIndicationResponse(uint16 cid);
+void GattManagerIndicationResponse(u16 cid);
 
 
 /*!
@@ -1037,6 +1037,6 @@ void GattManagerIndicationResponse(uint16 cid);
 
     @param cid The connection identifier of the connection to disconnect.
 */
-void GattManagerDisconnectRequest(uint16 cid);
+void GattManagerDisconnectRequest(u16 cid);
 
 #endif /* GATTMANAGER_H_ */

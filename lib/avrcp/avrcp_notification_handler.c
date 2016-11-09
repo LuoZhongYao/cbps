@@ -57,13 +57,13 @@ NOTES
  ****************************************************************************/
 void avrcpSendNotification( AVRCP *avrcp,  
                             avrcp_response_type response, 
-                            const uint8* ptr, 
-                            uint16 packet_size)
+                            const u8* ptr, 
+                            u16 packet_size)
 {
     avrcp_supported_events event_id;
-    uint16 data_len    = 0;
-    uint16 data_start  = 0;
-    uint16 transaction = (avrcp->av_msg[0] & AVCTP_TRANSACTION_MASK) >>
+    u16 data_len    = 0;
+    u16 data_start  = 0;
+    u16 transaction = (avrcp->av_msg[0] & AVCTP_TRANSACTION_MASK) >>
                          AVCTP0_TRANSACTION_SHIFT;
     if(!packet_size)
     {
@@ -441,10 +441,10 @@ void avrcpSendRegisterNotificationFailCfm(AVRCP *avrcp,
  ****************************************************************************/
 void avrcpSendGetPlayStatusCfm(AVRCP *avrcp, 
                                avrcp_status_code status, 
-                               uint32 song_length, 
-                               uint32 song_elapsed, 
+                               u32 song_length, 
+                               u32 song_elapsed, 
                                avrcp_play_status play_status, 
-                               uint8 transaction) 
+                               u8 transaction) 
 {
     MAKE_AVRCP_MESSAGE(AVRCP_GET_PLAY_STATUS_CFM);
 
@@ -477,12 +477,12 @@ void avrcpSendGetPlayStatusCfm(AVRCP *avrcp,
  ****************************************************************************/
 void avrcpHandleGetPlayStatusResponse(AVRCP             *avrcp, 
                                       avrcp_status_code status,
-                                      uint16            transaction, 
-                                      const  uint8      *ptr, 
-                                      uint16            packet_size)
+                                      u16            transaction, 
+                                      const  u8      *ptr, 
+                                      u16            packet_size)
 {
-    uint32 song_length = 0, song_elapsed = 0;
-    uint8 play_status =0;
+    u32 song_length = 0, song_elapsed = 0;
+    u8 play_status =0;
 
     /* packet should be 9 bytes*/
     if((packet_size >= AVRCP_GET_PLAY_STATUS_SIZE) &&
@@ -524,16 +524,16 @@ void avrcpHandleGetPlayStatusResponse(AVRCP             *avrcp,
  ****************************************************************************/
 void sendRegisterNotificationResponse(  AVRCP               *avrcp, 
                                         avrcp_response_type resp, 
-                                        uint16              size_mandatory, 
-                                        uint8               *mandatory, 
-                                        uint16              size_attributes, 
+                                        u16              size_mandatory, 
+                                        u8               *mandatory, 
+                                        u16              size_attributes, 
                                         Source              attributes)
 {
     /* 1 byte event and 1 byte error status code as data for 
        rejected response */ 
-    uint8 error_data[AVRCP_DEFAULT_EVENT_DATA_SIZE];
+    u8 error_data[AVRCP_DEFAULT_EVENT_DATA_SIZE];
     avrcp_packet_type  metadata_packet_type =  avrcp_packet_type_single;
-    uint16 param_length=1;
+    u16 param_length=1;
 
     /* Clear the Notification if response is not interim*/
     if (resp != avctp_response_interim)
@@ -582,9 +582,9 @@ void sendRegisterNotificationResponse(  AVRCP               *avrcp,
  * avrcp            - AVRCP instance
  * ptr              - Data pointer to the command. 
  ****************************************************************************/
-void avrcpHandleRegisterNotificationCommand(AVRCP *avrcp, const uint8 *ptr)
+void avrcpHandleRegisterNotificationCommand(AVRCP *avrcp, const u8 *ptr)
 {
-    uint8 event = ptr[0];
+    u8 event = ptr[0];
 
     MAKE_AVRCP_MESSAGE(AVRCP_REGISTER_NOTIFICATION_IND);
     message->avrcp = avrcp;
@@ -618,7 +618,7 @@ void avrcpHandleInternalEventPlaybackStatusChangedResponse(AVRCP *avrcp,
                      AVRCP_INTERNAL_EVENT_PLAYBACK_STATUS_CHANGED_RES_T *res)
 {
     /* 2 Byte length data for Play back status changed event */
-    uint8 mandatory_data[AVRCP_EVENT_STATUS_HDR_SIZE];
+    u8 mandatory_data[AVRCP_EVENT_STATUS_HDR_SIZE];
     mandatory_data[0] = avrcp_event_playback_status_changed;
     mandatory_data[1] = res->play_status;
 
@@ -641,7 +641,7 @@ void avrcpHandleInternalEventPlaybackStatusChangedResponse(AVRCP *avrcp,
 void avrcpHandleInternalEventTrackChangedResponse(AVRCP *avrcp,
                      AVRCP_INTERNAL_EVENT_TRACK_CHANGED_RES_T *res)
 {
-    uint8 mandatory_data[AVRCP_EVENT_TRACK_HDR_SIZE];
+    u8 mandatory_data[AVRCP_EVENT_TRACK_HDR_SIZE];
 
     mandatory_data[0] = avrcp_event_track_changed;
     convertUint32ToUint8Values(&mandatory_data[1], res->track_index_high);
@@ -667,7 +667,7 @@ void avrcpHandleInternalEventPlaybackPosChangedResponse(AVRCP *avrcp,
                  AVRCP_INTERNAL_EVENT_PLAYBACK_POS_CHANGED_RES_T *res)
 {
     /* 5 Byte length data for play back position changed response */
-    uint8 mandatory_data[AVRCP_EVENT_POS_HDR_SIZE];
+    u8 mandatory_data[AVRCP_EVENT_POS_HDR_SIZE];
     mandatory_data[0] = avrcp_event_playback_pos_changed;
     convertUint32ToUint8Values(&mandatory_data[1], res->playback_pos);
 
@@ -690,7 +690,7 @@ void avrcpHandleInternalEventPlaybackPosChangedResponse(AVRCP *avrcp,
 void avrcpHandleInternalEventBattStatusChangedResponse(AVRCP *avrcp,
               AVRCP_INTERNAL_EVENT_BATT_STATUS_CHANGED_RES_T *res)
 {
-    uint8 mandatory_data[AVRCP_EVENT_STATUS_HDR_SIZE];
+    u8 mandatory_data[AVRCP_EVENT_STATUS_HDR_SIZE];
     mandatory_data[0] = avrcp_event_batt_status_changed;
     mandatory_data[1] = res->battery_status;
 
@@ -713,7 +713,7 @@ void avrcpHandleInternalEventBattStatusChangedResponse(AVRCP *avrcp,
 void avrcpHandleInternalEventSystemStatusChangedResponse(AVRCP *avrcp,
                AVRCP_INTERNAL_EVENT_SYSTEM_STATUS_CHANGED_RES_T *res)
 {
-    uint8 mandatory_data[AVRCP_EVENT_STATUS_HDR_SIZE];
+    u8 mandatory_data[AVRCP_EVENT_STATUS_HDR_SIZE];
     mandatory_data[0] = avrcp_event_system_status_changed;
     mandatory_data[1] = res->system_status;
 
@@ -737,7 +737,7 @@ void avrcpHandleInternalEventSystemStatusChangedResponse(AVRCP *avrcp,
 void avrcpHandleInternalEventPlayerAppSettingChangedResponse(AVRCP *avrcp,
              AVRCP_INTERNAL_EVENT_PLAYER_APP_SETTING_CHANGED_RES_T *res)
 {
-    uint8 mandatory_data[AVRCP_EVENT_STATUS_HDR_SIZE];
+    u8 mandatory_data[AVRCP_EVENT_STATUS_HDR_SIZE];
     mandatory_data[0] = avrcp_event_player_app_setting_changed;
     mandatory_data[1] = res->size_attributes / 2;
 
@@ -761,7 +761,7 @@ void avrcpHandleInternalEventPlayerAppSettingChangedResponse(AVRCP *avrcp,
 void avrcpHandleInternalEventUidsChangedEvent(AVRCP         *avrcp,
                 AVRCP_INTERNAL_EVENT_UIDS_CHANGED_RES_T     *res)
 {
-    uint8 mandatory[AVRCP_UID_CHANGED_EVENT_SIZE];
+    u8 mandatory[AVRCP_UID_CHANGED_EVENT_SIZE];
     mandatory[0] = avrcp_event_uids_changed;
     AVRCP_UINT16_TO_UINT8(res->uid_counter, mandatory, 1);
 
@@ -785,9 +785,9 @@ void avrcpHandleInternalEventUidsChangedEvent(AVRCP         *avrcp,
 void avrcpHandleInternalGetPlayStatusResponse(AVRCP *avrcp,
                      AVRCP_INTERNAL_GET_PLAY_STATUS_RES_T *res)
 {
-    uint16 size_mandatory_data = 1;
-    uint8 mandatory_data[9];
-    uint16 param_length = 1;
+    u16 size_mandatory_data = 1;
+    u8 mandatory_data[9];
+    u16 param_length = 1;
 
     mandatory_data[0] = avrcpGetErrorStatusCode(&res->response, 
                                                 AVRCP0_CTYPE_STATUS);
@@ -823,7 +823,7 @@ void avrcpHandleInternalGetPlayStatusResponse(AVRCP *avrcp,
 void avrcpHandleInternalAbsoluteVolumeEvent(AVRCP               *avrcp,
                   const AVRCP_INTERNAL_SET_ABSOLUTE_VOL_RES_T   *res)
 {
-    uint8 mandatory_data[AVRCP_DEFAULT_EVENT_DATA_SIZE]; /* 2 */
+    u8 mandatory_data[AVRCP_DEFAULT_EVENT_DATA_SIZE]; /* 2 */
 
     mandatory_data[0] = avrcp_event_volume_changed;
     mandatory_data[1] = res->volume;
@@ -850,7 +850,7 @@ void avrcpHandleInternalAbsoluteVolumeEvent(AVRCP               *avrcp,
 void avrcpHandleInternalAddressPlayerChangedEvent(AVRCP              *avrcp,
            const  AVRCP_INTERNAL_EVENT_ADDRESSED_PLAYER_CHANGED_RES_T *res)
 {
-   uint8 mandatory_data[AVRCP_PLAYER_CHANGED_EVENT_SIZE]; /* 5 */
+   u8 mandatory_data[AVRCP_PLAYER_CHANGED_EVENT_SIZE]; /* 5 */
 
     /* Frame the packet */
     mandatory_data[0] = avrcp_event_addressed_player_changed;
@@ -890,7 +890,7 @@ void avrcpHandleInternalAddressPlayerChangedEvent(AVRCP              *avrcp,
 void avrcpHandleInternalCommonEventResponse(AVRCP                   *avrcp,
                                 AVRCP_INTERNAL_EVENT_COMMON_RES_T   *res)
 {
-    uint8 mandatory_data[AVRCP_EVENT_DEFAULT_HDR_SIZE];
+    u8 mandatory_data[AVRCP_EVENT_DEFAULT_HDR_SIZE];
     mandatory_data[0] = res->event;
 
     sendRegisterNotificationResponse(avrcp, res->response, 
@@ -907,17 +907,17 @@ void avrcpHandleInternalCommonEventResponse(AVRCP                   *avrcp,
 *    
 *PARAMETERS
 *   avrcp            - Task
-*   uint16           - Registered Events
+*   u16           - Registered Events
 *   avrcp_response_type - Response
 *
 *RETURN
 *****************************************************************************/
 void avrcpRejectRegisterNotifications(  AVRCP*               avrcp, 
-                                        uint16                event_bits, 
+                                        u16                event_bits, 
                                         avrcp_response_type   response)
 {
-    uint8 id;
-    uint16 events_enabled = avrcp->registered_events & event_bits;
+    u8 id;
+    u16 events_enabled = avrcp->registered_events & event_bits;
     
     for(id = 1; events_enabled; id++)
     {

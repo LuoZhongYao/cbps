@@ -40,7 +40,7 @@ NOTES
 ****************************************************************************/
 void AvrcpGetCapsRequest(AVRCP *avrcp, avrcp_capability_id caps)
 {
-    uint8 caps_params[] = {0};
+    u8 caps_params[] = {0};
     avrcp_status_code status;
 
 #ifdef AVRCP_DEBUG_LIB    
@@ -88,7 +88,7 @@ void AvrcpGetCapsRequest(AVRCP *avrcp, avrcp_capability_id caps)
 void AvrcpGetCapsResponse(AVRCP                 *avrcp, 
                           avrcp_response_type   response, 
                           avrcp_capability_id   caps, 
-                          uint16                size_caps_list, 
+                          u16                size_caps_list, 
                           Source                caps_list)
 {
 #ifdef AVRCP_DEBUG_LIB    

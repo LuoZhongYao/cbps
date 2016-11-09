@@ -99,7 +99,7 @@ DESCRIPTION
 void gattMessageHandler(Task task, MessageId id, Message message) 
 {
     gattState   *theGatt = (gattState *)task;
-    uint16      type = ((ATT_UPRIM_T *)message)->type;
+    u16      type = ((ATT_UPRIM_T *)message)->type;
 
     /* 
      * Large switch structures used to reduce call stack.

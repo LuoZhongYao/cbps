@@ -31,7 +31,7 @@ DESCRIPTION
  *PARAMETERS
  *  Refer mapc.h for details.
  ***********************************************************************/
-void MapcMnsStart( Task theAppTask, bool popSdpRec, uint8 mnsChannel )
+void MapcMnsStart( Task theAppTask, bool popSdpRec, u8 mnsChannel )
 {
     MAPC_ASSERT(theAppTask);
 
@@ -54,7 +54,7 @@ void MapcMnsStart( Task theAppTask, bool popSdpRec, uint8 mnsChannel )
  *PARAMETERS
  *  Refer mapc.h for details.
  ***********************************************************************/
-void MapcMnsShutdown( uint32 recordHandle, uint8 mnsChannel )
+void MapcMnsShutdown( u32 recordHandle, u8 mnsChannel )
 {
     MAPC_ASSERT(recordHandle);
     MAPC_ASSERT(mnsChannel);
@@ -93,7 +93,7 @@ void MapcMnsDisconnectResponse( Mns session )
  **************************************************************************/
 void MapcMnsConnectResponse( Task theAppTask, 
                              const bdaddr* addr,
-                             uint8  mnsChannel,
+                             u8  mnsChannel,
                              bool   accept,
                              Sink   connectID )
 {

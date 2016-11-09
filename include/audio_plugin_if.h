@@ -37,7 +37,7 @@ DESCRIPTION
 #include <power.h>
 #include <stream.h>
 
-/* Coefficient used by DSP to calculate the actual sample rate from uint16 sent by VM */
+/* Coefficient used by DSP to calculate the actual sample rate from u16 sent by VM */
 #define DSP_RESAMPLING_RATE_COEFFICIENT 10
 
 #define DSP_CODEC_INPUT_PORT    0
@@ -357,8 +357,8 @@ typedef struct
 
 typedef struct
 {
-    uint16 configuration_word_1;
-    uint16 configuration_word_2;
+    u16 configuration_word_1;
+    u16 configuration_word_2;
 }spdif_ac3_configuration;
 
 typedef struct
@@ -451,9 +451,9 @@ typedef struct
     /*! The codec task to use to connect the audio*/
     Task            codec_task ;
     /*! The volume at which to set the audio */
-    uint16          volume ;
+    u16          volume ;
     /*! The rate of the audio stream */
-    uint32          rate ;            
+    u32          rate ;            
     /*! additional features that can be used in the audio plugins */
     AudioPluginFeatures features ;
     /*! The audio mode of connection required*/
@@ -539,9 +539,9 @@ typedef struct
 typedef struct
 {
     /*! The volume at which to set the audio */
-    uint16          volume ;
+    u16          volume ;
     /*! The volume at which to set the tones/vp */
-    uint16          tone_volume;
+    u16          tone_volume;
     /*! The codec task to use to connect the audio*/
     Task            codec_task ;
 }AUDIO_PLUGIN_SET_VOLUME_MSG_T ;
@@ -554,7 +554,7 @@ typedef struct
 typedef struct
 {
     /*! The audio connection mode */
-    uint16          mode ;
+    u16          mode ;
     /*! plugin specific parameters*/
     const void *    params ;
 }AUDIO_PLUGIN_SET_MODE_MSG_T ;
@@ -588,7 +588,7 @@ typedef struct
 typedef struct
 {
     /*! The audio connection mode */
-    uint8           route ;
+    u8           route ;
     /*! plugin specific parameters*/
     const void *    params ;
 }AUDIO_PLUGIN_SET_ROUTE_MSG_T ;
@@ -605,7 +605,7 @@ typedef struct
     bool  content_protection ;
     /* whether backwards compatibility mode of the DSP app is required, this
        controls the internal buffering delay within the DSP app, 250 or 350ms */
-    uint8 peer_dsp_required_buffering_level ;
+    u8 peer_dsp_required_buffering_level ;
 }AUDIO_PLUGIN_START_FORWARDING_MSG_T ;
 
 /*!
@@ -621,7 +621,7 @@ typedef struct
     /*! The codec task to use to connect the audio*/
     Task            codec_task ;
     /*! The volume at which to play the tone 0 - current volume*/
-    uint16      tone_volume ;
+    u16      tone_volume ;
     /* features such as stereo and i2s output */
     AudioPluginFeatures features;
     /*! The audio route of connection required*/
@@ -635,15 +635,15 @@ typedef struct
 typedef struct
 {
     /*! the id of the audio prompt to be played*/
-    uint16 id ;
+    u16 id ;
     /*! the language to use*/
-    uint16 language ;
+    u16 language ;
     /*! Whether or not to queue the requested audio prompt*/
     bool        can_queue ;
     /*! The codec task to use to connect the audio*/
     Task            codec_task ;
     /*! The volume at which to play the audio prompt  0 - current volume*/
-    uint16      ap_volume ;
+    u16      ap_volume ;
     /*! features such as stereo and i2s output */
     AudioPluginFeatures features;
     /*! The audio route of connection required*/
@@ -658,11 +658,11 @@ typedef struct
 typedef struct
 {
     /*! The id of the message sent to the application */
-    uint16          id ;
+    u16          id ;
     /*! The numer of values sent to the application */
-    uint16          size_value;
+    u16          size_value;
     /*! The values sent to the application */
-    uint16          value[1] ;
+    u16          value[1] ;
 }AUDIO_PLUGIN_DSP_IND_T ;
 
 
@@ -670,22 +670,22 @@ typedef struct
 typedef struct
 {
     /*! The id of the message sent to the application */
-    uint16          id ;
+    u16          id ;
     /*! The numer of values sent to the application */
-    uint16          size_value;
+    u16          size_value;
     /*! The values sent to the application */
-    uint16          value[1] ;
+    u16          value[1] ;
 }AUDIO_PLUGIN_DSP_GAIA_EQ_MSG_T ;
 
 
 typedef struct
 {
     /*! The id of the message sent to the application */
-    uint16          id ;
+    u16          id ;
     /*! The numer of values sent to the application */
-    uint16          size_value;
+    u16          size_value;
     /*! The values sent to the application */
-    uint16          value[1] ;
+    u16          value[1] ;
 }AUDIO_PLUGIN_DSP_GAIA_GROUP_EQ_MSG_T ;
 
 
@@ -698,7 +698,7 @@ typedef struct
     /* main plugin in use */
     Task plugin;
     /* audio routing currently in progress */
-    uint16 AUDIO_BUSY;
+    void *AUDIO_BUSY;
     /* current dsp status */
     DSP_STATUS_INFO_T dsp_status;
     /* sink of media used for a2dp connection */
@@ -716,7 +716,7 @@ typedef struct
     /* Flag indicating if latency value has been estimated (calculated) rather than measured */
     bool estimated;
     /* current audio latency, in milliseconds */
-    uint16 latency;
+    u16 latency;
 } AUDIO_PLUGIN_LATENCY_REPORT_T;
 
 /*!
@@ -754,8 +754,8 @@ typedef enum
 */
 typedef struct
 {
-    uint16                     no_prompts;
-    uint16                     no_languages;
+    u16                     no_prompts;
+    u16                     no_languages;
 }AUDIO_PLUGIN_VOICE_PROMPTS_INIT_MSG_T ;
 
 /*!
@@ -776,7 +776,7 @@ typedef struct
 typedef struct
 {
     /*! The audio connection mode */
-    uint16          mode ;
+    u16          mode ;
 }AUDIO_PLUGIN_START_ASR_T ;
 
 typedef enum
@@ -799,17 +799,17 @@ typedef enum
 
 typedef struct
 {
-    int16                   master;    /*! The requested master gain in dB/60 */
-    int16                     tone;    /*! The requested tone gain in dB/60 */
+    i16                   master;    /*! The requested master gain in dB/60 */
+    i16                     tone;    /*! The requested tone gain in dB/60 */
     /*! The codec task to use to connect the audio*/
-    int16       device_trim_master;    /*! TWS master trim */
-    int16        device_trim_slave;    /*! TWS slave trim*/
+    i16       device_trim_master;    /*! TWS master trim */
+    i16        device_trim_slave;    /*! TWS slave trim*/
 } audio_plugin_main_vol_t;
 
 typedef struct
 {
-    int16                   master;    /*! The requested master gain in dB/60 */
-    int16                     tone;    /*! The requested tone gain in dB/60 */
+    i16                   master;    /*! The requested master gain in dB/60 */
+    i16                     tone;    /*! The requested tone gain in dB/60 */
 } audio_plugin_aux_vol_t;
 
 typedef struct
@@ -824,33 +824,33 @@ typedef struct
 /* Common part of volume message */
 typedef struct 
 {
-    uint16 system;  /* The DAC system gain */
-    int16  master;  /* The requested master gain in dB/60 */
-    int16  tone;    /* The requested tone gain in dB/60 */
+    u16 system;  /* The DAC system gain */
+    i16  master;  /* The requested master gain in dB/60 */
+    i16  tone;    /* The requested tone gain in dB/60 */
 } audio_plugin_volume_common_t;
 
 /* Message struct used for delayed application of master volume in hardware */
 typedef struct
 {
     audio_plugin_mch_group_t group; /*! The group (main/aux) to adjust volume */
-    int16                   master; /*! The requested master gain in dB/60 */
+    i16                   master; /*! The requested master gain in dB/60 */
 } AUDIO_PLUGIN_DELAY_VOLUME_SET_MSG_T;
 
 /* Trims for the main output group */
 typedef struct
 {
-    int16 primary_left;     /* Volume trim for primary left in dB/60 */
-    int16 primary_right;    /* Volume trim for primary right in dB/60 */
-    int16 secondary_left;   /* Volume trim for secondary left in dB/60 */
-    int16 secondary_right;  /* Volume trim for secondary right in dB/60 */
-    int16 wired_sub;        /* Volume trim for sub-woofer in dB/60 */
+    i16 primary_left;     /* Volume trim for primary left in dB/60 */
+    i16 primary_right;    /* Volume trim for primary right in dB/60 */
+    i16 secondary_left;   /* Volume trim for secondary left in dB/60 */
+    i16 secondary_right;  /* Volume trim for secondary right in dB/60 */
+    i16 wired_sub;        /* Volume trim for sub-woofer in dB/60 */
 } audio_plugin_volume_main_trim_t;
 
 /* Trims for the aux output group */
 typedef struct
 {
-    int16 aux_left;         /* Volume trim for aux left in dB/60 */
-    int16 aux_right;        /* Volume trim for aux right in dB/60 */
+    i16 aux_left;         /* Volume trim for aux left in dB/60 */
+    i16 aux_right;        /* Volume trim for aux right in dB/60 */
 } audio_plugin_volume_aux_trim_t;
 
 /* Common message format for volume messages */
@@ -875,7 +875,7 @@ typedef AUDIO_PLUGIN_SET_VOLUME_COMMON_MSG_T AUDIO_PLUGIN_SET_MAIN_VOLUME_MSG_T;
 /* DSP Output Types Message */
 typedef struct __AUDIO_PLUGIN_SET_MULTI_CHANNEL_OUTPUT_TYPES_MSG
 {
-    uint16 out_type[NUMBER_OF_DSP_OUTPUTS];
+    u16 out_type[NUMBER_OF_DSP_OUTPUTS];
 } AUDIO_PLUGIN_SET_MULTI_CHANNEL_OUTPUT_TYPES_MSG_T;
 
 /* DSP Multi-channel Main Mute Message */

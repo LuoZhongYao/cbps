@@ -38,9 +38,9 @@ NOTES
 *RETURN
 *  AVRCP_REQUEST_CONTINUING_RESPONSE_CFM 
 *******************************************************************************/
-void AvrcpRequestContinuingResponseRequest(AVRCP *avrcp, uint16 pdu_id)
+void AvrcpRequestContinuingResponseRequest(AVRCP *avrcp, u16 pdu_id)
 {
-    uint8 params[] = {0};
+    u8 params[] = {0};
     avrcp_status_code status;
 
     params[0] = pdu_id & 0xFF;
@@ -90,9 +90,9 @@ void AvrcpRequestContinuingResponseRequest(AVRCP *avrcp, uint16 pdu_id)
 *RETURN
 *  AVRCP_ABORT_CONTINUING_RESPONSE_CFM 
 *******************************************************************************/
-void AvrcpAbortContinuingResponseRequest(AVRCP *avrcp, uint16 pdu_id)
+void AvrcpAbortContinuingResponseRequest(AVRCP *avrcp, u16 pdu_id)
 {
-    uint8 params[] = {0};
+    u8 params[] = {0};
     avrcp_status_code status;
 
     params[0] = pdu_id & 0xFF;

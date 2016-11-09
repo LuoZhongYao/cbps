@@ -32,7 +32,7 @@ NOTES
 static void sendLinkQualityCfm(
         Task task,
         hci_status status,
-        uint8 link_quality,
+        u8 link_quality,
         Sink sink
         )
 {
@@ -49,7 +49,7 @@ static void sendLinkQualityCfm(
 
 
 /* Send an RSSI cfm message to the client */
-static void sendRssiCfm(Task task, hci_status status, uint8 rssi, Sink sink)
+static void sendRssiCfm(Task task, hci_status status, u8 rssi, Sink sink)
 {
     if (task)
     {
@@ -65,7 +65,7 @@ static void sendRssiCfm(Task task, hci_status status, uint8 rssi, Sink sink)
 /* Send an RSSI cfm message to the client */
 static void sendRssiBdaddrCfm(Task task,
                               hci_status status,
-                              uint8 rssi,
+                              u8 rssi,
                               const TP_BD_ADDR_T *tp_addrt)
 {
     if (task)
@@ -83,7 +83,7 @@ static void sendRssiBdaddrCfm(Task task,
 static void sendClockOffsetCfm(
         Task task,
         hci_status status,
-        uint16 offset,
+        u16 offset,
         Sink sink
         )
 {
@@ -103,7 +103,7 @@ static void sendClockOffsetCfm(
 static void sendRemoteSupportedFeaturesCfm(
         Task task,
         hci_status status,
-        const uint16 *features,
+        const u16 *features,
         Sink sink
         )
 {
@@ -559,7 +559,7 @@ void connectionHandleReadRemoteSupportedFeaturesCfm(
         sendRemoteSupportedFeaturesCfm(
                 state->stateInfoLock,
                 connectionConvertHciStatus(cfm->status),
-                (const uint16 *) &(cfm->features),
+                (const u16 *) &(cfm->features),
                 state->sink
                 );
     }

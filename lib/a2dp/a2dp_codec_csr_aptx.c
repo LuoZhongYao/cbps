@@ -24,7 +24,7 @@ NOTES
 
 
 /**************************************************************************/
-void selectOptimalCsrAptxCapsSink(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalCsrAptxCapsSink(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
 	/* Choose what is supported at both sides */
     remote_codec_caps[10] = (remote_codec_caps[10]) & (local_codec_caps[10]);
@@ -45,7 +45,7 @@ void selectOptimalCsrAptxCapsSink(const uint8 *local_codec_caps, uint8 *remote_c
 
 
 /**************************************************************************/
-void selectOptimalCsrAptxCapsSource(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalCsrAptxCapsSource(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
    	/* Choose what is supported at both sides */
     remote_codec_caps[10] = (remote_codec_caps[10]) & (local_codec_caps[10]);
@@ -65,7 +65,7 @@ void selectOptimalCsrAptxCapsSource(const uint8 *local_codec_caps, uint8 *remote
 }
 
 /*************************************************************************/
-void getCsrAptxConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_settings)
+void getCsrAptxConfigSettings(const u8 *service_caps, a2dp_codec_settings *codec_settings)
 {
     codec_settings->codecData.packet_size = 668;
     

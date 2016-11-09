@@ -116,21 +116,21 @@ typedef enum
 /* PSKey configurable timers */
 typedef struct
 {
-    uint16 inquiry_state_timer; /* in secs */
-    uint16 inquiry_idle_timer; /* in secs */
-    uint16 connection_idle_timer; /* in secs */
-    uint16 disconnect_idle_timer; /* in secs */
-    uint16 aghfp_connection_failed_timer; /* in millisecs */
-    uint16 a2dp_connection_failed_timer; /* in millisecs */    
-    uint16 avrcp_connection_failed_timer; /* in millisecs */
-    uint16 avrcp_connection_delay_timer; /* in millisecs */
-    uint16 profile_connection_delay_timer; /* in millisecs */    
-    uint16 link_loss_reconnect_delay_timer; /* in secs */
-    uint16 media_repeat_timer; /* in millisecs */
-    uint16 audio_delay_timer; /* in millisecs */
-    uint16 usb_audio_active_timer; /* in secs */
-    uint16 power_on_connect_idle_timer; /* in secs */
-    uint16 power_on_discover_idle_timer; /* in secs */
+    u16 inquiry_state_timer; /* in secs */
+    u16 inquiry_idle_timer; /* in secs */
+    u16 connection_idle_timer; /* in secs */
+    u16 disconnect_idle_timer; /* in secs */
+    u16 aghfp_connection_failed_timer; /* in millisecs */
+    u16 a2dp_connection_failed_timer; /* in millisecs */    
+    u16 avrcp_connection_failed_timer; /* in millisecs */
+    u16 avrcp_connection_delay_timer; /* in millisecs */
+    u16 profile_connection_delay_timer; /* in millisecs */    
+    u16 link_loss_reconnect_delay_timer; /* in secs */
+    u16 media_repeat_timer; /* in millisecs */
+    u16 audio_delay_timer; /* in millisecs */
+    u16 usb_audio_active_timer; /* in secs */
+    u16 power_on_connect_idle_timer; /* in secs */
+    u16 power_on_discover_idle_timer; /* in secs */
 } PS_TIMERS_T;
 
 /* PSKey configurable features */
@@ -143,7 +143,7 @@ typedef struct
     unsigned aghfp_max_connection_retries:8;
     unsigned a2dp_max_connection_retries:8;
     unsigned avrcp_max_connection_retries:8;
-    uint16 connection_max_retries;
+    u16 connection_max_retries;
 } PS_FEATURES_T;
 
 /* PSKey configurable SBC configuration */
@@ -151,8 +151,8 @@ typedef struct
 {
     unsigned unused:8;
     unsigned sampling_freq_ch_mode:8;    
-    uint16 max_bitpool;
-    uint16 min_bitpool;
+    u16 max_bitpool;
+    u16 min_bitpool;
 } PS_SBC_CONFIG_T;
 
 /* PSKey configurable Faststream configuration */
@@ -213,7 +213,7 @@ typedef struct
 /* PSKey configurable HFP audio parameters */
 typedef struct
 {
-    uint16 sync_pkt_types;
+    u16 sync_pkt_types;
     aghfp_audio_params audio_params;     
 } PS_HFP_AUDIO_T;
 
@@ -237,12 +237,12 @@ typedef struct
 /* PSKey configurable PIN Codes */
 typedef struct
 {
-    uint8 code[4];     
+    u8 code[4];     
 } PS_PIN_CODE_T;
 
 typedef struct
 {
-    uint16 number_pin_codes;
+    u16 number_pin_codes;
     PS_PIN_CODE_T pin_codes[PS_MAX_PIN_CODES];
 } PS_PIN_CONFIG_T;
 
@@ -263,8 +263,8 @@ typedef struct
 {
     bdaddr bdaddr_remote_device;
     bdaddr bdaddr_stream2_device;    
-    uint32 company_id;
-    uint16 number_paired_devices;
+    u32 company_id;
+    u16 number_paired_devices;
     PS_TIMERS_T ps_timers;
     PS_FEATURES_T features;
     PS_SBC_CONFIG_T sbc_config;
@@ -300,7 +300,7 @@ RETURNS
     The size of data returned.
     
 */
-uint16 ps_read_user(uint16 ps_key, void *ps_data, uint16 ps_size);
+u16 ps_read_user(u16 ps_key, void *ps_data, u16 ps_size);
 
 
 /****************************************************************************
@@ -315,7 +315,7 @@ RETURNS
     The size of data returned.
     
 */
-uint16 ps_read_full(uint16 ps_key, void *ps_data, uint16 ps_size);
+u16 ps_read_full(u16 ps_key, void *ps_data, u16 ps_size);
 
 
 /****************************************************************************
@@ -330,7 +330,7 @@ RETURNS
     The size of data written.
     
 */
-uint16 ps_write(uint16 ps_key, const void *ps_data, uint16 ps_size);
+u16 ps_write(u16 ps_key, const void *ps_data, u16 ps_size);
 
 
 /****************************************************************************
@@ -386,7 +386,7 @@ DESCRIPTION
     Write the device name to PS.
      
 */
-void ps_write_device_name(const bdaddr *addr, uint16 size_name, const uint8 *name);
+void ps_write_device_name(const bdaddr *addr, u16 size_name, const u8 *name);
 
 
 /****************************************************************************

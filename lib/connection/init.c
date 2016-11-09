@@ -152,13 +152,13 @@ void ConnectionInitEx(Task theAppTask, const msg_filter *msgFilter  )
 }
 
 /*****************************************************************************/
-void ConnectionInitEx2(Task theAppTask, const msg_filter *msgFilter , uint16 TdlNumberOfDevices  )
+void ConnectionInitEx2(Task theAppTask, const msg_filter *msgFilter , u16 TdlNumberOfDevices  )
 {
     ConnectionInitEx3(theAppTask, msgFilter , TdlNumberOfDevices , CONNLIB_OPTIONS_NONE);
 }
 
 /*****************************************************************************/
-void ConnectionInitEx3(Task theAppTask, const msg_filter *msgFilter , uint16 TdlNumberOfDevices  , uint16 options)
+void ConnectionInitEx3(Task theAppTask, const msg_filter *msgFilter , u16 TdlNumberOfDevices  , u16 options)
 {
     theCm.msgFilter = (msgFilter == NULL) ? &defaultMsgFilter : msgFilter;
     
@@ -228,7 +228,7 @@ void connectionHandleInternalInit(connectionInitState state)
         theCm.state = connectionInitialising;
 
         /* Start a Timer to notify the Client if the initialisation fails */
-        MessageSendLater(&theCm.task, CL_INTERNAL_INIT_TIMEOUT_IND, NO_PAYLOAD, (uint32) INIT_TIMEOUT);
+        MessageSendLater(&theCm.task, CL_INTERNAL_INIT_TIMEOUT_IND, NO_PAYLOAD, (u32) INIT_TIMEOUT);
     }
 
     /* Check to see if all objects have been initialised */

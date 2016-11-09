@@ -30,7 +30,7 @@ NOTES
 #ifndef CL_EXCLUDE_INQUIRY_SCAN
 
 /*****************************************************************************/
-void ConnectionWriteInquiryAccessCode(Task theAppTask, const uint32 *iac, uint16 num_iac)
+void ConnectionWriteInquiryAccessCode(Task theAppTask, const u32 *iac, u16 num_iac)
 {
     /* Check params are within allowed values - debug build only */
 #ifdef CONNECTION_DEBUG_LIB
@@ -41,10 +41,10 @@ void ConnectionWriteInquiryAccessCode(Task theAppTask, const uint32 *iac, uint16
 #endif
 
     {
-        MAKE_CL_MESSAGE_WITH_LEN(CL_INTERNAL_DM_WRITE_IAC_LAP_REQ, sizeof(uint32) * num_iac);
+        MAKE_CL_MESSAGE_WITH_LEN(CL_INTERNAL_DM_WRITE_IAC_LAP_REQ, sizeof(u32) * num_iac);
         message->theAppTask = theAppTask;
         message->num_iac = num_iac;
-        memmove(&message->iac, iac, sizeof(uint32) * num_iac);
+        memmove(&message->iac, iac, sizeof(u32) * num_iac);
 
         MessageSend(connectionGetCmTask(), CL_INTERNAL_DM_WRITE_IAC_LAP_REQ, message);
     }

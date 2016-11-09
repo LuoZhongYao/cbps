@@ -379,7 +379,7 @@ typedef enum
     0x00112233, uuid[1] = 0x44556677, uuid[2] = 0x8899aabb, and uuid[3] =
     0xccddeeff.
 */
-typedef uint32 gatt_uuid_t;
+typedef u32 gatt_uuid_t;
 
 /*! \brief Minimum GATT handle number. */
 #define GATT_HANDLE_MIN         0x0001
@@ -459,7 +459,7 @@ Public API Definition
 
     \return GATT_INIT_CFM_T
 */
-void GattInit(Task theAppTask, uint16 size_database, uint16* database);
+void GattInit(Task theAppTask, u16 size_database, u16* database);
 
 /*!
     \brief This function is called to initialise the GATT library. The
@@ -480,7 +480,7 @@ void GattInit(Task theAppTask, uint16 size_database, uint16* database);
 
     \return GATT_INIT_CFM_T
 */
-void GattInitEx(Task theAppTask, uint16 size_database, uint16* database, uint16 flags);
+void GattInitEx(Task theAppTask, u16 size_database, u16* database, u16 flags);
 
 /*!
     \brief GATT library initialisation confirmation
@@ -531,11 +531,11 @@ typedef struct
     /*! Typed BD_ADDR of remote device. */
     typed_bdaddr            taddr;
     /*! Connection configuration flags. */
-    uint16                  flags;
+    u16                  flags;
     /*! Connection identifier of remote device. */
-    uint16                  cid;
+    u16                  cid;
     /*! Connection MTU. */
-    uint16                  mtu;
+    u16                  mtu;
 } GATT_CONNECT_CFM_T;
 
 /*!
@@ -552,11 +552,11 @@ typedef struct
     /*! Typed BD_ADDR of remote device. */
     typed_bdaddr            taddr;
     /*! Connection configuration flags. */
-    uint16                  flags;
+    u16                  flags;
     /*! The identifier for this connection. */
-    uint16                  cid;
+    u16                  cid;
     /*! Connection MTU. */
-    uint16                  mtu;
+    u16                  mtu;
 } GATT_CONNECT_IND_T;
 
 /*!
@@ -577,8 +577,8 @@ typedef struct
 */
 void GattConnectResponse(
         Task theAppTask, 
-        uint16 cid, 
-        uint16 flags, 
+        u16 cid, 
+        u16 flags, 
         bool accept
         );
 
@@ -599,7 +599,7 @@ void GattConnectResponse(
 
     \return GATT_DISCONNECT_IND
 */
-void GattDisconnectRequest(uint16 cid);
+void GattDisconnectRequest(u16 cid);
 
 /*! 
     \brief GATT Disconnection Indication. This message will be sent to the task
@@ -610,7 +610,7 @@ typedef struct
     /*! Disconnection status. */
     gatt_status_t           status;
     /*! Connection identifier of remote device. */
-    uint16                  cid;
+    u16                  cid;
 } GATT_DISCONNECT_IND_T;
 
 
@@ -621,9 +621,9 @@ typedef struct
 typedef struct
 {
     /*! Connection identifier of remote device. */
-    uint16                  cid;
+    u16                  cid;
     /*! MTU indicated by the other device.*/
-    uint16                  mtu;
+    u16                  mtu;
 } GATT_EXCHANGE_MTU_IND_T;
 
 /*! 
@@ -637,7 +637,7 @@ typedef struct
     GATT MTU value (23).
 
 */
-void GattExchangeMtuResponse(uint16 cid, uint16 mtu);
+void GattExchangeMtuResponse(u16 cid, u16 mtu);
 
 /*!
     \brief GATT Server Configuration: Exchange MTU sub-procedure
@@ -657,7 +657,7 @@ void GattExchangeMtuResponse(uint16 cid, uint16 mtu);
 
     \return GATT_EXCHANGE_MTU_CFM_T
 */
-void GattExchangeMtuRequest(Task theAppTask, uint16 cid, uint16 mtu);
+void GattExchangeMtuRequest(Task theAppTask, u16 cid, u16 mtu);
 
 /*!
     \brief Response message for GattExchangeMtuRequest().
@@ -665,9 +665,9 @@ void GattExchangeMtuRequest(Task theAppTask, uint16 cid, uint16 mtu);
 typedef struct
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! GATT_MTU for this connection */
-    uint16 mtu;
+    u16 mtu;
     /*! Status of the request */
     gatt_status_t status;
 } GATT_EXCHANGE_MTU_CFM_T;
@@ -683,17 +683,17 @@ typedef struct
 typedef struct
 {
     /*! Connection identifier of remote device. */
-    uint16                  cid;
+    u16                  cid;
     /*! Handle being accessed. */
-    uint16                  handle;
+    u16                  handle;
     /*! Flags - uses ATT_ACCESS range. */
-    uint16                  flags;
+    u16                  flags;
     /*! The offset of the first octet to be accessed. */
-    uint16                  offset;
+    u16                  offset;
     /*! Length of the value. */
-    uint16                  size_value;
+    u16                  size_value;
     /*! Value data. */
-    uint8                   value[1];
+    u8                   value[1];
 } GATT_ACCESS_IND_T;
 
 /*! 
@@ -712,11 +712,11 @@ typedef struct
 
 */
 void GattAccessResponse(
-        uint16 cid,
-        uint16 handle,
-        uint16 result,
-        uint16 size_value,
-        const uint8 *value
+        u16 cid,
+        u16 handle,
+        u16 result,
+        u16 size_value,
+        const u8 *value
         );
 
 /*!
@@ -731,7 +731,7 @@ void GattAccessResponse(
 
     \return GATT_DISCOVER_ALL_PRIMARY_SERVICES_CFM_T
 */
-void GattDiscoverAllPrimaryServicesRequest(Task theAppTask, uint16 cid);
+void GattDiscoverAllPrimaryServicesRequest(Task theAppTask, u16 cid);
 
 /*!
     \brief Response message for GattDiscoverAllPrimaryServicesRequest().
@@ -739,11 +739,11 @@ void GattDiscoverAllPrimaryServicesRequest(Task theAppTask, uint16 cid);
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the service */
-    uint16 handle;
+    u16 handle;
     /*! End handle of the service */
-    uint16 end;
+    u16 end;
     /*! UUID type of the service */
     gatt_uuid_type_t uuid_type;
     /*! UUID of the service */
@@ -770,7 +770,7 @@ typedef struct
     \return GATT_DISCOVER_PRIMARY_SERVICE_CFM_T
 */
 void GattDiscoverPrimaryServiceRequest(Task theAppTask,
-                                       uint16 cid,
+                                       u16 cid,
                                        gatt_uuid_type_t uuid_type,
                                        const gatt_uuid_t *uuid);
 
@@ -780,11 +780,11 @@ void GattDiscoverPrimaryServiceRequest(Task theAppTask,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the service */
-    uint16 handle;
+    u16 handle;
     /*! End handle of the service */
-    uint16 end;
+    u16 end;
     /*! UUID type of the service */
     gatt_uuid_type_t uuid_type;
     /*! UUID of the service */
@@ -817,9 +817,9 @@ typedef struct
     /*! Address of the remote device */
     bdaddr bd_addr;
     /*! Handle of the service */
-    uint16 handle;
+    u16 handle;
     /*! End handle of the service */
-    uint16 end;
+    u16 end;
     /*! UUID type of the service */
     gatt_uuid_type_t uuid_type;
     /*! UUID of the service */
@@ -858,9 +858,9 @@ typedef struct
     /*! Address of the remote device */
     bdaddr bd_addr;
     /*! Handle of the service */
-    uint16 handle;
+    u16 handle;
     /*! End handle of the service */
-    uint16 end;
+    u16 end;
     /*! UUID type of the service */
     gatt_uuid_type_t uuid_type;
     /*! UUID of the service */
@@ -886,9 +886,9 @@ typedef struct
     \return GATT_FIND_INCLUDED_SERVICES_CFM_T
 */
 void GattFindIncludedServicesRequest(Task theAppTask,
-                                     uint16 cid,
-                                     uint16 start,
-                                     uint16 end);
+                                     u16 cid,
+                                     u16 start,
+                                     u16 end);
 
 /*!
     \brief Response message for GattFindIncludedServicesRequest().
@@ -896,11 +896,11 @@ void GattFindIncludedServicesRequest(Task theAppTask,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the service */
-    uint16 handle;
+    u16 handle;
     /*! End handle of the service */
-    uint16 end;
+    u16 end;
     /*! UUID type of the service */
     gatt_uuid_type_t uuid_type;
     /*! UUID of the service */
@@ -928,9 +928,9 @@ typedef struct
     \return GATT_DISCOVER_ALL_CHARACTERISTICS_CFM_T
 */
 void GattDiscoverAllCharacteristicsRequest(Task theAppTask,
-                                           uint16 cid,
-                                           uint16 start,
-                                           uint16 end);
+                                           u16 cid,
+                                           u16 start,
+                                           u16 end);
 
 /*!
     \brief Response message for GattDiscoverAllCharacteristicsRequest().
@@ -938,13 +938,13 @@ void GattDiscoverAllCharacteristicsRequest(Task theAppTask,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the characteristic declaration */
-    uint16 declaration;
+    u16 declaration;
     /*! Handle of the characteristic value */
-    uint16 handle;
+    u16 handle;
     /*! Characteristic properties */
-    uint8 properties;
+    u8 properties;
     /*! UUID type of the characteristic */
     gatt_uuid_type_t uuid_type;
     /*! UUID of the characteristic */
@@ -975,9 +975,9 @@ typedef struct
     \return GATT_DISCOVER_CHARACTERISTIC_CFM_T
 */
 void GattDiscoverCharacteristicRequest(Task task,
-                                       uint16 cid,
-                                       uint16 start,
-                                       uint16 end,
+                                       u16 cid,
+                                       u16 start,
+                                       u16 end,
                                        gatt_uuid_type_t uuid_type,
                                        const gatt_uuid_t *uuid);
 
@@ -987,13 +987,13 @@ void GattDiscoverCharacteristicRequest(Task task,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the characteristic declaration */
-    uint16 declaration;
+    u16 declaration;
     /*! Handle of the characteristic value */
-    uint16 handle;
+    u16 handle;
     /*! Characteristic properties */
-    uint8 properties;
+    u8 properties;
     /*! UUID type of the characteristic */
     gatt_uuid_type_t uuid_type;
     /*! UUID of the characteristic */
@@ -1023,9 +1023,9 @@ typedef struct
     \return GATT_DISCOVER_ALL_CHARACTERISTIC_DESCRIPTORS_CFM_T
 */
 void GattDiscoverAllCharacteristicDescriptorsRequest(Task theAppTask,
-                                                     uint16 cid,
-                                                     uint16 start,
-                                                     uint16 end);
+                                                     u16 cid,
+                                                     u16 start,
+                                                     u16 end);
 
 /*!
     \brief Response message for
@@ -1034,9 +1034,9 @@ void GattDiscoverAllCharacteristicDescriptorsRequest(Task theAppTask,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the characteristic descriptor */
-    uint16 handle;
+    u16 handle;
     /*! UUID type of the characteristic descriptor */
     gatt_uuid_type_t uuid_type;
     /*! UUID of the characteristic descriptor */
@@ -1064,8 +1064,8 @@ typedef struct
     \return GATT_READ_CHARACTERISTIC_VALUE_CFM_T
 */
 void GattReadCharacteristicValueRequest(Task  theAppTask,
-                                        uint16 cid,
-                                        uint16 handle);
+                                        u16 cid,
+                                        u16 handle);
 
 /*!
     \brief Response message for GattReadCharacteristicValueRequest().
@@ -1073,15 +1073,15 @@ void GattReadCharacteristicValueRequest(Task  theAppTask,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the characteristic value */
-    uint16 handle;
+    u16 handle;
     /*! Status of the request */
     gatt_status_t status;
     /*! Length of the characteristic value */
-    uint16 size_value;
+    u16 size_value;
     /*! The characteristic value */
-    uint8 value[1];
+    u8 value[1];
 } GATT_READ_CHARACTERISTIC_VALUE_CFM_T;
 
 /*!
@@ -1106,9 +1106,9 @@ typedef struct
     \return GATT_READ_USING_CHARACTERISTIC_UUID_CFM_T
 */
 void GattReadUsingCharacteristicUuidRequest(Task theAppTask,
-                                            uint16 cid,
-                                            uint16 start,
-                                            uint16 end,
+                                            u16 cid,
+                                            u16 start,
+                                            u16 end,
                                             gatt_uuid_type_t uuid_type,
                                             const gatt_uuid_t *uuid);
 
@@ -1118,18 +1118,18 @@ void GattReadUsingCharacteristicUuidRequest(Task theAppTask,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the characteristic value */
-    uint16 handle;
+    u16 handle;
     /*! Flag indicating if more characteristic data will follow (TRUE) or
       not (FALSE) */
     bool more_to_come;
     /*! Status of the request */
     gatt_status_t status;
     /*! Length of the characteristic value */
-    uint16 size_value;
+    u16 size_value;
     /*! The characteristic value */
-    uint8 value[1];
+    u8 value[1];
 } GATT_READ_USING_CHARACTERISTIC_UUID_CFM_T;
 
 /*!
@@ -1151,8 +1151,8 @@ typedef struct
     \return GATT_READ_LONG_CHARACTERISTIC_VALUE_CFM_T
 */
 void GattReadLongCharacteristicValueRequest(Task theAppTask,
-                                            uint16 cid,
-                                            uint16 handle);
+                                            u16 cid,
+                                            u16 handle);
 
 /*!
     \brief Response message for GattReadLongCharacteristicValueRequest().
@@ -1160,20 +1160,20 @@ void GattReadLongCharacteristicValueRequest(Task theAppTask,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the characteristic value */
-    uint16 handle;
+    u16 handle;
     /*! Flag indicating if more characteristic data will follow (TRUE) or
       not (FALSE) */
     bool more_to_come;
     /*! Status of the request */
     gatt_status_t status;
     /*! Offset to the characteristic value in this message */
-    uint16 offset;
+    u16 offset;
     /*! Length of the characteristic value */
-    uint16 size_value;
+    u16 size_value;
     /*! The characteristic value */
-    uint8 value[1];
+    u8 value[1];
 } GATT_READ_LONG_CHARACTERISTIC_VALUE_CFM_T;
 
 /*!
@@ -1193,9 +1193,9 @@ typedef struct
     \return GATT_READ_MULTIPLE_CHARACTERISTIC_VALUES_CFM_T
 */
 void GattReadMultipleCharacteristicValuesRequest(Task theAppTask,
-                                                 uint16 cid,
-                                                 uint16 size_handles,
-                                                 uint16 *handles);
+                                                 u16 cid,
+                                                 u16 size_handles,
+                                                 u16 *handles);
 
 /*!
     \brief Response message for GattReadMultipleCharacteristicValuesRequest().
@@ -1203,13 +1203,13 @@ void GattReadMultipleCharacteristicValuesRequest(Task theAppTask,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Status of the request */
     gatt_status_t status;
     /*! Length of the set of characteristic values */
-    uint16 size_value;
+    u16 size_value;
     /*! The set of characteristic values */
-    uint8 value[1];
+    u8 value[1];
 } GATT_READ_MULTIPLE_CHARACTERISTIC_VALUES_CFM_T;
 
 /*!
@@ -1233,10 +1233,10 @@ typedef struct
     \return GATT_WRITE_WITHOUT_RESPONSE_CFM_T
 */
 void GattWriteWithoutResponseRequest(Task theAppTtask,
-                                     uint16 cid,
-                                     uint16 handle,
-                                     uint16 size_value,
-                                     uint8 *value);
+                                     u16 cid,
+                                     u16 handle,
+                                     u16 size_value,
+                                     u8 *value);
 
 /*!
     \brief Response message for GattWriteWithoutResponseRequest().
@@ -1248,9 +1248,9 @@ void GattWriteWithoutResponseRequest(Task theAppTtask,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the characteristic value */
-    uint16 handle;
+    u16 handle;
     /*! Status of the request */
     gatt_status_t status;
 } GATT_WRITE_WITHOUT_RESPONSE_CFM_T;
@@ -1277,10 +1277,10 @@ typedef struct
     \return GATT_SIGNED_WRITE_WITHOUT_RESPONSE_CFM_T
 */
 void GattSignedWriteWithoutResponseRequest(Task theAppTask,
-                                           uint16 cid,
-                                           uint16 handle,
-                                           uint16 size_value,
-                                           uint8 *value);
+                                           u16 cid,
+                                           u16 handle,
+                                           u16 size_value,
+                                           u8 *value);
 
 /*!
     \brief Response message for GattSignedWriteWithoutResponseRequest().
@@ -1292,9 +1292,9 @@ void GattSignedWriteWithoutResponseRequest(Task theAppTask,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the characteristic value */
-    uint16 handle;
+    u16 handle;
     /*! Status of the request */
     gatt_status_t status;
 } GATT_SIGNED_WRITE_WITHOUT_RESPONSE_CFM_T;
@@ -1321,10 +1321,10 @@ typedef struct
     \return GATT_WRITE_CHARACTERISTIC_VALUE_CFM_T
 */
 void GattWriteCharacteristicValueRequest(Task theAppTask,
-                                         uint16 cid,
-                                         uint16 handle,
-                                         uint16 size_value,
-                                         uint8 *value);
+                                         u16 cid,
+                                         u16 handle,
+                                         u16 size_value,
+                                         u8 *value);
 
 /*!
     \brief Response message for GattWriteCharacteristicValueRequest().
@@ -1332,9 +1332,9 @@ void GattWriteCharacteristicValueRequest(Task theAppTask,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the characteristic value */
-    uint16 handle;
+    u16 handle;
     /*! Status of the request */
     gatt_status_t status;
 } GATT_WRITE_CHARACTERISTIC_VALUE_CFM_T;
@@ -1360,10 +1360,10 @@ typedef struct
     \return GATT_WRITE_LONG_CHARACTERISTIC_VALUE_CFM_T
 */
 void GattWriteLongCharacteristicValueRequest(Task theAppTask,
-                                             uint16 cid,
-                                             uint16 handle,
-                                             uint16 size_value,
-                                             uint8 *value);
+                                             u16 cid,
+                                             u16 handle,
+                                             u16 size_value,
+                                             u8 *value);
 
 /*!
     \brief Response message for GattWriteLongCharacteristicValueRequest().
@@ -1371,9 +1371,9 @@ void GattWriteLongCharacteristicValueRequest(Task theAppTask,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the characteristic value */
-    uint16 handle;
+    u16 handle;
     /*! Status of the request */
     gatt_status_t status;
 } GATT_WRITE_LONG_CHARACTERISTIC_VALUE_CFM_T;
@@ -1408,11 +1408,11 @@ typedef struct
     \return GATT_RELIABLE_WRITE_PREPARE_CFM_T
 */
 void GattReliableWritePrepareRequest(Task theAppTask,
-                                     uint16 cid,
-                                     uint16 handle,
-                                     uint16 offset,
-                                     uint16 size_value,
-                                     uint8 *value);
+                                     u16 cid,
+                                     u16 handle,
+                                     u16 offset,
+                                     u16 size_value,
+                                     u8 *value);
 
 /*!
     \brief Response message for GattReliableWritePrepareRequest().
@@ -1420,9 +1420,9 @@ void GattReliableWritePrepareRequest(Task theAppTask,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the characteristic value */
-    uint16 handle;
+    u16 handle;
     /*! Status of the request */
     gatt_status_t status;
 } GATT_RELIABLE_WRITE_PREPARE_CFM_T;
@@ -1455,7 +1455,7 @@ typedef struct
     \return GATT_RELIABLE_WRITE_EXECUTE_CFM_T
 */
 void GattReliableWriteExecuteRequest(Task theAppTask,
-                                     uint16 cid,
+                                     u16 cid,
                                      bool execute);
 
 /*!
@@ -1464,9 +1464,9 @@ void GattReliableWriteExecuteRequest(Task theAppTask,
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the failed characteristic in case of error, otherwise 0 */
-    uint16 handle;
+    u16 handle;
     /*! Status of the request */
     gatt_status_t status;
 } GATT_RELIABLE_WRITE_EXECUTE_CFM_T;
@@ -1490,10 +1490,10 @@ typedef struct
 */
 void GattNotificationRequest(
         Task theAppTask, 
-        uint16 cid, 
-        uint16 handle, 
-        uint16 size_value,
-        const uint8 *value
+        u16 cid, 
+        u16 handle, 
+        u16 size_value,
+        const u8 *value
         );
 
 /*! 
@@ -1504,8 +1504,8 @@ void GattNotificationRequest(
 typedef struct
 {
     gatt_status_t   status;
-    uint16          cid;
-    uint16          handle;
+    u16          cid;
+    u16          handle;
 } GATT_NOTIFICATION_CFM_T;
 
 
@@ -1521,13 +1521,13 @@ typedef struct
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the characteristic value */
-    uint16 handle;
+    u16 handle;
     /*! Length of the characteristic value */
-    uint16 size_value;
+    u16 size_value;
     /*! The characteristic value */
-    uint8 value[1];
+    u8 value[1];
 } GATT_NOTIFICATION_IND_T;
 
 /*!
@@ -1550,10 +1550,10 @@ typedef struct
 */
 void GattIndicationRequest(
         Task theAppTask, 
-        uint16 cid, 
-        uint16 handle, 
-        uint16 size_value,
-        const uint8 *value
+        u16 cid, 
+        u16 handle, 
+        u16 size_value,
+        const u8 *value
         );
 
 /*!
@@ -1568,8 +1568,8 @@ void GattIndicationRequest(
 typedef struct
 {
     gatt_status_t   status;
-    uint16          cid;
-    uint16          handle;
+    u16          cid;
+    u16          handle;
 } GATT_INDICATION_CFM_T;
     
 
@@ -1586,13 +1586,13 @@ typedef struct
 typedef struct 
 {
     /*! Connection identifier of the remote device */
-    uint16 cid;
+    u16 cid;
     /*! Handle of the characteristic value */
-    uint16 handle;
+    u16 handle;
     /*! Length of the characteristic value */
-    uint16 size_value;
+    u16 size_value;
     /*! The characteristic value */
-    uint8 value[1];
+    u8 value[1];
 } GATT_INDICATION_IND_T;
 
 /*!
@@ -1609,16 +1609,16 @@ typedef struct
 
     \return Nothing
 */
-void GattIndicationResponse(uint16 cid);
+void GattIndicationResponse(u16 cid);
 
 /*!
     \brief Get the connection id associated with a remote device address,
     for an existing connection.
 
     \param taddr The remote device address used to make the connection.
-    \return uint16 value of the connection id or 0, if the address is not
+    \return u16 value of the connection id or 0, if the address is not
     found.
 */
-uint16 GattGetCidForBdaddr(const typed_bdaddr *taddr);
+u16 GattGetCidForBdaddr(const typed_bdaddr *taddr);
 
 #endif  /* GATT_H_ */

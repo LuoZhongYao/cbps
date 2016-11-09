@@ -41,7 +41,7 @@ Functions
 NAME    
     defaults_get_value - Returns the default value for a User PSKey
 */
-uint16 defaults_get_value(uint16 ps_key, void *ps_data, uint16 ps_size)
+u16 defaults_get_value(u16 ps_key, void *ps_data, u16 ps_size)
 {
     switch (ps_key)
     {
@@ -49,11 +49,11 @@ uint16 defaults_get_value(uint16 ps_key, void *ps_data, uint16 ps_size)
         {
             DEFAULTS_DEBUG(("Defaults: PS_KEY_USER_COMPANY_ID\n"));
             /* company ID not found - set to default */
-            if (ps_size >= sizeof(uint32))
+            if (ps_size >= sizeof(u32))
             {
-                uint32 *ID = (uint32 *)ps_data;
+                u32 *ID = (u32 *)ps_data;
                 *ID = 0xFFFFFF;                
-                return sizeof(uint32);
+                return sizeof(u32);
             }
         }
         break;
@@ -288,11 +288,11 @@ uint16 defaults_get_value(uint16 ps_key, void *ps_data, uint16 ps_size)
         {
             DEFAULTS_DEBUG(("Defaults: PS_KEY_PAIRED_DEVICE_LIST_SIZE\n"));
             /* paired list size not found - set to default */
-            if (ps_size >= sizeof(uint16))
+            if (ps_size >= sizeof(u16))
             {
-                uint16 *size = (uint16 *)ps_data;
+                u16 *size = (u16 *)ps_data;
                 *size = 8;    
-                return sizeof(uint16);
+                return sizeof(u16);
             }
             else
             {

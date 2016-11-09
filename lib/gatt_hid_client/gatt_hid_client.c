@@ -66,7 +66,7 @@ DESCRIPTION
 static void hid_client_allocate_memory_for_handles(GHIDC_T *const hid_client,
                const GATT_HID_CLIENT_CONFIG_PARAMS_T *const cfg)
 {
-    uint16 ccd_mem_size = 0;
+    u16 ccd_mem_size = 0;
 
     GATT_HID_CLIENT_DEBUG_INFO(("Func:hid_client_allocate_memory_for_handles(),Entry\n"));
     /* Check handles are configured */    
@@ -75,7 +75,7 @@ static void hid_client_allocate_memory_for_handles(GHIDC_T *const hid_client,
         /* Boot mode supported? */
         if((cfg->is_boot_mode_supported) && (cfg->max_num_bootmode_ccd > 0))
         {
-            ccd_mem_size += (sizeof(uint16) * cfg->max_num_bootmode_ccd);
+            ccd_mem_size += (sizeof(u16) * cfg->max_num_bootmode_ccd);
             hid_client->boot_mode_supported = TRUE;
             hid_client->ccd_handles = (gatt_hid_ccd_handle_mem_t*)PanicUnlessMalloc(ccd_mem_size*sizeof(gatt_hid_ccd_handle_mem_t));
             memset(hid_client->ccd_handles,0,ccd_mem_size*sizeof(gatt_hid_ccd_handle_mem_t));
@@ -85,7 +85,7 @@ static void hid_client_allocate_memory_for_handles(GHIDC_T *const hid_client,
         {   /* Set Boot handles as NULL as client does not want to use remote device boot mode */
              hid_client->boot_mode_supported = FALSE;
         }
-        ccd_mem_size += (sizeof(uint16) *cfg->max_num_reportmode_ccd);
+        ccd_mem_size += (sizeof(u16) *cfg->max_num_reportmode_ccd);
         hid_client->ccd_handles = (gatt_hid_ccd_handle_mem_t*)realloc( hid_client->ccd_handles,ccd_mem_size*sizeof(gatt_hid_ccd_handle_mem_t));
         memset(hid_client->ccd_handles,0,ccd_mem_size*sizeof(gatt_hid_ccd_handle_mem_t));
 

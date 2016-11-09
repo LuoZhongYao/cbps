@@ -29,7 +29,7 @@ FUNCTION
 RETURNS
     The number of devices registered with the Bluestack Security Manager
 */
-uint16 connectionInitTrustedDeviceList(void);
+u16 connectionInitTrustedDeviceList(void);
 
 
 /****************************************************************************
@@ -58,8 +58,8 @@ FUNCTION
 bool connectionAuthGetDevice(
             const bdaddr        *peer_bd_addr,
             cl_sm_link_key_type *link_key_type,
-            uint16              *link_key,
-            uint16              *trusted
+            u16              *link_key,
+            u16              *trusted
             );
 
 
@@ -73,7 +73,7 @@ FUNCTION
     is returned.
 */
 bool connectionAuthDeleteDevice(
-        uint8 type, 
+        u8 type, 
         const bdaddr* peer_bd_addr
         );
 
@@ -87,7 +87,7 @@ FUNCTION
     trusted device list.  A flag indicating if all the devices were successfully 
     removed is returned.
 */
-bool connectionAuthDeleteAllDevice(uint16 ps_base);
+bool connectionAuthDeleteAllDevice(u16 ps_base);
 
 
 /****************************************************************************
@@ -102,7 +102,7 @@ FUNCTION
 RETURNS
     TRUE is record updated, otherwise FALSE
 */
-bool connectionAuthSetTrustLevel(const bdaddr* peer_bd_addr, uint16 trusted);
+bool connectionAuthSetTrustLevel(const bdaddr* peer_bd_addr, u16 trusted);
 
 /****************************************************************************
 NAME
@@ -116,7 +116,7 @@ FUNCTION
 RETURNS
     TRUE if device specified is in the TDL, otherwise FALSE
 */
-uint16 connectionAuthUpdateMru(const bdaddr* peer_bd_addr);
+u16 connectionAuthUpdateMru(const bdaddr* peer_bd_addr);
 
 
 /****************************************************************************
@@ -145,11 +145,11 @@ FUNCTION
 RETURNS
 */
 void connectionAuthPutAttribute(
-            uint16          ps_base,
-            uint8           bd_addr_type,
+            u16          ps_base,
+            u8           bd_addr_type,
             const bdaddr*   bd_addr,
-            uint16          size_psdata,
-            const uint8*    psdata
+            u16          size_psdata,
+            const u8*    psdata
             );
 
 
@@ -166,10 +166,10 @@ RETURNS
 */
 void connectionAuthGetAttribute(
             Task            appTask, 
-            uint16          ps_base, 
-            uint8           bd_addr_type,
+            u16          ps_base, 
+            u8           bd_addr_type,
             const bdaddr*   bd_addr, 
-            uint16          size_psdata
+            u16          size_psdata
             );
 
 
@@ -185,11 +185,11 @@ FUNCTION
 RETURNS
 */
 bool connectionAuthGetAttributeNow(
-            uint16          ps_base,
-            uint8           bd_addr_type,
+            u16          ps_base,
+            u8           bd_addr_type,
             const bdaddr*   bd_addr,
-            uint16          size_psdata,
-            uint8*          psdata
+            u16          size_psdata,
+            u8*          psdata
             );
     
 
@@ -206,9 +206,9 @@ RETURNS
 */
 void connectionAuthGetIndexedAttribute(
             Task    appTask,
-            uint16  ps_base,
-            uint16  mru_index,
-            uint16  size_psdata
+            u16  ps_base,
+            u16  mru_index,
+            u16  size_psdata
             );
 
 
@@ -224,10 +224,10 @@ FUNCTION
 RETURNS
 */
 bool connectionAuthGetIndexedAttributeNow(
-            uint16          ps_base, 
-            uint16          mru_index, 
-            uint16          size_psdata, 
-            uint8           *psdata, 
+            u16          ps_base, 
+            u16          mru_index, 
+            u16          size_psdata, 
+            u8           *psdata, 
             typed_bdaddr    *taddr
             );
 

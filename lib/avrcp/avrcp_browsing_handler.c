@@ -39,11 +39,11 @@ NOTES
  * pdu_size    - Size to be claimed for the PDU
  * packet_size - Sink space required for the whole packet
  * RETURN
- * uint8* pointer to the claimed memory
+ * u8* pointer to the claimed memory
  ***************************************************************************/
-static uint8* browseGrabSink(Sink sink,
-                             uint16 pdu_size, 
-                             uint16 packet_size)
+static u8* browseGrabSink(Sink sink,
+                             u16 pdu_size, 
+                             u16 packet_size)
 {
     if(SinkSlack(sink) > packet_size)
     {
@@ -66,13 +66,13 @@ static uint8* browseGrabSink(Sink sink,
  * This function returns a confirmation message for 
  *  AvrcpBrowseSearch() request.
  ***************************************************************************/
-uint16  avrcpSearchCfm(AVBP*              avbp,
+u16  avrcpSearchCfm(AVBP*              avbp,
                        avrcp_status_code  status, 
-                       const uint8*       ptr,
-                       uint16             data_len)
+                       const u8*       ptr,
+                       u16             data_len)
 {
     AVRCP* avrcp=(AVRCP*)avbp->avrcp_task;
-    uint16 process_len = AVRCP_SEARCH_RES_PARAM_SIZE;
+    u16 process_len = AVRCP_SEARCH_RES_PARAM_SIZE;
 
     MAKE_AVRCP_MESSAGE(AVRCP_BROWSE_SEARCH_CFM);
     message->status = status;
@@ -111,13 +111,13 @@ uint16  avrcpSearchCfm(AVBP*              avbp,
  * This function returns a confirmation message for 
  *  AvrcpBrowseGetFolderItems() request.
  ***************************************************************************/
-uint16  avrcpGetFolderItemsCfm(AVBP*              avbp,
+u16  avrcpGetFolderItemsCfm(AVBP*              avbp,
                                avrcp_status_code  status, 
-                               const uint8*       ptr,
-                               uint16             data_len)
+                               const u8*       ptr,
+                               u16             data_len)
 {
     AVRCP* avrcp=(AVRCP*)avbp->avrcp_task;
-    uint16 process_len = AVRCP_GET_FOLDER_ITEMS_RES_PARAM_SIZE;
+    u16 process_len = AVRCP_GET_FOLDER_ITEMS_RES_PARAM_SIZE;
 
     MAKE_AVRCP_MESSAGE(AVRCP_BROWSE_GET_FOLDER_ITEMS_CFM);
     message->status = status;
@@ -160,13 +160,13 @@ uint16  avrcpGetFolderItemsCfm(AVBP*              avbp,
  * This function returns a confirmation message for 
  *  AvrcpBrowseGetNumberOfItemsRequest() request.
  ***************************************************************************/
-uint16  avrcpGetNumberOfItemsCfm(AVBP*              avbp,
+u16  avrcpGetNumberOfItemsCfm(AVBP*              avbp,
                                avrcp_status_code  status, 
-                               const uint8*       ptr,
-                               uint16             data_len)
+                               const u8*       ptr,
+                               u16             data_len)
 {
     AVRCP* avrcp=(AVRCP*)avbp->avrcp_task;
-    uint16 process_len = AVRCP_GET_NUMBER_OF_ITEMS_RES_PARAM_SIZE;
+    u16 process_len = AVRCP_GET_NUMBER_OF_ITEMS_RES_PARAM_SIZE;
 
     MAKE_AVRCP_MESSAGE(AVRCP_BROWSE_GET_NUMBER_OF_ITEMS_CFM);
     message->status = status;
@@ -209,19 +209,19 @@ uint16  avrcpGetNumberOfItemsCfm(AVBP*              avbp,
  * PARAMETERS
  *   AVBP*                   - Task
  *   avrcp_status_code       - Status code
- *   uint8*                  - Parameters
- *   uint16                  - Parameter length 
+ *   u8*                  - Parameters
+ *   u16                  - Parameter length 
  * RETURN
- * uint16 - Processed length of Data
+ * u16 - Processed length of Data
 
  ***************************************************************************/
-uint16  avrcpGetItemAttributesCfm(AVBP*              avbp,
+u16  avrcpGetItemAttributesCfm(AVBP*              avbp,
                                   avrcp_status_code  status, 
-                                  const uint8*       ptr,
-                                  uint16             data_len)
+                                  const u8*       ptr,
+                                  u16             data_len)
 {
     AVRCP* avrcp=(AVRCP*)avbp->avrcp_task;
-    uint16 process_len = AVRCP_GET_ITEM_ATTRIBUTES_RES_PARAM_SIZE;
+    u16 process_len = AVRCP_GET_ITEM_ATTRIBUTES_RES_PARAM_SIZE;
 
     MAKE_AVRCP_MESSAGE(AVRCP_BROWSE_GET_ITEM_ATTRIBUTES_CFM);
     message->status = status;
@@ -255,19 +255,19 @@ uint16  avrcpGetItemAttributesCfm(AVBP*              avbp,
  *PARAMETERS
  *   AVBP*                   - Task
  *   avrcp_status_code       - Status code
- *   uint8*                  - Parameters
- *   uint16                  - Parameter length 
+ *   u8*                  - Parameters
+ *   u16                  - Parameter length 
  * RETURN
- * uint16 - Processed length of Data
+ * u16 - Processed length of Data
  ***************************************************************************/
-uint16  avrcpChangePathCfm(AVBP*              avbp,
+u16  avrcpChangePathCfm(AVBP*              avbp,
                            avrcp_status_code  status, 
-                           const uint8*       ptr,
-                           uint16             data_len)
+                           const u8*       ptr,
+                           u16             data_len)
                              
 {
     AVRCP* avrcp=(AVRCP*)avbp->avrcp_task;
-    uint16 process_len = AVRCP_CHANGE_PATH_RES_PARAM_SIZE;
+    u16 process_len = AVRCP_CHANGE_PATH_RES_PARAM_SIZE;
 
     MAKE_AVRCP_MESSAGE(AVRCP_BROWSE_CHANGE_PATH_CFM);
     message->status = status;
@@ -295,19 +295,19 @@ uint16  avrcpChangePathCfm(AVBP*              avbp,
  *PARAMETERS
  *   AVBP*                   - Task
  *   avrcp_status_code       - Status code
- *   uint8*                  - Parameters
- *   uint16                  - Parameter length 
+ *   u8*                  - Parameters
+ *   u16                  - Parameter length 
  * RETURN
- * uint16 - Processed length of Data
+ * u16 - Processed length of Data
  ***************************************************************************/
-uint16  avrcpBrowseSetPlayerCfm(AVBP*              avbp,
+u16  avrcpBrowseSetPlayerCfm(AVBP*              avbp,
                                 avrcp_status_code  status, 
-                                const uint8*       ptr,
-                                uint16             data_len)
+                                const u8*       ptr,
+                                u16             data_len)
                              
 {
     AVRCP* avrcp=(AVRCP*)avbp->avrcp_task;
-    uint16 process_len = AVRCP_SET_BROWSED_PLAYER_RES_PARAM_SIZE;
+    u16 process_len = AVRCP_SET_BROWSED_PLAYER_RES_PARAM_SIZE;
 
     MAKE_AVRCP_MESSAGE(AVRCP_BROWSE_SET_PLAYER_CFM);
     message->status = status;
@@ -348,15 +348,15 @@ uint16  avrcpBrowseSetPlayerCfm(AVBP*              avbp,
 void avrcpHandleInternalSearchReq(AVBP              *avbp,
                     AVRCP_INTERNAL_SEARCH_REQ_T     *req)
 {
-    uint16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
+    u16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
                       AVRCP_SEARCH_REQ_PARAM_SIZE;
 
-    uint8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, 
+    u8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, 
                               pdu_size + req->str_length);
 
     if(ptr)
     {
-        uint8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
+        u8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
 
         /* Frame the PDU 
         * --------------------------------------------
@@ -389,15 +389,15 @@ void avrcpHandleInternalSearchReq(AVBP              *avbp,
 void avrcpHandleInternalGetFolderItemsReq(AVBP       *avbp,
            AVRCP_INTERNAL_GET_FOLDER_ITEMS_REQ_T     *req)
 {
-    uint16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
+    u16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
                       AVRCP_GET_FOLDER_ITEMS_REQ_PARAM_SIZE;
 
-    uint8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, 
+    u8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, 
                               pdu_size + req->attr_list_size);
 
     if(ptr)
     {
-        uint8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
+        u8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
 
         /* Frame the PDU 
         * -------------------------------------------------------------
@@ -432,14 +432,14 @@ void avrcpHandleInternalGetFolderItemsReq(AVBP       *avbp,
 void avrcpHandleInternalGetNumberOfItemsReq(AVBP       *avbp,
            AVRCP_INTERNAL_GET_NUMBER_OF_ITEMS_REQ_T     *req)
 {
-    uint16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
+    u16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
                       AVRCP_GET_NUMBER_OF_ITEMS_REQ_PARAM_SIZE;
 
-    uint8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, pdu_size);
+    u8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, pdu_size);
 
     if(ptr)
     {
-        uint8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
+        u8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
 
         /* Frame the PDU 
         * -------------------------------------------------------------
@@ -471,15 +471,15 @@ void avrcpHandleInternalGetItemAttributesReq(AVBP       *avbp,
            AVRCP_INTERNAL_GET_ITEM_ATTRIBUTES_REQ_T     *req)
 {
 
-    uint16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
+    u16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
                       AVRCP_GET_ITEM_ATTRIBUTES_REQ_PARAM_SIZE;
 
-    uint8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, 
+    u8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, 
                               pdu_size + req->attr_list_size);
 
     if(ptr)
     {
-        uint8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
+        u8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
 
       /* Frame the PDU 
        * -------------------------------------------------------------
@@ -516,14 +516,14 @@ void avrcpHandleInternalGetItemAttributesReq(AVBP       *avbp,
 void avrcpHandleInternalChangePathReq(AVBP      *avbp,
                 AVRCP_INTERNAL_CHANGE_PATH_REQ_T  *req)
 {
-    uint16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
+    u16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
                       AVRCP_CHANGE_PATH_REQ_PARAM_SIZE;
 
-    uint8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, pdu_size);
+    u8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, pdu_size);
 
     if(ptr)
     {
-        uint8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
+        u8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
 
         /* Frame the PDU 
          * ---------------------------------------
@@ -558,10 +558,10 @@ void avrcpHandleInternalChangePathReq(AVBP      *avbp,
 void avrcpHandleInternalBrowseSetPlayerReq(AVBP       *avbp,
                AVRCP_INTERNAL_BROWSE_SET_PLAYER_REQ_T *req)
 {
-    uint16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
+    u16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
                       AVRCP_SET_BROWSED_PLAYER_REQ_PARAM_SIZE;
 
-    uint8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, pdu_size);
+    u8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, pdu_size);
 
     if(ptr)
     {
@@ -633,18 +633,18 @@ void avbpHandleInternalWatchdogTimeout(AVBP *avbp)
  *
  *PARAMETERS
  * AVBP          - Task
- * uint16        - PDU ID
- * uint8*        - pointer to response PDU parameters
- * uint16        - length of parameters
+ * u16        - PDU ID
+ * u8*        - pointer to response PDU parameters
+ * u16        - length of parameters
  *
  ***************************************************************************/
 void avbpHandleResponse(AVBP     *avbp,
-                       uint16   pdu_id,
-                 const uint8*   data, 
-                       uint16   param_len)
+                       u16   pdu_id,
+                 const u8*   data, 
+                       u16   param_len)
 {
     avrcp_status_code status = avrcp_success;
-    uint16  process_len=param_len; 
+    u16  process_len=param_len; 
 
     /* First byte in the packet is error status */
     if(data[0] != AVRCP_STATUS_SUCCESS)
@@ -736,9 +736,9 @@ static avrcp_response_type streamlineResponse(avrcp_response_type response)
  * avrcp_response_type - Response value provided to the Response API.
  *
  * RETURN
- * uint8 Error status value for Response PDU
+ * u8 Error status value for Response PDU
  ***************************************************************************/
-static uint8 avbpGetErrorStatusCode(avrcp_response_type response)
+static u8 avbpGetErrorStatusCode(avrcp_response_type response)
 {
 
     response = streamlineResponse(response);
@@ -761,17 +761,17 @@ static uint8 avbpGetErrorStatusCode(avrcp_response_type response)
  *
  ***************************************************************************/
 static void browseSendErrorResponse(AVBP                *avbp,
-                                    uint16              pdu_id,
+                                    u16              pdu_id,
                                     avrcp_response_type response)
 {
-    uint16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
+    u16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
                       AVRCP_GENERAL_REJECT_PARAM_SIZE;
 
-    uint8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, pdu_size); 
+    u8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, pdu_size); 
 
     if(ptr)
     {
-        uint8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
+        u8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
         ptr[offset] = avbpGetErrorStatusCode(response);
         avrcpSendBrowsePdu(avbp, pdu_id, ptr,
                            AVRCP_GENERAL_REJECT_PARAM_SIZE,
@@ -792,11 +792,11 @@ static void browseSendErrorResponse(AVBP                *avbp,
  *   Handle the incoming Search Request
  ***************************************************************************/
 avrcp_response_type avrcpHandleSearchReq(AVBP        *avbp, 
-                                   const uint8*      data,
-                                         uint16      param_len)
+                                   const u8*      data,
+                                         u16      param_len)
 {
     AVRCP* avrcp=(AVRCP*)avbp->avrcp_task;
-    uint16 str_len;
+    u16 str_len;
 
     if(!isAvrcpSearchEnabled(avrcpGetDeviceTask()))
     {
@@ -838,8 +838,8 @@ avrcp_response_type avrcpHandleSearchReq(AVBP        *avbp,
  *   Handle the incoming Get Folder Items Request
  ***************************************************************************/
 avrcp_response_type avrcpHandleGetFolderItemsReq(AVBP        *avbp, 
-                                           const uint8*      data,
-                                                 uint16      param_len)
+                                           const u8*      data,
+                                                 u16      param_len)
 {
 
     AVRCP* avrcp=(AVRCP*)avbp->avrcp_task;
@@ -912,8 +912,8 @@ avrcp_response_type avrcpHandleGetFolderItemsReq(AVBP        *avbp,
  *   Handle the incoming Get Folder Items Request
  ***************************************************************************/
 avrcp_response_type avrcpHandleGetNumberItemsReq(AVBP        *avbp, 
-                                           const uint8*      data,
-                                                 uint16      param_len)
+                                           const u8*      data,
+                                                 u16      param_len)
 {
 
     AVRCP* avrcp=(AVRCP*)avbp->avrcp_task;
@@ -960,14 +960,14 @@ avrcp_response_type avrcpHandleGetNumberItemsReq(AVBP        *avbp,
  *
  * PARAMETES
  *  AVBP    - *avbp,
- *  uint8*  -  Parameters in the command
- *  uint16  - Parameter length
+ *  u8*  -  Parameters in the command
+ *  u16  - Parameter length
  * RETURN
  * avrcp_response_type - avrcp_response_browsing_success on success. 
  ***************************************************************************/
 avrcp_response_type avrcpHandleGetItemAttributesReq(AVBP        *avbp, 
-                                              const uint8*      data,
-                                                    uint16      param_len)
+                                              const u8*      data,
+                                                    u16      param_len)
 {
     AVRCP* avrcp=(AVRCP*)avbp->avrcp_task;
     
@@ -1038,14 +1038,14 @@ avrcp_response_type avrcpHandleGetItemAttributesReq(AVBP        *avbp,
  *
  * PARAMETES
  *  AVBP    - *avbp,
- *  uint8*  -  Parameters in the command
- *  uint16  - Parameter length
+ *  u8*  -  Parameters in the command
+ *  u16  - Parameter length
  * RETURN
  * avrcp_response_type - avrcp_response_browsing_success on success. 
  ***************************************************************************/
 avrcp_response_type avrcpHandleChangePathReq(AVBP         *avbp, 
-                                             const uint8*  data,
-                                             uint16        param_len)
+                                             const u8*  data,
+                                             u16        param_len)
 {
     AVRCP* avrcp=(AVRCP*)avbp->avrcp_task;
     avrcp_response_type response = avrcp_response_browsing_success;
@@ -1089,15 +1089,15 @@ avrcp_response_type avrcpHandleChangePathReq(AVBP         *avbp,
  *
  * PARAMETES
  *  AVBP    - *avbp,
- *  uint8*  -  Parameters in the command
- *  uint16  - Parameter length
+ *  u8*  -  Parameters in the command
+ *  u16  - Parameter length
  * RETURN
  * avrcp_response_type - avrcp_response_browsing_success on success. 
  ***************************************************************************/
 
 avrcp_response_type avrcpHandleSetBrowsedPlayerReq(AVBP         *avbp, 
-                                                   const uint8*  data,
-                                                   uint16        param_len)
+                                                   const u8*  data,
+                                                   u16        param_len)
 {
     AVRCP* avrcp=(AVRCP*)avbp->avrcp_task;
     avrcp_response_type response = avrcp_response_browsing_success;
@@ -1133,9 +1133,9 @@ avrcp_response_type avrcpHandleSetBrowsedPlayerReq(AVBP         *avbp,
  *
  ***************************************************************************/
 void avrcpHandleNowPlayingCommand(AVRCP*  avrcp,
-                            const uint8*  ptr,
-                                  uint16  packet_size,
-                                  uint16  pdu_id)
+                            const u8*  ptr,
+                                  u16  packet_size,
+                                  u16  pdu_id)
 {
     if(packet_size < AVRCP_PLAY_ITEM_SIZE)
     {
@@ -1180,14 +1180,14 @@ void avrcpHandleNowPlayingCommand(AVRCP*  avrcp,
  *      
  *PARAMETERS
  *   avrcp                   - Task
- *   uint8*                  - Parameters
- *   uint16                  - Parameter length 
+ *   u8*                  - Parameters
+ *   u16                  - Parameter length 
  *
  *RETURN
  ****************************************************************************/
 void avrcpHandleAddressedPlayerCommand(AVRCP*       avrcp,
-                                       const uint8* data,
-                                       uint16       len)
+                                       const u8* data,
+                                       u16       len)
 {
     if(len < AVRCP_PLAYER_ID_SIZE)
     {
@@ -1219,15 +1219,15 @@ void avrcpHandleInternalGetFolderItemsRes(AVBP       *avbp,
 {
     if(streamlineResponse(res->response) == avrcp_response_browsing_success)
     {
-        uint16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
+        u16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
                           AVRCP_GET_FOLDER_ITEMS_RES_PARAM_SIZE;
 
-        uint8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, 
+        u8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, 
                                 pdu_size + res->item_list_size);
 
         if(ptr)
         {
-            uint8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
+            u8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
 
           /* Frame the PDU 
            * -------------------------------------------
@@ -1270,14 +1270,14 @@ void avrcpHandleInternalGetNumberOfItemsRes(AVBP       *avbp,
 {
     if(streamlineResponse(res->response) == avrcp_response_browsing_success)
     {
-        uint16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
+        u16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
                           AVRCP_GET_NUMBER_OF_ITEMS_RES_PARAM_SIZE;
 
-        uint8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, pdu_size);
+        u8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, pdu_size);
 
         if(ptr)
         {
-            uint8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
+            u8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
 
           /* Frame the PDU 
            * -------------------------------------------
@@ -1320,15 +1320,15 @@ void avrcpHandleInternalGetItemAttributesRes(AVBP       *avbp,
     if(streamlineResponse(res->response) == avrcp_response_browsing_success)
     {
 
-        uint16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
+        u16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
                       AVRCP_GET_ITEM_ATTRIBUTES_RES_PARAM_SIZE;
 
-        uint8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, 
+        u8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, 
                                 pdu_size + res->size_attr_list);
 
         if(ptr)
         {
-            uint8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
+            u8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
         
             ptr[offset] = avbpGetErrorStatusCode(res->response);
             ptr[offset+1] = res->num_attributes;
@@ -1365,14 +1365,14 @@ void avrcpHandleInternalSearchRes(AVBP              *avbp,
     if(streamlineResponse(res->response) == avrcp_response_browsing_success)
     {
 
-        uint16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
+        u16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
                       AVRCP_SEARCH_RES_PARAM_SIZE;
 
-        uint8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, pdu_size);
+        u8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, pdu_size);
 
         if(ptr)
         {
-            uint8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
+            u8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
 
            /* Frame the PDU 
             * ----------------------------------
@@ -1417,14 +1417,14 @@ void avrcpHandleInternalChangePathRes(AVBP       *avbp,
 {
     if(streamlineResponse(res->response) == avrcp_response_browsing_success)
     {
-        uint16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
+        u16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
                       AVRCP_CHANGE_PATH_RES_PARAM_SIZE;
 
-        uint8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, pdu_size);
+        u8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, pdu_size);
 
         if(ptr)
         {
-            uint8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
+            u8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
         
             ptr[offset] = avbpGetErrorStatusCode(res->response);
             convertUint32ToUint8Values(&ptr[offset+1],res->num_items);
@@ -1459,15 +1459,15 @@ void avrcpHandleInternalBrowseSetPlayerRes(AVBP       *avbp,
     if(streamlineResponse(res->response) == avrcp_response_browsing_success)
     {
 
-        uint16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
+        u16 pdu_size = AVRCP_BROWSE_PDU_HDR_SIZE + 
                       AVRCP_SET_BROWSED_PLAYER_RES_PARAM_SIZE;
 
-        uint8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, 
+        u8 *ptr=browseGrabSink(avbp->avbp_sink, pdu_size, 
                               pdu_size + res->size_folder_path);
   
         if(ptr)
         {
-            uint8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
+            u8 offset = AVRCP_BROWSE_PDU_HDR_SIZE;
 
            /* Frame the PDU 
             * --------------------------------------------------------
@@ -1537,18 +1537,18 @@ void avbpHandleInternalSendResponseTimeout(AVBP *avbp)
  *
  *PARAMETERS
  * AVBP          - Task
- * uint16        - PDU ID
- * uint8*        - pointer to request PDU parameters
- * uint16        - length of parameters
+ * u16        - PDU ID
+ * u8*        - pointer to request PDU parameters
+ * u16        - length of parameters
  *
  ***************************************************************************/
 void avbpHandleCommand(AVBP     *avbp,
-                       uint16   pdu_id,
-                 const uint8*   data,
-                       uint16   param_len)
+                       u16   pdu_id,
+                 const u8*   data,
+                       u16   param_len)
 {
     avrcp_response_type  response =avrcp_response_rejected_invalid_pdu ;
-    uint16 processed_len = param_len;
+    u16 processed_len = param_len;
     
     switch(pdu_id)
     {
@@ -1612,12 +1612,12 @@ void avbpHandleCommand(AVBP     *avbp,
  *
  * PARAMETERS
  * AVBP*    - Browsing Task 
- * uint16   - PDU ID for Browsing Command
+ * u16   - PDU ID for Browsing Command
  * bool     - TRUE if it is response
  ***************************************************************************/
 
 void avbpSetChannelOutgoingData(AVBP   *avbp,
-                                uint16  pdu_id,
+                                u16  pdu_id,
                                 bool    response)
 {
     Source source = StreamSourceFromSink(avbp->avbp_sink);
@@ -1667,13 +1667,13 @@ void avbpSetChannelOutgoingData(AVBP   *avbp,
  *
  * PARAMETERS
  * AVBP*    - Browsing Task 
- * uint16   - PDU ID for Browsing Command. CT always uses this value as
+ * u16   - PDU ID for Browsing Command. CT always uses this value as
 *             AVRCP_INVALID_PDU_ID to clear the pending command.   
- * uint16   - sink data which needs to be preserved for application usage.
+ * u16   - sink data which needs to be preserved for application usage.
  ***************************************************************************/
 void avbpSetChannelOnIncomingData(AVBP      *avbp, 
-                                  uint16    pdu_id,
-                                  uint16    sink_data_len)
+                                  u16    pdu_id,
+                                  u16    sink_data_len)
 {
     avbp->avbp_sink_data = sink_data_len;
 
@@ -1704,20 +1704,20 @@ void avbpSetChannelOnIncomingData(AVBP      *avbp,
  *
  * PARAMETERS
  * AVBP     - Browsing Task 
- * uint16   - PDU ID for Browsing Command
- * uint8*   - Pointer to the Start of the claimed sink
- * uint16   - Size of fixed parameters in the PDU
+ * u16   - PDU ID for Browsing Command
+ * u8*   - Pointer to the Start of the claimed sink
+ * u16   - Size of fixed parameters in the PDU
  * Source   - Flexible parameters
  * src_len  - Length of flexible parameters
  * bool     - TRUE if it is response
  ***************************************************************************/
 
 void avrcpSendBrowsePdu(AVBP    *avbp,
-                        uint16  pdu_id,
-                        uint8*  packet,
-                        uint16  param_size,
+                        u16  pdu_id,
+                        u8*  packet,
+                        u16  param_size,
                         Source  src,
-                        uint16  src_len,   
+                        u16  src_len,   
                         bool    response)
 {
 
@@ -1763,20 +1763,20 @@ void avrcpSendBrowsePdu(AVBP    *avbp,
 void avbpHandleReceivedData(AVBP *avbp)
 {
     Source source = StreamSourceFromSink(avbp->avbp_sink);
-    uint16 packet_size;
+    u16 packet_size;
 
     /* Handle the data if there is data in the Browsing Channel and
        application does not block the Sink */
     while((packet_size = SourceBoundary(source)) &&  (!avbp->avbp_sink_data))
     {
-        const uint8 *ptr = SourceMap(source);
+        const u8 *ptr = SourceMap(source);
 
         if(avbpAvctpProcessHeader(avbp, ptr, packet_size) && 
            packet_size > AVRCP_BROWSE_PDU_HDR_SIZE )
         {
-            uint16 param_len;
-            uint8 pdu_id = ptr[AVRCP_BROWSE_PDU_OFFSET];
-            uint8 cmd = ptr[AVCTP_HEADER_START_OFFSET] & AVCTP0_CR_MASK;
+            u16 param_len;
+            u8 pdu_id = ptr[AVRCP_BROWSE_PDU_OFFSET];
+            u8 cmd = ptr[AVCTP_HEADER_START_OFFSET] & AVCTP0_CR_MASK;
 
             /* validate the AVRCP Browse PDU length */
             AVRCP_UINT8_TO_UINT16(ptr, param_len,

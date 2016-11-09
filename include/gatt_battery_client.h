@@ -29,10 +29,10 @@ typedef struct __GBASC
 {
     TaskData lib_task;
     Task app_task;
-    uint16 handle_level_start;
-    uint16 handle_level_end;
-    uint16 pending_cmd;
-    uint16 pending_uuid;
+    u16 handle_level_start;
+    u16 handle_level_end;
+    u16 pending_cmd;
+    u16 pending_uuid;
 } GBASC;
 
 
@@ -60,7 +60,7 @@ typedef enum
 */
 typedef struct
 {
-    uint16  battery_level_handle;
+    u16  battery_level_handle;
     
 } gatt_battery_client_device_data_t;
 
@@ -72,7 +72,7 @@ typedef struct
 typedef struct PACK_STRUCT __GATT_BATTERY_CLIENT_INIT_CFM
 {
     const GBASC *battery_client;
-    uint16 battery_level_handle;
+    u16 battery_level_handle;
     gatt_battery_client_status_t  status;
     
 } GATT_BATTERY_CLIENT_INIT_CFM_T;
@@ -85,7 +85,7 @@ typedef struct PACK_STRUCT __GATT_BATTERY_CLIENT_READ_LEVEL_CFM
 {
     const GBASC *battery_client;
     gatt_battery_client_status_t status;
-    uint8 battery_level;
+    u8 battery_level;
 } GATT_BATTERY_CLIENT_READ_LEVEL_CFM_T;
 
 /*! @brief Contents of the GATT_BATTERY_CLIENT_LEVEL_IND message that is sent by the library,
@@ -94,7 +94,7 @@ typedef struct PACK_STRUCT __GATT_BATTERY_CLIENT_READ_LEVEL_CFM
 typedef struct PACK_STRUCT __GATT_BATTERY_CLIENT_LEVEL_IND
 {
     const GBASC *battery_client;
-    uint8 battery_level;
+    u8 battery_level;
 } GATT_BATTERY_CLIENT_LEVEL_IND_T;
 
 /*! @brief Contents of the GATT_BATTERY_CLIENT_SET_NOTIFICATION_ENABLE_CFM message that is sent by the library,
@@ -113,9 +113,9 @@ typedef struct PACK_STRUCT __GATT_BATTERY_CLIENT_READ_DESCRIPTOR_CFM
 {
     const GBASC *battery_client;
     gatt_battery_client_status_t status;
-    uint16 descriptor_uuid;
-    uint16 size_value;
-    uint8 value[1];
+    u16 descriptor_uuid;
+    u16 size_value;
+    u8 value[1];
 } GATT_BATTERY_CLIENT_READ_DESCRIPTOR_CFM_T;
 
 /*! @brief Enumeration of messages a client task may receive from the battery client library.
@@ -152,9 +152,9 @@ typedef enum
 */
 gatt_battery_client_status_t GattBatteryClientInit(GBASC *battery_client, 
                                                    Task app_task,
-                                                   uint16 cid,
-                                                   uint16 start_handle,
-                                                   uint16 end_handle,
+                                                   u16 cid,
+                                                   u16 start_handle,
+                                                   u16 end_handle,
                                                    gatt_battery_client_device_data_t * device_data);
 
 /*!
@@ -191,7 +191,7 @@ void GattBatteryClientSetNotificationEnableRequest(const GBASC *battery_client, 
     @return A GATT_BATTERY_CLIENT_READ_DESCRIPTOR_CFM message will be sent to the registered application Task.
 
 */
-void GattBatteryClientReadDescriptorRequest(const GBASC *battery_client, uint16 descriptor_uuid);
+void GattBatteryClientReadDescriptorRequest(const GBASC *battery_client, u16 descriptor_uuid);
 
 /*!
     @brief When a GATT connection is removed, the application must remove all client service instances that were
@@ -207,7 +207,7 @@ void GattBatteryClientReadDescriptorRequest(const GBASC *battery_client, uint16 
     @return The status result of calling the API.
 
 */
-gatt_battery_client_status_t GattBatteryClientDestroy(GBASC *battery_client, uint16 cid);
+gatt_battery_client_status_t GattBatteryClientDestroy(GBASC *battery_client, u16 cid);
 
 
 #endif

@@ -94,9 +94,9 @@ typedef struct audio_Tag
     /*! The audio source being used*/
     Source audio_source;
     /*! Over the air rate  */
-    uint32 incoming_rate;
+    u32 incoming_rate;
     /*! Audio rate - used for mic switch */
-    uint32 audio_rate;
+    u32 audio_rate;
     /*! Left microphone gain */
     T_mic_gain mic_gain_left;
     /*! Right microphone gain */
@@ -141,17 +141,17 @@ static CVC_t * CVC = NULL;
 /* dsp message structure*/
 typedef struct
 {
-    uint16 id;
-    uint16 a;
-    uint16 b;
-    uint16 c;
-    uint16 d;
+    u16 id;
+    u16 a;
+    u16 b;
+    u16 c;
+    u16 d;
 } DSP_REGISTER_T;
 
 typedef struct
 {
-    uint16 id;
-    uint16 size;
+    u16 id;
+    u16 size;
     char   buf[1];
 } DSP_LONG_REGISTER_T;
 
@@ -225,9 +225,9 @@ DESCRIPTION
     Send volume message to DSP
 
 */
-static void send_volume_to_dsp(const uint16 volume)
+static void send_volume_to_dsp(const u16 volume)
 {
-    uint16 digital_dsp = 0;
+    u16 digital_dsp = 0;
 
     if (CsrMultiChanGainGetType(multi_channel_group_main) == multi_channel_gain_digital)
     {
@@ -573,7 +573,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void CsrCvcPluginSetVolume(uint16 volume )
+void CsrCvcPluginSetVolume(u16 volume )
 {
     PanicNull(CVC);
     
@@ -585,7 +585,7 @@ void CsrCvcPluginSetVolume(uint16 volume )
     
     if(CVC->no_dsp)
     {
-        int16 master_vol = VolumeConvertDACGainToDB(CVC->volume);
+        i16 master_vol = VolumeConvertDACGainToDB(CVC->volume);
         PRINT(("CVC: NO DSP: Set volume %d (%d dB/60)\n", volume, master_vol));
         /*Set the output Gain immediately*/
         CsrMultiChanGainSetHardwareOnly(multi_channel_group_main, master_vol);
@@ -725,9 +725,9 @@ RETURNS
 void CsrCvcPluginSetMode ( CvcPluginTaskdata *task, AUDIO_MODE_T mode , const void * params )
 {
     /* pre-initialise with the most common parameters and adjust below as necessary */
-    uint16 sysmode;
-    uint16 call_state = CALLST_CONNECTED;
-    uint16 volume;
+    u16 sysmode;
+    u16 call_state = CALLST_CONNECTED;
+    u16 volume;
     
     PRINT(("CsrCvcPluginSetMode mode = %d\n",mode));
     
@@ -872,7 +872,7 @@ void CsrCvcPluginSetSoftMute(AUDIO_PLUGIN_SET_SOFT_MUTE_MSG_T* message)
         bool mute_speaker = FALSE;
         bool send_mode_msg = FALSE;
         
-        uint16 sysmode = (CVC->ext_params == CSR_CVC_HFK_ENABLE)? SYSMODE_HFK : SYSMODE_PSTHRGH;
+        u16 sysmode = (CVC->ext_params == CSR_CVC_HFK_ENABLE)? SYSMODE_HFK : SYSMODE_PSTHRGH;
         
         PanicFalse(CVC->cvc_running);
         
@@ -927,7 +927,7 @@ RETURNS
     false if a tone is already playing
     
 */
-void CsrCvcPluginPlayTone (CvcPluginTaskdata *task, ringtone_note * tone , uint16 tone_volume)  
+void CsrCvcPluginPlayTone (CvcPluginTaskdata *task, ringtone_note * tone , u16 tone_volume)  
 {
     Sink lSink ; 
     Source lSource = StreamRingtoneSource( (const ringtone_note *) (tone) );
@@ -940,7 +940,7 @@ void CsrCvcPluginPlayTone (CvcPluginTaskdata *task, ringtone_note * tone , uint1
     {
         multi_channel_params_t params;
         /* Use the tone volume if present */
-        uint16 sys_vol = tone_volume ? tone_volume : CVC->volume;
+        u16 sys_vol = tone_volume ? tone_volume : CVC->volume;
         
         if ( CVC->audio_sink )
             disconnectOutputNoCvc();
@@ -1048,15 +1048,15 @@ DESCRIPTION
 static void setMicGain(audio_instance instance, audio_channel channel, bool digital, T_mic_gain gain)
 {
     Source mic_source = AudioPluginGetMic(instance, channel, digital);
-    uint8 mic_gain = (digital ? gain.digital_gain : gain.analogue_gain);
+    u8 mic_gain = (digital ? gain.digital_gain : gain.analogue_gain);
     AudioPluginSetMicGain(mic_source, digital, mic_gain, gain.preamp_enable);
 }
 
-static uint32 getVoiceOutputSampleRate(void)
+static u32 getVoiceOutputSampleRate(void)
 {
     if(CsrMultiChanConfigRequiresI2s())
     {
-        uint32 output_rate = CsrI2SVoiceResamplingFrequency();
+        u32 output_rate = CsrI2SVoiceResamplingFrequency();
         if(output_rate != I2S_NO_RESAMPLE)
         {
             return output_rate;
@@ -1077,13 +1077,13 @@ static void connectAudio (CvcPluginTaskdata *task)
     }
     else if ((CVC->audio_sink != NULL) || CVC_PLUGIN_IS_ASR(task))
     {
-        uint16 adc_rate;
+        u16 adc_rate;
         Source mic_source_a = NULL;
         Source mic_source_b = NULL;
         multi_channel_params_t params;
         
         /* Default to hardware rate matching for DAC outputs */
-        uint16 rate_matching = RATE_MATCH_HARDWARE_MASK;
+        u16 rate_matching = RATE_MATCH_HARDWARE_MASK;
         
         /* Use plugin default encoder or overwrite if link type is USB */
         LINK_ENCODING_TYPE_T encoder = CVC_PLUGIN_IS_USB() ? LINK_ENCODING_USB : task->encoder;
@@ -1236,7 +1236,7 @@ static void connectAudio (CvcPluginTaskdata *task)
         if(CVC_PLUGIN_IS_ASR(task))
         {
             KalimbaSendMessage(ASR_START,0,0,0,0);
-            PRINT(("ASR running msg %x busy [%x]\n",ASR_START,(uint16)IsAudioBusy()));
+            PRINT(("ASR running msg %x busy [%x]\n",ASR_START,(u16)IsAudioBusy()));
             /* update the current audio state */
             SetAsrPlaying(TRUE);
         }
@@ -1253,10 +1253,10 @@ static void connectAudio (CvcPluginTaskdata *task)
 DESCRIPTION
     Handles a CVC_CODEC message received from CVC
 */
-static void codecMessage (CvcPluginTaskdata *task, T_mic_gain input_gain_l, T_mic_gain input_gain_r, uint16 output_gain )
+static void codecMessage (CvcPluginTaskdata *task, T_mic_gain input_gain_l, T_mic_gain input_gain_r, u16 output_gain )
 {   
     PRINT(("CVC: Output gain = 0x%x\n" , output_gain ));
-    PRINT(("CVC: Input gain L:R = 0x%x : 0x%x \n", *(uint16*)&input_gain_l,*(uint16*)&input_gain_r));
+    PRINT(("CVC: Input gain L:R = 0x%x : 0x%x \n", *(u16*)&input_gain_l,*(u16*)&input_gain_r));
 
     /* check pointer validity as there is a very small window where a message arrives
        as the result of playing a tone after CVC has been powered down */
@@ -1283,7 +1283,7 @@ static void codecMessage (CvcPluginTaskdata *task, T_mic_gain input_gain_l, T_mi
 DESCRIPTION
     handles the internal cvc messages /  messages from the dsp
 */
-void CsrCvcPluginInternalMessage( CvcPluginTaskdata *task ,uint16 id , Message message ) 
+void CsrCvcPluginInternalMessage( CvcPluginTaskdata *task ,u16 id , Message message ) 
 {
     switch(id)
     {
@@ -1395,7 +1395,7 @@ void CsrCvcPluginInternalMessage( CvcPluginTaskdata *task ,uint16 id , Message m
             
                 case CVC_CODEC_MSG:
                 {
-                    uint16 lOutput_gain;
+                    u16 lOutput_gain;
                     T_mic_gain lInput_gain_l;
                     T_mic_gain lInput_gain_r;
                   
@@ -1511,7 +1511,7 @@ void CsrCvcPluginInternalMessage( CvcPluginTaskdata *task ,uint16 id , Message m
                 case CVC_STOREPERSIST_MSG:
                     /* Set the DSP app's pblock */
 /*                   PRINT(("CVC: StorePersist key[0x%x], data[0x%x] \n", m->buf[0], m->buf[1]));*/
-                   PblockSet(m->buf[0], m->size-1, (uint16*)m->buf+1);
+                   PblockSet(m->buf[0], m->size-1, (u16*)m->buf+1);
                 break;
                 
                 default:
@@ -1547,7 +1547,7 @@ static void toneCompleteNoDsp(CvcPluginTaskdata *task)
         else
         {
             MessageSendLater((TaskData*) task, MESSAGE_FORCE_TONE_COMPLETE, 0, 1500);
-            PRINT(("CVC: Tone Complete SCO not exists [0x%x]\n", (uint16)CVC->audio_sink));
+            PRINT(("CVC: Tone Complete SCO not exists [0x%x]\n", (u16)CVC->audio_sink));
         }
     }
     else
@@ -1852,7 +1852,7 @@ void CsrCvcPluginSetPower( CvcPluginTaskdata *task,  AUDIO_POWER_T power)
             MAKE_AUDIO_MESSAGE ( AUDIO_PLUGIN_SET_MODE_MSG) ;
             message->mode   = CVC->mode ;
             message->params = NULL ;
-            MessageSendConditionally ( (Task)task, AUDIO_PLUGIN_SET_MODE_MSG , message ,(const uint16 *)AudioBusyPtr() ) ;
+            MessageSendConditionally ( (Task)task, AUDIO_PLUGIN_SET_MODE_MSG , message ,(const u16 *)AudioBusyPtr() ) ;
         }
         else
         {
@@ -1874,8 +1874,8 @@ RETURNS
 */
 void CvcConfigureASR( CvcPluginTaskdata *task)
 {
-    uint16 ret_len = 0;
-    uint16 psdata[4] ;
+    u16 ret_len = 0;
+    u16 psdata[4] ;
     
     /* Initialize clip detector */
     PanicFalse(KalimbaSendMessage(KALIMBA_MSG_CBOPS_SILENCE_CLIP_DETECT_INITIALISE_ID,1,0x7fff,1000,1));
@@ -1910,7 +1910,7 @@ void CsrCvcPluginSetAsr ( CvcPluginTaskdata *task, AUDIO_MODE_T mode  )
        (task->cvc_plugin_variant == CVSD_CVC_1_MIC_HANDSFREE_ASR)||(task->cvc_plugin_variant == CVSD_CVC_2_MIC_HANDSFREE_ASR))
     {
         KalimbaSendMessage(ASR_START,0,0,0,0);
-        PRINT(("ASR START MSG %x busy [%x]\n",ASR_START,(uint16)IsAudioBusy()));
+        PRINT(("ASR START MSG %x busy [%x]\n",ASR_START,(u16)IsAudioBusy()));
         /* update the current audio state */
         SetAsrPlaying(TRUE);
     }    

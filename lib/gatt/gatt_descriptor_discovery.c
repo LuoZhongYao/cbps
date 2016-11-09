@@ -22,9 +22,9 @@ NOTES
 
 #if (GATT_FEATURES & GATT_DISC_ALL_DESCRIPTORS)
 void GattDiscoverAllCharacteristicDescriptorsRequest(Task theAppTask,
-                                                     uint16 cid,
-                                                     uint16 start,
-                                                     uint16 end)
+                                                     u16 cid,
+                                                     u16 start,
+                                                     u16 end)
 {
     cid_map_t *conn;
     

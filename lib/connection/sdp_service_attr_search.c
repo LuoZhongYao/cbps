@@ -27,7 +27,7 @@ NOTES
 
 /*****************************************************************************/
 #define REF_FLAG 0x8000 /* Pass result as a reference instead of a value */
-void ConnectionSdpServiceSearchAttributeRequest(Task appTask, const bdaddr *addr, uint16 max_attributes, uint16 size_search_pattern, const uint8 *search_pattern, uint16 size_attr_list, const uint8 *attr_list)
+void ConnectionSdpServiceSearchAttributeRequest(Task appTask, const bdaddr *addr, u16 max_attributes, u16 size_search_pattern, const u8 *search_pattern, u16 size_attr_list, const u8 *attr_list)
 {
 #ifdef CONNECTION_DEBUG_LIB	
 	if (size_search_pattern == 0)
@@ -65,7 +65,7 @@ void ConnectionSdpServiceSearchAttributeRequest(Task appTask, const bdaddr *addr
 	}
 }
 
-void ConnectionSdpServiceSearchAttributeRefRequest(Task appTask, const bdaddr *addr, uint16 max_attributes, uint16 size_search_pattern, const uint8 *search_pattern, uint16 size_attr_list, const uint8 *attr_list)
+void ConnectionSdpServiceSearchAttributeRefRequest(Task appTask, const bdaddr *addr, u16 max_attributes, u16 size_search_pattern, const u8 *search_pattern, u16 size_attr_list, const u8 *attr_list)
 {
     ConnectionSdpServiceSearchAttributeRequest(
         appTask,

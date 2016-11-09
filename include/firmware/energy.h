@@ -30,7 +30,7 @@
 
    @return          FALSE if the sink does not correspond to a SCO connection.
 */
-bool EnergyEstimationSetBounds(Sink sco, uint16 lower, uint16 upper);
+bool EnergyEstimationSetBounds(Sink sco, u16 lower, u16 upper);
 
 /*!
   @brief Disable estimation on the specified SCO connection.

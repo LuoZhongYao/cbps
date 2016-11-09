@@ -108,7 +108,7 @@ ps_store_application    = 0x10
   This ensures that the VM application is given enough time to kick
   the VM software watchdog once the PS write to EEPROM is completed.
 */
-uint16 PsStore(uint16 key, const void *buff, uint16 words);
+u16 PsStore(u16 key, const void *buff, u16 words);
 
 /*!
   @brief Copy to specified memory buffer from persistent store.
@@ -127,7 +127,7 @@ uint16 PsStore(uint16 key, const void *buff, uint16 words);
   ... PSKEY_USR49, PSKEY_DSP0 ... PSKEY_DSP49. No other keys can be written 
   from an application.
 */
-uint16 PsRetrieve(uint16 key, void *buff, uint16 words);
+u16 PsRetrieve(u16 key, void *buff, u16 words);
 
 /*!
   @brief Flood fill the store to force a defragment at next boot.
@@ -140,7 +140,7 @@ void PsFlood(void);
    @brief Return how many keys of this size we could write.
    @param len The key size to use.
 */
-uint16 PsFreeCount(uint16 len);
+u16 PsFreeCount(u16 len);
 
 /*!
   @brief Read any persistent store key which could be accessed from off-chip
@@ -173,7 +173,7 @@ uint16 PsFreeCount(uint16 len);
 
   The correct way to read a key which may be a zero length pskey may 
   will look like below
-      uint16 pio = 0xffff;
+      u16 pio = 0xffff;
       if (PsFullRetrieve(PSKEY_*., &pio, sizeof(pio)) && pio <= 15)
          {
             // enable feature using the PIO pin in pio
@@ -181,7 +181,7 @@ uint16 PsFreeCount(uint16 len);
   The initialisation of pio gives the value if the key isn't present,
   PsFullRetrieve returns FALSE if the key doesn't exist.
 */
-uint16 PsFullRetrieve(uint16 key, void *buff, uint16 words);
+u16 PsFullRetrieve(u16 key, void *buff, u16 words);
 
 /*!
   @brief Copy the specified memory buffer into PSKEY_FSTAB within the persistent
@@ -201,7 +201,7 @@ uint16 PsFullRetrieve(uint16 key, void *buff, uint16 words);
 
   @return TRUE if the operation succeeded or FALSE if it failed
 */
-bool PsStoreFsTab(const void *buff, uint16 words, bool commit);
+bool PsStoreFsTab(const void *buff, u16 words, bool commit);
 
 /*!
   @brief Set the PS Store that are used for subsequent PS operations

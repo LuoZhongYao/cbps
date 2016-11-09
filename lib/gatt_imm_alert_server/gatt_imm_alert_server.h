@@ -59,7 +59,7 @@ typedef enum {
 typedef struct
 {
     const GIASS_T *imm_alert_service;   /*! Reference structure for the instance  */
-    uint16 cid;                                       /*! Connection ID */
+    u16 cid;                                       /*! Connection ID */
     gatt_imm_alert_level alert_level;        /*! Alert level requested */
 } GATT_IMM_ALERT_SERVER_WRITE_LEVEL_IND_T;
 
@@ -99,8 +99,8 @@ typedef enum
 */
 gatt_imm_alert_server_status GattImmAlertServiceServerInit(Task appTask ,
                                 GIASS_T *const imm_alert_server,
-                                uint16 start_handle,
-                                uint16 end_handle);
+                                u16 start_handle,
+                                u16 end_handle);
 
 
 #endif /* GATT_IMM_ALERT_SERVER_H */      

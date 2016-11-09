@@ -73,7 +73,7 @@ typedef enum
 #define A2DP_MUSIC_MSG_CUR_EQ_BANK   1
 #define A2DP_MUSIC_MSG_ENHANCEMENTS  2
 
-/* lower 3 bits of enchancement uint16 are the EQ selected */
+/* lower 3 bits of enchancement u16 are the EQ selected */
 #define A2DP_MUSIC_CONFIG_USER_EQ_SELECT 7
 
 #define MUSIC_CONFIG_DATA_VALID         (0x8000)
@@ -96,7 +96,7 @@ typedef enum
 typedef struct
 {
     A2DP_MUSIC_PROCESSING_T music_mode_processing;
-    uint16 music_mode_enhancements;
+    u16 music_mode_enhancements;
     unsigned unused:8;
     unsigned external_volume_enabled:1;
     unsigned master_routing_mode:2;
@@ -119,12 +119,12 @@ typedef struct
 
 typedef struct
 {
-    uint16 clock_mismatch;
-    uint16 currentEQ;
-    uint16 enhancements;
-    uint16 packet_size;
-    uint16 silence_threshold ;   /* threshold (16 bit fractional value - aligned to MSB in DSP) */
-    uint16 silence_trigger_time; /* trigger time in seconds (16 bit int) */
+    u16 clock_mismatch;
+    u16 currentEQ;
+    u16 enhancements;
+    u16 packet_size;
+    u16 silence_threshold ;   /* threshold (16 bit fractional value - aligned to MSB in DSP) */
+    u16 silence_trigger_time; /* trigger time in seconds (16 bit int) */
     A2dpPluginModeParams *mode_params;
     const common_mic_params* mic_params;
     usb_common_params* usb_params;
@@ -140,7 +140,7 @@ typedef struct
     unsigned channel_mode:2;
     unsigned format:8;
     unsigned bitpool:8;
-    uint32 voice_rate;
+    u32 voice_rate;
     aptx_sprint_params_type aptx_sprint_params;
     spdif_ac3_configuration *spdif_ac3_config;
     spdif_target_latency *target_latency_config;         
@@ -159,21 +159,21 @@ extern const A2dpPluginTaskdata csr_tws_aac_decoder_plugin;
 extern const A2dpPluginTaskdata csr_tws_aptx_decoder_plugin;
 extern const A2dpPluginTaskdata csr_fm_decoder_plugin;
 
-extern const uint8 sbc_caps_sink[16];
-extern const uint8 mp3_caps_sink[16];
-extern const uint8 aac_caps_sink[18];
-extern const uint8 faststream_caps_sink[14];
-extern const uint8 aptx_caps_sink[19]; 
-extern const uint8 aptx_acl_sprint_caps_sink[27];
-extern const uint8 tws_sbc_caps[26];
-extern const uint8 tws_mp3_caps[26];
-extern const uint8 tws_aac_caps[28];
-extern const uint8 tws_aptx_caps[29];
+extern const u8 sbc_caps_sink[16];
+extern const u8 mp3_caps_sink[16];
+extern const u8 aac_caps_sink[18];
+extern const u8 faststream_caps_sink[14];
+extern const u8 aptx_caps_sink[19]; 
+extern const u8 aptx_acl_sprint_caps_sink[27];
+extern const u8 tws_sbc_caps[26];
+extern const u8 tws_mp3_caps[26];
+extern const u8 tws_aac_caps[28];
+extern const u8 tws_aptx_caps[29];
 
 
-uint32 AudioGetA2DPSampleRate(void);
-uint32 AudioGetA2DPSubwooferSampleRate(void);
-bool AudioGetLatency (Task audio_plugin, bool *estimated, uint16 *latency);
+u32 AudioGetA2DPSampleRate(void);
+u32 AudioGetA2DPSubwooferSampleRate(void);
+bool AudioGetLatency (Task audio_plugin, bool *estimated, u16 *latency);
 
 /* spdif specific messages */
 #define ENABLE_SPDIF_MESSAGING 1    /* enable reporting of status messages from dsp */

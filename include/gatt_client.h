@@ -36,7 +36,7 @@ DESCRIPTION
 */
 typedef struct
 {
-    uint16 service_changed_handle;
+    u16 service_changed_handle;
 } gatt_client_device_data_t;
 
 /*!
@@ -51,7 +51,7 @@ typedef struct __GGATTC
 {
     TaskData lib_task;
     Task app_task;
-    uint16 service_changed_handle;
+    u16 service_changed_handle;
     bool discovery_error;
 } GGATTC;
 
@@ -82,9 +82,9 @@ typedef enum __gatt_client_status
 */
 typedef struct __gatt_client_init_params
 {
-     uint16 cid;                /*! Connection ID of the GATT connection on which the server side service needs to be accessed*/
-     uint16 start_handle;       /*! The first handle of the service that needs to be accessed*/
-     uint16 end_handle;         /*! The last handle of the service that needs to be accessed */
+     u16 cid;                /*! Connection ID of the GATT connection on which the server side service needs to be accessed*/
+     u16 start_handle;       /*! The first handle of the service that needs to be accessed*/
+     u16 end_handle;         /*! The last handle of the service that needs to be accessed */
 } gatt_client_init_params_t;
 
 /*!
@@ -93,7 +93,7 @@ typedef struct __gatt_client_init_params
 typedef struct PACK_STRUCT
 {
     const GGATTC *gatt_client;             /*! Reference structure for the instance */
-    uint16 service_changed_handle;         /*! Handle of the Service Changed characteristic */
+    u16 service_changed_handle;         /*! Handle of the Service Changed characteristic */
     gatt_client_status_t status;           /*! Status of the initialisation attempt */
 } GATT_CLIENT_INIT_CFM_T;
 
@@ -103,9 +103,9 @@ typedef struct PACK_STRUCT
 typedef struct PACK_STRUCT
 {
     const GGATTC *gatt_client;              /*! Reference structure for the instance */
-    uint16 cid;                             /*! The connection ID */
-    uint16 start_handle;                    /*! Start handle of the changed services */
-    uint16 end_handle;                      /*! End handle of the changed services */
+    u16 cid;                             /*! The connection ID */
+    u16 start_handle;                    /*! Start handle of the changed services */
+    u16 end_handle;                      /*! End handle of the changed services */
 } GATT_CLIENT_SERVICE_CHANGED_IND_T;
 
 
@@ -145,7 +145,7 @@ gatt_client_status_t GattClientInit(Task app_task,
     @return The status result of calling the API.
 
 */
-gatt_client_status_t GattClientDestroy(GGATTC *const gatt_client, uint16 cid);
+gatt_client_status_t GattClientDestroy(GGATTC *const gatt_client, u16 cid);
 
 
 #endif /* GATT_CLIENT_H */

@@ -80,7 +80,7 @@ RETURNS
     Return TRUE if one of the passed in volumes has caused a change in volume.
     Otherwise FALSE.
 */
-bool volume_set_dongle_levels(uint8 mic_vol, uint8 speaker_vol, uint8 sidetone_vol, uint8 eq_index);
+bool volume_set_dongle_levels(u8 mic_vol, u8 speaker_vol, u8 sidetone_vol, u8 eq_index);
 
 
 /****************************************************************************
@@ -116,7 +116,7 @@ DESCRIPTION
     Updates the volume based on USB audio changes.
     
 */
-void volume_usb_levels_changed_ind(uint8 mic_vol_level, uint8 playback_vol_level, bool mic_mute, bool speaker_mute);
+void volume_usb_levels_changed_ind(u8 mic_vol_level, u8 playback_vol_level, bool mic_mute, bool speaker_mute);
 
 
 #endif /* _SOURCE_VOLUME_H_ */

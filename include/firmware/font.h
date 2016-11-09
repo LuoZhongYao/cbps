@@ -16,11 +16,11 @@ Functions to control the font subsystem.
 /*!
 @brief The index of a font. Should be less than the value returned from FontInit().
 */
-typedef uint16 FontId;
+typedef u16 FontId;
 /*!
 @brief A character in UCS-2.
 */
-typedef uint16 ucs2char;
+typedef u16 ucs2char;
 
 
 /*!
@@ -42,6 +42,6 @@ FontId FontInit(void);
   @return The width of the glyph if it was found and fits in the buffer
   provided (or no buffer was provided), otherwise returns (size_t) -1.
 */
-size_t FontGetGlyph(FontId font, ucs2char c, uint16 *glyph, size_t max_glyph_wid);
+size_t FontGetGlyph(FontId font, ucs2char c, u16 *glyph, size_t max_glyph_wid);
 
 #endif

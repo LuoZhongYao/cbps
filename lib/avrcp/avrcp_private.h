@@ -138,7 +138,7 @@ DESCRIPTION
 #define AVRCP_MAX_VENDOR_DATA           4                  
 
 /* Value used to identify metadata PDU in Vendor Dependent data. */
-#define AVRCP_BT_COMPANY_ID             ((uint32)6488)
+#define AVRCP_BT_COMPANY_ID             ((u32)6488)
 
 /* Mask to retrieve Error Status values from avrcp_response_code */
 #define AVRCP_RESPONSE_ERROR_STATUS_MASK           0x7F
@@ -215,8 +215,8 @@ DESCRIPTION
 #endif
 
 /* A Large timeout value for Browsing channel */
-#define AVBP_WATCHDOG_TIMEOUT             ((uint32) 20000)
-#define AVBP_SEND_RESPONSE_TIMEOUT        ((uint32) 20000)
+#define AVBP_WATCHDOG_TIMEOUT             ((u32) 20000)
+#define AVBP_SEND_RESPONSE_TIMEOUT        ((u32) 20000)
 
 /* Browsing channel values */
 /* Set Browsed player Response uses 10 bytes Fixed Param + 
@@ -447,8 +447,8 @@ typedef struct
 
 typedef struct
 {
-    uint16                connection_id;
-    uint16                signal_id;
+    u16                connection_id;
+    u16                signal_id;
     bool                  accept;
 } AVRCP_INTERNAL_CONNECT_RES_T;
 
@@ -468,13 +468,13 @@ typedef struct
     bool                state;
     avc_operation_id    opid;
     avrcpPending        pending;
-    uint16              operation_data_length;
+    u16              operation_data_length;
     Source              operation_data;
 } AVRCP_INTERNAL_PASSTHROUGH_REQ_T;
 
 typedef struct
 {
-    uint8 page;
+    u8 page;
 } AVRCP_INTERNAL_SUBUNITINFO_REQ_T;
 
 
@@ -491,7 +491,7 @@ typedef struct
     avrcp_status_code    status;
 
 #ifdef AVRCP_ENABLE_DEPRECATED
-    uint16              transaction;
+    u16              transaction;
 #endif
 
 } AVRCP_COMMON_METADATA_CFM_MESSAGE_T;
@@ -500,16 +500,16 @@ typedef struct
 {
     AVRCP               *avrcp;
     avrcp_status_code   status;
-    uint16              metadata_packet_type;    
-    uint16              number_of_data_items;    
-    uint16              size_data;    
+    u16              metadata_packet_type;    
+    u16              number_of_data_items;    
+    u16              size_data;    
     Source              data;
 
 #ifdef AVRCP_ENABLE_DEPRECATED
-    uint16              transaction;
-    uint16              no_packets;    
-    uint16              ctp_packet_type;    
-    uint16              data_offset;   
+    u16              transaction;
+    u16              no_packets;    
+    u16              ctp_packet_type;    
+    u16              data_offset;   
 #endif
 } AVRCP_COMMON_FRAGMENTED_METADATA_CFM_T;
 
@@ -517,21 +517,21 @@ typedef struct
 {
     avc_subunit_type    subunit_type;
     avc_subunit_id        subunit_id;
-    uint8                 ctype;
-    uint32                company_id;
+    u8                 ctype;
+    u32                company_id;
     avrcpPending          pending;
-    uint16                data_length;
+    u16                data_length;
     Source                data;    
-    uint16                extra_data_len;
-    uint8                 extra_data[1];
+    u16                extra_data_len;
+    u8                 extra_data[1];
 } AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T;
 
 typedef struct{
-    uint16  player_id;
+    u16  player_id;
 }AVRCP_INTERNAL_BROWSE_SET_PLAYER_REQ_T;
 
 typedef struct{
-   uint16                  uid_counter;
+   u16                  uid_counter;
    avrcp_browse_direction  direction;
    avrcp_browse_uid        folder_uid;
 }AVRCP_INTERNAL_CHANGE_PATH_REQ_T;
@@ -539,18 +539,18 @@ typedef struct{
 typedef struct{
     avrcp_browse_scope  scope; 
     avrcp_browse_uid    uid;     
-    uint16              uid_counter;    
-    uint8               num_attr; 
-    uint16              attr_list_size;
+    u16              uid_counter;    
+    u8               num_attr; 
+    u16              attr_list_size;
     Source              attr_list;     
 }AVRCP_INTERNAL_GET_ITEM_ATTRIBUTES_REQ_T;
 
 typedef struct{
     avrcp_browse_scope  scope;
-    uint32              start;
-    uint32              end;
-    uint8               num_attr;
-    uint16              attr_list_size;
+    u32              start;
+    u32              end;
+    u8               num_attr;
+    u16              attr_list_size;
     Source              attr_list;
 }AVRCP_INTERNAL_GET_FOLDER_ITEMS_REQ_T;
 
@@ -560,7 +560,7 @@ typedef struct{
 
 typedef struct{
     avrcp_char_set      char_set;
-    uint16              str_length;
+    u16              str_length;
     Source              string;
 }AVRCP_INTERNAL_SEARCH_REQ_T;
 
@@ -576,7 +576,7 @@ typedef struct
 typedef struct
 {
     avrcp_response_type    response;
-    uint16                 pdu_id;
+    u16                 pdu_id;
 }AVRCP_INTERNAL_COMMON_METADATA_CONTROL_RES_T;
 
 typedef struct
@@ -589,14 +589,14 @@ typedef struct
 {
     bool                accept;
     avc_subunit_type    unit_type;
-    uint8                unit;
-    uint32                company_id;
+    u8                unit;
+    u32                company_id;
 } AVRCP_INTERNAL_UNITINFO_RES_T;
 
 typedef struct
 {
     bool    accept;
-    uint8    page_data[PAGE_DATA_LENGTH];
+    u8    page_data[PAGE_DATA_LENGTH];
 } AVRCP_INTERNAL_SUBUNITINFO_RES_T;
 
 typedef struct
@@ -604,7 +604,7 @@ typedef struct
     AVRCP                *avrcp;
 
 #ifdef AVRCP_ENABLE_DEPRECATED
-    uint16              transaction;
+    u16              transaction;
 #endif
 } AVRCP_COMMON_METADATA_IND_MESSAGE_T;
 
@@ -612,16 +612,16 @@ typedef struct
 typedef struct
 {
     AVRCP               *avrcp;
-    uint16              number_of_data_items;    
-    uint16              size_data;    
+    u16              number_of_data_items;    
+    u16              size_data;    
     Source              data;
 
 #ifdef AVRCP_ENABLE_DEPRECATED
-    uint16              transaction;
-    uint16              no_packets;    
-    uint16              ctp_packet_type; 
-    uint16              data_offset;
-    uint16              metadata_packet_type;    
+    u16              transaction;
+    u16              no_packets;    
+    u16              ctp_packet_type; 
+    u16              data_offset;
+    u16              metadata_packet_type;    
 #endif
 
 } AVRCP_COMMON_FRAGMENTED_METADATA_IND_T;
@@ -631,7 +631,7 @@ typedef struct
 {
     avrcp_response_type response;
     avrcp_capability_id caps_id;
-    uint16              size_caps_list;
+    u16              size_caps_list;
     Source              caps_list;
 } AVRCP_INTERNAL_GET_CAPS_RES_T;
 
@@ -639,7 +639,7 @@ typedef struct
 typedef struct
 {
     avrcp_response_type response;
-    uint16    size_attributes_list; 
+    u16    size_attributes_list; 
     Source attributes_list;
 } AVRCP_INTERNAL_LIST_APP_ATTRIBUTE_RES_T;
 
@@ -647,7 +647,7 @@ typedef struct
 typedef struct
 {
     avrcp_response_type response;
-    uint16    size_values_list; 
+    u16    size_values_list; 
     Source values_list;
 } AVRCP_INTERNAL_LIST_APP_VALUE_RES_T;
 
@@ -655,7 +655,7 @@ typedef struct
 typedef struct
 {
     avrcp_response_type response;
-    uint16    size_values_list; 
+    u16    size_values_list; 
     Source values_list;
 } AVRCP_INTERNAL_GET_APP_VALUE_RES_T;
 
@@ -663,8 +663,8 @@ typedef struct
 typedef struct
 {
     avrcp_response_type response;
-    uint16 number_of_attributes;
-    uint16    size_attributes_list; 
+    u16 number_of_attributes;
+    u16    size_attributes_list; 
     Source attributes_list;
 } AVRCP_INTERNAL_GET_APP_ATTRIBUTES_TEXT_RES_T;
 
@@ -672,8 +672,8 @@ typedef struct
 typedef struct
 {
     avrcp_response_type response;
-    uint16 number_of_values;
-    uint16    size_values_list; 
+    u16 number_of_values;
+    u16    size_values_list; 
     Source values_list;
 } AVRCP_INTERNAL_GET_APP_VALUE_TEXT_RES_T;
 
@@ -681,8 +681,8 @@ typedef struct
 typedef struct
 {
     avrcp_response_type response;
-    uint16 number_of_attributes;
-    uint16    size_attributes_list; 
+    u16 number_of_attributes;
+    u16    size_attributes_list; 
     Source attributes_list;
 } AVRCP_INTERNAL_GET_ELEMENT_ATTRIBUTES_RES_T;
 
@@ -690,8 +690,8 @@ typedef struct
 typedef struct
 {
     avrcp_response_type response;
-    uint32 song_length;
-    uint32 song_elapsed;
+    u32 song_length;
+    u32 song_elapsed;
     avrcp_play_status play_status;
 } AVRCP_INTERNAL_GET_PLAY_STATUS_RES_T;
 
@@ -706,15 +706,15 @@ typedef struct
 typedef struct
 {
     avrcp_response_type response;
-    uint32 track_index_high;
-    uint32 track_index_low;
+    u32 track_index_high;
+    u32 track_index_low;
 } AVRCP_INTERNAL_EVENT_TRACK_CHANGED_RES_T;
 
 
 typedef struct
 {
     avrcp_response_type response;
-    uint32 playback_pos;
+    u32 playback_pos;
 } AVRCP_INTERNAL_EVENT_PLAYBACK_POS_CHANGED_RES_T;
 
 
@@ -735,88 +735,88 @@ typedef struct
 typedef struct
 {
     avrcp_response_type response;
-    uint16 size_attributes;
+    u16 size_attributes;
     Source attributes;
 } AVRCP_INTERNAL_EVENT_PLAYER_APP_SETTING_CHANGED_RES_T;
 
 typedef struct
 {
     avrcp_response_type response;
-    uint8 pdu_id;
+    u8 pdu_id;
 }AVRCP_INTERNAL_REJECT_METADATA_RES_T; 
 
 
 typedef struct
 {
     avrcp_response_type response;
-    uint8               volume;
+    u8               volume;
 }AVRCP_INTERNAL_SET_ABSOLUTE_VOL_RES_T, 
  AVRCP_INTERNAL_EVENT_VOLUME_CHANGED_RES_T;
 
 
 typedef struct{
     avrcp_response_type response;  
-    uint16              player_id;
-    uint16              uid_counter;
+    u16              player_id;
+    u16              uid_counter;
 }AVRCP_INTERNAL_EVENT_ADDRESSED_PLAYER_CHANGED_RES_T;
 
 typedef struct{
     avrcp_response_type response;  
-    uint16              uid_counter;
+    u16              uid_counter;
 }AVRCP_INTERNAL_EVENT_UIDS_CHANGED_RES_T;
 
 
 typedef struct{
     avrcp_response_type response;  
-    uint16              uid_counter;
-    uint32              num_items;
+    u16              uid_counter;
+    u32              num_items;
     avrcp_char_set      char_type;
-    uint8               folder_depth;
-    uint16              size_folder_path;
+    u8               folder_depth;
+    u16              size_folder_path;
     Source              folder_path;
 }AVRCP_INTERNAL_BROWSE_SET_PLAYER_RES_T;
 
 
 typedef struct{
     avrcp_response_type  response;
-    uint32               num_items;
+    u32               num_items;
 }AVRCP_INTERNAL_CHANGE_PATH_RES_T;
 
 
 typedef struct{
     avrcp_response_type response;
-    uint8               num_attributes;
-    uint16              size_attr_list;
+    u8               num_attributes;
+    u16              size_attr_list;
     Source              attr_value_list;
 }AVRCP_INTERNAL_GET_ITEM_ATTRIBUTES_RES_T;
 
 
 typedef struct{
     avrcp_response_type response;
-    uint16              uid_counter;
-    uint16              num_items;
-    uint16              item_list_size;
+    u16              uid_counter;
+    u16              num_items;
+    u16              item_list_size;
     Source              item_list;
 }AVRCP_INTERNAL_GET_FOLDER_ITEMS_RES_T;
 
 typedef struct{
     avrcp_response_type response;
-    uint16              uid_counter;
-    uint32              num_items;
+    u16              uid_counter;
+    u32              num_items;
 }AVRCP_INTERNAL_GET_NUMBER_OF_ITEMS_RES_T;
 
 typedef struct{
     avrcp_response_type response;
-    uint16              uid_counter;
-    uint32              num_items;   
+    u16              uid_counter;
+    u32              num_items;   
 }AVRCP_INTERNAL_SEARCH_RES_T; 
 
 typedef struct
 {
     Source data;
-    uint16 param_length;
-    uint16 pdu_id;
-    uint16 response;
+    u16 param_length;
+    u16 pdu_id;
+    u16 response;
 } AVRCP_INTERNAL_NEXT_CONTINUATION_PACKET_T;
 
 #endif /* !AVRCP_CT_ONLY_LIB*/
@@ -824,13 +824,13 @@ typedef struct
 typedef struct
 {
     avrcpPending pending_command;
-    uint16 data;
+    u16 data;
 } AVRCP_INTERNAL_SEND_RESPONSE_TIMEOUT_T;
 
 typedef struct 
 {
     TaskData            cleanUpTask;
-    uint8               *sent_data;
+    u8               *sent_data;
 } AvrcpCleanUpTask;
 
 typedef struct
@@ -855,12 +855,12 @@ struct __AVRCP
     Sink                    sink;
     Source                  continuation_data;
     Source                  data_app_ind;
-    uint16                  continuation_pdu;
-    uint16                  l2cap_mtu;
-    uint16                  registered_events; /*register upto 15 events */
-    uint8                   notify_transaction_label[AVRCP_MAX_NUM_EVENTS]; 
-    uint8*                  av_msg;
-    uint16                  av_msg_len;
+    u16                  continuation_pdu;
+    u16                  l2cap_mtu;
+    u16                  registered_events; /*register upto 15 events */
+    u8                   notify_transaction_label[AVRCP_MAX_NUM_EVENTS]; 
+    u8*                  av_msg;
+    u16                  av_msg_len;
     avrcp_sdp_search        sdp_search_mode; 
     avrcpPending            pending;
     avrcpPending            block_received_data:8;
@@ -872,8 +872,8 @@ struct __AVRCP
     unsigned                sdp_search_repeat:1;
     unsigned                fragment:2;
     unsigned                unused:3;
-    uint16                  av_max_data_size;
-    uint8                   avctp_packets_remaining; /* packets of fragmented
+    u16                  av_max_data_size;
+    u8                   avctp_packets_remaining; /* packets of fragmented
                                                         message still to come */
 };
 
@@ -896,9 +896,9 @@ struct __AVBP
     TaskData                task;          /* AVBP Task */
     Task                    avrcp_task;    /* Associated AVRCP Task */
     Sink                    avbp_sink;     /* L2CAP sink for Browse Data */
-    uint16                  avbp_sink_data; /* Application Data on L2CAP Sink */
-    uint16                  avbp_mtu;      /* Browsing channel Outgoing MTU */
-    uint16                  blocking_cmd;  /* Outstanding Command pending */
+    u16                  avbp_sink_data; /* Application Data on L2CAP Sink */
+    u16                  avbp_mtu;      /* Browsing channel Outgoing MTU */
+    u16                  blocking_cmd;  /* Outstanding Command pending */
     unsigned                trans_id:4;    /* Outstanding/Last Transaction ID*/
     avbpState               avbp_state:2;  /* State of Browsing Channel */ 
     unsigned                reserved:2;    /* reserverd for Role while

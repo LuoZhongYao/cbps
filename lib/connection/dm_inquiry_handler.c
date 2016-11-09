@@ -44,7 +44,7 @@ DESCRIPTION
 RETURNS
     void
 */
-static void inquirySendResult(Task theAppTask, inquiry_status status, const bdaddr *addr, uint32 dev_class, uint16 clock_offset, page_scan_rep_mode_t ps_rep_mode, page_scan_mode_t ps_mode, int16 rssi, uint8 size_eir_data, uint8* eir_data)
+static void inquirySendResult(Task theAppTask, inquiry_status status, const bdaddr *addr, u32 dev_class, u16 clock_offset, page_scan_rep_mode_t ps_rep_mode, page_scan_mode_t ps_mode, i16 rssi, u8 size_eir_data, u8* eir_data)
 {
     if (theAppTask)
     {	
@@ -93,11 +93,11 @@ DESCRIPTION
 RETURNS
     
 */
-static uint8* inquiryAddEirData(uint8* size_eir_data, uint8* eir_data,
-        uint8 size_data, const uint8* eir_data_part)
+static u8* inquiryAddEirData(u8* size_eir_data, u8* eir_data,
+        u8 size_data, const u8* eir_data_part)
 {
     /* Allocate space for the new data in result */
-    uint8* result = PanicNull( realloc(eir_data, (*size_eir_data) + size_data) );
+    u8* result = PanicNull( realloc(eir_data, (*size_eir_data) + size_data) );
     /* Copy data from data part to result */
     memmove( (result + (*size_eir_data)), eir_data_part, size_data );
     /* Update size */
@@ -119,20 +119,20 @@ RETURNS
     A pointer to a single block containing the EIR data and the size of the 
 	eir data
 */
-static uint8* inquiryParseEir(uint8* size_eir_data, uint8 *inquiry_data[HCI_EIR_DATA_PACKET_PTRS], bool limit_data_size)
+static u8* inquiryParseEir(u8* size_eir_data, u8 *inquiry_data[HCI_EIR_DATA_PACKET_PTRS], bool limit_data_size)
 {
     /* Data Part */
-    uint8 i = 0;                    /* Index into inquiry_data */
-    uint8 size_data_part;           /* Size un-parsed data left in current part */
-    uint8* eir_data_part;           /* Pointer to start of un-parsed data */
-    uint8* eir_data_part_base;      /* Pointer to base of the current data part */
+    u8 i = 0;                    /* Index into inquiry_data */
+    u8 size_data_part;           /* Size un-parsed data left in current part */
+    u8* eir_data_part;           /* Pointer to start of un-parsed data */
+    u8* eir_data_part_base;      /* Pointer to base of the current data part */
 	
     /* Field Data */
-    uint8 size_field;               /* Size of the field we're parsing */
+    u8 size_field;               /* Size of the field we're parsing */
     bool limit_exceeded;            /* If the field should be written */
 	
     /* Result */
-    uint8* eir_data = NULL;         /* Parsed EIR Data */
+    u8* eir_data = NULL;         /* Parsed EIR Data */
     *size_eir_data  = 0;            /* Size of Parsed Data */
 	
     /* Return early if we have nothing to parse */
@@ -297,14 +297,14 @@ RETURNS
 */
 void connectionHandleInquiryResult(const connectionInquiryState *state, const DM_HCI_INQUIRY_RESULT_IND_T *inq_result)
 {
-	uint16 array;
-	uint16 index;
-	uint16 results_left = inq_result->num_responses;
+	u16 array;
+	u16 index;
+	u16 results_left = inq_result->num_responses;
 
 	/* Iterate through the array of inquiry result ptrs */
 	for (array = 0; array < (inq_result->num_responses+HCI_MAX_INQ_RESULT_PER_PTR-1)/HCI_MAX_INQ_RESULT_PER_PTR; array++)
 	{
-		uint16 res_this_block = HCI_MAX_INQ_RESULT_PER_PTR;
+		u16 res_this_block = HCI_MAX_INQ_RESULT_PER_PTR;
 		HCI_INQ_RESULT_T *resarray = (HCI_INQ_RESULT_T *) VmGetPointerFromHandle(inq_result->result[array]);
 		
 		if (results_left < res_this_block)
@@ -339,14 +339,14 @@ RETURNS
 */
 void connectionHandleInquiryResultWithRssi(const connectionInquiryState *state, const DM_HCI_INQUIRY_RESULT_WITH_RSSI_IND_T*inq_result)
 {
-	uint16 array;
-	uint16 index;
-	uint16 results_left = inq_result->num_responses;
+	u16 array;
+	u16 index;
+	u16 results_left = inq_result->num_responses;
 
 	/* Iterate through the array of inquiry result ptrs */
 	for (array = 0; array < (inq_result->num_responses+HCI_MAX_INQ_RESULT_PER_PTR-1)/HCI_MAX_INQ_RESULT_PER_PTR; array++)
 	{
-		uint16 res_this_block = HCI_MAX_INQ_RESULT_PER_PTR;
+		u16 res_this_block = HCI_MAX_INQ_RESULT_PER_PTR;
 		HCI_INQ_RESULT_WITH_RSSI_T *resarray = (HCI_INQ_RESULT_WITH_RSSI_T *) VmGetPointerFromHandle(inq_result->result[array]);
 		
 		if (results_left < res_this_block)
@@ -359,7 +359,7 @@ void connectionHandleInquiryResultWithRssi(const connectionInquiryState *state, 
 			BdaddrConvertBluestackToVm(&addr, &((resarray+index)->bd_addr));
 			inquirySendResult(state->inquiryLock, inquiry_status_result, &addr, 
 				(resarray+index)->dev_class, (resarray+index)->clock_offset,
-				(resarray+index)->page_scan_rep_mode, 0, (int16)(resarray+index)->rssi,
+				(resarray+index)->page_scan_rep_mode, 0, (i16)(resarray+index)->rssi,
 				0, NULL);
 		}
 		
@@ -381,9 +381,9 @@ RETURNS
 */
 void connectionHandleExtendedInquiryResult(const connectionInquiryState *state, const DM_HCI_EXTENDED_INQUIRY_RESULT_IND_T *ind)
 {
-    uint8 size_eir_data = 0;
+    u8 size_eir_data = 0;
 	
-    uint8* eir_data = inquiryParseEir(&size_eir_data, (uint8**)ind->eir_data_part, TRUE);
+    u8* eir_data = inquiryParseEir(&size_eir_data, (u8**)ind->eir_data_part, TRUE);
 		
 	bdaddr	addr;
 	BdaddrConvertBluestackToVm(&addr, &ind->result.bd_addr);
@@ -391,7 +391,7 @@ void connectionHandleExtendedInquiryResult(const connectionInquiryState *state, 
 	/* Send an inquiry result message to the client */
 	inquirySendResult(state->inquiryLock, inquiry_status_result, &addr, 
 					 ind->result.dev_class, ind->result.clock_offset,
-					 ind->result.page_scan_rep_mode, 0, (int16)ind->result.rssi,
+					 ind->result.page_scan_rep_mode, 0, (i16)ind->result.rssi,
 					 size_eir_data, eir_data);
 	
 	/* Free memory */
@@ -413,7 +413,7 @@ RETURNS
 void connectionHandleInquiryComplete(connectionInquiryState *state)
 {
 	/* Tell the client the inquiry has completed */
-    inquirySendResult(state->inquiryLock, inquiry_status_ready, 0, (uint32) 0, 0, 0, 0, CL_RSSI_UNKNOWN, 0, NULL);
+    inquirySendResult(state->inquiryLock, inquiry_status_ready, 0, (u32) 0, 0, 0, 0, CL_RSSI_UNKNOWN, 0, NULL);
 
     /* Clear lock and reset event filter if not periodic inquiry */
     if (!state->periodic_inquiry)
@@ -491,7 +491,7 @@ void connectionHandleInquiryCancel(const connectionInquiryState *state, const CL
         else
     {
         /* Send an inquiry complete to the app telling it we're ready */
-        inquirySendResult(cancel_req->theAppTask, inquiry_status_ready, 0, (uint32) 0, 0, 0, 0, CL_RSSI_UNKNOWN, 0, NULL);
+        inquirySendResult(cancel_req->theAppTask, inquiry_status_ready, 0, (u32) 0, 0, 0, 0, CL_RSSI_UNKNOWN, 0, NULL);
 	}
 }
 
@@ -599,7 +599,7 @@ void connectionHandleWriteIacLapRequest(connectionInquiryState *state, const CL_
 	/* Check the state of the task lock before doing anything */
 	if (!state->iacLock)
 	{
-		uint16 index;
+		u16 index;
 		uint24_t *ptr;
         MAKE_PRIM_C(DM_HCI_WRITE_CURRENT_IAC_LAP_REQ);
 
@@ -629,8 +629,8 @@ void connectionHandleWriteIacLapRequest(connectionInquiryState *state, const CL_
 	else
 	{
 		/* Inquiry currently being performed, queue up the request */
-		MAKE_CL_MESSAGE_WITH_LEN(CL_INTERNAL_DM_WRITE_IAC_LAP_REQ, sizeof(uint32) * req->num_iac);
-		COPY_CL_MESSAGE_WITH_LEN(CL_INTERNAL_DM_WRITE_IAC_LAP_REQ, sizeof(uint32) * req->num_iac, req, message);
+		MAKE_CL_MESSAGE_WITH_LEN(CL_INTERNAL_DM_WRITE_IAC_LAP_REQ, sizeof(u32) * req->num_iac);
+		COPY_CL_MESSAGE_WITH_LEN(CL_INTERNAL_DM_WRITE_IAC_LAP_REQ, sizeof(u32) * req->num_iac, req, message);
 		MessageSendConditionallyOnTask(connectionGetCmTask(), CL_INTERNAL_DM_WRITE_IAC_LAP_REQ, message, &state->iacLock);
 	}
 }
@@ -788,11 +788,11 @@ RETURNS
 */
 void connectionHandleWriteEirDataRequest(connectionReadInfoState *infoState, const CL_INTERNAL_DM_WRITE_EIR_DATA_REQ_T *req)
 {
-    uint8 i;
-    uint8 *p;
-    uint8 octets_copied = 0;
-    uint8 remainder;
-    uint8 eir_data_length;
+    u8 i;
+    u8 *p;
+    u8 octets_copied = 0;
+    u8 remainder;
+    u8 eir_data_length;
 
     if(infoState->version >= bluetooth2_1)
         /* Extended Inquiry Response (EIR) is supported from version 2.1 onwards) */
@@ -889,8 +889,8 @@ void connectionHandleReadEirDataComplete(connectionInquiryState *state, const DM
 {
 	if(state->inquiryLock)
 	{
-		uint8 size_eir_data = 0;
-        uint8* eir_data = inquiryParseEir(&size_eir_data, (uint8**)cfm->eir_data_part, FALSE);
+		u8 size_eir_data = 0;
+        u8* eir_data = inquiryParseEir(&size_eir_data, (u8**)cfm->eir_data_part, FALSE);
 		
 		MAKE_CL_MESSAGE_WITH_LEN(CL_DM_READ_EIR_DATA_CFM, size_eir_data);
 		message->status = connectionConvertHciStatus(cfm->status);
@@ -979,7 +979,7 @@ DESCRIPTION
 RETURNS
     void
 */
-static void remoteNameComplete(Task theAppTask, const bdaddr *addr, hci_status status, char* name, uint16 length)
+static void remoteNameComplete(Task theAppTask, const bdaddr *addr, hci_status status, char* name, u16 length)
 {
     if (theAppTask)
     {
@@ -1062,8 +1062,8 @@ void connectionHandleRemoteNameComplete(connectionInquiryState *state, const DM_
     /* Providing the read was a success and we have a vaid name */
     if (!prim->status && prim->name_part[0])
     {
-        uint16    length;
-        uint8    i;
+        u16    length;
+        u8    i;
 
         /* Only handle the first segment */
         char*    name = VmGetPointerFromHandle(prim->name_part[0]);
@@ -1142,7 +1142,7 @@ DESCRIPTION
 RETURNS
     void
 */
-static void localNameComplete(Task theAppTask, hci_status status, char* name, uint16 length)
+static void localNameComplete(Task theAppTask, hci_status status, char* name, u16 length)
 {
     if (theAppTask)
     {
@@ -1185,8 +1185,8 @@ void connectionHandleLocalNameComplete(connectionInquiryState *state, const DM_H
     /* Providing the read was a success and we have a vaid name */
     if (!prim->status && prim->name_part[0])
     {
-        uint16    length;
-        uint8    i;
+        u16    length;
+        u8    i;
 
         /* Only handle the first segment */
         char*    name = VmGetPointerFromHandle(prim->name_part[0]);

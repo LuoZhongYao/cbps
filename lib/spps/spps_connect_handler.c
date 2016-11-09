@@ -17,7 +17,7 @@ DESCRIPTION
 struct __SPP 
 {
     SPP_COMMON      c;
-    uint8           server_channel;
+    u8           server_channel;
 };
 
 
@@ -187,7 +187,7 @@ static void sppsConnectionHandler(Task task, MessageId id, Message message)
                 ConnectionRegisterServiceRecord(
                     &spp->c.task,
                     SSP_SERVICE_RECORD_SIZE,
-                    (const uint8 *)&spp_service_record
+                    (const u8 *)&spp_service_record
                 );
             else
                 /* Otherwise go straight to deleting the task. */
@@ -222,7 +222,7 @@ static void sppsConnectionHandler(Task task, MessageId id, Message message)
 
 /*****************************************************************************/
 
-void SppConnectResponse(Task theAppTask, const bdaddr *bd_addr, const bool response, const Sink sink, const uint8 local_server_channel, const uint16 max_payload_size)
+void SppConnectResponse(Task theAppTask, const bdaddr *bd_addr, const bool response, const Sink sink, const u8 local_server_channel, const u16 max_payload_size)
 {
     /* Create the Sppc task */
     SPP *spp = PanicUnlessNew(SPP);

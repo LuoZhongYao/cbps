@@ -11,7 +11,7 @@ Copyright (c) 2005 - 2015 Qualcomm Technologies International, Ltd.
 #define UUID_HANDSFREE_AG 0x111f
 
 
-static const uint8 aghfp_hfp_service_record[] =
+static const u8 aghfp_hfp_service_record[] =
 {
     /* Service class ID list */
     0x09, 0x00, 0x01, 	/* AttrID, ServiceClassIDList */

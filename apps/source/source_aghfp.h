@@ -75,9 +75,9 @@ typedef enum
 
 typedef struct
 {
-    uint8 clip_type;
-    uint8 size_clip_number;
-    uint8 clip_number[1];
+    u8 clip_type;
+    u8 size_clip_number;
+    u8 clip_number[1];
 } AGHFP_RING_ALERT_T;
 
 typedef struct
@@ -86,11 +86,11 @@ typedef struct
     aghfp_call_status call_status;
     aghfp_call_setup_status call_setup_status;
     aghfp_call_held_status call_held_status;
-    uint16 signal;
+    u16 signal;
     aghfp_roam_status roam_status;
-    uint16 batt;
-    uint8 network_operator[AGHOST_MAX_NETWORK_OPERATOR_CHARACTERS];
-    uint16 size_network_operator;
+    u16 batt;
+    u8 network_operator[AGHOST_MAX_NETWORK_OPERATOR_CHARACTERS];
+    u16 size_network_operator;
     AGHFP_RING_ALERT_T *ring;
 } AGHOST_T;
 
@@ -109,10 +109,10 @@ typedef struct
     unsigned use_negotiated_codec:1;
     unsigned unused:13;
     AGHFP_SUPPORT_T aghfp_support;
-    uint16 aghfp_connection_retries;
-    uint16 connecting_audio;
-    uint16 disconnecting_audio;
-    uint16 warp[CSR_AG_AUDIO_WARP_NUMBER_VALUES];
+    u16 aghfp_connection_retries;
+    u16 connecting_audio;
+    u16 disconnecting_audio;
+    u16 warp[CSR_AG_AUDIO_WARP_NUMBER_VALUES];
 } aghfpInstance;
 
 /* structure holding the AGHFP data */
@@ -222,7 +222,7 @@ RETURNS
     The number of currently active AGHFP connections.
 
 */
-uint16 aghfp_get_number_connections(void);
+u16 aghfp_get_number_connections(void);
 
 
 /****************************************************************************
@@ -329,7 +329,7 @@ DESCRIPTION
     A call indication has been recieved from the host - incoming call.
     
 */
-void aghfp_call_ind_incoming(uint16 size_data, const uint8 *data);
+void aghfp_call_ind_incoming(u16 size_data, const u8 *data);
 
 
 /****************************************************************************
@@ -362,7 +362,7 @@ DESCRIPTION
     A call indication has been recieved from the host - active call with call waiting.
     
 */
-void aghfp_call_ind_waiting_active_call(uint16 size_data, const uint8 *data);
+void aghfp_call_ind_waiting_active_call(u16 size_data, const u8 *data);
 
 
 /****************************************************************************
@@ -395,7 +395,7 @@ DESCRIPTION
     A signal strength indication has been received from the host.
 
 */
-void aghfp_signal_strength_ind(uint8 signal_strength);
+void aghfp_signal_strength_ind(u8 signal_strength);
 
 
 /****************************************************************************
@@ -406,7 +406,7 @@ DESCRIPTION
     A battery level indication has been received from the host.
 
 */
-void aghfp_battery_level_ind(uint8 battery_level);
+void aghfp_battery_level_ind(u8 battery_level);
 
 
 /****************************************************************************
@@ -428,7 +428,7 @@ DESCRIPTION
     A network operator indication has been received from the host.
 
 */
-void aghfp_network_operator_ind(uint16 size_data, const uint8 *data);
+void aghfp_network_operator_ind(u16 size_data, const u8 *data);
 
 
 /****************************************************************************
@@ -483,7 +483,7 @@ DESCRIPTION
     A current call indication has been received from the host.
     
 */
-void aghfp_current_call_ind(uint16 size_data, const uint8 *data);
+void aghfp_current_call_ind(u16 size_data, const u8 *data);
 
 
 /****************************************************************************
@@ -538,7 +538,7 @@ DESCRIPTION
     Receives speaker volume from the remote device.
     
 */
-void aghfp_speaker_volume_ind(uint8 volume);
+void aghfp_speaker_volume_ind(u8 volume);
 
 
 /****************************************************************************
@@ -549,7 +549,7 @@ DESCRIPTION
     Receives microphone gain from the remote device.
     
 */
-void aghfp_mic_gain_ind(uint8 gain);
+void aghfp_mic_gain_ind(u8 gain);
 
 
 /****************************************************************************
@@ -605,7 +605,7 @@ DESCRIPTION
     Sets the signal strength of the AG Host.
 
 */
-void aghfp_host_set_signal_strength(uint8 signal_strength);
+void aghfp_host_set_signal_strength(u8 signal_strength);
 
 
 /****************************************************************************
@@ -616,7 +616,7 @@ DESCRIPTION
     Sets the battery level of the AG Host.
 
 */
-void aghfp_host_set_battery_level(uint8 battery_level);
+void aghfp_host_set_battery_level(u8 battery_level);
 
 
 /****************************************************************************
@@ -649,7 +649,7 @@ DESCRIPTION
     Sets the network operator name of the AG Host.
 
 */
-void aghfp_host_set_network_operator(uint16 size_name, const uint8 *name);
+void aghfp_host_set_network_operator(u16 size_name, const u8 *name);
 
 
 /****************************************************************************
@@ -660,7 +660,7 @@ DESCRIPTION
     Stores the data associated with a RING indication.
 
 */
-void aghfp_host_set_ring_indication(uint8 clip_type, uint8 size_clip_number, const uint8 *clip_number);
+void aghfp_host_set_ring_indication(u8 clip_type, u8 size_clip_number, const u8 *clip_number);
 
 
 /****************************************************************************
@@ -682,7 +682,7 @@ DESCRIPTION
     Stores the warp values for the current AGHFP audio connection.
     
 */
-void aghfp_store_warp_values(uint16 number_warp_values, uint16 *warp);
+void aghfp_store_warp_values(u16 number_warp_values, u16 *warp);
 
 
 /****************************************************************************

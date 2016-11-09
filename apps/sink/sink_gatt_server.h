@@ -25,7 +25,7 @@ Copyright (c) 2015 Qualcomm Technologies International, Ltd.
 
 typedef struct __gatt_server_t
 {
-    uint16      cid;                    /* For now, only support one connection */
+    u16      cid;                    /* For now, only support one connection */
     
     void        *servers_ptr;       /* Pointer to the memory block used to store the RUNDATA required by the GATT server tasks */
     GGATTS      *gatt_server;       /* Pointer to the "GATT Server" (library) RUNDATA */
@@ -50,7 +50,7 @@ PARAMETERS
 RETURNS    
     TRUE if the server connection was successfully added, FALSE otherwise.
 */
-bool gattServerConnectionAdd(uint16 cid);
+bool gattServerConnectionAdd(u16 cid);
 
 
 /****************************************************************************
@@ -66,7 +66,7 @@ PARAMETERS
 RETURNS    
     TRUE if the server connection is found, NULL otherwise.
 */
-bool gattServerConnectionFindByCid(uint16 cid);
+bool gattServerConnectionFindByCid(u16 cid);
 
 
 /****************************************************************************
@@ -82,7 +82,7 @@ PARAMETERS
 RETURNS    
     TRUE if the connection was found and removed. FALSE otherwise.    
 */
-bool gattServerConnectionRemove(uint16 cid);
+bool gattServerConnectionRemove(u16 cid);
 
 
 #endif /* GATT_ENABLED */

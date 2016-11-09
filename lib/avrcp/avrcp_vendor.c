@@ -61,9 +61,9 @@ NOTES
 void AvrcpVendorDependentRequest(AVRCP *avrcp, 
                           avc_subunit_type subunit_type, 
                           avc_subunit_id subunit_id, 
-                          uint8 ctype, 
-                          uint32 company_id, 
-                          uint16 data_length, 
+                          u8 ctype, 
+                          u32 company_id, 
+                          u16 data_length, 
                           Source data)
 {
     
@@ -101,7 +101,7 @@ void AvrcpVendorDependentRequest(AVRCP *avrcp,
         message->pending = avrcp_vendor;
         MessageSendConditionally(&avrcp->task, 
                                  AVRCP_INTERNAL_VENDORDEPENDENT_REQ, 
-                                 message, (uint16*)&avrcp->pending);
+                                 message, (u16*)&avrcp->pending);
     }
     else
     {

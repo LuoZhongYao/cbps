@@ -34,10 +34,10 @@ NOTES
 
 static void gattSendExchangeMtuCfm(Task task,
                                    gatt_status_t status,
-                                   uint16 cid,
-                                   int16 mtu);
+                                   u16 cid,
+                                   i16 mtu);
 
-void GattExchangeMtuRequest(Task theAppTask, uint16 cid, uint16 mtu)
+void GattExchangeMtuRequest(Task theAppTask, u16 cid, u16 mtu)
 {
     cid_map_t *conn;
 
@@ -80,8 +80,8 @@ RETURNS
 */
 static void gattSendExchangeMtuCfm(Task task,
                                    gatt_status_t status,
-                                   uint16 cid,
-                                   int16 mtu)
+                                   u16 cid,
+                                   i16 mtu)
 {
     MAKE_GATT_MESSAGE(GATT_EXCHANGE_MTU_CFM);
 
@@ -151,7 +151,7 @@ void gattHandleAttExchangeMtuCfm(ATT_EXCHANGE_MTU_CFM_T *m)
  * Exchange MTU for server side - mandatory
  */
 
-void GattExchangeMtuResponse(uint16 cid, uint16 mtu)
+void GattExchangeMtuResponse(u16 cid, u16 mtu)
 {
     gatt_exchange_mtu_rsp(cid, mtu);
 }

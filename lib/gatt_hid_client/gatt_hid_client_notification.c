@@ -30,11 +30,11 @@ DESCRIPTION
    Utility function to send registration request for notification 
 */
 static void hid_client_register_for_notification(GHIDC_T *const hid_client,
-               uint16 handle,
+               u16 handle,
                bool enable)
                
 {
-    uint8 value[2];
+    u8 value[2];
 
     value[0] = enable ? HID_LE_NOTIFICATION_VALUE : 0;
     value[1] = 0;
@@ -43,7 +43,7 @@ static void hid_client_register_for_notification(GHIDC_T *const hid_client,
     GattManagerWriteCharacteristicValue((Task)&hid_client->lib_task,
                                         handle,
                                         sizeof(value),
-                                        (uint8 *)value);
+                                        (u8 *)value);
 
 }
 
@@ -55,15 +55,15 @@ DESCRIPTION
    Utility function to get the client characteristic configuration handle for an Input report from report_id
 */
 static bool hid_client_get_ccdhandle_for_inputreport(GHIDC_T *const hid_client,
-            uint16 report_id,
-            uint16* ccd_handle,
+            u16 report_id,
+            u16* ccd_handle,
             gatt_hid_notification_mode mode)
 {
-   uint16 count;
-   uint16 report_handle = 0;
-   uint16 type =0;
+   u16 count;
+   u16 report_handle = 0;
+   u16 type =0;
    /* Get total number of characteristic descriptors are available */
-   uint16 num_ccd = hid_client->num_boot_ccd+ hid_client->num_report_ccd;
+   u16 num_ccd = hid_client->num_boot_ccd+ hid_client->num_report_ccd;
    *ccd_handle = INVALID_HID_HANDLE;
    /* Get the report handle from report ID */
     if(hid_client_get_report_handle_and_type_from_id(hid_client,report_id,&report_handle,&type))
@@ -160,9 +160,9 @@ static void hid_client_notification_reg_ccdhandle_cfm(GHIDC_T *const hid_client,
 void hid_client_notification_reg_request(GHIDC_T *const hid_client,
         HID_CLIENT_INTERNAL_HANLDE_NOTIFICTION_REQ_T*msg)
 {
-    uint16 count=0;
-    uint16 handle;
-    uint16 num_ccd = 0;
+    u16 count=0;
+    u16 handle;
+    u16 num_ccd = 0;
     GATT_HID_CLIENT_DEBUG_INFO(("Func:hid_client_notification_reg_request() Entry\n"));
     num_ccd = hid_client->num_boot_ccd+ hid_client->num_report_ccd;
     if(VALIDATE_HID_CLIENT(hid_client))
@@ -221,7 +221,7 @@ void hid_client_notification_reg_request_ccdhandle(GHIDC_T *const hid_client,
 void handle_hid_client_notification_ind(GHIDC_T *const hid_client,
     GATT_MANAGER_REMOTE_SERVER_NOTIFICATION_IND_T* ind)
 {
-    uint16 report_id;
+    u16 report_id;
     /* Check notifications has been enabled from application, else ignore the notifications */
     if((hid_client->notifitcation_enabled) && VALIDATE_HID_CLIENT(hid_client))
     {
@@ -316,10 +316,10 @@ gatt_hid_client_status GattHidRegisterForNotification(GHIDC_T *const hid_client,
 /****************************************************************************/
 gatt_hid_client_status GattHidRegisterNotificationForReportID(GHIDC_T *const hid_client,
                                   bool enable,
-                                  uint16 report_id,
+                                  u16 report_id,
                                   gatt_hid_notification_mode mode)
 {
-    uint16 ccd_handle = 0;
+    u16 ccd_handle = 0;
     gatt_hid_client_status   retval =  gatt_hid_client_status_invalid_param;
 
     /* Validate the Input Parameters */

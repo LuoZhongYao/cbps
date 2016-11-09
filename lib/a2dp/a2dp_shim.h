@@ -16,39 +16,39 @@ typedef enum
 typedef struct
 {
     A2DP					*a2dp;				
-	uint32      			rate;				
+	u32      			rate;				
 	a2dp_channel_mode		channel_mode;		
-	uint8					seid;
-    uint8                   content_protection;
-    uint32                  voice_rate;
-    uint16                  bitpool;
-    uint16                  format;
-    uint16                  packet_size;
+	u8					seid;
+    u8                   content_protection;
+    u32                  voice_rate;
+    u16                  bitpool;
+    u16                  format;
+    u16                  packet_size;
 } A2DP_CODEC_SETTINGS_IND_TEST_EXTRA_T;
 
 
 void A2dpHandleComplexMessage(Task task, MessageId id, Message message);
 
-void A2dpInitTestExtraAppselect(Task theAppTask, uint16 linkloss_timeout);
+void A2dpInitTestExtraAppselect(Task theAppTask, u16 linkloss_timeout);
 
-void A2dpStartKalimbaStreaming(const A2DP* a2dp, uint16 media_sink);
+void A2dpStartKalimbaStreaming(const A2DP* a2dp, uintptr_t media_sink);
 void A2dpStopKalimbaStreaming(void);
-void A2dpInitTestExtraDefault( Task theAppTask, uint8 role, bool enable_mp3 );
+void A2dpInitTestExtraDefault( Task theAppTask, u8 role, bool enable_mp3 );
 
 void A2dpConnectTestExtra(bdaddr *addr);
-void A2dpConnectResponseTestExtra(uint16 device_id, bool accept);
-void A2dpDisconnectTestExtra(uint16 device_id);
+void A2dpConnectResponseTestExtra(u16 device_id, bool accept);
+void A2dpDisconnectTestExtra(u16 device_id);
 
-void A2dpOpenTestExtra(uint16 device_id);
-void A2dpOpenResponseTestExtra(uint16 device_id, bool accept);
-void A2dpCloseTestExtra(uint16 device_id, uint16 stream_id);
-void A2dpMediaStartTestExtra(uint16 device_id, uint16 stream_id);
-void A2dpMediaStartResponseTestExtra(uint16 device_id, uint16 stream_id, bool accept);
-void A2dpMediaSuspendTestExtra(uint16 device_id, uint16 stream_id);
-void A2dpMediaAvSyncDelayResponseTestExtra(uint16 device_id, uint16 stream_id, uint16 delay);
+void A2dpOpenTestExtra(u16 device_id);
+void A2dpOpenResponseTestExtra(u16 device_id, bool accept);
+void A2dpCloseTestExtra(u16 device_id, u16 stream_id);
+void A2dpMediaStartTestExtra(u16 device_id, u16 stream_id);
+void A2dpMediaStartResponseTestExtra(u16 device_id, u16 stream_id, bool accept);
+void A2dpMediaSuspendTestExtra(u16 device_id, u16 stream_id);
+void A2dpMediaAvSyncDelayResponseTestExtra(u16 device_id, u16 stream_id, u16 delay);
 
-void A2dpReconfigureTestExtra(uint16 device_id, uint16 stream_id, uint16 size_sep_caps, uint8 *sep_caps);
+void A2dpReconfigureTestExtra(u16 device_id, u16 stream_id, u16 size_sep_caps, u8 *sep_caps);
 
-void A2dpSendMediaPacketTestExtra(uint16 device_id, uint16 stream_id);
+void A2dpSendMediaPacketTestExtra(u16 device_id, u16 stream_id);
 
 #endif

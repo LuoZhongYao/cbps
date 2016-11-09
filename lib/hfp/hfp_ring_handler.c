@@ -99,7 +99,7 @@ void hfpHandleInBandRingTone(Task link_ptr, const struct hfpHandleInBandRingTone
         if(ind->enable)
             link->ag_supported_features |= AG_IN_BAND_RING;
         else
-            link->ag_supported_features &= (uint16)~AG_IN_BAND_RING;
+            link->ag_supported_features &= (u16)~AG_IN_BAND_RING;
     }
 }
 

@@ -56,6 +56,6 @@
         ptr = PanicNull(SramMap(...));
 
 */
-uint16 *SramMap(uint32 sram_addr, uint16 size);
+u16 *SramMap(u32 sram_addr, u16 size);
 
 #endif

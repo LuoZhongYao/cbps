@@ -42,7 +42,7 @@ NOTES
 #include <message.h>
 
 extern const TaskData csr_voice_prompts_plugin ;
-extern bool CsrVoicePromptsIsMixable(uint16 id , uint16 language, Task codec_task);
+extern bool CsrVoicePromptsIsMixable(u16 id , u16 language, Task codec_task);
 extern void CsrVoicePromptsPluginCleanup(void);
 
  

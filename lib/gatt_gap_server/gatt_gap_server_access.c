@@ -166,9 +166,9 @@ bool gattGapServerHandleGattManagerAccessInd(Task gap_task, GATT_MANAGER_SERVER_
 
 /******************************************************************************/
 gatt_gap_server_status_t GattGapServerReadDeviceNameResponse(GGAPS *gap_server,
-                                                             uint16 cid,
-                                                             uint16 size,
-                                                             uint8 * data)
+                                                             u16 cid,
+                                                             u16 size,
+                                                             u8 * data)
 {
     bool success = FALSE;
     
@@ -205,9 +205,9 @@ gatt_gap_server_status_t GattGapServerReadDeviceNameResponse(GGAPS *gap_server,
 
 /******************************************************************************/
 gatt_gap_server_status_t GattGapServerReadAppearanceResponse(GGAPS *gap_server,
-                                                             uint16 cid,
-                                                             uint16 size,
-                                                             uint8 * data)
+                                                             u16 cid,
+                                                             u16 size,
+                                                             u8 * data)
 {
     if (gap_server && cid)
     {

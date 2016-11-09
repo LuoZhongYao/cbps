@@ -48,9 +48,9 @@ DESCRIPTION
    Add the AVCTP packet header.
 */
 void avrcpAvctpSetCmdHeader(AVRCP   *avrcp, 
-                            uint8   *ptr, 
-                            uint8   packet_type, 
-                            uint8   total_packets);
+                            u8   *ptr, 
+                            u8   packet_type, 
+                            u8   total_packets);
 
 #else
 
@@ -72,9 +72,9 @@ void avrcpAvctpSetCmdHeader(AVRCP   *avrcp,
 *
 ***************************************************************************/
 void avrcpSendAvcResponse(AVRCP                *avrcp,
-                          uint16                hdr_size,  
+                          u16                hdr_size,  
                           avrcp_response_type   response,
-                          uint16                data_len,
+                          u16                data_len,
                           Source                data);
 
 /****************************************************************************
@@ -100,7 +100,7 @@ DESCRIPTION
 */
 void avrcpBlockReceivedData(AVRCP       *avrcp, 
                             avrcpPending pending_command, 
-                            uint16       data);
+                            u16       data);
 
 
 /****************************************************************************
@@ -148,10 +148,10 @@ void avrcpHandleReceivedData(AVRCP *avrcp);
 *   avrcp_status_code
 *****************************************************************************/
 avrcp_status_code avrcpAvctpSendMessage( AVRCP     *avrcp,
-                                         uint8      cr_type,
-                                         uint8     *ptr,
-                                         uint16     hdr_size,
-                                         uint16     data_len,
+                                         u8      cr_type,
+                                         u8     *ptr,
+                                         u16     hdr_size,
+                                         u16     data_len,
                                          Source     data);   
 
 /****************************************************************************
@@ -165,8 +165,8 @@ avrcp_status_code avrcpAvctpSendMessage( AVRCP     *avrcp,
 *  bool - Return TRUE if the message is ready to process, otherwise return FALSE
 ******************************************************************************/
 bool avrcpAvctpReceiveMessage(  AVRCP          *avrcp,
-                                const uint8*    ptr,
-                                uint16          packet_size);
+                                const u8*    ptr,
+                                u16          packet_size);
 
 /****************************************************************************
  *NAME    
@@ -180,8 +180,8 @@ bool avrcpAvctpReceiveMessage(  AVRCP          *avrcp,
  ***************************************************************************/
 
 bool avbpAvctpProcessHeader(    AVBP*           avbp, 
-                                const uint8*    ptr, 
-                                uint16          packet_size);
+                                const u8*    ptr, 
+                                u16          packet_size);
 
 /****************************************************************************
  *NAME    
@@ -190,7 +190,7 @@ bool avbpAvctpProcessHeader(    AVBP*           avbp,
  *DESCRIPTION
  *   Frame the AVCTP Header for Browsing packet
  ***************************************************************************/
-void avbpAvctpFrameHeader(AVBP *avbp, uint8 *ptr , bool response);
+void avbpAvctpFrameHeader(AVBP *avbp, u8 *ptr , bool response);
 
 
 

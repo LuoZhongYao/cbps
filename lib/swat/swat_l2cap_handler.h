@@ -51,7 +51,7 @@ PARAMETERS
 DESCRIPTION
     Respond to a signalling connect request from a remote device
 */
-void swatL2capSignallingConnectResponse(uint16 device_id, uint16 connection_id, uint8 identifier, bool accept);
+void swatL2capSignallingConnectResponse(u16 device_id, u16 connection_id, u8 identifier, bool accept);
 
 
 /****************************************************************************
@@ -64,7 +64,7 @@ PARAMETERS
 DESCRIPTION
     Request to disconnect a SWAT Signalling connection to a remote device
 */
-void swatHandleL2capSignallingDisconnectReq(uint16 device_id);
+void swatHandleL2capSignallingDisconnectReq(u16 device_id);
 
 
 /****************************************************************************
@@ -108,7 +108,7 @@ DESCRIPTION
     Function to handle when a SWAT standard media channel has become
     unresponsive
 */
-void swatHandleUnresponsiveMediaStd(uint16 device_id);
+void swatHandleUnresponsiveMediaStd(u16 device_id);
 
 
 /****************************************************************************

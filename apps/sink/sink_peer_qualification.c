@@ -19,27 +19,25 @@ DESCRIPTION
 #ifdef ENABLE_PEER
 
 #ifdef DEBUG_A2DP_QUALIFICATION
-#define A2DP_QUALIFICATION_DEBUG(x) DEBUG(x)
 #else
-#define A2DP_QUALIFICATION_DEBUG(x) 
 #endif
 
 #define SERVICE_CAPS(caps) ((caps)[0])
 #define CAPS_SIZE(caps)    ((caps)[1] + 2)
 
 /*************************************************************************
-NAME    
+NAME
     findDelayReportServiceCaps
-    
+
 DESCRIPTION
     Utility function to find if the configured AG's Cap has delay reporting support.
 
 **************************************************************************/
-static uint16 findDelayReportServiceCaps (const uint8 *codec_caps, uint16 size_codec_caps)
+static u16 findDelayReportServiceCaps (const u8 *codec_caps, u16 size_codec_caps)
 {
     while (codec_caps && (size_codec_caps > 1))
     {
-        uint16 size;
+        u16 size;
 
         if ((SERVICE_CAPS(codec_caps) < AVDTP_SERVICE_MEDIA_TRANSPORT) || (SERVICE_CAPS(codec_caps) > AVDTP_SERVICE_DELAY_REPORTING))
         {
@@ -64,24 +62,24 @@ static uint16 findDelayReportServiceCaps (const uint8 *codec_caps, uint16 size_c
 }
 
 /*************************************************************************
-NAME    
+NAME
     peerQualificationReplaceDelayReportServiceCaps
-    
+
 DESCRIPTION
-    Utility function to replace PTS configured caps with AG's configured caps by removing delay 
+    Utility function to replace PTS configured caps with AG's configured caps by removing delay
     reporting, provided AG supports one.
 
 **************************************************************************/
-bool peerQualificationReplaceDelayReportServiceCaps (uint8 *dest_service_caps, uint16 *size_dest_service_caps, const uint8 *src_service_caps, uint16 size_src_service_caps)
+bool peerQualificationReplaceDelayReportServiceCaps (u8 *dest_service_caps, u16 *size_dest_service_caps, const u8 *src_service_caps, u16 size_src_service_caps)
 {
-    uint16 size;
+    u16 size;
     if (!src_service_caps || !size_src_service_caps || !theSink.features.TwsQualificationEnable)
     {
         return FALSE;
     }
     else
     {
-        if((size = findDelayReportServiceCaps(src_service_caps, size_src_service_caps)) != 0) 
+        if((size = findDelayReportServiceCaps(src_service_caps, size_src_service_caps)) != 0)
         {
             if((dest_service_caps != NULL) && (size_dest_service_caps != NULL))
             {
@@ -93,23 +91,23 @@ bool peerQualificationReplaceDelayReportServiceCaps (uint8 *dest_service_caps, u
         	}
     	}
     }
-    
+
     return FALSE;
 }
 
 /*************************************************************************
-NAME    
+NAME
     findMediaTransportServiceCaps
-    
+
 DESCRIPTION
     Utility function to find if the configured AG's Cap has media transport support.
 
 **************************************************************************/
-static uint16 findMediaTransportServiceCaps (const uint8 *codec_caps, uint16 size_codec_caps)
+static u16 findMediaTransportServiceCaps (const u8 *codec_caps, u16 size_codec_caps)
 {
     while (codec_caps && (size_codec_caps > 1))
     {
-        uint16 size;
+        u16 size;
 
         if ((SERVICE_CAPS(codec_caps) < AVDTP_SERVICE_MEDIA_TRANSPORT) || (SERVICE_CAPS(codec_caps) > AVDTP_SERVICE_DELAY_REPORTING))
         {
@@ -134,24 +132,24 @@ static uint16 findMediaTransportServiceCaps (const uint8 *codec_caps, uint16 siz
 }
 
 /*************************************************************************
-NAME    
+NAME
     peerQualificationReplaceMediaTransportServiceCaps
-    
+
 DESCRIPTION
-    Utility function to replace PTS configured caps with AG's configured caps by removing media 
+    Utility function to replace PTS configured caps with AG's configured caps by removing media
     transport, provided AG supports one.
 
 **************************************************************************/
-static bool peerQualificationReplaceMediaTransportServiceCaps (uint8 *dest_service_caps, uint16 *size_dest_service_caps, const uint8 *src_service_caps, uint16 size_src_service_caps)
+static bool peerQualificationReplaceMediaTransportServiceCaps (u8 *dest_service_caps, u16 *size_dest_service_caps, const u8 *src_service_caps, u16 size_src_service_caps)
 {
-    uint16 size;
+    u16 size;
     if (!src_service_caps || !size_src_service_caps || !theSink.features.TwsQualificationEnable)
     {
         return FALSE;
     }
     else
     {
-        if((size = findMediaTransportServiceCaps(src_service_caps, size_src_service_caps)) != 0) 
+        if((size = findMediaTransportServiceCaps(src_service_caps, size_src_service_caps)) != 0)
         {
             if((dest_service_caps != NULL) && (size_dest_service_caps != NULL))
             {
@@ -163,14 +161,14 @@ static bool peerQualificationReplaceMediaTransportServiceCaps (uint8 *dest_servi
         	}
     	}
     }
-    
+
     return FALSE;
 }
 
 /*************************************************************************
-NAME    
+NAME
     a2dpIssuePeerReconfigureRequest
-    
+
 DESCRIPTION
     Issues a request to reconfigure the relay channel to the currently connected Peer
 
@@ -180,18 +178,18 @@ RETURNS
 **************************************************************************/
 static bool a2dpIssuePeerReconfigureRequest (void)
 {
-    uint16 peer_id;
+    u16 peer_id;
     a2dp_link_priority priority;
     a2dp_codec_settings* codec_settings = NULL;
-    uint16 size_dest_service_caps = 0;
-    uint8 *find_media_transport = NULL;
-    uint8 *config_caps = NULL;
-    uint16 size_of_conf_caps = 0;
-    uint16 size_of_transport = 0;
-    
+    u16 size_dest_service_caps = 0;
+    u8 *find_media_transport = NULL;
+    u8 *config_caps = NULL;
+    u16 size_of_conf_caps = 0;
+    u16 size_of_transport = 0;
+
     if (a2dpGetPeerIndex(&peer_id))
     {
-        A2DP_QUALIFICATION_DEBUG(("issuePeerReconfigureRequest peer=%u\n",peer_id));
+        A2DP_LOGD("issuePeerReconfigureRequest peer=%u\n",peer_id);
         if (findCurrentA2dpSource( &priority ))
         {
             codec_settings = A2dpCodecGetSettings(theSink.a2dp_link_data->device_id[priority], theSink.a2dp_link_data->stream_id[priority]);
@@ -215,7 +213,7 @@ static bool a2dpIssuePeerReconfigureRequest (void)
              }
              /* Remove any delay_reporting, and update the dest_caps */
              peerQualificationReplaceDelayReportServiceCaps(theSink.a2dp_link_data->dest_service_caps, &size_dest_service_caps, config_caps, size_of_conf_caps);
-            
+
             free(find_media_transport);
             find_media_transport = NULL;
 
@@ -230,14 +228,14 @@ static bool a2dpIssuePeerReconfigureRequest (void)
             return A2dpMediaReconfigureRequest(theSink.a2dp_link_data->device_id[peer_id], theSink.a2dp_link_data->stream_id[peer_id], size_dest_service_caps, theSink.a2dp_link_data->dest_service_caps);
         }
     }
-    
+
     return FALSE;
 }
 
 /*************************************************************************
-NAME    
+NAME
     peerQualificationAdvanceRelayState
-    
+
 DESCRIPTION
     This function is to bypass Peer state machine so that we can handle PTS request/reponse.
 
@@ -249,11 +247,11 @@ bool peerQualificationAdvanceRelayState (RelayEvent relay_event)
     {
         return retVal;
     }
-    
+
     switch (relay_event)
     {
         case RELAY_EVENT_CONNECTED:
-            A2DP_QUALIFICATION_DEBUG(("peerAdvanceRelayState : RELAY_EVENT_CONNECTED\n"));
+            A2DP_LOGD("peerAdvanceRelayState : RELAY_EVENT_CONNECTED\n");
             updateCurrentState( RELAY_STATE_IDLE );
             /* for some TC's PTS expects SRC to open the channel.
                 With this flag, ADK shall trigger opening of the media channel,
@@ -262,28 +260,28 @@ bool peerQualificationAdvanceRelayState (RelayEvent relay_event)
             {
                 if (a2dpIssuePeerOpenRequest())
                 {
-                    A2DP_QUALIFICATION_DEBUG(("PEER: Issue PEER OPEN REQ\n"));
+                    A2DP_LOGD("PEER: Issue PEER OPEN REQ\n");
                     updateCurrentState( RELAY_STATE_OPENING );
                 }
             }
             retVal = TRUE;
             break;
-            
+
         case RELAY_EVENT_OPEN:
-            A2DP_QUALIFICATION_DEBUG(("peerAdvanceRelayState : RELAY_EVENT_OPEN\n"));
+            A2DP_LOGD("peerAdvanceRelayState : RELAY_EVENT_OPEN\n");
             updateCurrentState( RELAY_STATE_IDLE );
             retVal = TRUE;
             break;
-            
-        
+
+
         case RELAY_EVENT_SUSPENDED:
-            A2DP_QUALIFICATION_DEBUG(("peerAdvanceRelayState : RELAY_EVENT_SUSPENDED\n"));
+            A2DP_LOGD("peerAdvanceRelayState : RELAY_EVENT_SUSPENDED\n");
             updateCurrentState( RELAY_STATE_OPEN );
             if (theSink.peer.target_state < theSink.peer.current_state)
             {   /* reconfigure relay stream */
                 if(a2dpIssuePeerReconfigureRequest())
                 {
-                    A2DP_QUALIFICATION_DEBUG(("PEER: Issue PEER RECONFIGURE REQ\n"));
+                    A2DP_LOGD("PEER: Issue PEER RECONFIGURE REQ\n");
                     updateCurrentState(RELAY_STATE_IDLE);
                 }
             }
@@ -303,31 +301,31 @@ bool peerQualificationAdvanceRelayState (RelayEvent relay_event)
 }
 
 /*************************************************************************
-NAME    
+NAME
     handlePeerQualificationReconfigureCfm
-    
+
 DESCRIPTION
     handle a successful confirm of a media channel reconfiguration
 
 RETURNS
-    
+
 **************************************************************************/
-void handlePeerQualificationReconfigureCfm(uint16 DeviceId, uint16 StreamId, a2dp_status_code status)
+void handlePeerQualificationReconfigureCfm(u16 DeviceId, u16 StreamId, a2dp_status_code status)
 {
 
     if(!theSink.features.TwsQualificationEnable)
         return;
-        
+
     if(theSink.a2dp_link_data->dest_service_caps)
     {
         free(theSink.a2dp_link_data->dest_service_caps);
         theSink.a2dp_link_data->dest_service_caps = NULL;
     }
-    
+
     /* ensure successful confirm status */
     if (status == a2dp_success)
     {
-        uint16 Id;
+        u16 Id;
         bdaddr bd_addr;
 
         /*Get the A2DP index from the BD Address corresponding to the DeviceId */
@@ -341,7 +339,7 @@ void handlePeerQualificationReconfigureCfm(uint16 DeviceId, uint16 StreamId, a2d
     }
    else
    {
-        uint16 Id;
+        u16 Id;
         if (getA2dpIndex(DeviceId, &Id))
         {
             if (theSink.a2dp_link_data->peer_device[Id] == remote_device_peer)
@@ -353,13 +351,13 @@ void handlePeerQualificationReconfigureCfm(uint16 DeviceId, uint16 StreamId, a2d
 }
 
 /*************************************************************************
-NAME    
+NAME
     handlePeerQualificationEnablePeerOpen
-    
+
 DESCRIPTION
     Utility function to toggle the "Enable Peer Open" flag. This flag is used to send stream open to
     PTS. For some TC's PTS expects the SRC to open the channel.
-    
+
 **************************************************************************/
 void handlePeerQualificationEnablePeerOpen(void)
 {

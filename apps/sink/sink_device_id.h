@@ -22,13 +22,13 @@ Copyright (c) 2011 - 2015 Qualcomm Technologies International, Ltd.
 #define DEVICE_ID_BCD_VERSION      0xFFFF   /* Where 0xABCD = vAB.C.D                */
 
 bool RequestRemoteDeviceId (Task task, const bdaddr *bd_addr);
-remote_device CheckRemoteDeviceId (const uint8 *attr_data, uint16 attr_data_size);
+remote_device CheckRemoteDeviceId (const u8 *attr_data, u16 attr_data_size);
 void RegisterDeviceIdServiceRecord( void );
-uint16 GetDeviceIdEirDataSize( void );
-uint16 WriteDeviceIdEirData( uint8 *p );
-bool CheckEirDeviceIdData (uint16 size_eir_data, const uint8 *eir_data);
+u16 GetDeviceIdEirDataSize( void );
+u16 WriteDeviceIdEirData( u8 *p );
+bool CheckEirDeviceIdData (u16 size_eir_data, const u8 *eir_data);
 void ValidatePeerUseDeviceIdFeature(void);
-void GetDeviceIdFullVersion(uint16 *buffer);
+void GetDeviceIdFullVersion(u16 *buffer);
 
 
 #endif

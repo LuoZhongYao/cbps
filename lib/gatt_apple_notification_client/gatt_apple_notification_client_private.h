@@ -73,10 +73,10 @@
 
 /* Macros for creating messages */
 #define MAKE_APPLE_NOTIFICATION_MESSAGE(TYPE) MESSAGE_MAKE(message,TYPE##_T)
-#define MAKE_APPLE_NOTIFICATION_MESSAGE_WITH_LEN(TYPE, LEN) TYPE##_T *message = (TYPE##_T *) PanicUnlessMalloc(sizeof(TYPE##_T) + LEN - sizeof(uint8))
+#define MAKE_APPLE_NOTIFICATION_MESSAGE_WITH_LEN(TYPE, LEN) TYPE##_T *message = (TYPE##_T *) PanicUnlessMalloc(sizeof(TYPE##_T) + LEN - sizeof(u8))
 
 #define SIZE_NOTIFICATION_UID      4
-#define STANDARD_SIZE_OF_ANCS_CP_WR (sizeof(uint8) + (sizeof(uint8) * SIZE_NOTIFICATION_UID))
+#define STANDARD_SIZE_OF_ANCS_CP_WR (sizeof(u8) + (sizeof(u8) * SIZE_NOTIFICATION_UID))
 
 /*
 A Get Notification Attributes command contains the following information:
@@ -84,7 +84,7 @@ A Get Notification Attributes command contains the following information:
  NotificationUID:   The 32-bit numerical value representing the UID of the iOS notification for which the client wants information.
  AttributeIDs:      A list of attributes that the NC wants to retrieve. Some attributes may need to be followed by a 16-bit length parameter that specifies the maximum number of bytes of the attribute the NC wants to retrieve.
 */
-#define CALCULATE_SIZEOF_GET_NOTIFICATION_ATTRIBUTES(size_attribute_ids) STANDARD_SIZE_OF_ANCS_CP_WR + (sizeof(uint8) * size_attribute_ids)
+#define CALCULATE_SIZEOF_GET_NOTIFICATION_ATTRIBUTES(size_attribute_ids) STANDARD_SIZE_OF_ANCS_CP_WR + (sizeof(u8) * size_attribute_ids)
 
 /*
 A Get App Attributes command contains the following information:
@@ -92,7 +92,7 @@ A Get App Attributes command contains the following information:
  AppIdentifier:     The string identifier of the app the client wants information about. This string must be NULL-terminated.
  AttributeIDs:      A list of attributes the NC wants to retrieve.
 */
-#define CALCULATE_SIZEOF_GET_APP_ATTRIBUTES(size_app_identifier, size_attribute_ids) sizeof(uint8) + (sizeof(uint8) * size_app_identifier) + (sizeof(uint8) * size_attribute_ids)
+#define CALCULATE_SIZEOF_GET_APP_ATTRIBUTES(size_app_identifier, size_attribute_ids) sizeof(u8) + (sizeof(u8) * size_app_identifier) + (sizeof(u8) * size_attribute_ids)
 
 /*
 A Perform Notification Action command contains the following information:
@@ -100,7 +100,7 @@ A Perform Notification Action command contains the following information:
  NotificationUID    A 32-bit numerical value representing the UID of the iOS notification on which the client wants to perform an action.
  ActionID:          The desired action the NC wants to be performed on the iOS notification.
 */
-#define CALCULATE_SIZEOF_PERFORM_NOTIFICATION_ACTION STANDARD_SIZE_OF_ANCS_CP_WR + sizeof(uint8)
+#define CALCULATE_SIZEOF_PERFORM_NOTIFICATION_ACTION STANDARD_SIZE_OF_ANCS_CP_WR + sizeof(u8)
 
 /* Enum for apple notification library internal message. */
 typedef enum __ancs_internal_msg_t
@@ -130,7 +130,7 @@ typedef enum __ancs_pending_cmd_t
 typedef struct
 {
     bool notifications_enable;
-    uint16 notifications_mask;
+    u16 notifications_mask;
 } ANCS_INTERNAL_MSG_SET_NS_NOTIFICATION_T;
 
 typedef struct
@@ -144,8 +144,8 @@ typedef struct
 typedef struct
 {
     ancs_pending_cmd_t pending_cmd;
-    uint16      size_command_data;
-    uint8       command_data[1];
+    u16      size_command_data;
+    u8       command_data[1];
 } ANCS_INTERNAL_MSG_WRITE_CP_CHARACTERISTIC_T;
 
 

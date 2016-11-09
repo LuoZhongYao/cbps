@@ -20,20 +20,20 @@ NOTES
 
 
 /****************************************************************************
-NAME    
+NAME
     indicatorsHandleServiceInd
-    
+
 DESCRIPTION
-    Interprets the service Indicator messages and sends the appropriate message 
+    Interprets the service Indicator messages and sends the appropriate message
 
 RETURNS
     void
 */
-void indicatorsHandleServiceInd ( const HFP_SERVICE_IND_T *pInd ) 
+void indicatorsHandleServiceInd ( const HFP_SERVICE_IND_T *pInd )
 {
     /* only update the state if not set to network is present, this prevents repeated
-       network is present indications from re-enabling the led's if they have gone to 
-       sleep (timeout period) */  
+       network is present indications from re-enabling the led's if they have gone to
+       sleep (timeout period) */
     if(pInd->service != theSink.NetworkIsPresent)
     {
         if ( pInd->service )
@@ -46,7 +46,7 @@ void indicatorsHandleServiceInd ( const HFP_SERVICE_IND_T *pInd )
             /*should only send this if not currently sending it*/
             if (theSink.NetworkIsPresent)
             {
-                MessageSend(&theSink.task , EventSysNetworkOrServiceNotPresent  , 0 ) ;     
+                MessageSend(&theSink.task , EventSysNetworkOrServiceNotPresent  , 0 ) ;
                 theSink.NetworkIsPresent = FALSE ;
             }
         }

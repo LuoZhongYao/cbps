@@ -288,7 +288,7 @@ static void connectAudioStreams(void)
 
 
 /****************************************************************************/
-void CsrSubwooferPluginSetVolume(uint16 volume)
+void CsrSubwooferPluginSetVolume(u16 volume)
 {
     if (plugin_data->input == SUBWOOFER_INPUT_ADC)
     {
@@ -355,7 +355,7 @@ void CsrSubwooferPluginSetMode(subwooferPluginModeParams * params)
 
 
 /****************************************************************************/
-void CsrSubwooferPluginSetSampleRate(uint16 sample_rate)
+void CsrSubwooferPluginSetSampleRate(u16 sample_rate)
 {
     /* Update the sample rate stored by the plugin (only if new sample rate is different) */
     if (plugin_data->dsp_set_sample_rate != sample_rate)

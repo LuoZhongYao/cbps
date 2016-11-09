@@ -63,6 +63,7 @@
 #define _BLUESTACK_L2CAP_PRIM_H_
 
 #include "hci.h"
+#include <message.h>
 
 /* search_string="l2cap_prim_t" */
 /* conversion_rule="ADD_UNDERSCORE_AND_UPPERCASE_T" */
@@ -1109,7 +1110,7 @@ typedef struct
     phandle_t           phandle;          /*!< Protocol handle of the higher layer entity registering with L2CAP, for example RFCOMMs */
     uint16_t            mode_mask;        /*!< Mask of which L2CAP modes are acceptable, see the L2CA_MODE_MASK-defines */
     uint16_t            flags;            /*!< Register flags. */
-    uint16_t            reg_ctx;          /*!< Registration context. */
+    Task reg_ctx;          /*!< Registration context. */
 
     STREAM_BUFFER_SIZES_T connection_oriented; /*!< Stream parameters, currently all reserved and shall be set to zero. */
     STREAM_BUFFER_SIZES_T connectionless;      /*!< Stream parameters, currently all reserved and shall be set to zero. */
@@ -1132,7 +1133,7 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_REGISTER_CFM */
     phandle_t           phandle;          /*!< Protocol handle of the higher layer entity as specified in request */
     psm_t               psm_local;        /*!< PSM as specified in request */
-    uint16_t            reg_ctx;          /*!< Registration context as specified in request */
+    Task reg_ctx;          /*!< Registration context as specified in request */
     uint16_t            mode_mask;        /*!< Mask of which L2CAP modes are acceptable */
     uint16_t            flags;            /*!< Flags as specified in request */
     l2ca_misc_result_t  result;           /*!< Return code - uses L2CA_MISC range */
@@ -1159,7 +1160,7 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_UNREGISTER_CFM */
     phandle_t           phandle;          /*!< Target application handle */
     psm_t               psm_local;        /*!< PSM as specified in unregister request */
-    uint16_t            reg_ctx;          /*!< Registration context */
+    Task reg_ctx;          /*!< Registration context */
     l2ca_misc_result_t  result;           /*!< Return code - uses L2CA_MISC range */
 } L2CA_UNREGISTER_CFM_T;
 
@@ -1182,7 +1183,7 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_REGISTER_FIXED_CID_REQ */
     phandle_t           phandle;          /*!< Protocol handle of higher layer entity registering with L2CAP, for example AMP Manager */
     l2ca_cid_t          fixed_cid;        /*!< Channel ID of fixed channel */
-    uint16_t            reg_ctx;          /*!< Reserved - ignored by L2CAP */
+    Task reg_ctx;          /*!< Reserved - ignored by L2CAP */
     L2CA_CONFIG_T       config;           /*!< Configuration of channel */
 
     /* Stream parameters are currently reserved and shall be set to zero. */
@@ -1205,7 +1206,7 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_REGISTER_FIXED_CID_CFM */
     phandle_t           phandle;          /*!< Protocol handle of higher layer entity as specified in request */
     l2ca_cid_t          fixed_cid;        /*!< Channel ID of fixed channel as specified in request */
-    uint16_t            reg_ctx;          /*!< Reserved - should be ignored */
+    Task reg_ctx;          /*!< Reserved - should be ignored */
     l2ca_misc_result_t  result;           /*!< Return code - uses L2CA_MISC range */
 } L2CA_REGISTER_FIXED_CID_CFM_T;
 
@@ -1258,7 +1259,7 @@ typedef struct
     psm_t               psm_local;        /*!< PSM of local requesting protocol */
     BD_ADDR_T           bd_addr;          /*!< Bluetooth address of remote device */
     psm_t               psm_remote;       /*!< The PSM on the remote device */
-    uint16_t            con_ctx;          /*!< Opaque context number returned in other signals */
+    Task                con_ctx;          /*!< Opaque context number returned in other signals */
     l2ca_controller_t   remote_control;   /*!< Remote controller ID */
     l2ca_controller_t   local_control;    /*!< Local controller ID */
     uint16_t            conftab_length;   /*!< Number of uint16_t's in the 'conftab' table */
@@ -1297,7 +1298,7 @@ typedef struct
     l2ca_cid_t          cid;              /*!< Channel identifier */
     l2ca_identifier_t   identifier;       /*!< Used to identify the connect signal */
     l2ca_conn_result_t  response;         /*!< Result code - uses L2CA_CONNECT range (only spec values allowed) */
-    uint16_t            con_ctx;          /*!< Opaque context number returned in other signals */
+    Task con_ctx;          /*!< Opaque context number returned in other signals */
     uint16_t            conftab_length;   /*!< Number of uint16_t's in the 'conftab' table */
     uint16_t           *conftab;          /*!< Configuration table (key,value pairs) */
 } L2CA_AUTO_CONNECT_RSP_T;
@@ -1319,7 +1320,7 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_AUTO_CONNECT_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Channel identifier */
-    uint16_t            reg_ctx;          /*!< Registration context */
+    Task reg_ctx;          /*!< Registration context */
     l2ca_identifier_t   identifier;       /*!< Used to identify the connect signal */
     BD_ADDR_T           bd_addr;          /*!< Bluetooth address of remote device */
     psm_t               psm_local;        /*!< PSM of the local device */
@@ -1357,8 +1358,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_AUTO_CONNECT_CFM */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Channel identifier */
-    uint16_t            reg_ctx;          /*!< Registration context */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Registration context */
+    Task con_ctx;          /*!< Opaque context number from connect */
     BD_ADDR_T           bd_addr;          /*!< Bluetooth address of remote device */
     psm_t               psm_local;        /*!< The PSM of the local device */
     l2ca_conn_result_t  result;           /*!< Result code - uses L2CA_CONNECT range */
@@ -1403,7 +1404,7 @@ typedef struct
     l2ca_cid_t          fixed_cid;        /*!< Fixed channel CID */
     psm_t               cl_local_psm;     /*!< Connectionless PSM (only for fixed_cid == 2) */
     psm_t               cl_remote_psm;    /*!< Connectionless PSM (only for fixed_cid == 2) */
-    uint16_t            con_ctx;          /*!< Opaque context number returned in other signals */
+    Task con_ctx;          /*!< Opaque context number returned in other signals */
     l2ca_conflags_t     flags;            /*!< Special connection flags  L2CA_CONNECTION_* */
 } L2CA_MAP_FIXED_CID_REQ_T;
 
@@ -1438,7 +1439,7 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_CONNECT_FIXED_CID_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Local, dynamic channel identifier */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration. Only valid for fixed_cid == 2 */
+    Task reg_ctx;          /*!< Opaque context number from registration. Only valid for fixed_cid == 2 */
     TYPED_BD_ADDR_T     addrt;            /*!< Bluetooth address of remote device */
     l2ca_cid_t          fixed_cid;        /*!< Fixed channel CID */
     psm_t               cl_local_psm;     /*!< Connectionless PSM (only for fixed_cid == 2) */
@@ -1457,11 +1458,11 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_MAP_FIXED_CID_CFM */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Local, dynamic channel identifier */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration. Only valid for fixed_cid == 2 */
+    Task reg_ctx;          /*!< Opaque context number from registration. Only valid for fixed_cid == 2 */
     TYPED_BD_ADDR_T     addrt;            /*!< Bluetooth address of remote device */
     l2ca_cid_t          fixed_cid;        /*!< Fixed channel CID */
     psm_t               cl_local_psm;     /*!< Connectionless PSM (only for fixed_cid == 2) */
-    uint16_t            con_ctx;          /*!< Opaque context number from map request */
+    Task con_ctx;          /*!< Opaque context number from map request */
     l2ca_misc_result_t  result;           /*!< Result code - uses L2CA_MISC range */
     l2ca_conflags_t     flags;            /*!< Special connection flags */
 } L2CA_MAP_FIXED_CID_CFM_T;
@@ -1476,7 +1477,7 @@ typedef struct
 {
     l2cap_prim_t        type;             /*!< Always L2CA_MAP_FIXED_CID_CFM */
     l2ca_cid_t          cid;              /*!< Local, dynamic channel identifier */
-    uint16_t            con_ctx;          /*!< Opaque context number returned in other signals */
+    Task con_ctx;          /*!< Opaque context number returned in other signals */
     psm_t               ucd_remote_psm;   /*!< Connectionless PSM */
     l2ca_conflags_t     flags;            /*!< Special connection flags */
 } L2CA_MAP_FIXED_CID_RSP_T;
@@ -1503,8 +1504,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_DISCONNECT_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Local (dynamic) channel ID */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration. Only valid for connectionless channel (fixed_cid == 2) */
-    uint16_t            con_ctx;          /*!< Opaque context number from map */
+    Task reg_ctx;          /*!< Opaque context number from registration. Only valid for connectionless channel (fixed_cid == 2) */
+    Task con_ctx;          /*!< Opaque context number from map */
     l2ca_disc_result_t  reason;           /*!< Reason code - uses L2CA_DISCONNECT range */
 } L2CA_UNMAP_FIXED_CID_IND_T;
 
@@ -1567,8 +1568,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_MOVE_CHANNEL_CFM */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< CID of channel to move */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect/create channel */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect/create channel */
     l2ca_move_result_t  result;           /*!< Result code - uses L2CA_MOVE range */
     l2ca_controller_t   local_control;    /*!< Local controller ID actually in use */
     l2ca_controller_t   remote_control;   /*!< Remote controller ID acutally in use */
@@ -1593,8 +1594,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_MOVE_CHANNEL_CMP_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< CID of channel to move */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect/create channel */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect/create channel */
     l2ca_move_result_t  result;           /*!< Result code - uses L2CA_MOVE range */
     l2ca_controller_t   local_control;    /*!< Local controller ID actually in use */
 } L2CA_MOVE_CHANNEL_CMP_IND_T;
@@ -1617,8 +1618,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_MOVE_CHANNEL_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< CID of channel to move */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect/create channel */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect/create channel */
     l2ca_identifier_t   identifier;       /*!< Used to identify the move signal */
     l2ca_controller_t   local_control;    /*!< Local controller ID */
 } L2CA_MOVE_CHANNEL_IND_T;
@@ -1667,8 +1668,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_AMP_LINK_LOSS_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Local channel ID */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connection */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connection */
     hci_error_t         reason;           /*!< Details HCI reason for link loss */
 } L2CA_AMP_LINK_LOSS_IND_T;
 
@@ -1700,7 +1701,7 @@ typedef struct
 {
     l2cap_prim_t        type;             /*!< Always L2CA_DATAWRITE_REQ */
     l2ca_cid_t          cid;              /*!< Local channel ID */
-    uint16_t            req_ctx;          /*!< User context to be returned in L2CA_DATAWRITE_CFM */
+    Task                req_ctx;          /*!< User context to be returned in L2CA_DATAWRITE_CFM */
     uint16_t            length;           /*!< Length of data (must be 0 to indicate MBLK) */
     MBLK_T             *data;             /*!< Pointer to data/MBLK */
     uint16_t            packets_ack;      /*!< Used to acknowledge L2CAP PDUs in earlier DATAREAD_INDs */
@@ -1722,9 +1723,9 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_DATAWRITE_CFM */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Local channel ID */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration. Not valid for fixed channels where fixed_cid != 2 */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
-    uint16_t            req_ctx;          /*!< User context specified in L2CA_DATAWRITE_REQ */
+    Task reg_ctx;          /*!< Opaque context number from registration. Not valid for fixed channels where fixed_cid != 2 */
+    Task con_ctx;          /*!< Opaque context number from connect */
+    Task                req_ctx;          /*!< User context specified in L2CA_DATAWRITE_REQ */
     uint16_t            length;           /*!< Length of data sent */
     l2ca_data_result_t  result;           /*!< Result code - uses L2CA_DATA range */
 } L2CA_DATAWRITE_CFM_T;
@@ -1760,8 +1761,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_BUSY_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Local channel ID */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect */
     bool_t              busy;             /*!< New status of busy (RNR) flag */
 } L2CA_BUSY_IND_T;
 
@@ -1826,8 +1827,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_DATAREAD_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Local channel ID */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration. Not valid for fixed channels, except for connectionless channel */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Opaque context number from registration. Not valid for fixed channels, except for connectionless channel */
+    Task con_ctx;          /*!< Opaque context number from connect */
     uint16_t            length;           /*!< Length of data (must be 0 to indicate MBLK) */
     MBLK_T             *data;             /*!< Pointer to data/MBLK */
     l2ca_data_result_t  result;           /*!< Result code - uses L2CA_DATA range */
@@ -1859,7 +1860,7 @@ typedef struct
 {
     l2cap_prim_t        type;             /*!< Always L2CA_DISCONNECT_REQ */
     l2ca_cid_t          cid;              /*!< Local channel ID */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task con_ctx;          /*!< Opaque context number from connect */
 } L2CA_DISCONNECT_REQ_T;
 
 /*! \brief L2CAP raw data mode
@@ -1952,8 +1953,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_DISCONNECT_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Local channel ID */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect */
     l2ca_identifier_t   identifier;       /*!< Used to identify the disconnect signal */
     l2ca_disc_result_t  reason;           /*!< Reason code - uses L2CA_DISCONNECT range */
 } L2CA_DISCONNECT_IND_T;
@@ -1967,8 +1968,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_DISCONNECT_CFM */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Local channel ID */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect */
     l2ca_disc_result_t  result;           /*!< Successful or timed out */
 } L2CA_DISCONNECT_CFM_T;
 
@@ -1982,8 +1983,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_TIMEOUT_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Local channel ID */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect */
     l2ca_identifier_t   identifier;       /*!< Identifier of the timed out signal */
 } L2CA_TIMEOUT_IND_T;
 
@@ -2000,8 +2001,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_TIMEOUT_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Local channel ID */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect */
     l2ca_identifier_t   identifier;       /*!< Identifier of the violating signal */
     l2ca_mtu_t          signal_mtu;       /*!< The maximum signalling MTU */
 } L2CA_MTU_VIOLATION_IND_T;
@@ -2018,8 +2019,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_TIMEOUT_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Local channel ID */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect */
     l2ca_identifier_t   identifier;       /*!< Identifier of the violating signal */
 } L2CA_UNKNOWN_SIGNAL_IND_T;
 
@@ -2037,7 +2038,7 @@ typedef struct
     BD_ADDR_T           bd_addr;          /*!< Bluetooth device address */
     uint16_t            length;           /*!< number of bytes pointed to by data */
     uint8_t            *data;             /*!< data to be transmitted (and returned in PING_CFM command) */
-    uint16_t            req_ctx;          /*!< User context to be returned in L2CA_PING_CFM */
+    Task                req_ctx;          /*!< User context to be returned in L2CA_PING_CFM */
     l2ca_conflags_t     flags;            /*!< Reserved */
 } L2CA_PING_REQ_T;
 
@@ -2053,7 +2054,7 @@ typedef struct
     uint16_t            length;           /*!< Number of bytes pointed to by data */
     uint8_t            *data;             /*!< Returned data (should match the PING_REQ data */
     l2ca_misc_result_t  result;           /*!< Result code - uses L2CA_MISC range */
-    uint16_t            req_ctx;          /*!< Returned req_ctx from the request signal*/
+    Task                req_ctx;          /*!< Returned req_ctx from the request signal*/
     l2ca_conflags_t     flags;            /*!< Reserved */
 } L2CA_PING_CFM_T;
 
@@ -2067,7 +2068,7 @@ typedef struct
     phandle_t           phandle;          /*!< phandle for requesting protocol */
     BD_ADDR_T           bd_addr;          /*!< Bluetooth device address */
     uint16_t            info_type;        /*!< Type of information requested */
-    uint16_t            req_ctx;          /*!< User context to be returned in L2CA_GETINFO_CFM */
+    Task                req_ctx;          /*!< User context to be returned in L2CA_GETINFO_CFM */
     l2ca_conflags_t     flags;            /*!< Reserved */
 } L2CA_GETINFO_REQ_T;
 
@@ -2085,7 +2086,7 @@ typedef struct
     uint16_t            length;           /*!< length of data in info_data */
     uint8_t            *info_data;        /*!< Data payload - little endian format (as in spec) */
     l2ca_info_result_t  result;           /*!< Success, failure, etc */
-    uint16_t            req_ctx;          /*!< Returned req_ctx from the request signal*/
+    Task                req_ctx;          /*!< Returned req_ctx from the request signal*/
     l2ca_conflags_t     flags;            /*!< Reserved */
 } L2CA_GETINFO_CFM_T;
 
@@ -2112,8 +2113,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_ROUTE_DATA_CFM */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< CID of channel being routed */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect */
     l2ca_mtu_t          out_mtu;          /*!< Outgoing MTU for channel */
     l2ca_misc_result_t  result;           /*!< Result code - uses L2CA_MISC range */
 } L2CA_ROUTE_DATA_CFM_T;
@@ -2141,8 +2142,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_UNROUTE_DATA_CFM */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< CID of unrouted channel */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect */
     l2ca_misc_result_t  result;           /*!< Result code - uses L2CA_MISC range */
 } L2CA_UNROUTE_DATA_CFM_T;
 
@@ -2158,8 +2159,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_UNROUTE_DATA_IND */
     phandle_t           phandle;          /*!< Requesting application */
     l2ca_cid_t          cid;              /*!< CID of channel */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect */
 } L2CA_UNROUTE_DATA_IND_T;
 
 /*! \brief Abort queued TX data on channel.
@@ -2185,8 +2186,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_DATAWRITE_ABORT_CFM */
     phandle_t           phandle;          /*!< Requesting application */
     l2ca_cid_t          cid;              /*!< CID of channel */
-    uint16_t            reg_ctx;          /*!< Registration context */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Registration context */
+    Task con_ctx;          /*!< Opaque context number from connect */
 } L2CA_DATAWRITE_ABORT_CFM_T;
 
 /*! \brief Common upstream primitive
@@ -2239,7 +2240,7 @@ typedef struct
     psm_t               psm_local;        /*!< PSM of local requesting protocol */
     BD_ADDR_T           bd_addr;          /*!< Bluetooth address of remote device */
     psm_t               psm_remote;       /*!< The PSM on the remote device */
-    uint16_t            con_ctx;          /*!< Opaque context number returned in other signals */
+    Task con_ctx;          /*!< Opaque context number returned in other signals */
     l2ca_conflags_t     flags;            /*!< Special connection flags */
     DM_SM_SERVICE_T     service;          /*!< Security Manager substitute service */
 } L2CA_CONNECT_REQ_T;
@@ -2270,7 +2271,7 @@ typedef struct
     l2ca_cid_t          cid;              /*!< Channel identifier */
     l2ca_identifier_t   identifier;       /*!< Used to identify the connect signal */
     l2ca_conn_result_t  response;         /*!< Result code - uses L2CA_CONNECT range */
-    uint16_t            con_ctx;          /*!< Opaque context number returned in other signals */
+    Task con_ctx;          /*!< Opaque context number returned in other signals */
 } L2CA_CONNECT_RSP_T;
 
 /*! \brief L2CAP connect indication
@@ -2297,7 +2298,7 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_CONNECT_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Channel identifier */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
+    Task reg_ctx;          /*!< Opaque context number from registration */
     l2ca_identifier_t   identifier;       /*!< Used to identify the connect signal */
     BD_ADDR_T           bd_addr;          /*!< Bluetooth address of remote device */
     psm_t               psm_local;        /*!< PSM of the local device */
@@ -2326,8 +2327,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_CONNECT_CFM */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Channel identifier */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect */
     BD_ADDR_T           bd_addr;          /*!< Bluetooth address of remote device */
     psm_t               psm_local;        /*!< The PSM of the local device */
     l2ca_conn_result_t  result;           /*!< Result code - uses L2CA_CONNECT range */
@@ -2377,8 +2378,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_CONFIG_CFM */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Channel identifier */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect */
     l2ca_conf_result_t  result;           /*!< Response code - uses L2CA_CONFIG range */
     L2CA_CONFIG_T       config;           /*!< Cofniguration options */
 } L2CA_CONFIG_CFM_T;
@@ -2389,8 +2390,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_CONFIG_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Channel identifier */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect */
     l2ca_identifier_t   identifier;       /*!< Used to identify the config signal */
     L2CA_CONFIG_T       config;           /*!< Configuration options */
 } L2CA_CONFIG_IND_T;
@@ -2412,7 +2413,7 @@ typedef struct
     psm_t               psm_local;        /*!< PSM of local requesting protocol */
     BD_ADDR_T           bd_addr;          /*!< Bluetooth address of remote device */
     psm_t               psm_remote;       /*!< The PSM on the remote device */
-    uint16_t            con_ctx;          /*!< Opaque context number returned in other signals */
+    Task con_ctx;          /*!< Opaque context number returned in other signals */
     l2ca_controller_t   remote_control;   /*!< Remote controller ID */
     l2ca_controller_t   local_control;    /*!< Local controller ID */
     DM_SM_SERVICE_T     service;          /*!< Security Manager substitute service */
@@ -2424,8 +2425,8 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_CREATE_CHANNEL_CFM */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Channel identifier */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
-    uint16_t            con_ctx;          /*!< Opaque context number from connect */
+    Task reg_ctx;          /*!< Opaque context number from registration */
+    Task con_ctx;          /*!< Opaque context number from connect */
     BD_ADDR_T           bd_addr;          /*!< Bluetooth address of remote device */
     psm_t               psm_local;        /*!< The PSM of the local device */
     l2ca_conn_result_t  result;           /*!< Result code - uses L2CA_CONNECT range */
@@ -2438,7 +2439,7 @@ typedef struct
     l2cap_prim_t        type;             /*!< Always L2CA_CREATE_CHANNEL_IND */
     phandle_t           phandle;          /*!< Destination phandle */
     l2ca_cid_t          cid;              /*!< Channel identifier */
-    uint16_t            reg_ctx;          /*!< Opaque context number from registration */
+    Task reg_ctx;          /*!< Opaque context number from registration */
     l2ca_identifier_t   identifier;       /*!< Used to identify the create signal */
     BD_ADDR_T           bd_addr;          /*!< Bluetooth address of remote device */
     psm_t               psm_local;              /*!< PSM of the local device */
@@ -2452,7 +2453,7 @@ typedef struct
     l2ca_cid_t          cid;              /*!< Channel identifier */
     l2ca_identifier_t   identifier;       /*!< Used to identify the create signal */
     l2ca_conn_result_t  response;         /*!< Result code - uses L2CA_CONNECT range (only spec values allowed) */
-    uint16_t            con_ctx;          /*!< Opaque context number returned in other signals */
+    Task con_ctx;          /*!< Opaque context number returned in other signals */
 } L2CA_CREATE_CHANNEL_RSP_T;
 
 /*! \brief Request HCI connection handle and remote CID associated with

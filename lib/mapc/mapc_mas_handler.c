@@ -20,12 +20,12 @@ DESCRIPTION
 
 
 /* Type Header values */
-const uint8 notification_type[] = "x-bt/MAP-NotificationRegistration";
-const uint8 get_folder_type[] = "x-obex/folder-listing";
-const uint8 get_msg_list_type[] = "x-bt/MAP-msg-listing";
-const uint8 get_put_msg_type[] = "x-bt/message";
-const uint8 update_inbox_type[] ="x-bt/MAP-messageUpdate";
-const uint8 set_msg_type[] = "x-bt/messageStatus";
+const u8 notification_type[] = "x-bt/MAP-NotificationRegistration";
+const u8 get_folder_type[] = "x-obex/folder-listing";
+const u8 get_msg_list_type[] = "x-bt/MAP-msg-listing";
+const u8 get_put_msg_type[] = "x-bt/message";
+const u8 update_inbox_type[] ="x-bt/MAP-messageUpdate";
+const u8 set_msg_type[] = "x-bt/messageStatus";
 
 /**************************************************************************
  * NAME:
@@ -60,7 +60,7 @@ static MapcStatus mapcMasConvertStatus( ObexStatus status)
  * DESCRIPTION
  *  Frame application parameters of 2 Byte length
  ************************************************************************/
-static void mapcFrame2ByteAppParams( uint8* ptr, uint8 param, uint16 value ) 
+static void mapcFrame2ByteAppParams( u8* ptr, u8 param, u16 value ) 
 {
     ptr[0] = param;
     ptr[1] = MAPC_2BYTE_SIZE; /* Two byte length */
@@ -75,7 +75,7 @@ static void mapcFrame2ByteAppParams( uint8* ptr, uint8 param, uint16 value )
  * DESCRIPTION
  *  Frame One byte application parameter
  *************************************************************************/
-static void mapcFrameByteAppParams( uint8* ptr, uint8 param, uint8 value )
+static void mapcFrameByteAppParams( u8* ptr, u8 param, u8 value )
 {
     ptr[0] = param;
     ptr[1] = MAPC_BYTE_SIZE;
@@ -89,7 +89,7 @@ static void mapcFrameByteAppParams( uint8* ptr, uint8 param, uint8 value )
  * DESCRIPTION
  *  Frame One byte application parameter
  *************************************************************************/
-static void mapcFrame4ByteAppParams( uint8* ptr, uint8 param, uint32 value ){
+static void mapcFrame4ByteAppParams( u8* ptr, u8 param, u32 value ){
     ptr[0] = param;
     ptr[1] = MAPC_4BYTE_SIZE;
     ptr[2] = value >> 24 ;
@@ -107,8 +107,8 @@ static void mapcFrame4ByteAppParams( uint8* ptr, uint8 param, uint32 value ){
  *  Frame header to a function request
  ************************************************************************/
 static bool mapcFrameSeqHdr( Mas masTask, 
-                             const uint8* hdr, 
-                             uint16 len,
+                             const u8* hdr, 
+                             u16 len,
                              ObexSeqHeaderId id )
 {
     Source src = 0;
@@ -136,10 +136,10 @@ static bool mapcFrameSeqHdr( Mas masTask,
  *  List data must be free. List data will be freed in this function. 
  ************************************************************************/
 static bool mapcFrameListAppParams( Mas masTask, 
-                                    uint16 maxListCount,
-                                    uint16 startOffset,
-                                    uint16 listLen,
-                                    uint8* listData )
+                                    u16 maxListCount,
+                                    u16 startOffset,
+                                    u16 listLen,
+                                    u8* listData )
 {
     bool result = FALSE;
 
@@ -166,15 +166,15 @@ static bool mapcFrameListAppParams( Mas masTask,
  *  Frame application parameters for Get Message Listing
  ************************************************************************/
 static bool mapcFrameListMsgParams( Mas masTask,
-                                    uint16 maxListCount,
-                                    uint16 startOffset,
+                                    u16 maxListCount,
+                                    u16 startOffset,
                                     MapcMessageFilter  filter )
 {
-    uint16 offset =  MAPC_LIST_APP_PARAM_SIZE;
-    uint16 listLen = offset; 
-    uint8  readStatus;
-    uint8  msgType;
-    uint8 *listData;
+    u16 offset =  MAPC_LIST_APP_PARAM_SIZE;
+    u16 listLen = offset; 
+    u8  readStatus;
+    u8  msgType;
+    u8 *listData;
 
     if( filter & mapc_filter_params ) 
     { 
@@ -244,14 +244,14 @@ static bool mapcFrameListMsgParams( Mas masTask,
  *
  * return the length on the object
  ************************************************************************/
-static uint16 mapcMasParseListResp( Mapc masTask,
+static u16 mapcMasParseListResp( Mapc masTask,
                                     MapcStatus status,
                                     MapcAppParams sizeId,
-                                    uint16 len,
+                                    u16 len,
                                     Source src )
 {
-    uint16 objLen = 0;
-    const uint8* appParam;
+    u16 objLen = 0;
+    const u8* appParam;
     ObexSeqHeaderId id = ( status == mapc_pending )? obex_body_hdr: 
                                                      obex_ebody_hdr;
 
@@ -259,7 +259,7 @@ static uint16 mapcMasParseListResp( Mapc masTask,
        If it is not the first, it must have received before. */
     if((appParam = ObexObjMapHdrValue( obex_app_params, len, src, &objLen )))
     {
-        uint16 offset = 0;
+        u16 offset = 0;
         while(objLen >= (offset + MAPC_2BYTE_APP_HDR_SIZE ))
         {
             if( appParam[offset] == sizeId )
@@ -296,7 +296,7 @@ static uint16 mapcMasParseListResp( Mapc masTask,
  ************************************************************************/
 static void mapcMasHandleNotificationRegResp( Mapc masTask, 
                                             MapcStatus status,
-                                            uint16 len, 
+                                            u16 len, 
                                             Source src )
 {
     mapcMasSetNotificationCfm( masTask, status );
@@ -320,10 +320,10 @@ static void mapcMasHandleNotificationRegResp( Mapc masTask,
  ************************************************************************/
 static void mapcMasHandleFolderListingResp( Mapc masTask, 
                                             MapcStatus status,
-                                            uint16 len, 
+                                            u16 len, 
                                             Source src )
 {
-    uint16 objLen = 0;
+    u16 objLen = 0;
 
     if( ( status == mapc_success ) || ( status == mapc_pending ) )
     {
@@ -359,7 +359,7 @@ static void mapcMasHandleGetMessageResp( Mapc masTask,
                                          MapcStatus status )
 {
     Source src;
-    uint16 objLen = 0;
+    u16 objLen = 0;
     ObexSeqHeaderId id = ( status == mapc_pending )? obex_body_hdr: 
                                                      obex_ebody_hdr;
 
@@ -386,10 +386,10 @@ static void mapcMasHandleGetMessageResp( Mapc masTask,
  ************************************************************************/
 static void mapcMasHandleMessagesListingResp( Mapc masTask, 
                                               MapcStatus status,
-                                              uint16 len, 
+                                              u16 len, 
                                               Source src )
 {
-    uint16 objLen = 0;
+    u16 objLen = 0;
 
     if( ( status == mapc_success ) || ( status == mapc_pending ) )
     {
@@ -424,8 +424,8 @@ static void mapcMasHandleMessagesListingResp( Mapc masTask,
 static void mapcMasHandlePutMessageResp( Mapc masTask, 
                                          MapcStatus status ) 
 {
-    uint16 objLen = 0;
-    const uint8* handle = NULL;
+    u16 objLen = 0;
+    const u8* handle = NULL;
         
     if( (status == mapc_pending) && (SourceSize( masTask->srcOut)) )
     {
@@ -469,7 +469,7 @@ static void mapcMasHandlePutMessageResp( Mapc masTask,
 void mapcMasIntSetMessage( MAPC_INT_SET_MSG_STATUS_T* message )
 {
     Mapc   masTask = message->session;
-    uint16 reqSize = sizeof(set_msg_type) + MAPC_SET_MSG_HDR_SIZE;
+    u16 reqSize = sizeof(set_msg_type) + MAPC_SET_MSG_HDR_SIZE;
     MapcStatus status = mapc_failure;
 
     if( !IsMapcConnected( masTask ) || !IsMapcFuncFree( masTask ) )  
@@ -481,7 +481,7 @@ void mapcMasIntSetMessage( MAPC_INT_SET_MSG_STATUS_T* message )
     /* Size is less than 255. This should be going in a single packet */
     if( ( ObexObjNew( masTask->session ) >= reqSize ) )
     {
-        uint8   appHdr[MAPC_BYTE_APP_HDR_SIZE * 2];
+        u8   appHdr[MAPC_BYTE_APP_HDR_SIZE * 2];
 
         /* Create the application header */
         mapcFrameByteAppParams( &appHdr[0],
@@ -525,7 +525,7 @@ void mapcMasIntSetMessage( MAPC_INT_SET_MSG_STATUS_T* message )
 void mapcMasIntUpdateInbox( MAPC_INT_UPDATE_INBOX_T* message )
 {
     Mapc   masTask = message->session;
-    uint16 reqSize = sizeof(update_inbox_type) + MAPC_UPDATE_INBOX_HDR_SIZE;
+    u16 reqSize = sizeof(update_inbox_type) + MAPC_UPDATE_INBOX_HDR_SIZE;
 
     if( !IsMapcConnected( masTask ) || !IsMapcFuncFree( masTask ) )  
     {
@@ -560,7 +560,7 @@ void mapcMasIntUpdateInbox( MAPC_INT_UPDATE_INBOX_T* message )
 void mapcMasIntSetNotification( MAPC_INT_SET_NOTIFICATION_T* message )
 {
     Mapc   masTask = message->session;
-    uint16 reqSize = sizeof(notification_type) + MAPC_NOTIFICATION_HDR_SIZE;
+    u16 reqSize = sizeof(notification_type) + MAPC_NOTIFICATION_HDR_SIZE;
     MapcStatus status = mapc_failure;
 
     if( !IsMapcConnected( masTask ) || !IsMapcFuncFree( masTask ) )  
@@ -572,7 +572,7 @@ void mapcMasIntSetNotification( MAPC_INT_SET_NOTIFICATION_T* message )
     /* Size is less than 255. This should be going in a single packet */
     if( ( ObexObjNew( masTask->session ) >= reqSize ) )
     {
-        uint8  appHdr[MAPC_BYTE_APP_HDR_SIZE];
+        u8  appHdr[MAPC_BYTE_APP_HDR_SIZE];
 
         /* Create the application header */
         mapcFrameByteAppParams( &appHdr[0],
@@ -611,7 +611,7 @@ void mapcMasIntSetNotification( MAPC_INT_SET_NOTIFICATION_T* message )
 void mapcMasIntGetMsg( MAPC_INT_GET_MSG_T* message )
 {
     Mapc   masTask = message->session;
-    uint16 reqSize = sizeof(get_put_msg_type) + MAPC_GET_MSG_HDR_SIZE ; 
+    u16 reqSize = sizeof(get_put_msg_type) + MAPC_GET_MSG_HDR_SIZE ; 
     MapcStatus status = mapc_failure;
 
     if( !IsMapcConnected( masTask ) || !IsMapcFuncFree( masTask ) )  
@@ -623,7 +623,7 @@ void mapcMasIntGetMsg( MAPC_INT_GET_MSG_T* message )
     /* Size is less than 255. This should be going in a single packet */
     if( ( ObexObjNew( masTask->session ) >= reqSize ) )
     {
-        uint8   appHdr[MAPC_BYTE_APP_HDR_SIZE * 2];
+        u8   appHdr[MAPC_BYTE_APP_HDR_SIZE * 2];
 
         /* Create the application header */
         mapcFrameByteAppParams( &appHdr[0], 
@@ -665,7 +665,7 @@ void mapcMasIntGetMsg( MAPC_INT_GET_MSG_T* message )
 void mapcMasIntGetMsgList( MAPC_INT_GET_MSG_LIST_T* message )
 {
     Mapc   masTask = message->session;
-    uint16 reqSize = sizeof(get_msg_list_type) + 
+    u16 reqSize = sizeof(get_msg_list_type) + 
                      MAPC_GET_MSG_LIST_HDR_SIZE +
                      message->nameLen * 2; 
 
@@ -707,7 +707,7 @@ void mapcMasIntGetMsgList( MAPC_INT_GET_MSG_LIST_T* message )
 void mapcMasIntPutMessage( MAPC_INT_PUT_MSG_T* message )
 {
     Mapc   masTask = message->session;
-    uint16 reqSize = sizeof(get_put_msg_type) + MAPC_PUT_MSG_HDR_SIZE +
+    u16 reqSize = sizeof(get_put_msg_type) + MAPC_PUT_MSG_HDR_SIZE +
                     message->nameLen * 2 ; /* name is unicode */
     MapcStatus status = mapc_failure;
 
@@ -721,7 +721,7 @@ void mapcMasIntPutMessage( MAPC_INT_PUT_MSG_T* message )
     if( ObexObjNew( masTask->session ) >= reqSize )
     {
         /* Add 3 Application headers */
-        uint8 appHdr[MAPC_BYTE_APP_HDR_SIZE * 3];
+        u8 appHdr[MAPC_BYTE_APP_HDR_SIZE * 3];
 
         /* Create the application header, 
            transparent and retry are currently pre defined values. */
@@ -771,8 +771,8 @@ void mapcMasIntPutMessage( MAPC_INT_PUT_MSG_T* message )
 void mapcMasIntPutContinue( MAPC_INT_PUT_CONTINUE_T* message )
 {
     Mapc masTask = message->session;
-    uint16 srcSize = SourceSize( message->data );
-    uint16 reqSize;
+    u16 srcSize = SourceSize( message->data );
+    u16 reqSize;
     bool   final = FALSE;
 
     if( ( !IsMapcConnected( masTask ) ) || 
@@ -826,7 +826,7 @@ void mapcMasIntPutContinue( MAPC_INT_PUT_CONTINUE_T* message )
 void mapcMasIntGetFolder( MAPC_INT_GET_FOLDER_T* message )
 {
     Mapc   masTask = message->session;
-    uint16 reqSize = sizeof(get_folder_type) + MAPC_GET_FOLDER_HDR_SIZE;  
+    u16 reqSize = sizeof(get_folder_type) + MAPC_GET_FOLDER_HDR_SIZE;  
                                        
     if( !IsMapcConnected( masTask )  || !IsMapcFuncFree( masTask ))   
     {

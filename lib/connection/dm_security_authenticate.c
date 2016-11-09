@@ -25,7 +25,7 @@ NOTES
 
 
 /*****************************************************************************/
-void ConnectionSmAuthenticate(Task theAppTask, const bdaddr* bd_addr, uint16 timeout)
+void ConnectionSmAuthenticate(Task theAppTask, const bdaddr* bd_addr, u16 timeout)
 {
 #ifdef CONNECTION_DEBUG_LIB
     if ((timeout < MIN_AUTHENTICATION_TIMEOUT) || (timeout >  MAX_AUTHENTICATION_TIMEOUT))
@@ -43,7 +43,7 @@ void ConnectionSmAuthenticate(Task theAppTask, const bdaddr* bd_addr, uint16 tim
         MAKE_CL_MESSAGE(CL_INTERNAL_SM_AUTHENTICATION_REQ);
         message->task = theAppTask;
         message->bd_addr = *bd_addr;
-        message->timeout = (uint32) D_SEC(timeout);
+        message->timeout = (u32) D_SEC(timeout);
         MessageSend(connectionGetCmTask(), CL_INTERNAL_SM_AUTHENTICATION_REQ, message);
     }
 }

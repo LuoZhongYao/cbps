@@ -12,7 +12,7 @@ Part of ADK 4.0
 #define UUID_HEADSET_AG 0x1112
 
 
-static const uint8 aghfp_hsp_service_record[] =
+static const u8 aghfp_hsp_service_record[] =
 {
     /* Service class ID list */
     0x09,0x00,0x01, /* AttrID , ServiceClassIDList */

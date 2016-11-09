@@ -45,7 +45,7 @@ MESSAGE RETURNED
 RETURNS
     void
 */
-void HfpDialNumberRequest(hfp_link_priority priority, uint16 length, const uint8 *number)
+void HfpDialNumberRequest(hfp_link_priority priority, u16 length, const u8 *number)
 {
 #ifdef HFP_DEBUG_LIB
     if (!length)

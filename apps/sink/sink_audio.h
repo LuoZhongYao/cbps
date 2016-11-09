@@ -17,11 +17,11 @@ DESCRIPTION
 /* Linked-list structure for registering user implemented WBS codecs. */
 typedef struct _audio_codec_plugin_info
 {
-    uint32      					bandwidth;			/* Codec audio paramters - bandwidth */
-    uint16      					max_latency;		/* Codec audio paramters - max latency */
-    uint16     	 					voice_settings;		/* Codec audio paramters - vioce settings */
-    uint16      					retx_effort;		/* Codec audio paramters - re-transmission effort */
-    uint16							packet_types;		/* Codec's supported packet types */
+    u32      					bandwidth;			/* Codec audio paramters - bandwidth */
+    u16      					max_latency;		/* Codec audio paramters - max latency */
+    u16     	 					voice_settings;		/* Codec audio paramters - vioce settings */
+    u16      					retx_effort;		/* Codec audio paramters - re-transmission effort */
+    u16							packet_types;		/* Codec's supported packet types */
 } audio_codec_plugin_info;
 
 /* interval at which to check whether the audio amplifier can be turned off after playing a
@@ -147,7 +147,7 @@ DESCRIPTION
 RETURNS
     
 */
-Task audioHfpGetPlugin(hfp_wbs_codec_mask codec, uint8 plugin);
+Task audioHfpGetPlugin(hfp_wbs_codec_mask codec, u8 plugin);
 
 /****************************************************************************
 NAME    
@@ -172,7 +172,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void audioIndicateCodec(uint8 seid);
+void audioIndicateCodec(u8 seid);
 
 /****************************************************************************
 NAME    
@@ -185,7 +185,7 @@ DESCRIPTION
 RETURNS
     
 */
-void A2dpRouteAudio(uint8 Index, Sink sink);
+void A2dpRouteAudio(u8 Index, Sink sink);
 
 /****************************************************************************
 NAME    
@@ -214,7 +214,7 @@ RETURNS
     FALSE if an audio transfer to the AG has been initiated.
     TRUE otherwise.
 */
-void sinkTransferToggle( uint16 eventId ) ;
+void sinkTransferToggle( u16 eventId ) ;
 
 /****************************************************************************
 NAME    
@@ -255,7 +255,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void sinkAudioSetEnhancement(uint16 enhancement, bool enable);
+void sinkAudioSetEnhancement(u16 enhancement, bool enable);
 
 void CreateAudioConnection(void);
 

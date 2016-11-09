@@ -101,7 +101,7 @@ gatt_imm_alert_client_status GattImmAlertClientSetAlertLevel(const GIASC_T *cons
 }
 
 /****************************************************************************/
-gatt_imm_alert_client_status GattImmAlertClientDestroy(GIASC_T *imm_alert_client, uint16 cid)
+gatt_imm_alert_client_status GattImmAlertClientDestroy(GIASC_T *imm_alert_client, u16 cid)
 {
     gatt_imm_alert_client_status result = gatt_imm_alert_client_status_invalid_param;
 

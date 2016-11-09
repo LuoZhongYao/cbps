@@ -79,7 +79,7 @@ RETURNS
    void
 */
 void ConnectionDmBleAddDeviceToWhiteListReq(
-        uint8 bd_addr_type, 
+        u8 bd_addr_type, 
         const bdaddr *bd_addr
         )
 {
@@ -118,7 +118,7 @@ RETURNS
    void
 */
 void ConnectionDmBleRemoveDeviceFromWhiteListReq(
-        uint8 bd_addr_type, 
+        u8 bd_addr_type, 
         const bdaddr *bd_addr
         )
 {

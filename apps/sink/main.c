@@ -43,7 +43,6 @@ NOTES
 #include "sink_audio_routing.h"
 #include "sink_partymode.h"
 #include "sink_leds.h"
-#include "sink_upgrade.h"
 #include "sink_fm.h"
 #include "sink_anc.h"
 
@@ -60,10 +59,6 @@ NOTES
 
 #ifdef ENABLE_IR_REMOTE
 #include "sink_ir_remote_control.h"
-#endif
-#ifdef ENABLE_GAIA
-#include "sink_gaia.h"
-#include "gaia.h"
 #endif
 #ifdef ENABLE_PBAP
 #include "sink_pbap.h"
@@ -130,14 +125,12 @@ NOTES
 
 
 #ifdef DEBUG_MAIN
-	#define MAIN_DEBUG(x) DEBUG(x)
     #define TRUE_OR_FALSE(x)  ((x) ? 'T':'F')
 #else
-    #define MAIN_DEBUG(x)
 #endif
 
 #if defined ENABLE_PEER && defined PEER_TWS
-static const uint16 tws_audio_routing[4] =
+static const u16 tws_audio_routing[4] =
 {
     (PEER_TWS_ROUTING_STEREO << 2) | (PEER_TWS_ROUTING_STEREO),  /* Master stereo, Slave stereo */
     (  PEER_TWS_ROUTING_LEFT << 2) | ( PEER_TWS_ROUTING_RIGHT),
@@ -175,7 +168,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void sinkSendLater(sinkEvents_t event, uint32 delay)
+void sinkSendLater(sinkEvents_t event, u32 delay)
 {
     MessageCancelAll(&theSink.task, event);
     MessageSendLater(&theSink.task, event, NULL, delay);
@@ -194,13 +187,13 @@ RETURNS
 */
 static void handleCLMessage ( Task task, MessageId id, Message message )
 {
-    MAIN_DEBUG(("CL = [%x]\n", id)) ;
+    LOGD("CL = [%x]\n", id);
 
         /* Handle incoming message identified by its message ID */
     switch(id)
     {
         case CL_INIT_CFM:
-            MAIN_DEBUG(("CL_INIT_CFM [%d]\n" , ((CL_INIT_CFM_T*)message)->status ));
+            LOGD("CL_INIT_CFM [%d]\n" , ((CL_INIT_CFM_T*)message)->status );
             if(((CL_INIT_CFM_T*)message)->status == success)
             {
                 /* Initialise the codec task */
@@ -226,80 +219,80 @@ static void handleCLMessage ( Task task, MessageId id, Message message )
             ConnectionReadLocalName(&theSink.task);
         break;
         case CL_DM_LOCAL_NAME_COMPLETE:
-            MAIN_DEBUG(("CL_DM_LOCAL_NAME_COMPLETE\n"));
+            LOGD("CL_DM_LOCAL_NAME_COMPLETE\n");
             /* Write EIR data and initialise the codec task */
             sinkWriteEirData((CL_DM_LOCAL_NAME_COMPLETE_T*)message);
             break;
 
         case CL_SM_SEC_MODE_CONFIG_CFM:
-            MAIN_DEBUG(("CL_SM_SEC_MODE_CONFIG_CFM\n"));
+            LOGD("CL_SM_SEC_MODE_CONFIG_CFM\n");
             /* Remember if debug keys are on or off */
             theSink.debug_keys_enabled = ((CL_SM_SEC_MODE_CONFIG_CFM_T*)message)->debug_keys;
         break;
         case CL_SM_PIN_CODE_IND:
-            MAIN_DEBUG(("CL_SM_PIN_IND\n"));
+            LOGD("CL_SM_PIN_IND\n");
             sinkHandlePinCodeInd((CL_SM_PIN_CODE_IND_T*) message);
         break;
         case CL_SM_USER_CONFIRMATION_REQ_IND:
-            MAIN_DEBUG(("CL_SM_USER_CONFIRMATION_REQ_IND\n"));
+            LOGD("CL_SM_USER_CONFIRMATION_REQ_IND\n");
             sinkHandleUserConfirmationInd((CL_SM_USER_CONFIRMATION_REQ_IND_T*) message);
         break;
         case CL_SM_USER_PASSKEY_REQ_IND:
-            MAIN_DEBUG(("CL_SM_USER_PASSKEY_REQ_IND\n"));
+            LOGD("CL_SM_USER_PASSKEY_REQ_IND\n");
             sinkHandleUserPasskeyInd((CL_SM_USER_PASSKEY_REQ_IND_T*) message);
         break;
         case CL_SM_USER_PASSKEY_NOTIFICATION_IND:
-            MAIN_DEBUG(("CL_SM_USER_PASSKEY_NOTIFICATION_IND\n"));
+            LOGD("CL_SM_USER_PASSKEY_NOTIFICATION_IND\n");
             sinkHandleUserPasskeyNotificationInd((CL_SM_USER_PASSKEY_NOTIFICATION_IND_T*) message);
         break;
         case CL_SM_KEYPRESS_NOTIFICATION_IND:
         break;
         case CL_SM_REMOTE_IO_CAPABILITY_IND:
-            MAIN_DEBUG(("CL_SM_IO_CAPABILITY_IND\n"));
+            LOGD("CL_SM_IO_CAPABILITY_IND\n");
             sinkHandleRemoteIoCapabilityInd((CL_SM_REMOTE_IO_CAPABILITY_IND_T*)message);
         break;
         case CL_SM_IO_CAPABILITY_REQ_IND:
-            MAIN_DEBUG(("CL_SM_IO_CAPABILITY_REQ_IND\n"));
+            LOGD("CL_SM_IO_CAPABILITY_REQ_IND\n");
             sinkHandleIoCapabilityInd((CL_SM_IO_CAPABILITY_REQ_IND_T*) message);
         break;
         case CL_SM_AUTHORISE_IND:
-            MAIN_DEBUG(("CL_SM_AUTHORISE_IND\n"));
+            LOGD("CL_SM_AUTHORISE_IND\n");
             sinkHandleAuthoriseInd((CL_SM_AUTHORISE_IND_T*) message);
         break;
         case CL_SM_AUTHENTICATE_CFM:
-            MAIN_DEBUG(("CL_SM_AUTHENTICATE_CFM\n"));
+            LOGD("CL_SM_AUTHENTICATE_CFM\n");
             sinkHandleAuthenticateCfm((CL_SM_AUTHENTICATE_CFM_T*) message);
         break;
 #ifdef ENABLE_SUBWOOFER
         case CL_SM_GET_AUTH_DEVICE_CFM: /* This message should only be sent for subwoofer devices */
-            MAIN_DEBUG(("CL_SM_GET_AUTH_DEVICE_CFM\n"));
+            LOGD("CL_SM_GET_AUTH_DEVICE_CFM\n");
             handleSubwooferGetAuthDevice((CL_SM_GET_AUTH_DEVICE_CFM_T*) message);
 #endif
         break;
 
 #ifdef ENABLE_PEER
         case CL_SM_GET_AUTH_DEVICE_CFM:
-            MAIN_DEBUG(("CL_SM_GET_AUTH_DEVICE_CFM\n"));
+            LOGD("CL_SM_GET_AUTH_DEVICE_CFM\n");
             handleGetAuthDeviceCfm((CL_SM_GET_AUTH_DEVICE_CFM_T *)message);
         break;
         case CL_SM_ADD_AUTH_DEVICE_CFM:
-            MAIN_DEBUG(("CL_SM_ADD_AUTH_DEVICE_CFM\n"));
+            LOGD("CL_SM_ADD_AUTH_DEVICE_CFM\n");
             handleAddAuthDeviceCfm((CL_SM_ADD_AUTH_DEVICE_CFM_T *)message);
         break;
 #endif
 
         case CL_DM_REMOTE_FEATURES_CFM:
-            MAIN_DEBUG(("HS : Supported Features\n")) ;
+            LOGD("Supported Features\n");
         break ;
         case CL_DM_INQUIRE_RESULT:
-            MAIN_DEBUG(("HS : Inquiry Result\n"));
+            LOGD("Inquiry Result\n");
             inquiryHandleResult((CL_DM_INQUIRE_RESULT_T*)message);
         break;
         case CL_SM_GET_ATTRIBUTE_CFM:
-            MAIN_DEBUG(("HS : CL_SM_GET_ATTRIBUTE_CFM Vol:%d \n",((CL_SM_GET_ATTRIBUTE_CFM_T *)(message))->psdata[0]));
+            LOGD("CL_SM_GET_ATTRIBUTE_CFM Vol:%d \n",((CL_SM_GET_ATTRIBUTE_CFM_T *)(message))->psdata[0]);
         break;
         case CL_SM_GET_INDEXED_ATTRIBUTE_CFM:
-            MAIN_DEBUG(("HS: CL_SM_GET_INDEXED_ATTRIBUTE_CFM[%d]\n" , ((CL_SM_GET_INDEXED_ATTRIBUTE_CFM_T*)message)->status)) ;
+            LOGD("CL_SM_GET_INDEXED_ATTRIBUTE_CFM[%d]\n" , ((CL_SM_GET_INDEXED_ATTRIBUTE_CFM_T*)message)->status);
         break ;
 
         case CL_DM_LOCAL_BD_ADDR_CFM:
@@ -314,13 +307,13 @@ static void handleCLMessage ( Task task, MessageId id, Message message )
             linkPolicyHandleRoleCfm((CL_DM_ROLE_CFM_T *)message);
         break;
         case CL_SM_SET_TRUST_LEVEL_CFM:
-            MAIN_DEBUG(("HS : CL_SM_SET_TRUST_LEVEL_CFM status %x\n",((CL_SM_SET_TRUST_LEVEL_CFM_T*)message)->status));
+            LOGD("CL_SM_SET_TRUST_LEVEL_CFM status %x\n",((CL_SM_SET_TRUST_LEVEL_CFM_T*)message)->status);
         break;
         case CL_DM_ACL_OPENED_IND:
-            MAIN_DEBUG(("HS : ACL Opened\n"));
+            LOGD("ACL Opened\n");
         break;
         case CL_DM_ACL_CLOSED_IND:
-            MAIN_DEBUG(("HS : ACL Closed\n"));
+            LOGD("ACL Closed\n");
 #ifdef ENABLE_AVRCP
             if(theSink.features.avrcp_enabled)
             {
@@ -332,7 +325,7 @@ static void handleCLMessage ( Task task, MessageId id, Message message )
 /* BLE Messages */
         case CL_DM_BLE_ADVERTISING_REPORT_IND:
         {
-            MAIN_DEBUG(("CL_DM_BLE_ADVERTISING_REPORT_IND\n"));
+            LOGD("CL_DM_BLE_ADVERTISING_REPORT_IND\n");
             bleHandleScanResponse((CL_DM_BLE_ADVERTISING_REPORT_IND_T *)message);
         }
         break;
@@ -343,58 +336,58 @@ static void handleCLMessage ( Task task, MessageId id, Message message )
         break;
         case CL_DM_BLE_SET_ADVERTISING_PARAMS_CFM:
         {
-            MAIN_DEBUG(("CL_DM_BLE_SET_ADVERTISING_PARAMS_CFM\n"));
+            LOGD("CL_DM_BLE_SET_ADVERTISING_PARAMS_CFM\n");
         }
         break;
         case CL_DM_BLE_SECURITY_CFM:
         {
-            MAIN_DEBUG(("CL_DM_BLE_SECURITY_CFM [%x]\n", ((CL_DM_BLE_SECURITY_CFM_T*)message)->status));
+            LOGD("CL_DM_BLE_SECURITY_CFM [%x]\n", ((CL_DM_BLE_SECURITY_CFM_T*)message)->status);
         }
         break;
         case CL_DM_BLE_SET_CONNECTION_PARAMETERS_CFM:
         {
-            MAIN_DEBUG(("CL_DM_BLE_SET_CONNECTION_PARAMETERS_CFM [%x]\n", ((CL_DM_BLE_SET_CONNECTION_PARAMETERS_CFM_T*)message)->status));
+            LOGD("CL_DM_BLE_SET_CONNECTION_PARAMETERS_CFM [%x]\n", ((CL_DM_BLE_SET_CONNECTION_PARAMETERS_CFM_T*)message)->status);
         }
         break;
         case CL_DM_BLE_CONNECTION_PARAMETERS_UPDATE_CFM:
         {
-            MAIN_DEBUG(("CL_DM_BLE_CONNECTION_PARAMETERS_UPDATE_CFM [%x]\n", ((CL_DM_BLE_CONNECTION_PARAMETERS_UPDATE_CFM_T*)message)->status));
+            LOGD("CL_DM_BLE_CONNECTION_PARAMETERS_UPDATE_CFM [%x]\n", ((CL_DM_BLE_CONNECTION_PARAMETERS_UPDATE_CFM_T*)message)->status);
         }
         break;
         case CL_DM_BLE_SET_SCAN_PARAMETERS_CFM:
         {
-            MAIN_DEBUG(("CL_DM_BLE_SET_SCAN_PARAMETERS_CFM [%x]\n", ((CL_DM_BLE_SET_SCAN_PARAMETERS_CFM_T*)message)->status));
+            LOGD("CL_DM_BLE_SET_SCAN_PARAMETERS_CFM [%x]\n", ((CL_DM_BLE_SET_SCAN_PARAMETERS_CFM_T*)message)->status);
         }
         break;
         case CL_DM_BLE_SET_SCAN_RESPONSE_DATA_CFM:
         {
-            MAIN_DEBUG(("CL_DM_BLE_SET_SCAN_RESPONSE_DATA_CFM\n"));
+            LOGD("CL_DM_BLE_SET_SCAN_RESPONSE_DATA_CFM\n");
         }
         break;
         case CL_DM_BLE_READ_WHITE_LIST_SIZE_CFM:
         {
-            MAIN_DEBUG(("CL_DM_BLE_READ_WHITE_LIST_SIZE_CFM num[%d]\n", ((CL_DM_BLE_READ_WHITE_LIST_SIZE_CFM_T*)message)->white_list_size));
+            LOGD("CL_DM_BLE_READ_WHITE_LIST_SIZE_CFM num[%d]\n", ((CL_DM_BLE_READ_WHITE_LIST_SIZE_CFM_T*)message)->white_list_size);
         }
         break;
         case CL_DM_BLE_CLEAR_WHITE_LIST_CFM:
         {
-            MAIN_DEBUG(("CL_DM_BLE_CLEAR_WHITE_LIST_CFM\n"));
+            LOGD("CL_DM_BLE_CLEAR_WHITE_LIST_CFM\n");
         }
         break;
         case CL_DM_BLE_ADD_DEVICE_TO_WHITE_LIST_CFM:
         {
-            MAIN_DEBUG(("CL_DM_BLE_ADD_DEVICE_TO_WHITE_LIST_CFM status[%u]\n", ((CL_DM_BLE_ADD_DEVICE_TO_WHITE_LIST_CFM_T*)message)->status));
+            LOGD("CL_DM_BLE_ADD_DEVICE_TO_WHITE_LIST_CFM status[%u]\n", ((CL_DM_BLE_ADD_DEVICE_TO_WHITE_LIST_CFM_T*)message)->status);
             sinkBleGapAddDeviceWhiteListCfm((CL_DM_BLE_ADD_DEVICE_TO_WHITE_LIST_CFM_T*)message);
         }
         break;
         case CL_DM_BLE_REMOVE_DEVICE_FROM_WHITE_LIST_CFM:
         {
-            MAIN_DEBUG(("CL_DM_BLE_REMOVE_DEVICE_FROM_WHITE_LIST_CFM\n"));
+            LOGD("CL_DM_BLE_REMOVE_DEVICE_FROM_WHITE_LIST_CFM\n");
         }
         break;
         case CL_DM_BLE_CONFIGURE_LOCAL_ADDRESS_CFM:
         {
-            MAIN_DEBUG(("CL_DM_BLE_CONFIGURE_LOCAL_ADDRESS_CFM\n"));
+            LOGD("CL_DM_BLE_CONFIGURE_LOCAL_ADDRESS_CFM\n");
         }
         break;
         case CL_DM_BLE_ACCEPT_CONNECTION_PAR_UPDATE_IND:
@@ -409,14 +402,14 @@ static void handleCLMessage ( Task task, MessageId id, Message message )
         break;
         case CL_SM_BLE_SIMPLE_PAIRING_COMPLETE_IND:
         {
-            MAIN_DEBUG(("CL_SM_BLE_SIMPLE_PAIRING_COMPLETE_IND [%x]\n", ((CL_SM_BLE_SIMPLE_PAIRING_COMPLETE_IND_T*)message)->status));
+            LOGD("CL_SM_BLE_SIMPLE_PAIRING_COMPLETE_IND [%x]\n", ((CL_SM_BLE_SIMPLE_PAIRING_COMPLETE_IND_T*)message)->status);
             
             sinkBleSimplePairingCompleteInd((CL_SM_BLE_SIMPLE_PAIRING_COMPLETE_IND_T*)message);
         }
         break;
         case CL_DM_BLE_ADVERTISING_PARAM_UPDATE_IND:
         {
-            MAIN_DEBUG(("CL_DM_BLE_ADVERTISING_PARAM_UPDATE_IND\n"));
+            LOGD("CL_DM_BLE_ADVERTISING_PARAM_UPDATE_IND\n");
         }
         break;
 
@@ -431,7 +424,7 @@ static void handleCLMessage ( Task task, MessageId id, Message message )
         
         /*all unhandled connection lib messages end up here*/
         default :
-            MAIN_DEBUG(("Sink - Unhandled CL msg[%x]\n", id));
+            LOGD("Sink - Unhandled CL msg[%x]\n", id);
         break ;
     }
 
@@ -516,19 +509,19 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         IndicateEvent(id);
     }
 
-/*    MAIN_DEBUG (( "HS : UE[%x]\n", id )); */
+/*    LOGD("UE[%x]\n", id ); */
 
     /* The configurable Events*/
     switch ( id )
     {
         case (EventUsrDebugKeysToggle):
-            MAIN_DEBUG(("HS: Toggle Debug Keys\n"));
+            LOGD("Toggle Debug Keys\n");
             /* If the device has debug keys enabled then toggle on/off */
             ConnectionSmSecModeConfig(&theSink.task, cl_sm_wae_acl_none, !theSink.debug_keys_enabled, TRUE);
         break;
         case (EventUsrPowerOn):
         case (EventSysPowerOnPanic):
-            MAIN_DEBUG(("HS: Power On\n" )) ;
+            LOGD("Power On\n" );
 
             /* if this init occurs and in limbo wait for the display init */
             if (stateManagerGetState() == deviceLimbo)
@@ -584,7 +577,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             if ( theSink.features.DisablePowerOffAfterPowerOn )
             {
                 theSink.PowerOffIsEnabled = FALSE ;
-                MAIN_DEBUG(("DIS[%x]\n" , theSink.conf1->timeouts.DisablePowerOffAfterPowerOnTime_s  )) ;
+                LOGD("DIS[%x]\n" , theSink.conf1->timeouts.DisablePowerOffAfterPowerOnTime_s  );
                 MessageSendLater ( &theSink.task , EventSysEnablePowerOff , 0 , D_SEC ( theSink.conf1->timeouts.DisablePowerOffAfterPowerOnTime_s ) ) ;
             }
             else
@@ -615,11 +608,11 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         break ;
         case (EventUsrPowerOff):
-            MAIN_DEBUG(("HS: PowerOff - En[%c]\n" , ((theSink.PowerOffIsEnabled) ? 'T':'F') )) ;
+            LOGD("PowerOff - En[%c]\n" , ((theSink.PowerOffIsEnabled) ? 'T':'F') );
 #ifdef ENABLE_PEER
             if(theSink.PowerOffIsEnabled)
             {
-                uint16 peerIndex = 0;
+                u16 peerIndex = 0;
                 /* If  a TWS peer device is connected, the TWS single device operation is enabled and the power off flag is not set,
                     send the power off command to the peer */
                 if(a2dpGetPeerIndex(&peerIndex) &&(theSink.a2dp_link_data->peer_features[peerIndex] & (remote_features_tws_a2dp_sink|remote_features_tws_a2dp_source))
@@ -719,7 +712,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         break ;
         case (EventUsrInitateVoiceDial):
-            MAIN_DEBUG(("HS: InitVoiceDial [%d]\n", theSink.VoiceRecognitionIsActive));
+            LOGD("InitVoiceDial [%d]\n", theSink.VoiceRecognitionIsActive);
                 /*Toggle the voice dial behaviour depending on whether we are currently active*/
             if ( theSink.PowerOffIsEnabled )
             {
@@ -742,7 +735,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             }
         break ;
         case (EventUsrInitateVoiceDial_AG2):
-            MAIN_DEBUG(("HS: InitVoiceDial AG2[%d]\n", theSink.VoiceRecognitionIsActive));
+            LOGD("InitVoiceDial AG2[%d]\n", theSink.VoiceRecognitionIsActive);
                 /*Toggle the voice dial behaviour depending on whether we are currently active*/
             if ( theSink.PowerOffIsEnabled )
             {
@@ -765,7 +758,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             }
         break ;
         case (EventUsrLastNumberRedial):
-            MAIN_DEBUG(("HS: LNR\n" )) ;
+            LOGD("LNR\n" );
 
             if ( theSink.PowerOffIsEnabled )
             {
@@ -794,7 +787,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             }
         break ;
         case (EventUsrLastNumberRedial_AG2):
-            MAIN_DEBUG(("HS: LNR AG2\n" )) ;
+            LOGD("LNR AG2\n" );
             if ( theSink.PowerOffIsEnabled )
             {
                 if (theSink.features.LNRCancelsVoiceDialIfActive)
@@ -822,7 +815,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             }
         break ;
         case (EventUsrAnswer):
-            MAIN_DEBUG(("HS: Answer\n" )) ;
+            LOGD("Answer\n" );
             /* don't indicate event if not in incoming call state as answer event is used
                for some of the multipoint three way calling operations which generate unwanted
                tones */
@@ -833,22 +826,22 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             sinkAnswerOrRejectCall( TRUE );
         break ;
         case (EventUsrReject):
-            MAIN_DEBUG(("HS: Reject\n" )) ;
+            LOGD("Reject\n" );
             /* Reject incoming call - only valid for instances of HFP */
             sinkAnswerOrRejectCall( FALSE );
         break ;
         case (EventUsrCancelEnd):
-            MAIN_DEBUG(("HS: CancelEnd\n" )) ;
+            LOGD("CancelEnd\n" );
             /* Terminate the current ongoing call process */
             sinkHangUpCall();
 
         break ;
         case (EventUsrTransferToggle):
-            MAIN_DEBUG(("HS: Transfer\n" )) ;
+            LOGD("Transfer\n" );
             sinkTransferToggle(id);
         break ;
         case EventSysCheckForAudioTransfer :
-            MAIN_DEBUG(("HS: Check Aud Tx\n")) ;
+            LOGD("Check Aud Tx\n");
             sinkCheckForAudioTransfer();
             break ;
 
@@ -871,14 +864,14 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         case EventSysVolumeMax:
         case EventSysVolumeMin:
         case EventSysVolumeAndSourceChangeTimer:
-            MAIN_DEBUG(("Sys/Usr Volume Event\n"));
+            LOGD("Sys/Usr Volume Event\n");
             id = sinkVolumeModifyEventAccordingToVolumeOrientation(id);
             lIndicateEvent = sinkVolumeProcessEventVolume(id);
             break;
 
         case (EventSysEnterPairingEmptyPDL):
         case (EventUsrEnterPairing):
-            MAIN_DEBUG(("HS: EnterPair [%d]\n" , lState )) ;
+            LOGD("EnterPair [%d]\n" , lState );
 
             /*go into pairing mode*/
             if (( lState != deviceLimbo) && (lState != deviceConnDiscoverable ))
@@ -893,7 +886,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break ;
         case (EventSysPairingFail):
             /*we have failed to pair in the alloted time - return to the connectable state*/
-            MAIN_DEBUG(("HS: Pairing Fail\n")) ;
+            LOGD("Pairing Fail\n");
             if (lState != deviceTestMode)
             {
                 switch (theSink.features.PowerDownOnDiscoTimeout)
@@ -958,7 +951,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         break ;
         case ( EventSysPairingSuccessful):
-            MAIN_DEBUG(("HS: Pairing Successful\n")) ;
+            LOGD("Pairing Successful\n");
             if (lState == deviceConnDiscoverable)
             {
                 stateManagerEnterConnectableState(FALSE);
@@ -966,7 +959,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break ;
 
         case EventUsrEstablishPeerConnection:
-            MAIN_DEBUG(("HS: Establish peer Connection\n"));
+            LOGD("Establish peer Connection\n");
 #ifdef ENABLE_PEER
                 /* Attempt to establish connection with Peer */
                 peerConnectPeer();
@@ -974,11 +967,11 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break ;
 
         case ( EventUsrConfirmationAccept ):
-            MAIN_DEBUG(("HS: Pairing Correct Res\n" )) ;
+            LOGD("Pairing Correct Res\n" );
             sinkPairingAcceptRes();
         break;
         case ( EventUsrConfirmationReject ):
-            MAIN_DEBUG(("HS: Pairing Reject Res\n" )) ;
+            LOGD("Pairing Reject Res\n" );
             sinkPairingRejectRes();
         break;
         case ( EventUsrEstablishSLC ) :
@@ -998,7 +991,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 #endif
             /* check we are not already connecting before starting */
             {
-                MAIN_DEBUG(("EventUsrEstablishSLC\n")) ;
+                LOGD("EventUsrEstablishSLC\n");
 
                 slcEstablishSLCRequest() ;
 
@@ -1013,15 +1006,15 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             }
         break ;
         case ( EventUsrRssiPair ):
-            MAIN_DEBUG(("HS: RSSI Pair\n"));
+            LOGD("RSSI Pair\n");
             lIndicateEvent = inquiryPair( inquiry_session_normal, TRUE );
         break;
         case ( EventSysRssiResume ):
-            MAIN_DEBUG(("HS: RSSI Resume\n"));
+            LOGD("RSSI Resume\n");
             inquiryResume();
         break;
         case ( EventSysRssiPairReminder ):
-            MAIN_DEBUG(("HS: RSSI Pair Reminder\n"));
+            LOGD("RSSI Pair Reminder\n");
             if (stateManagerGetState() != deviceLimbo )
                 MessageSendLater(&theSink.task, EventSysRssiPairReminder, 0, D_SEC(INQUIRY_REMINDER_TIMEOUT_SECS));
             else
@@ -1029,19 +1022,19 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         break;
         case ( EventSysRssiPairTimeout ):
-            MAIN_DEBUG(("HS: RSSI Pair Timeout\n"));
+            LOGD("RSSI Pair Timeout\n");
             inquiryTimeout();
         break;
         case ( EventSysRefreshEncryption ):
-            MAIN_DEBUG(("HS: Refresh Encryption\n"));
+            LOGD("Refresh Encryption\n");
             {
-                uint8 k;
+                u8 k;
                 Sink sink;
                 Sink audioSink;
                 /* For each profile */
                 for(k=0;k<MAX_PROFILES;k++)
                 {
-                    MAIN_DEBUG(("Profile %d: ",k));
+                    LOGD("Profile %d: ",k);
                     /* If profile is connected */
                     if((HfpLinkGetSlcSink((k + 1), &sink))&&(sink))
                     {
@@ -1049,19 +1042,19 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
                         HfpLinkGetAudioSink((k + hfp_primary_link), &audioSink);
                         if(!SinkIsValid(audioSink))
                         {
-                            MAIN_DEBUG(("Key Refreshed\n"));
+                            LOGD("Key Refreshed\n");
                             /* Refresh the encryption key */
                             ConnectionSmEncryptionKeyRefreshSink(sink);
                         }
 #ifdef DEBUG_MAIN
                         else
                         {
-                            MAIN_DEBUG(("Key Not Refreshed, SCO Active\n"));
+                            LOGD("Key Not Refreshed, SCO Active\n");
                         }
                     }
                     else
                     {
-                        MAIN_DEBUG(("Key Not Refreshed, SLC Not Active\n"));
+                        LOGD("Key Not Refreshed, SLC Not Active\n");
 #endif
                     }
                 }
@@ -1075,7 +1068,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 #ifdef ENABLE_SUBWOOFER
             if(!SwatGetSignallingSink(theSink.rundata->subwoofer.dev_id))
             {
-                MAIN_DEBUG(("SM: disable Connectable Cancelled due to lack of subwoofer\n" ));
+                LOGD("SM: disable Connectable Cancelled due to lack of subwoofer\n" );
                 break;
             }
 #endif
@@ -1087,7 +1080,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
                 /* only disable connectable mode if at least one hfp instance is connected */
                 if(deviceManagerNumConnectedDevs())
                 {
-                    MAIN_DEBUG(("SM: disable Connectable \n" ));
+                    LOGD("SM: disable Connectable \n" );
                     /* disable connectability */
                     sinkDisableConnectable();
                 }
@@ -1096,7 +1089,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         case ( EventSysLEDEventComplete ) :
             /*the message is a ptr to the event we have completed*/
-            MAIN_DEBUG(("HS : LEDEvCmp[%x]\n" ,  (( LMEndMessage_t *)message)->Event  )) ;
+            LOGD("LEDEvCmp[%x]\n" ,  (( LMEndMessage_t *)message)->Event  );
 
             switch ( (( LMEndMessage_t *)message)->Event )
             {
@@ -1108,7 +1101,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
                     if ((theSink.features.PowerOffAfterPDLReset )&&
                         (stateManagerGetState() > deviceLimbo ))
                     {
-                        MAIN_DEBUG(("HS: Reboot After Reset\n")) ;
+                        LOGD("Reboot After Reset\n");
                         if (!sinkFmIsFmRxOn())
                         {
                             MessageSend ( &theSink.task , EventUsrPowerOff , 0 ) ;
@@ -1125,7 +1118,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
                     /*allows a reset of the device for those designs which keep the chip permanently powered on*/
                     if (theSink.features.ResetAfterPowerOffComplete )
                     {
-                        MAIN_DEBUG(("Reset\n"));
+                        LOGD("Reset\n");
                         /* Reboot always - set the same boot mode; this triggers the target to reboot.*/
                         BootSetMode(BootGetMode());
                     }
@@ -1144,7 +1137,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
                     /*if there is a queueud event*/
                 if (LedManagerQueuedEvent())
                 {
-                    MAIN_DEBUG(("HS : Play Q'd Ev [%x]\n", LedManagerQueuedEvent()));
+                    LOGD("Play Q'd Ev [%x]\n", LedManagerQueuedEvent());
                     LedManagerIndicateQueuedEvent();
                 }
                 else
@@ -1159,11 +1152,11 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break ;
         case (EventSysAutoSwitchOff):
         {
-            MAIN_DEBUG(("HS: Auto S Off[%d] sec elapsed\n" , theSink.conf1->timeouts.AutoSwitchOffTime_s )) ;
+            LOGD("Auto S Off[%d] sec elapsed\n" , theSink.conf1->timeouts.AutoSwitchOffTime_s );
             
             if ( (!gattClientHasNoClients()) || (!gattServerIsFullyDisconnected()) )
             {
-                MAIN_DEBUG((" HS: Auto Switch Off cancelled due to active BLE connection \n"));
+                LOGD("Auto Switch Off cancelled due to active BLE connection \n");
                 break; 			
             }
 
@@ -1204,14 +1197,14 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
                 case deviceTestMode:
                     break ;
                 default:
-                    MAIN_DEBUG(("HS : UE ?s [%d]\n", lState));
+                    LOGD("UE ?s [%d]\n", lState);
                     break ;
             }
         }
         break;
         case (EventUsrChargerConnected):
         {
-            MAIN_DEBUG(("HS: Charger Connected\n"));
+            LOGD("Charger Connected\n");
             powerManagerChargerConnected();
             if ( lState == deviceLimbo )
             {
@@ -1224,7 +1217,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break;
         case (EventUsrChargerDisconnected):
         {
-            MAIN_DEBUG(("HS: Charger Disconnected\n"));
+            LOGD("Charger Disconnected\n");
             powerManagerChargerDisconnected();
 
             /* if in limbo state, schedule a power off event */
@@ -1250,7 +1243,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 			 * remote or subwoofer) will not be deleted in this
 			 * event.*/
 
-                MAIN_DEBUG(("HS: --Reset PDL--")) ;
+                LOGD("--Reset PDL--");
                 if ( stateManagerIsConnected () )
                 {
                    /*disconnect any connected HFP profiles*/
@@ -1273,7 +1266,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         case ( EventSysLimboTimeout ):
             {
                 /*we have received a power on timeout - shutdown*/
-                MAIN_DEBUG(("HS: EvLimbo TIMEOUT\n")) ;
+                LOGD("EvLimbo TIMEOUT\n");
                 if (lState != deviceTestMode)
                 {
                     stateManagerUpdateLimboState();
@@ -1281,14 +1274,14 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             }
         break ;
         case EventSysSLCDisconnected:
-                MAIN_DEBUG(("HS: EvSLCDisconnect\n")) ;
+                LOGD("EvSLCDisconnect\n");
             {
                 theSink.VoiceRecognitionIsActive = FALSE ;
                 MessageCancelAll ( &theSink.task , EventSysNetworkOrServiceNotPresent ) ;
             }
         break ;
         case (EventSysLinkLoss):
-            MAIN_DEBUG(("HS: Link Loss\n")) ;
+            LOGD("Link Loss\n");
             {
                 conn_mask mask;
 
@@ -1309,10 +1302,10 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
                     mask = deviceManagerGetProfilesConnected();
                 }
 
-                MAIN_DEBUG(("MAIN:    mask 0x%x linkLossReminderTime %u protection %u routed_audio %x\n", 
-                    mask, theSink.linkLossReminderTime,
-                    theSink.stream_protection_state == linkloss_stream_protection_on,
-                    (uint16)theSink.routed_audio));
+                LOGD("mask 0x%x linkLossReminderTime %u protection %u routed_audio %x\n", 
+                     mask, theSink.linkLossReminderTime,
+                     theSink.stream_protection_state == linkloss_stream_protection_on,
+                     (uintptr_t)theSink.routed_audio);
 
                 /* The hfp library will generate repeat link loss events but
                    the a2dp library doesn't, so only repeat it here if:
@@ -1328,7 +1321,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             }
         break ;
         case (EventSysMuteReminder) :
-            MAIN_DEBUG(("HS: Mute Remind\n")) ;
+            LOGD("Mute Remind\n");
             /*arrange the next mute reminder tone*/
             MessageSendLater( &theSink.task , EventSysMuteReminder , 0 ,D_SEC(theSink.conf1->timeouts.MuteRemindTime_s ) )  ;
 
@@ -1338,50 +1331,50 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break;
 
         case EventUsrBatteryLevelRequest:
-          MAIN_DEBUG(("EventUsrBatteryLevelRequest\n")) ;
+          LOGD("EventUsrBatteryLevelRequest\n");
           powerManagerReadVbat(battery_level_user);
         break;
 
         case EventSysBatteryCritical:
-            MAIN_DEBUG(("HS: EventSysBatteryCritical\n")) ;
+            LOGD("EventSysBatteryCritical\n");
         break;
 
         case EventSysBatteryLow:
-            MAIN_DEBUG(("HS: EventSysBatteryLow\n")) ;
+            LOGD("EventSysBatteryLow\n");
         break;
 
         case EventSysGasGauge0 :
         case EventSysGasGauge1 :
         case EventSysGasGauge2 :
         case EventSysGasGauge3 :
-            MAIN_DEBUG(("HS: EventSysGasGauge%d\n", id - EventSysGasGauge0)) ;
+            LOGD("EventSysGasGauge%d\n", id - EventSysGasGauge0);
         break ;
 
         case EventSysBatteryOk:
-            MAIN_DEBUG(("HS: EventSysBatteryOk\n")) ;
+            LOGD("EventSysBatteryOk\n");
         break;
 
         case EventSysChargeInProgress:
-            MAIN_DEBUG(("HS: EventSysChargeInProgress\n")) ;
+            LOGD("EventSysChargeInProgress\n");
         break;
 
         case EventSysChargeComplete:
-            MAIN_DEBUG(("HS: EventSysChargeComplete\n")) ;
+            LOGD("EventSysChargeComplete\n");
         break;
 
         case EventSysChargeDisabled:
-            MAIN_DEBUG(("HS: EventSysChargeDisabled\n")) ;
+            LOGD("EventSysChargeDisabled\n");
         break;
 
         case EventUsrEnterDUTState :
         {
-            MAIN_DEBUG(("EnterDUTState \n")) ;
+            LOGD("EnterDUTState \n");
             stateManagerEnterTestModeState();
         }
         break;
         case EventUsrEnterDutMode :
         {
-            MAIN_DEBUG(("Enter DUT Mode \n")) ;
+            LOGD("Enter DUT Mode \n");
             if (lState !=deviceTestMode)
             {
                 MessageSend( task , EventUsrEnterDUTState, 0 ) ;
@@ -1391,7 +1384,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break;
         case EventUsrEnterTXContTestMode :
         {
-            MAIN_DEBUG(("Enter TX Cont \n")) ;
+            LOGD("Enter TX Cont \n");
             if (lState !=deviceTestMode)
             {
                 MessageSend( task , EventUsrEnterDUTState , 0 ) ;
@@ -1407,25 +1400,25 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
                     sinkSendLater(EventSysNetworkOrServiceNotPresent,
                                         D_SEC(theSink.conf1->timeouts.NetworkServiceIndicatorRepeatTime_s) ) ;
                 }
-                MAIN_DEBUG(("HS: NO NETWORK [%d]\n", theSink.conf1->timeouts.NetworkServiceIndicatorRepeatTime_s )) ;
+                LOGD("NO NETWORK [%d]\n", theSink.conf1->timeouts.NetworkServiceIndicatorRepeatTime_s );
             }
         break ;
         case EventSysNetworkOrServicePresent:
             {
                 MessageCancelAll ( task , EventSysNetworkOrServiceNotPresent ) ;
-                MAIN_DEBUG(("HS: YES NETWORK\n")) ;
+                LOGD("YES NETWORK\n");
             }
         break ;
         case EventUsrLedsOnOffToggle  :
-            MAIN_DEBUG(("HS: Toggle EN_DIS LEDS ")) ;
-            MAIN_DEBUG(("HS: Tog Was[%c]\n" , theSink.theLEDTask->gLEDSEnabled ? 'T' : 'F')) ;
+            LOGD("Toggle EN_DIS LEDS ");
+            LOGD("Tog Was[%c]\n" , theSink.theLEDTask->gLEDSEnabled ? 'T' : 'F');
 
             LedManagerToggleLEDS();
-            MAIN_DEBUG(("HS: Tog Now[%c]\n" , theSink.theLEDTask->gLEDSEnabled ? 'T' : 'F')) ;
+            LOGD("Tog Now[%c]\n" , theSink.theLEDTask->gLEDSEnabled ? 'T' : 'F');
 
             break ;
         case EventUsrLedsOn:
-            MAIN_DEBUG(("HS: Enable LEDS\n")) ;
+            LOGD("Enable LEDS\n");
             LedManagerEnableLEDS ( ) ;
                 /* also include the led disable state as well as orientation, write this to the PSKEY*/
             configManagerWriteSessionData ( ) ;
@@ -1434,7 +1427,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 #endif
             break ;
         case EventUsrLedsOff:
-            MAIN_DEBUG(("HS: Disable LEDS\n")) ;
+            LOGD("Disable LEDS\n");
             LedManagerDisableLEDS ( ) ;
 
                 /* also include the led disable state as well as orientation, write this to the PSKEY*/
@@ -1444,17 +1437,17 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 #endif
             break ;
         case EventSysCancelLedIndication:
-            MAIN_DEBUG(("HS: Disable LED indication\n")) ;
+            LOGD("Disable LED indication\n");
             LedManagerResetLEDIndications ( ) ;
             break ;
         case EventSysCallAnswered:
-            MAIN_DEBUG(("HS: EventSysCallAnswered\n")) ;
+            LOGD("EventSysCallAnswered\n");
         break;
         
         case EventSysSLCConnected:
         case EventSysSLCConnectedAfterPowerOn:
             
-            MAIN_DEBUG(("HS: EventSysSLCConnected\n")) ;
+            LOGD("EventSysSLCConnected\n");
             /*if there is a queued event - we might want to know*/
             sinkRecallQueuedEvent();
             
@@ -1465,15 +1458,15 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         case EventSysPrimaryDeviceConnected:
         case EventSysSecondaryDeviceConnected:
             /*used for indication purposes only*/
-            MAIN_DEBUG(("HS:Device Connected [%c]\n " , (id - EventSysPrimaryDeviceConnected)? 'S' : 'P'  )); 
+            LOGD("Device Connected [%c]\n " , (id - EventSysPrimaryDeviceConnected)? 'S' : 'P'  ); 
             break;
         case EventSysPrimaryDeviceDisconnected:
             /*used for indication purposes only*/
-            MAIN_DEBUG(("HS:Device Disconnected [%c]\n " , (id - EventSysPrimaryDeviceDisconnected)? 'S' : 'P'  ));
+            LOGD("Device Disconnected [%c]\n " , (id - EventSysPrimaryDeviceDisconnected)? 'S' : 'P'  );
             break;
         case EventSysSecondaryDeviceDisconnected:
             /*used for indication purposes only*/  
-            MAIN_DEBUG(("HS:Device Disconnected [%c]\n " , (id - EventSysPrimaryDeviceDisconnected)? 'S' : 'P'  ));
+            LOGD("Device Disconnected [%c]\n " , (id - EventSysPrimaryDeviceDisconnected)? 'S' : 'P'  );
         break;       
         case EventSysVLongTimer:
         case EventSysLongTimer:
@@ -1485,57 +1478,57 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             /*these events have no required action directly associated with them  */
              /*they are received here so that LED patterns and Tones can be assigned*/
         case EventSysSCOLinkOpen :
-            MAIN_DEBUG(("EventSysSCOLinkOpen\n")) ;
+            LOGD("EventSysSCOLinkOpen\n");
         break ;
         case EventSysSCOLinkClose:
-            MAIN_DEBUG(("EventSysSCOLinkClose\n")) ;
+            LOGD("EventSysSCOLinkClose\n");
         break ;
         case EventSysEndOfCall :
-            MAIN_DEBUG(("EventSysEndOfCall\n")) ;
+            LOGD("EventSysEndOfCall\n");
 #ifdef ENABLE_DISPLAY
             displayShowSimpleText(DISPLAYSTR_CLEAR,1);
             displayShowSimpleText(DISPLAYSTR_CLEAR,2);
 #endif
         break;
         case EventSysResetComplete:
-            MAIN_DEBUG(("EventSysResetComplete\n")) ;
+            LOGD("EventSysResetComplete\n");
         break ;
         case EventSysError:
-            MAIN_DEBUG(("EventSysError\n")) ;
+            LOGD("EventSysError\n");
         break;
         case EventSysReconnectFailed:
-            MAIN_DEBUG(("EventSysReconnectFailed\n")) ;
+            LOGD("EventSysReconnectFailed\n");
         break;
 
 #ifdef THREE_WAY_CALLING
         case EventUsrThreeWayReleaseAllHeld:
-            MAIN_DEBUG(("HS3 : RELEASE ALL\n"));
+            LOGD("RELEASE ALL\n");
             /* release the held call */
             MpReleaseAllHeld();
         break;
         case EventUsrThreeWayAcceptWaitingReleaseActive:
-            MAIN_DEBUG(("HS3 : ACCEPT & RELEASE\n"));
+            LOGD("ACCEPT & RELEASE\n");
             MpAcceptWaitingReleaseActive();
         break ;
         case EventUsrThreeWayAcceptWaitingHoldActive  :
-            MAIN_DEBUG(("HS3 : ACCEPT & HOLD\n"));
+            LOGD("ACCEPT & HOLD\n");
             /* three way calling not available in multipoint usage */
             MpAcceptWaitingHoldActive();
         break ;
         case EventUsrThreeWayAddHeldTo3Way  :
-            MAIN_DEBUG(("HS3 : ADD HELD to 3WAY\n"));
+            LOGD("ADD HELD to 3WAY\n");
             /* check to see if a conference call can be created, more than one call must be on the same AG */
             MpHandleConferenceCall(TRUE);
         break ;
         case EventUsrThreeWayConnect2Disconnect:
-            MAIN_DEBUG(("HS3 : EXPLICIT TRANSFER\n"));
+            LOGD("EXPLICIT TRANSFER\n");
             /* check to see if a conference call can be created, more than one call must be on the same AG */
             MpHandleConferenceCall(FALSE);
         break ;
 #endif
         case (EventSysEnablePowerOff):
         {
-            MAIN_DEBUG(("HS: EventSysEnablePowerOff \n")) ;
+            LOGD("EventSysEnablePowerOff \n");
             theSink.PowerOffIsEnabled = TRUE ;
         }
         break;
@@ -1552,21 +1545,21 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         case EventUsrEnterDFUMode:
         {
-            MAIN_DEBUG(("EventUsrEnterDFUMode\n")) ;
+            LOGD("EventUsrEnterDFUMode\n");
             BootSetMode(BOOTMODE_DFU);
         }
         break;
 
         case EventUsrEnterServiceMode:
         {
-            MAIN_DEBUG(("Enter Service Mode \n")) ;
+            LOGD("Enter Service Mode \n");
 
             enterServiceMode();
         }
         break ;
         case EventSysServiceModeEntered:
         {
-            MAIN_DEBUG(("Service Mode!!!\n")) ;
+            LOGD("Service Mode!!!\n");
         }
         break;
 
@@ -1577,7 +1570,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         {
             if (theSink.routed_audio)
             {
-                uint16 * lParam = mallocPanic( sizeof(uint16)) ;
+                u16 * lParam = mallocPanic( sizeof(u16)) ;
                 *lParam = (id -  EventSysAudioMessage1) ; /*0,1,2,3*/
                 if(!AudioSetMode ( AUDIO_MODE_CONNECTED , (void *) lParam) )
                     freePanic(lParam);
@@ -1590,25 +1583,25 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break;
 
         case EventUsrDialStoredNumber:
-            MAIN_DEBUG(("EventUsrDialStoredNumber\n"));
+            LOGD("EventUsrDialStoredNumber\n");
             sinkDialStoredNumber();
 
         break;
         case EventUsrRestoreDefaults:
-            MAIN_DEBUG(("EventUsrRestoreDefaults\n"));
+            LOGD("EventUsrRestoreDefaults\n");
             configManagerRestoreDefaults();
 
         break;
 
         case EventSysTone1:
         case EventSysTone2:
-            MAIN_DEBUG(("HS: EventTone[%d]\n" , (id - EventSysTone1 + 1) )) ;
+            LOGD("EventTone[%d]\n" , (id - EventSysTone1 + 1) );
         break;
 
         case EventUsrSelectAudioPromptLanguageMode:
             if(theSink.audio_prompts_enabled)
             {
-                MAIN_DEBUG(("EventUsrSelectAudioPromptLanguageMode"));
+                LOGD("EventUsrSelectAudioPromptLanguageMode");
                 AudioPromptSelectLanguage();
             }
             else
@@ -1629,20 +1622,20 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         
         /* disabled leds have been re-enabled by means of a button press or a specific event */
         case EventSysResetLEDTimeout:
-            MAIN_DEBUG(("EventSysResetLEDTimeout\n"));
+            LOGD("EventSysResetLEDTimeout\n");
             LEDManagerIndicateState ( lState ) ;
             theSink.theLEDTask->gLEDSStateTimeout = FALSE ;
         break;
         /* starting paging whilst in connectable state */
         case EventSysStartPagingInConnState:
-            MAIN_DEBUG(("EventSysStartPagingInConnState\n"));
+            LOGD("EventSysStartPagingInConnState\n");
             /* set bit to indicate paging status */
             theSink.paging_in_progress = TRUE;
         break;
 
         /* paging stopped whilst in connectable state */
         case EventSysStopPagingInConnState:
-            MAIN_DEBUG(("EventSysStartPagingInConnState\n"));
+            LOGD("EventSysStartPagingInConnState\n");
             /* set bit to indicate paging status */
             theSink.paging_in_progress = FALSE;
         break;
@@ -1653,7 +1646,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             /* don't continue connecting if in pairing mode */
             if(stateManagerGetState() != deviceConnDiscoverable)
             {
-                MAIN_DEBUG(("EventSysContinueSlcConnectRequest\n"));
+                LOGD("EventSysContinueSlcConnectRequest\n");
                 /* attempt next connection */
                 slcContinueEstablishSLCRequest();
             }
@@ -1661,7 +1654,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         /* indication of call waiting when using two AG's in multipoint mode */
         case EventSysMultipointCallWaiting:
-            MAIN_DEBUG(("EventSysMultipointCallWaiting\n"));
+            LOGD("EventSysMultipointCallWaiting\n");
         break;
 
         /* kick off a check the role of the device and make changes if appropriate by requesting a role indication */
@@ -1688,7 +1681,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         case EventUsrPbapDialMch:
         {
             /* pbap dial from missed call history */
-            MAIN_DEBUG(("EventUsrPbapDialMch\n"));
+            LOGD("EventUsrPbapDialMch\n");
 
             if ( theSink.PowerOffIsEnabled )
             {
@@ -1714,7 +1707,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         case EventUsrPbapDialIch:
         {
             /* pbap dial from incoming call history */
-            MAIN_DEBUG(("EventUsrPbapDialIch\n"));
+            LOGD("EventUsrPbapDialIch\n");
 
             if ( theSink.PowerOffIsEnabled )
             {
@@ -1739,7 +1732,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         case EventSysEstablishPbap:
         {
-            MAIN_DEBUG(("EventSysEstablishPbap\n"));
+            LOGD("EventSysEstablishPbap\n");
 
             /* Connect to the primary and secondary hfp link devices */
             theSink.pbapc_data.pbap_command = pbapc_action_idle;
@@ -1751,7 +1744,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         case EventUsrPbapSetPhonebook:
         {
-            MAIN_DEBUG(("EventUsrPbapSetPhonebook, active pb is [%d]\n", theSink.pbapc_data.pbap_active_pb));
+            LOGD("EventUsrPbapSetPhonebook, active pb is [%d]\n", theSink.pbapc_data.pbap_active_pb);
 
             theSink.pbapc_data.PbapBrowseEntryIndex = 0;
             theSink.pbapc_data.pbap_command = pbapc_setting_phonebook;
@@ -1774,7 +1767,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         case EventUsrPbapBrowseEntry:
         {
-            MAIN_DEBUG(("EventUsrPbapBrowseEntry\n"));
+            LOGD("EventUsrPbapBrowseEntry\n");
 
             if(theSink.pbapc_data.pbap_command == pbapc_action_idle)
             {
@@ -1811,7 +1804,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         /* EventUsrPbapBrowseListByName event is added for PTS qualification */
         case EventUsrPbapBrowseListByName:
         {
-            MAIN_DEBUG(("EventUsrPbapBrowseList%s\n",(id == EventUsrPbapBrowseListByName) ? "ByName" : "" ));
+            LOGD("EventUsrPbapBrowseList%s\n",(id == EventUsrPbapBrowseListByName) ? "ByName" : "" );
 
             if(theSink.pbapc_data.pbap_command == pbapc_action_idle)
             {
@@ -1833,7 +1826,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
                 {
                     theSink.pbapc_data.pbap_srch_attr = pbap_search_name;
                     /* for PTS qualification, search string expected is "PTS" */
-                    theSink.pbapc_data.pbap_srch_val = (const uint8*) "PTS";
+                    theSink.pbapc_data.pbap_srch_val = (const u8*) "PTS";
                 }
                 else
                 {
@@ -1848,7 +1841,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         case EventUsrPbapDownloadPhonebook:
         {
-            MAIN_DEBUG(("EventUsrPbapDownloadPhonebook\n"));
+            LOGD("EventUsrPbapDownloadPhonebook\n");
 
             if(theSink.pbapc_data.pbap_command == pbapc_action_idle)
             {
@@ -1873,7 +1866,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         case EventUsrPbapGetPhonebookSize:
         {
-            MAIN_DEBUG(("EventUsrPbapGetPhonebookSize"));
+            LOGD("EventUsrPbapGetPhonebookSize");
 
             if(theSink.pbapc_data.pbap_command == pbapc_action_idle)
             {
@@ -1898,7 +1891,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         case EventUsrPbapSelectPhonebookObject:
         {
-            MAIN_DEBUG(("EventUsrPbapSelectPhonebookObject\n"));
+            LOGD("EventUsrPbapSelectPhonebookObject\n");
 
             theSink.pbapc_data.PbapBrowseEntryIndex = 0;
             theSink.pbapc_data.pbap_browsing_start_flag = 0;
@@ -1919,7 +1912,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         case EventUsrPbapBrowseComplete:
         {
-            MAIN_DEBUG(("EventUsrPbapBrowseComplete\n"));
+            LOGD("EventUsrPbapBrowseComplete\n");
 
             /* Set the link policy based on the HFP or A2DP state */
             linkPolicyPhonebookAccessComplete(PbapcGetSink(theSink.pbapc_data.pbap_active_link));
@@ -1939,13 +1932,13 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         case EventUsrWbsTestSetCodecs:
             if(theSink.RenegotiateSco)
             {
-                MAIN_DEBUG(("HS : AT+BAC = cvsd wbs\n")) ;
+                LOGD("AT+BAC = cvsd wbs\n");
                 theSink.RenegotiateSco = 0;
                 HfpWbsSetSupportedCodecs((hfp_wbs_codec_mask_cvsd | hfp_wbs_codec_mask_msbc), FALSE);
             }
             else
             {
-                MAIN_DEBUG(("HS : AT+BAC = cvsd only\n")) ;
+                LOGD("AT+BAC = cvsd only\n");
                 theSink.RenegotiateSco = 1;
                 HfpWbsSetSupportedCodecs(hfp_wbs_codec_mask_cvsd , FALSE);
             }
@@ -1955,13 +1948,13 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         case EventUsrWbsTestSetCodecsSendBAC:
             if(theSink.RenegotiateSco)
             {
-                MAIN_DEBUG(("HS : AT+BAC = cvsd wbs\n")) ;
+                LOGD("AT+BAC = cvsd wbs\n");
                 theSink.RenegotiateSco = 0;
                 HfpWbsSetSupportedCodecs((hfp_wbs_codec_mask_cvsd | hfp_wbs_codec_mask_msbc), TRUE);
             }
            else
            {
-               MAIN_DEBUG(("HS : AT+BAC = cvsd only\n")) ;
+               LOGD("AT+BAC = cvsd only\n");
                theSink.RenegotiateSco = 1;
                HfpWbsSetSupportedCodecs(hfp_wbs_codec_mask_cvsd , TRUE);
            }
@@ -1971,12 +1964,12 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
            if(theSink.FailAudioNegotiation)
            {
-               MAIN_DEBUG(("HS : Fail Neg = off\n")) ;
+               LOGD("Fail Neg = off\n");
                theSink.FailAudioNegotiation = 0;
            }
            else
            {
-               MAIN_DEBUG(("HS : Fail Neg = on\n")) ;
+               LOGD("Fail Neg = on\n");
                theSink.FailAudioNegotiation = 1;
            }
        break;
@@ -1984,7 +1977,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 #endif
 
        case EventUsrCreateAudioConnection:
-           MAIN_DEBUG(("HS : Create Audio Connection\n")) ;
+           LOGD("Create Audio Connection\n");
 
            CreateAudioConnection();
        break;
@@ -1992,20 +1985,20 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 #ifdef ENABLE_MAPC
         case EventSysMapcMsgNotification:
             /* Generate a tone or audio prompt */
-            MAIN_DEBUG(("HS : EventSysMapcMsgNotification\n")) ;
+            LOGD("EventSysMapcMsgNotification\n");
 		break;
         case EventSysMapcMnsSuccess:
             /* Generate a tone to indicate the mns service success */
-            MAIN_DEBUG(("HS : EventSysMapcMnsSuccess\n")) ;
+            LOGD("EventSysMapcMnsSuccess\n");
         break;
         case EventSysMapcMnsFailed:
             /* Generate a tone to indicate the mns service failed */
-            MAIN_DEBUG(("HS : EventSysMapcMnsFailed\n")) ;
+            LOGD("EventSysMapcMnsFailed\n");
         break;
 #endif
 
        case EventUsrIntelligentPowerManagementOn:
-           MAIN_DEBUG(("HS : Enable LBIPM\n")) ;
+           LOGD("Enable LBIPM\n");
             /* enable LBIPM operation */
            theSink.lbipmEnable = 1;
            /* send plugin current power level */
@@ -2015,7 +2008,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
        break;
 
        case EventUsrIntelligentPowerManagementOff:
-           MAIN_DEBUG(("HS : Disable LBIPM\n")) ;
+           LOGD("Disable LBIPM\n");
             /* disable LBIPM operation */
            theSink.lbipmEnable = 0;
            /* notify the plugin Low power mode is no longer required */
@@ -2025,7 +2018,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
        break;
 
        case EventUsrIntelligentPowerManagementToggle:
-           MAIN_DEBUG(("HS : Toggle LBIPM\n")) ;
+           LOGD("Toggle LBIPM\n");
            if(theSink.lbipmEnable)
            {
                MessageSend( &theSink.task , EventUsrIntelligentPowerManagementOff , 0 ) ;
@@ -2094,7 +2087,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 #ifdef ENABLE_AVRCP
 
        case EventUsrAvrcpPlayPause:
-            MAIN_DEBUG(("HS : EventUsrAvrcpPlayPause\n")) ;
+            LOGD("EventUsrAvrcpPlayPause\n");
             /* cancel any queued ff or rw requests */
             MessageCancelAll (&theSink.task, EventUsrAvrcpFastForwardPress);
             MessageCancelAll (&theSink.task, EventUsrAvrcpRewindPress);
@@ -2102,7 +2095,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
        break;
 
       case EventUsrAvrcpPlay:
-            MAIN_DEBUG(("HS : EventUsrAvrcpPlay\n")) ;
+            LOGD("EventUsrAvrcpPlay\n");
             /* cancel any queued ff or rw requests */
             MessageCancelAll (&theSink.task, EventUsrAvrcpFastForwardPress);
             MessageCancelAll (&theSink.task, EventUsrAvrcpRewindPress);
@@ -2110,7 +2103,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
        break;
 
        case EventUsrAvrcpPause:
-            MAIN_DEBUG(("HS : EventUsrAvrcpPause\n")) ;
+            LOGD("EventUsrAvrcpPause\n");
             /* cancel any queued ff or rw requests */
             MessageCancelAll (&theSink.task, EventUsrAvrcpFastForwardPress);
             MessageCancelAll (&theSink.task, EventUsrAvrcpRewindPress);
@@ -2118,7 +2111,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
        break;
 
        case EventUsrAvrcpStop:
-            MAIN_DEBUG(("HS : EventUsrAvrcpStop\n")) ;
+            LOGD("EventUsrAvrcpStop\n");
             /* cancel any queued ff or rw requests */
             MessageCancelAll (&theSink.task, EventUsrAvrcpFastForwardPress);
             MessageCancelAll (&theSink.task, EventUsrAvrcpRewindPress);
@@ -2126,50 +2119,50 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
        break;
 
        case EventUsrAvrcpSkipForward:
-           MAIN_DEBUG(("HS : EventUsrAvrcpSkipForward\n")) ;
+           LOGD("EventUsrAvrcpSkipForward\n");
            sinkAvrcpSkipForward();
        break;
 
        case EventUsrEnterBootMode2:
-            MAIN_DEBUG(("Reboot into different bootmode [2]\n")) ;
+            LOGD("Reboot into different bootmode [2]\n");
            BootSetMode(BOOTMODE_CUSTOM) ;
        break ;
 
        case EventUsrAvrcpSkipBackward:
-           MAIN_DEBUG(("HS : EventUsrAvrcpSkipBackward\n")) ;
+           LOGD("EventUsrAvrcpSkipBackward\n");
            sinkAvrcpSkipBackward();
        break;
 
        case EventUsrAvrcpFastForwardPress:
-           MAIN_DEBUG(("HS : EventUsrAvrcpFastForwardPress\n")) ;
+           LOGD("EventUsrAvrcpFastForwardPress\n");
            sinkAvrcpFastForwardPress();
            /* rescehdule a repeat of this message every 1.5 seconds */
            MessageSendLater( &theSink.task , EventUsrAvrcpFastForwardPress , 0 , AVRCP_FF_REW_REPEAT_INTERVAL) ;
        break;
 
        case EventUsrAvrcpFastForwardRelease:
-           MAIN_DEBUG(("HS : EventUsrAvrcpFastForwardRelease\n")) ;
+           LOGD("EventUsrAvrcpFastForwardRelease\n");
            /* cancel any queued FF repeat requests */
            MessageCancelAll (&theSink.task, EventUsrAvrcpFastForwardPress);
            sinkAvrcpFastForwardRelease();
        break;
 
        case EventUsrAvrcpRewindPress:
-           MAIN_DEBUG(("HS : EventUsrAvrcpRewindPress\n")) ;
+           LOGD("EventUsrAvrcpRewindPress\n");
            /* rescehdule a repeat of this message every 1.8 seconds */
            MessageSendLater( &theSink.task , EventUsrAvrcpRewindPress , 0 , AVRCP_FF_REW_REPEAT_INTERVAL) ;
            sinkAvrcpRewindPress();
        break;
 
        case EventUsrAvrcpRewindRelease:
-           MAIN_DEBUG(("HS : EventUsrAvrcpRewindRelease\n")) ;
+           LOGD("EventUsrAvrcpRewindRelease\n");
            /* cancel any queued FF repeat requests */
            MessageCancelAll (&theSink.task, EventUsrAvrcpRewindPress);
            sinkAvrcpRewindRelease();
        break;
 
        case EventUsrAvrcpToggleActive:
-           MAIN_DEBUG(("HS : EventUsrAvrcpToggleActive\n"));
+           LOGD("EventUsrAvrcpToggleActive\n");
            if (sinkAvrcpGetNumberConnections() > 1)
                sinkAvrcpToggleActiveConnection();
            else
@@ -2177,57 +2170,57 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
        break;
 
        case EventUsrAvrcpNextGroupPress:
-           MAIN_DEBUG(("HS : EventUsrAvrcpNextGroupPress\n"));
+           LOGD("EventUsrAvrcpNextGroupPress\n");
            sinkAvrcpNextGroupPress();
        break;
 
         case EventUsrAvrcpNextGroupRelease:
-           MAIN_DEBUG(("HS : EventUsrAvrcpNextGroupRelease\n"));
+           LOGD("EventUsrAvrcpNextGroupRelease\n");
            sinkAvrcpNextGroupRelease();
        break;
 
        case EventUsrAvrcpPreviousGroupPress:
-           MAIN_DEBUG(("HS : EventUsrAvrcpPreviousGroupPress\n"));
+           LOGD("EventUsrAvrcpPreviousGroupPress\n");
            sinkAvrcpPreviousGroupPress();
        break;
 
        case EventUsrAvrcpPreviousGroupRelease:
-           MAIN_DEBUG(("HS : EventUsrAvrcpPreviousGroupRelease\n"));
+           LOGD("EventUsrAvrcpPreviousGroupRelease\n");
            sinkAvrcpPreviousGroupRelease();
        break;
 
        case EventUsrAvrcpShuffleOff:
-           MAIN_DEBUG(("HS : EventUsrAvrcpShuffleOff\n"));
+           LOGD("EventUsrAvrcpShuffleOff\n");
            sinkAvrcpShuffle(AVRCP_SHUFFLE_OFF);
         break;
 
        case EventUsrAvrcpShuffleAllTrack:
-           MAIN_DEBUG(("HS : EventUsrAvrcpShuffleAllTrack\n"));
+           LOGD("EventUsrAvrcpShuffleAllTrack\n");
            sinkAvrcpShuffle(AVRCP_SHUFFLE_ALL_TRACK);
         break;
 
        case EventUsrAvrcpShuffleGroup:
-           MAIN_DEBUG(("HS : EventUsrAvrcpShuffleGroup\n"));
+           LOGD("EventUsrAvrcpShuffleGroup\n");
            sinkAvrcpShuffle(AVRCP_SHUFFLE_GROUP);
         break;
 
        case EventUsrAvrcpRepeatOff:
-           MAIN_DEBUG(("HS : EventUsrAvrcpRepeatOff\n"));
+           LOGD("EventUsrAvrcpRepeatOff\n");
            sinkAvrcpRepeat(AVRCP_REPEAT_OFF);
         break;
 
        case EventUsrAvrcpRepeatSingleTrack:
-           MAIN_DEBUG(("HS : EventUsrAvrcpRepeatSingleTrack\n"));
+           LOGD("EventUsrAvrcpRepeatSingleTrack\n");
            sinkAvrcpRepeat(AVRCP_REPEAT_SINGLE_TRACK);
         break;
 
        case EventUsrAvrcpRepeatAllTrack:
-           MAIN_DEBUG(("HS : EventUsrAvrcpRepeatAllTrack\n"));
+           LOGD("EventUsrAvrcpRepeatAllTrack\n");
            sinkAvrcpRepeat(AVRCP_REPEAT_ALL_TRACK);
         break;
 
        case EventUsrAvrcpRepeatGroup:
-           MAIN_DEBUG(("HS : EventUsrAvrcpRepeatGroup\n"));
+           LOGD("EventUsrAvrcpRepeatGroup\n");
            sinkAvrcpRepeat(AVRCP_REPEAT_GROUP);
         break;
         case EventSysSetActiveAvrcpConnection:
@@ -2237,34 +2230,34 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break;
        case EventSysResetAvrcpMode:
         {
-            uint16 index = *(uint16 *) message;
+            u16 index = *(u16 *) message;
             lIndicateEvent = FALSE ;
             theSink.avrcp_link_data->link_active[index] =  FALSE;
         }
         break;
 
         case EventUsrTwsQualificationVolUp:
-            MAIN_DEBUG(( "TWS Qualification Volume Up\n" ));
+            LOGD("TWS Qualification Volume Up\n" );
             handleAvrcpQualificationVolumeUp();
             break;
 
         case EventUsrTwsQualificationVolDown:
-            MAIN_DEBUG(( "TWS Qualification Volume Down\n" ));
+            LOGD("TWS Qualification Volume Down\n" );
             handleAvrcpQualificationVolumeDown();
             break;
 
         case EventUsrTwsQualificationSetAbsVolume:
-            MAIN_DEBUG(( "TWS SetAbsoluteVolume\n" ));
+            LOGD("TWS SetAbsoluteVolume\n" );
             handleAvrcpQualificationSetAbsoluteVolume();
             break;
 			
         case EventUsrTwsQualificationPlayTrack:
-            MAIN_DEBUG(( "TWS Qualification Play Track\n" ));
+            LOGD("TWS Qualification Play Track\n" );
             handleAvrcpQualificationPlayTrack();
             break;
 
         case EventUsrTwsQualificationAVRCPConfigureDataSize:
-            MAIN_DEBUG(("TWS Qualification AVRCP Configure Data Size\n" ));
+            LOGD("TWS Qualification AVRCP Configure Data Size\n" );
             handleAvrcpQualificationConfigureDataSize();
             break;
 
@@ -2277,13 +2270,13 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             usbAudioGetMode(&mode);
             /* cycle through EQ modes */
             theSink.a2dp_link_data->a2dp_audio_mode_params.music_mode_processing = A2DP_MUSIC_PROCESSING_FULL_NEXT_EQ_BANK;
-            MAIN_DEBUG(("HS : EventUsrSwitchAudioMode %x\n", theSink.a2dp_link_data->a2dp_audio_mode_params.music_mode_processing ));
+            LOGD("EventUsrSwitchAudioMode %x\n", theSink.a2dp_link_data->a2dp_audio_mode_params.music_mode_processing );
             AudioSetMode(mode, &theSink.a2dp_link_data->a2dp_audio_mode_params);
         }
         break;
 
        case EventUsrButtonLockingToggle:
-            MAIN_DEBUG(("HS : EventUsrButtonLockingToggle (%d)\n",theSink.buttons_locked));
+            LOGD("EventUsrButtonLockingToggle (%d)\n",theSink.buttons_locked);
             if (theSink.buttons_locked)
             {
                 MessageSend( &theSink.task , EventUsrButtonLockingOff , 0 ) ;
@@ -2295,17 +2288,17 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break;
 
         case EventUsrButtonLockingOn:
-            MAIN_DEBUG(("HS : EventUsrButtonLockingOn\n"));
+            LOGD("EventUsrButtonLockingOn\n");
             theSink.buttons_locked = TRUE;
         break;
 
         case EventUsrButtonLockingOff:
-            MAIN_DEBUG(("HS : EventUsrButtonLockingOff\n"));
+            LOGD("EventUsrButtonLockingOff\n");
             theSink.buttons_locked = FALSE;
         break;
 
         case EventUsrAudioPromptsOff:
-            MAIN_DEBUG(("HS : EventUsrAudioPromptsOff"));
+            LOGD("EventUsrAudioPromptsOff");
             /* disable audio prompts */
 
             /* Play the disable audio prompts prompt before actually disabling them */
@@ -2320,7 +2313,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break;
 
         case EventUsrAudioPromptsOn:
-            MAIN_DEBUG(("HS : EventUsrAudioPromptsOn"));
+            LOGD("EventUsrAudioPromptsOn");
             /* enable audio prompts */
             theSink.audio_prompts_enabled = TRUE;
             /* write enable state to pskey user 12 */
@@ -2328,7 +2321,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break;
 
         case EventUsrTestModeAudio:
-            MAIN_DEBUG(("HS : EventUsrTestModeAudio\n"));
+            LOGD("EventUsrTestModeAudio\n");
             if (lState != deviceTestMode)
             {
                 MessageSend(task, EventUsrEnterDUTState, 0);
@@ -2337,7 +2330,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break;
 
         case EventUsrTestModeTone:
-            MAIN_DEBUG(("HS : EventUsrTestModeTone\n"));
+            LOGD("EventUsrTestModeTone\n");
             if (lState != deviceTestMode)
             {
                 MessageSend(task, EventUsrEnterDUTState, 0);
@@ -2346,7 +2339,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break;
 
         case EventUsrTestModeKey:
-            MAIN_DEBUG(("HS : EventUsrTestModeKey\n"));
+            LOGD("EventUsrTestModeKey\n");
             if (lState != deviceTestMode)
             {
                 MessageSend(task, EventUsrEnterDUTState, 0);
@@ -2399,17 +2392,17 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 #endif
 
         case EventUsrTestDefrag:
-            MAIN_DEBUG(("HS : EventUsrTestDefrag\n"));
+            LOGD("EventUsrTestDefrag\n");
             configManagerFillPs();
         break;
 
         case EventSysStreamEstablish:
-            MAIN_DEBUG(("HS : EventSysStreamEstablish[%u]\n", ((EVENT_STREAM_ESTABLISH_T *)message)->priority));
+            LOGD("EventSysStreamEstablish[%u]\n", ((EVENT_STREAM_ESTABLISH_T *)message)->priority);
             connectA2dpStream( ((EVENT_STREAM_ESTABLISH_T *)message)->priority, 0 );
         break;
 
         case EventSysA2dpConnected:
-            MAIN_DEBUG(("HS : EventSysA2dpConnected\n"));
+            LOGD("EventSysA2dpConnected\n");
         break;
 
         case EventSysUpdateAttributes:
@@ -2417,7 +2410,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break;
 
         case EventUsrPeerSessionConnDisc:
-            MAIN_DEBUG(("HS: PeerSessionConnDisc [%d]\n" , lState )) ;
+            LOGD("PeerSessionConnDisc [%d]\n" , lState );
             /*go into pairing mode*/
             if ( lState != deviceLimbo)
             {
@@ -2425,9 +2418,9 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
                 if(deviceManagerNumConnectedDevs() < MAX_A2DP_CONNECTIONS)
                 {
 #ifdef ENABLE_PEER
-                    uint16 index;
-                    uint16 srcIndex;
-                    uint16 avrcpIndex;
+                    u16 index;
+                    u16 srcIndex;
+                    u16 avrcpIndex;
                     /* check whether the a2dp connection is present and streaming data and that the audio is routed, if thats true then pause the stream */
                     if(theSink.routed_audio && getA2dpIndexFromSink(theSink.routed_audio, &index)
                         && (A2dpMediaGetState(theSink.a2dp_link_data->device_id[index], theSink.a2dp_link_data->stream_id[index]) == a2dp_stream_streaming)
@@ -2458,15 +2451,15 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         break ;
 
         case ( EventUsrPeerSessionInquire ):
-            MAIN_DEBUG(("HS: PeerSessionInquire\n"));
+            LOGD("PeerSessionInquire\n");
 
             /* ensure there is only one device connected to allow peer dev to connect */
             if(deviceManagerNumConnectedDevs() < MAX_A2DP_CONNECTIONS)
             {
 #ifdef ENABLE_PEER
-                uint16 index;
-                uint16 srcIndex;
-                uint16 avrcpIndex;
+                u16 index;
+                u16 srcIndex;
+                u16 avrcpIndex;
                 /* check whether the a2dp connection is present and streaming data and that the audio is routed, if thats true then pause the stream */
                 if(theSink.routed_audio && getA2dpIndexFromSink(theSink.routed_audio, &index)
                     && (A2dpMediaGetState(theSink.a2dp_link_data->device_id[index], theSink.a2dp_link_data->stream_id[index]) == a2dp_stream_streaming)
@@ -2493,13 +2486,13 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         case EventUsrPeerSessionEnd:
         {
 #ifdef PEER_SCATTERNET_DEBUG   /* Scatternet debugging only */
-            uint16 i;
+            u16 i;
             for_all_a2dp(i)
             {
                 if (theSink.a2dp_link_data)
                 {
                     theSink.a2dp_link_data->invert_ag_role[i] = !theSink.a2dp_link_data->invert_ag_role[i];
-                    MAIN_DEBUG(("HS: invert_ag_role[%u] = %u\n",i,theSink.a2dp_link_data->invert_ag_role[i]));
+                    LOGD("invert_ag_role[%u] = %u\n",i,theSink.a2dp_link_data->invert_ag_role[i]);
 
                     if (theSink.a2dp_link_data->connected[i] && (theSink.a2dp_link_data->peer_device[i] != remote_device_peer))
                     {
@@ -2510,7 +2503,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
                 }
             }
 #else   /* Normal operation */
-            MAIN_DEBUG(("HS: EventUsrPeerSessionEnd\n"));
+            LOGD("EventUsrPeerSessionEnd\n");
             lIndicateEvent = disconnectAllA2dpPeerDevices();
 #endif
         }
@@ -2621,13 +2614,13 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
                turn off the audio amplifier */
             if((!IsAudioBusy()) && (!theSink.routed_audio))
             {
-                MAIN_DEBUG (( "HS : EventSysCheckAudioAmpDrive turn off amp\n" ));
+                LOGD("EventSysCheckAudioAmpDrive turn off amp\n");
                 PioDrivePio(PIO_AUDIO_ACTIVE, FALSE);
             }
             /* audio is still busy, check again later */
             else
             {
-                MAIN_DEBUG (( "HS : EventSysCheckAudioAmpDrive still busy, reschedule\n" ));
+                LOGD("EventSysCheckAudioAmpDrive still busy, reschedule\n" );
                 MessageSendLater(&theSink.task , EventSysCheckAudioAmpDrive, 0, CHECK_AUDIO_AMP_PIO_DRIVE_DELAY);
             }
         break;
@@ -2683,12 +2676,12 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             
 	   /* Audio amplifier is to be shut down by PIO for power saving purposes */
        case EventSysAmpPowerDown:
-            MAIN_DEBUG (( "HS : EventSysAmpPowerDown\n"));
+            LOGD("EventSysAmpPowerDown\n");
             stateManagerAmpPowerControl(POWER_DOWN);
        break;
                
        case EventSysAmpPowerUp:
-            MAIN_DEBUG (( "HS : EventSysAmpPowerUp\n"));
+            LOGD("EventSysAmpPowerUp\n");
             stateManagerAmpPowerControl(POWER_UP);
             break;
 
@@ -2920,10 +2913,10 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         {
             if(theSink.features.PeerPermittedRouting != 0)
             {
-                uint16 current_routing = ((theSink.a2dp_link_data->a2dp_audio_mode_params.master_routing_mode & 0x3) << 2) | (theSink.a2dp_link_data->a2dp_audio_mode_params.slave_routing_mode & 0x3);
-                uint16 distance = 16;
-                uint16 index = 0;
-                uint16 i;
+                u16 current_routing = ((theSink.a2dp_link_data->a2dp_audio_mode_params.master_routing_mode & 0x3) << 2) | (theSink.a2dp_link_data->a2dp_audio_mode_params.slave_routing_mode & 0x3);
+                u16 distance = 16;
+                u16 index = 0;
+                u16 i;
             
                 /* Find entry in tws_audio_routing table which is closest to current routing mode */
                 for(i = 0; i < sizeof(tws_audio_routing); i++)
@@ -2993,28 +2986,28 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         case EventUsrBleStartBonding:
             {
-                MAIN_DEBUG(("HS : BLE Bondable\n"));
+                LOGD("BLE Bondable\n");
                 sinkBleBondableEvent();
             }
             break;
 
         case EventUsrBleDeleteDevice:
             {
-                MAIN_DEBUG(( "HS : Delete Marked LE device \n" ));
+                LOGD("Delete Marked LE device \n" );
                 sinkBleDeleteMarkedDevices();
             }
             break;
 
         case EventSysBleBondablePairingTimeout:
             {
-                MAIN_DEBUG(("HS : BLE Bondable Pairing Timeout\n"));
+                LOGD("BLE Bondable Pairing Timeout\n");
                 sinkBleBondablePairingTimeoutEvent();
             }
             break;
 
         case EventSysBleBondableConnectionTimeout:
             {
-                MAIN_DEBUG(("HS : BLE Bondable Connection Timeout\n"));
+                LOGD("BLE Bondable Connection Timeout\n");
                 sinkBleBondableConnectionTimeoutEvent();
             }
             break;
@@ -3022,7 +3015,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         case EventUsrBleSwitchPeripheral:
         case EventSysBleSwitchPeripheral:
             {
-                MAIN_DEBUG(("HS : BLE Switch Peripheral\n"));
+                LOGD("BLE Switch Peripheral\n");
                 sinkBleSwitchPeripheralEvent();
             }
             break;
@@ -3030,35 +3023,35 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         case EventUsrBleSwitchCentral:
         case EventSysBleSwitchCentral:
             {
-                MAIN_DEBUG(("HS : BLE Switch Central\n"));
+                LOGD("BLE Switch Central\n");
                 sinkBleSwitchCentralEvent();
             }
             break;
             
        case EventUsrFindMyRemoteImmAlertMild:
             {
-                MAIN_DEBUG(( "Find my remote Imm Alert Mild\n" ));
+                LOGD("Find my remote Imm Alert Mild\n" );
                 sinkGattIasClientSetAlert(gatt_imm_alert_level_mild, sink_gatt_ias_alert_remote);
             }
             break;
             
         case EventUsrFindMyRemoteImmAlertHigh:
             {
-                MAIN_DEBUG(( "Find my remote Imm Alert High\n" ));
+                LOGD("Find my remote Imm Alert High\n" );
                 sinkGattIasClientSetAlert(gatt_imm_alert_level_high, sink_gatt_ias_alert_remote);
             }
             break;
 
        case EventUsrFindMyPhoneImmAlertMild:
             {
-                MAIN_DEBUG(( "Find my phone Imm Alert Mild\n" ));
+                LOGD("Find my phone Imm Alert Mild\n" );
                 sinkGattIasClientSetAlert(gatt_imm_alert_level_mild, sink_gatt_ias_alert_phone);
             }
             break;
 
         case EventUsrFindMyPhoneImmAlertHigh:
             {
-                MAIN_DEBUG(( "Find my phone Imm Alert High \n" ));
+                LOGD("Find my phone Imm Alert High \n" );
                 sinkGattIasClientSetAlert(gatt_imm_alert_level_high, sink_gatt_ias_alert_phone);
             }
             break;
@@ -3066,7 +3059,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         /*Alert the phone from remote control using HID. This event needs to be mapped to the HID code for alert*/
         case EventUsrFindMyPhoneRemoteImmAlertHigh:
             {
-                MAIN_DEBUG(( "Find my phone Imm Alert High - Triggered from HID Remote\n" ));
+                LOGD("Find my phone Imm Alert High - Triggered from HID Remote\n" );
                 sinkGattImmAlertLocalAlert(gatt_imm_alert_level_high);
                 sinkGattIasClientSetAlert(gatt_imm_alert_level_high, sink_gatt_ias_alert_phone);
             }
@@ -3075,7 +3068,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         case EventUsrImmAlertStop:
         case EventSysImmAlertTimeout:
             {
-                MAIN_DEBUG(( "IAS : Stop Alert/Timeout\n" ));
+                LOGD("IAS : Stop Alert/Timeout\n" );
 
                 /*Local Alert*/
                 sinkGattServerImmAlertStopAlert();
@@ -3090,14 +3083,14 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 
         case EventSysImmAlertMild:
             {
-                MAIN_DEBUG(( "HS : Mild Alert \n" ));
+                LOGD("Mild Alert \n" );
                 sinkGattServerImmAlertMild(theSink.conf1->timeouts.ImmediateAlertTimer_s);
             }
             break;
 
         case EventSysImmAlertHigh:
             {
-                MAIN_DEBUG(( "HS : High Alert \n" ));
+                LOGD("High Alert \n" );
                 sinkGattServerImmAlertHigh(theSink.conf1->timeouts.ImmediateAlertTimer_s);
             }
         break;
@@ -3105,29 +3098,29 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
         case EventSysLlsAlertTimeout:
         case EventUsrLlsAlertStop:
         {
-            MAIN_DEBUG(( "HS : Link Loss Stop Alert \n" ));
+            LOGD("Link Loss Stop Alert \n" );
             sinkGattLinkLossAlertStop();
         }
         break;
         case EventSysLlsAlertMild:
         {
-            MAIN_DEBUG(( "HS : Link Loss Mild Alert \n" ));
+            LOGD("Link Loss Mild Alert \n" );
             sinkGattLinkLossAlertMild(theSink.conf1->timeouts.LinkLossTimer_s);
         }
         break;
         case EventSysLlsAlertHigh:
         {
-            MAIN_DEBUG(( "HS : Link Loss High Alert \n" ));
+            LOGD("Link Loss High Alert \n" );
             sinkGattLinkLossAlertHigh(theSink.conf1->timeouts.LinkLossTimer_s);
         }
         break;
 
         case EventSysAncsEmailAlert:
-            MAIN_DEBUG(( "HS : Recieved ANCS Email Alert\n" ));
+            LOGD("Recieved ANCS Email Alert\n" );
         break;
 
         case EventUsrBleHidExtraConfig:
-            MAIN_DEBUG(( "HS : BLE HID Extra configuration for qualification\n" ));
+            LOGD("BLE HID Extra configuration for qualification\n" );
             sinkGattHIDClientExtraConfig();
         break;
         
@@ -3138,7 +3131,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             break;
 
         case EventSysBleGapRoleTimeout:
-            MAIN_DEBUG(( "HS : Recieved BLE GAP Role Timeout\n" ));
+            LOGD("Recieved BLE GAP Role Timeout\n" );
             sinkBleRoleTimeoutEvent();
             break;
 
@@ -3175,30 +3168,30 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             break;
 
         case EventSysAncDisabled:
-            MAIN_DEBUG(( "ANC Disabled\n" ));
+            LOGD("ANC Disabled\n" );
             break;
 
         case EventSysAncActiveModeEnabled:
-            MAIN_DEBUG(( "ANC Enabled in Active Mode\n" ));
+            LOGD("ANC Enabled in Active Mode\n" );
             break;
 
         case EventSysAncLeakthroughModeEnabled:
-            MAIN_DEBUG(( "ANC Enabled in Leakthrough Mode\n" ));
+            LOGD("ANC Enabled in Leakthrough Mode\n" );
             break;
 
         case EventUsrStartA2DPStream:
-            MAIN_DEBUG(( "A2DP Start streaming media\n" ));
+            LOGD("A2DP Start streaming media\n" );
             audioA2dpStartStream();
             break;
 
 #ifdef ENABLE_PEER
         case EventUsrTwsQualificationEnablePeerOpen:
-            MAIN_DEBUG(( "TWS Qualification Enable Opening of Peer Media Channel\n" ));
+            LOGD("TWS Qualification Enable Opening of Peer Media Channel\n" );
             handlePeerQualificationEnablePeerOpen();
             break;
         case EventSysA2DPPeerLinkLossTimeout:
             theSink.a2dp_link_data->peer_link_loss_reconnect = FALSE; 
-            MAIN_DEBUG(("EventSysA2DPPeerLinkLossTimeout\n"));
+            LOGD("EventSysA2DPPeerLinkLossTimeout\n");
             break;         
         case EventSysRemovePeerTempPairing:
             HandlePeerRemoveAuthDevice((bdaddr*)message); 
@@ -3216,14 +3209,14 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
             
 
         default :
-            MAIN_DEBUG (( "HS : UE unhandled!! [%x]\n", id ));
+            LOGD("UE unhandled!! [%x]\n", id );
         break ;
 
     }
 
     if(lResetAutoSwitchOff && theSink.conf1->timeouts.AutoSwitchOffTime_s !=0)
     {
-        /*MAIN_DEBUG(("HS: AUTOSent Ev[%x] Time[%d]\n",id , theSink.conf1->timeouts.AutoSwitchOffTime_s ));*/
+        /*LOGD("AUTOSent Ev[%x] Time[%d]\n",id , theSink.conf1->timeouts.AutoSwitchOffTime_s );*/
         sinkSendLater(EventSysAutoSwitchOff, D_SEC(theSink.conf1->timeouts.AutoSwitchOffTime_s));
     }
 	
@@ -3243,7 +3236,7 @@ static void handleUEMessage  ( Task task, MessageId id, Message message )
 #endif
 
 #ifdef DEBUG_MALLOC
-    printf("MAIN: Event [%x] Available SLOTS:[%d]\n" ,id, VmGetAvailableAllocations() ) ;
+    printf("Event [%x] Available SLOTS:[%d]\n" ,id, VmGetAvailableAllocations() ) ;
 #endif
 
 }
@@ -3261,7 +3254,7 @@ RETURNS
 */
 static void handleHFPMessage  ( Task task, MessageId id, Message message )
 {
-    MAIN_DEBUG(("HFP = [%x]\n", id)) ;
+    LOGD("HFP = [%x]\n", id);
 
     switch(id)
     {
@@ -3272,7 +3265,7 @@ static void handleHFPMessage  ( Task task, MessageId id, Message message )
 
 
             InitEarlyUserFeatures();
-            MAIN_DEBUG(("HFP_INIT_CFM - enable streaming[%x]\n", theSink.features.EnableA2dpStreaming)) ;
+            LOGD("HFP_INIT_CFM - enable streaming[%x]\n", theSink.features.EnableA2dpStreaming);
 
             sinkInitConfigureDeviceClass();
 
@@ -3288,7 +3281,7 @@ static void handleHFPMessage  ( Task task, MessageId id, Message message )
     break;
 
     case HFP_SLC_CONNECT_IND:
-        MAIN_DEBUG(("HFP_SLC_CONNECT_IND\n"));
+        LOGD("HFP_SLC_CONNECT_IND\n");
         if (stateManagerGetState() != deviceLimbo)
         {
             sinkHandleSlcConnectInd((HFP_SLC_CONNECT_IND_T *) message);
@@ -3296,7 +3289,7 @@ static void handleHFPMessage  ( Task task, MessageId id, Message message )
     break;
 
     case HFP_SLC_CONNECT_CFM:
-        MAIN_DEBUG(("HFP_SLC_CONNECT_CFM [%x]\n", ((HFP_SLC_CONNECT_CFM_T *) message)->status ));
+        LOGD("HFP_SLC_CONNECT_CFM [%x]\n", ((HFP_SLC_CONNECT_CFM_T *) message)->status );
         if (stateManagerGetState() == deviceLimbo)
         {
             if ( ((HFP_SLC_CONNECT_CFM_T *) message)->status == hfp_success )
@@ -3328,17 +3321,17 @@ static void handleHFPMessage  ( Task task, MessageId id, Message message )
         break;
 
     case HFP_SLC_LINK_LOSS_IND:
-        MAIN_DEBUG(("HFP_SLC_LINK_LOSS_IND\n"));
+        LOGD("HFP_SLC_LINK_LOSS_IND\n");
         slcHandleLinkLossInd((HFP_SLC_LINK_LOSS_IND_T*)message);
     break;
 
     case HFP_SLC_DISCONNECT_IND:
-        MAIN_DEBUG(("HFP_SLC_DISCONNECT_IND\n"));
-        MAIN_DEBUG(("Handle Disconnect\n"));
+        LOGD("HFP_SLC_DISCONNECT_IND\n");
+        LOGD("Handle Disconnect\n");
         sinkHandleSlcDisconnectInd((HFP_SLC_DISCONNECT_IND_T *) message);
     break;
     case HFP_SERVICE_IND:
-        MAIN_DEBUG(("HFP_SERVICE_IND [%x]\n" , ((HFP_SERVICE_IND_T*)message)->service  ));
+        LOGD("HFP_SERVICE_IND [%x]\n" , ((HFP_SERVICE_IND_T*)message)->service  );
         indicatorsHandleServiceInd ( ((HFP_SERVICE_IND_T*)message) ) ;
     break;
     /* indication of call status information, sent whenever a change in call status
@@ -3352,54 +3345,54 @@ static void handleHFPMessage  ( Task task, MessageId id, Message message )
     break;
 
     case HFP_RING_IND:
-        MAIN_DEBUG(("HFP_RING_IND\n"));
+        LOGD("HFP_RING_IND\n");
         sinkHandleRingInd((HFP_RING_IND_T *)message);
     break;
     case HFP_VOICE_TAG_NUMBER_IND:
-        MAIN_DEBUG(("HFP_VOICE_TAG_NUMBER_IND\n"));
+        LOGD("HFP_VOICE_TAG_NUMBER_IND\n");
         sinkWriteStoredNumber((HFP_VOICE_TAG_NUMBER_IND_T*)message);
     break;
     case HFP_DIAL_LAST_NUMBER_CFM:
-        MAIN_DEBUG(("HFP_LAST_NUMBER_REDIAL_CFM\n"));
+        LOGD("HFP_LAST_NUMBER_REDIAL_CFM\n");
         handleHFPStatusCFM (((HFP_DIAL_LAST_NUMBER_CFM_T*)message)->status ) ;
     break;
     case HFP_DIAL_NUMBER_CFM:
-        MAIN_DEBUG(("HFP_DIAL_NUMBER_CFM %d %d\n", stateManagerGetState(), ((HFP_DIAL_NUMBER_CFM_T *) message)->status));
+        LOGD("HFP_DIAL_NUMBER_CFM %d %d\n", stateManagerGetState(), ((HFP_DIAL_NUMBER_CFM_T *) message)->status);
         handleHFPStatusCFM (((HFP_DIAL_NUMBER_CFM_T*)message)->status ) ;
     break;
     case HFP_DIAL_MEMORY_CFM:
-        MAIN_DEBUG(("HFP_DIAL_MEMORY_CFM %d %d\n", stateManagerGetState(), ((HFP_DIAL_MEMORY_CFM_T *) message)->status));
+        LOGD("HFP_DIAL_MEMORY_CFM %d %d\n", stateManagerGetState(), ((HFP_DIAL_MEMORY_CFM_T *) message)->status);
     break ;
     case HFP_CALL_ANSWER_CFM:
-        MAIN_DEBUG(("HFP_ANSWER_CALL_CFM\n"));
+        LOGD("HFP_ANSWER_CALL_CFM\n");
     break;
     case HFP_CALL_TERMINATE_CFM:
-        MAIN_DEBUG(("HFP_TERMINATE_CALL_CFM %d\n", stateManagerGetState()));
+        LOGD("HFP_TERMINATE_CALL_CFM %d\n", stateManagerGetState());
     break;
     case HFP_VOICE_RECOGNITION_IND:
-        MAIN_DEBUG(("HS: HFP_VOICE_RECOGNITION_IND_T [%c]\n" ,TRUE_OR_FALSE( ((HFP_VOICE_RECOGNITION_IND_T* )message)->enable) )) ;
+        LOGD("HFP_VOICE_RECOGNITION_IND_T [%c]\n" ,TRUE_OR_FALSE( ((HFP_VOICE_RECOGNITION_IND_T* )message)->enable) );
     /*update the state of the voice dialling on the back of the indication*/
         theSink.VoiceRecognitionIsActive = ((HFP_VOICE_RECOGNITION_IND_T* ) message)->enable ;
     break;
     case HFP_VOICE_RECOGNITION_ENABLE_CFM:
-        MAIN_DEBUG(("HFP_VOICE_RECOGNITION_ENABLE_CFM s[%d] w[%d]i", (((HFP_VOICE_RECOGNITION_ENABLE_CFM_T *)message)->status ) , theSink.VoiceRecognitionIsActive));
+        LOGD("HFP_VOICE_RECOGNITION_ENABLE_CFM s[%d] w[%d]i", (((HFP_VOICE_RECOGNITION_ENABLE_CFM_T *)message)->status ) , theSink.VoiceRecognitionIsActive);
 
             /*if the cfm is in error then we did not succeed - toggle */
         if  ( (((HFP_VOICE_RECOGNITION_ENABLE_CFM_T *)message)->status ) )
             theSink.VoiceRecognitionIsActive = 0 ;
 
-        MAIN_DEBUG(("[%d]\n", theSink.VoiceRecognitionIsActive));
+        LOGD("[%d]\n", theSink.VoiceRecognitionIsActive);
 
         handleHFPStatusCFM (((HFP_VOICE_RECOGNITION_ENABLE_CFM_T *)message)->status ) ;
     break;
     case HFP_CALLER_ID_ENABLE_CFM:
-        MAIN_DEBUG(("HFP_CALLER_ID_ENABLE_CFM\n"));
+        LOGD("HFP_CALLER_ID_ENABLE_CFM\n");
     break;
     case HFP_VOLUME_SYNC_SPEAKER_GAIN_IND:
     {
         HFP_VOLUME_SYNC_SPEAKER_GAIN_IND_T *ind = (HFP_VOLUME_SYNC_SPEAKER_GAIN_IND_T *) message;
 
-        MAIN_DEBUG(("HFP_VOLUME_SYNC_SPEAKER_GAIN_IND %d\n", ind->volume_gain));
+        LOGD("HFP_VOLUME_SYNC_SPEAKER_GAIN_IND %d\n", ind->volume_gain);
 
         VolumeHandleSpeakerGainInd(ind);
     }
@@ -3407,7 +3400,7 @@ static void handleHFPMessage  ( Task task, MessageId id, Message message )
     case HFP_VOLUME_SYNC_MICROPHONE_GAIN_IND:
     {
         HFP_VOLUME_SYNC_MICROPHONE_GAIN_IND_T *ind = (HFP_VOLUME_SYNC_MICROPHONE_GAIN_IND_T*)message;
-        MAIN_DEBUG(("HFP_VOLUME_SYNC_MICROPHONE_GAIN_IND %d\n", ind->mic_gain));
+        LOGD("HFP_VOLUME_SYNC_MICROPHONE_GAIN_IND %d\n", ind->mic_gain);
         if(theSink.features.EnableSyncMuteMicrophones)
         {
             VolumeSetHfpMicrophoneGainCheckMute(ind->priority, ind->mic_gain);
@@ -3421,8 +3414,8 @@ static void handleHFPMessage  ( Task task, MessageId id, Message message )
             HFP_CALLER_ID_IND_T *ind = (HFP_CALLER_ID_IND_T *) message;
 
             /* ensure this is not a HSP profile */
-            MAIN_DEBUG(("HFP_CALLER_ID_IND number %s", ind->caller_info + ind->offset_number));
-            MAIN_DEBUG((" name %s\n", ind->caller_info + ind->offset_name));
+            LOGD("HFP_CALLER_ID_IND number %s", ind->caller_info + ind->offset_number);
+            LOGD(" name %s\n", ind->caller_info + ind->offset_name);
 
             /* Show name or number on display */
             if (ind->size_name)
@@ -3449,14 +3442,14 @@ static void handleHFPMessage  ( Task task, MessageId id, Message message )
 
     case HFP_HS_BUTTON_PRESS_CFM:
         {
-            MAIN_DEBUG(("HFP_HS_BUTTON_PRESS_CFM\n")) ;
+            LOGD("HFP_HS_BUTTON_PRESS_CFM\n");
         }
     break ;
      /*****************************************************************/
 
 #ifdef THREE_WAY_CALLING
     case HFP_CALL_WAITING_ENABLE_CFM :
-            MAIN_DEBUG(("HS3 : HFP_CALL_WAITING_ENABLE_CFM_T [%c]\n", (((HFP_CALL_WAITING_ENABLE_CFM_T * )message)->status == hfp_success) ?'T':'F' )) ;
+            LOGD("HFP_CALL_WAITING_ENABLE_CFM_T [%c]\n", (((HFP_CALL_WAITING_ENABLE_CFM_T * )message)->status == hfp_success) ?'T':'F' );
     break ;
     case HFP_CALL_WAITING_IND:
         {
@@ -3469,51 +3462,51 @@ static void handleHFPMessage  ( Task task, MessageId id, Message message )
 
 #endif
     case HFP_SUBSCRIBER_NUMBERS_CFM:
-        MAIN_DEBUG(("HS3: HFP_SUBSCRIBER_NUMBERS_CFM [%c]\n" , (((HFP_SUBSCRIBER_NUMBERS_CFM_T*)message)->status == hfp_success)  ? 'T' :'F' )) ;
+        LOGD("HFP_SUBSCRIBER_NUMBERS_CFM [%c]\n" , (((HFP_SUBSCRIBER_NUMBERS_CFM_T*)message)->status == hfp_success)  ? 'T' :'F' );
     break ;
     case HFP_SUBSCRIBER_NUMBER_IND:
 #ifdef DEBUG_MAIN
     {
-        uint16 i=0;
+        u16 i=0;
 
-        MAIN_DEBUG(("HS3: HFP_SUBSCRIBER_NUMBER_IND [%d]\n" , ((HFP_SUBSCRIBER_NUMBER_IND_T*)message)->service )) ;
+        LOGD("HFP_SUBSCRIBER_NUMBER_IND [%d]\n" , ((HFP_SUBSCRIBER_NUMBER_IND_T*)message)->service );
         for (i=0;i< ((HFP_SUBSCRIBER_NUMBER_IND_T*)message)->size_number ; i++)
         {
-            MAIN_DEBUG(("%c", ((HFP_SUBSCRIBER_NUMBER_IND_T*)message)->number[i])) ;
+            LOGD("%c", ((HFP_SUBSCRIBER_NUMBER_IND_T*)message)->number[i]);
         }
-        MAIN_DEBUG(("\n")) ;
+        LOGD("\n");
     }
 #endif
     break ;
     case HFP_CURRENT_CALLS_CFM:
-        MAIN_DEBUG(("HS3: HFP_CURRENT_CALLS_CFM [%c]\n", (((HFP_CURRENT_CALLS_CFM_T*)message)->status == hfp_success)  ? 'T' :'F' )) ;
+        LOGD("HFP_CURRENT_CALLS_CFM [%c]\n", (((HFP_CURRENT_CALLS_CFM_T*)message)->status == hfp_success)  ? 'T' :'F' );
     break ;
     case HFP_CURRENT_CALLS_IND:
-        MAIN_DEBUG(("HS3: HFP_CURRENT_CALLS_IND id[%d] mult[%d] status[%d]\n" ,
-                                        ((HFP_CURRENT_CALLS_IND_T*)message)->call_idx ,
-                                        ((HFP_CURRENT_CALLS_IND_T*)message)->multiparty  ,
-                                        ((HFP_CURRENT_CALLS_IND_T*)message)->status)) ;
+        LOGD("HFP_CURRENT_CALLS_IND id[%d] mult[%d] status[%d]\n" ,
+             ((HFP_CURRENT_CALLS_IND_T*)message)->call_idx ,
+             ((HFP_CURRENT_CALLS_IND_T*)message)->multiparty  ,
+             ((HFP_CURRENT_CALLS_IND_T*)message)->status);
     break;
     case HFP_AUDIO_CONNECT_IND:
-        MAIN_DEBUG(("HFP_AUDIO_CONNECT_IND\n")) ;
+        LOGD("HFP_AUDIO_CONNECT_IND\n");
         audioHandleSyncConnectInd( (HFP_AUDIO_CONNECT_IND_T *)message ) ;
     break ;
     case HFP_AUDIO_CONNECT_CFM:
-        MAIN_DEBUG(("HFP_AUDIO_CONNECT_CFM[%x][%x][%s%s%s] r[%d]t[%d]\n", ((HFP_AUDIO_CONNECT_CFM_T *)message)->status ,
-                                                      (int)((HFP_AUDIO_CONNECT_CFM_T *)message)->audio_sink ,
-                                                      ((((HFP_AUDIO_CONNECT_CFM_T *)message)->link_type == sync_link_sco) ? "SCO" : "" )      ,
-                                                      ((((HFP_AUDIO_CONNECT_CFM_T *)message)->link_type == sync_link_esco) ? "eSCO" : "" )    ,
-                                                      ((((HFP_AUDIO_CONNECT_CFM_T *)message)->link_type == sync_link_unknown) ? "unk?" : "" ) ,
-                                                      (int)((HFP_AUDIO_CONNECT_CFM_T *)message)->rx_bandwidth ,
-                                                      (int)((HFP_AUDIO_CONNECT_CFM_T *)message)->tx_bandwidth
-                                                      )) ;
+        LOGD("HFP_AUDIO_CONNECT_CFM[%x][%x][%s%s%s] r[%d]t[%d]\n", ((HFP_AUDIO_CONNECT_CFM_T *)message)->status ,
+             ((HFP_AUDIO_CONNECT_CFM_T *)message)->audio_sink ,
+             ((((HFP_AUDIO_CONNECT_CFM_T *)message)->link_type == sync_link_sco) ? "SCO" : "" )      ,
+             ((((HFP_AUDIO_CONNECT_CFM_T *)message)->link_type == sync_link_esco) ? "eSCO" : "" )    ,
+             ((((HFP_AUDIO_CONNECT_CFM_T *)message)->link_type == sync_link_unknown) ? "unk?" : "" ) ,
+             ((HFP_AUDIO_CONNECT_CFM_T *)message)->rx_bandwidth ,
+             ((HFP_AUDIO_CONNECT_CFM_T *)message)->tx_bandwidth
+            );
         /* should the device receive a sco connect cfm in limbo state */
         if (stateManagerGetState() == deviceLimbo)
         {
             /* confirm that it connected successfully before disconnecting it */
             if (((HFP_AUDIO_CONNECT_CFM_T *)message)->status == hfp_audio_connect_no_hfp_link)
             {
-                MAIN_DEBUG(("HFP_AUDIO_CONNECT_CFM in limbo state, disconnect it\n" ));
+                LOGD("HFP_AUDIO_CONNECT_CFM in limbo state, disconnect it\n" );
                 ConnectionSyncDisconnect(((HFP_AUDIO_CONNECT_CFM_T *)message)->audio_sink, hci_error_oetc_user);
             }
         }
@@ -3524,17 +3517,17 @@ static void handleHFPMessage  ( Task task, MessageId id, Message message )
         }
     break ;
     case HFP_AUDIO_DISCONNECT_IND:
-        MAIN_DEBUG(("HFP_AUDIO_DISCONNECT_IND [%x]\n", ((HFP_AUDIO_DISCONNECT_IND_T *)message)->status)) ;
+        LOGD("HFP_AUDIO_DISCONNECT_IND [%x]\n", ((HFP_AUDIO_DISCONNECT_IND_T *)message)->status);
         audioHandleSyncDisconnectInd ((HFP_AUDIO_DISCONNECT_IND_T *)message) ;
     break ;
     case HFP_SIGNAL_IND:
-        MAIN_DEBUG(("HS: HFP_SIGNAL_IND [%d]\n", ((HFP_SIGNAL_IND_T* )message)->signal )) ;
+        LOGD("HFP_SIGNAL_IND [%d]\n", ((HFP_SIGNAL_IND_T* )message)->signal );
     break ;
     case HFP_ROAM_IND:
-        MAIN_DEBUG(("HS: HFP_ROAM_IND [%d]\n", ((HFP_ROAM_IND_T* )message)->roam )) ;
+        LOGD("HFP_ROAM_IND [%d]\n", ((HFP_ROAM_IND_T* )message)->roam );
     break;
     case HFP_BATTCHG_IND:
-        MAIN_DEBUG(("HS: HFP_BATTCHG_IND [%d]\n", ((HFP_BATTCHG_IND_T* )message)->battchg )) ;
+        LOGD("HFP_BATTCHG_IND [%d]\n", ((HFP_BATTCHG_IND_T* )message)->battchg );
     break;
 
 /*******************************************************************/
@@ -3562,7 +3555,7 @@ static void handleHFPMessage  ( Task task, MessageId id, Message message )
     /*******************************/
 
     default :
-        MAIN_DEBUG(("HS :  HFP ? [%x]\n",id)) ;
+        LOGD("HFP ? [%x]\n",id);
     break ;
     }
 }
@@ -3579,14 +3572,14 @@ RETURNS
 */
 static void handleCodecMessage  ( Task task, MessageId id, Message message )
 {
-    MAIN_DEBUG(("CODEC MSG received [%x]\n", id)) ;
+    LOGD("CODEC MSG received [%x]\n", id);
 
     if (id == CODEC_INIT_CFM )
     {       /* The codec is now initialised */
 
         if ( ((CODEC_INIT_CFM_T*)message)->status == codec_success)
         {
-            MAIN_DEBUG(("CODEC_INIT_CFM\n"));
+            LOGD("CODEC_INIT_CFM\n");
             sinkHfpInit();
             theSink.codec_task = ((CODEC_INIT_CFM_T*)message)->codecTask ;
         }
@@ -3630,7 +3623,7 @@ static void handleAudioPluginMessage( Task task, MessageId id, Message message )
 
             if(((AUDIO_PLUGIN_DSP_READY_FOR_DATA_T*)message)->dsp_status == DSP_RUNNING)
             {
-                MAIN_DEBUG(("HS :  DSP ready for data\n")) ;
+                LOGD("DSP ready for data\n");
 #ifdef ENABLE_PEER
                 /*Request the connected peer device to send its current user EQ settings across if its a peer source.*/
                 peerRequestUserEqSetings();
@@ -3650,7 +3643,7 @@ static void handleAudioPluginMessage( Task task, MessageId id, Message message )
 
         case AUDIO_PLUGIN_DSP_GAIA_EQ_MSG:
         {
-            uint8 payload[4];
+            u8 payload[4];
             payload[0] = (((AUDIO_PLUGIN_DSP_GAIA_EQ_MSG_T*)message)->value[0]) >> 8;
             payload[1] = (((AUDIO_PLUGIN_DSP_GAIA_EQ_MSG_T*)message)->value[0]) & 0x00ff;
             payload[2] = (((AUDIO_PLUGIN_DSP_GAIA_EQ_MSG_T*)message)->value[1]) >> 8;
@@ -3661,8 +3654,8 @@ static void handleAudioPluginMessage( Task task, MessageId id, Message message )
 
         case AUDIO_PLUGIN_DSP_GAIA_GROUP_EQ_MSG:
         {
-            uint8 payloadSize = ((AUDIO_PLUGIN_DSP_GAIA_GROUP_EQ_MSG_T*)message)->size_value;
-            uint16 *payload = mallocPanic(payloadSize);
+            u8 payloadSize = ((AUDIO_PLUGIN_DSP_GAIA_GROUP_EQ_MSG_T*)message)->size_value;
+            u16 *payload = mallocPanic(payloadSize);
             if (payload)
             {
                 memcpy(payload,((AUDIO_PLUGIN_DSP_GAIA_GROUP_EQ_MSG_T*)message)->value,payloadSize);
@@ -3682,7 +3675,7 @@ static void handleAudioPluginMessage( Task task, MessageId id, Message message )
 
         case AUDIO_PLUGIN_REFRESH_VOLUME:
         {
-            MAIN_DEBUG(("HS :  AUDIO Refresh volume\n")) ;
+            LOGD("AUDIO Refresh volume\n");
             /* Refresh the volume and mute status for the routed audio */
             VolumeUpdateRoutedAudioMainAndAuxVolume();
             VolumeApplySoftMuteStates();
@@ -3694,7 +3687,7 @@ static void handleAudioPluginMessage( Task task, MessageId id, Message message )
             break;
 
         default:
-            MAIN_DEBUG(("HS :  AUDIO ? [%x]\n",id)) ;
+            LOGD("AUDIO ? [%x]\n",id);
         break ;
     }
 }
@@ -3708,7 +3701,7 @@ static void handleDisplayPluginMessage( Task task, MessageId id, Message message
     case DISPLAY_PLUGIN_INIT_IND:
         {
             DISPLAY_PLUGIN_INIT_IND_T *m = (DISPLAY_PLUGIN_INIT_IND_T *) message;
-            MAIN_DEBUG(("HS :  DISPLAY INIT: %u\n", m->result));
+            LOGD("DISPLAY INIT: %u\n", m->result);
             if (m->result)
             {
                 if (powerManagerIsChargerConnected() && (stateManagerGetState() == deviceLimbo) )
@@ -3733,7 +3726,7 @@ static void handleDisplayPluginMessage( Task task, MessageId id, Message message
         break;
 
     default:
-        MAIN_DEBUG(("HS :  DISPLAY ? [%x]\n",id)) ;
+        LOGD("DISPLAY ? [%x]\n",id);
         break ;
     }
 }
@@ -3752,7 +3745,7 @@ RETURNS
 */
 static void app_handler(Task task, MessageId id, Message message)
 {
-/*    MAIN_DEBUG(("MSG [%x][%x][%x]\n", (int)task , (int)id , (int)&message)) ;*/
+/*    LOGD("MSG [%x][%x][%x]\n", (int)task , (int)id , (int)&message);*/
 
     /* determine the message type based on base and offset */
     if ( ( id >= EVENTS_MESSAGE_BASE ) && ( id < EVENTS_LAST_EVENT ) )
@@ -3762,7 +3755,7 @@ static void app_handler(Task task, MessageId id, Message message)
 #ifdef MESSAGE_EXE_FS_VALIDATION_STATUS
     else if (id == MESSAGE_EXE_FS_VALIDATION_STATUS)
     {
-        sinkUpgradeMsgHandler(task, id, message);
+        /* sinkUpgradeMsgHandler(task, id, message); */
     }
 #endif
     else  if ( (id >= CL_MESSAGE_BASE) && (id < CL_MESSAGE_TOP) )
@@ -3786,7 +3779,7 @@ static void app_handler(Task task, MessageId id, Message message)
     else if ( (id >= POWER_MESSAGE_BASE ) && (id < POWER_MESSAGE_TOP) )
     {
         handlePowerMessage (task, id, message) ;
-        sinkUpgradePowerEventHandler();
+        /* sinkUpgradePowerEventHandler(); */
     }
 #ifdef ENABLE_PBAP
     else if ( ((id >= PBAPC_MESSAGE_BASE ) && (id < PBAPC_MESSAGE_TOP)) ||
@@ -3845,12 +3838,6 @@ static void app_handler(Task task, MessageId id, Message message)
         return;
     }
 #endif
-    else if (id == MESSAGE_DFU_SQIF_STATUS)
-    {
-        /* tell interested modules the status of a DFU from SQIF operation */
-        sinkUpgradeMsgHandler(task, id, message);
-        return;
-    }
 #ifdef ENABLE_DISPLAY
     else if ( (id >= DISPLAY_UPSTREAM_MESSAGE_BASE ) && (id < DISPLAY_UPSTREAM_MESSAGE_TOP) )
     {
@@ -3870,16 +3857,10 @@ static void app_handler(Task task, MessageId id, Message message)
         sinkFmHandleFmPluginMessage(id, message);
         return;
     }
-    else if (sinkUpgradeIsUpgradeMsg(id))
-    {
-        sinkUpgradeMsgHandler(task, id, message);
-        return;
-    }
-
 
     else
     {
-        MAIN_DEBUG(("MSGTYPE ? [%x]\n", id)) ;
+        LOGD("MSGTYPE ? [%x]\n", id);
     }
 }
 
@@ -3887,7 +3868,7 @@ static void app_handler(Task task, MessageId id, Message message)
 #ifdef HOSTED_TEST_ENVIRONMENT
 void _sink_init(void)
 #else
-void _init(void)
+void sink_init(void)
 #endif
 {
     /* Set the application task */
@@ -3921,7 +3902,7 @@ static void sinkConnectionInit(void)
 
     /* The number of paired devices can be restricted using pskey user 40,  a number between 1 and 8 is allowed */
     ConfigRetrieve(CONFIG_LENGTHS, lengths_key , sizeof(lengths_config_type) );
-    DEBUG (("PDLSize[%d]\n" , lengths_key->pdl_size ));
+    LOGD("PDLSize[%d]\n" , lengths_key->pdl_size );
 
     /* Initialise the Connection Library with the options */
     ConnectionInitEx2(&theSink.task , NULL, lengths_key->pdl_size );
@@ -3938,10 +3919,7 @@ int sink_main(void)
 int main(void)
 #endif
 {
-    DEBUG (("Main [%s]\n",__TIME__));
-
-    /* Initialise the Upgrade lib */
-    sinkUpgradeInit(&theSink.task);
+    LOGD("Main [%s]\n",__TIME__);
 
     /* check and update as necessary the software version pskey, this is used
        for ensuring maximum compatibility with the sink configuration tool */
@@ -4010,17 +3988,17 @@ int main(void)
 #include "vm.h"
 void * MallocPANIC ( const char file[], int line , size_t pSize )
 {
-    static uint16 lSize = 0 ;
-    static uint16 lCalls = 0 ;
+    static u16 lSize = 0 ;
+    static u16 lCalls = 0 ;
     void * lResult;
 
     lCalls++ ;
     lSize += pSize ;
-    printf("+%s,l[%d]c[%d] t[%d] a[%d] s[%d]",file , line ,lCalls, lSize , (uint16)VmGetAvailableAllocations(), pSize );
+    printf("+%s,l[%d]c[%d] t[%d] a[%d] s[%d]",file , line ,lCalls, lSize , (u16)VmGetAvailableAllocations(), pSize );
 
     lResult = malloc ( pSize ) ;
 
-    printf("@[0x%x]\n", (uint16)lResult);
+    printf("@[0x%x]\n", (u16)lResult);
 
         /*and panic if the malloc fails*/
     if ( lResult == NULL )
@@ -4035,9 +4013,9 @@ void * MallocPANIC ( const char file[], int line , size_t pSize )
 
 void FreePANIC ( const char file[], int line, void * ptr )
 {
-    static uint16 lCalls = 0 ;
+    static u16 lCalls = 0 ;
     lCalls++ ;
-    printf("-%s,l[%d]c[%d] a[%d] @[0x%x]\n",file , line ,lCalls, (uint16)VmGetAvailableAllocations()-1, (uint16)ptr);
+    printf("-%s,l[%d]c[%d] a[%d] @[0x%x]\n",file , line ,lCalls, (u16)VmGetAvailableAllocations()-1, (u16)ptr);
     /* panic if attempting to free a null pointer*/
     if ( ptr == NULL )
     {
@@ -4083,7 +4061,7 @@ static void handleHFPStatusCFM ( hfp_lib_status pStatus )
 {
     if (pStatus != hfp_success )
     {
-        MAIN_DEBUG(("HS: HFP CFM Err [%d]\n" , pStatus)) ;
+        LOGD("HFP CFM Err [%d]\n" , pStatus);
         MessageSend ( &theSink.task , EventSysError , 0 ) ;
 #ifdef ENABLE_PBAP
         if(theSink.pbapc_data.pbap_command == pbapc_dialling)
@@ -4094,7 +4072,7 @@ static void handleHFPStatusCFM ( hfp_lib_status pStatus )
     }
     else
     {
-         MAIN_DEBUG(("HS: HFP CFM Success [%d]\n" , pStatus)) ;
+         LOGD("HFP CFM Success [%d]\n" , pStatus);
     }
 
 #ifdef ENABLE_PBAP

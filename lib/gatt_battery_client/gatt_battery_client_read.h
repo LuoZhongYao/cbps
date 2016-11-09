@@ -17,7 +17,7 @@ NAME
 DESCRIPTION
     Sends a GATT_BATTERY_CLIENT_READ_DESCRIPTOR_CFM message to the application task.
 */
-void makeBatteryReadDescriptorMsg(GBASC *battery_client, gatt_battery_client_status_t status, uint16 size_value, const uint8 *value);
+void makeBatteryReadDescriptorMsg(GBASC *battery_client, gatt_battery_client_status_t status, u16 size_value, const u8 *value);
 
 
 /***************************************************************************
@@ -27,7 +27,7 @@ NAME
 DESCRIPTION
     Handles the internal BATTERY_INTERNAL_MSG_READ_LEVEL message.
 */
-void batteryReadLevelRequest(GBASC *battery_client, uint16 level_handle, bool discover_if_unknown);
+void batteryReadLevelRequest(GBASC *battery_client, u16 level_handle, bool discover_if_unknown);
 
 
 /***************************************************************************
@@ -47,7 +47,7 @@ NAME
 DESCRIPTION
     Handles the internal BATTERY_INTERNAL_MSG_READ_DESCRIPTOR message.
 */
-void batteryReadDescriptor(GBASC *battery_client, uint16 descriptor_uuid, bool discover_if_unknown);
+void batteryReadDescriptor(GBASC *battery_client, u16 descriptor_uuid, bool discover_if_unknown);
 
 
 /***************************************************************************
@@ -57,7 +57,7 @@ NAME
 DESCRIPTION
     Reads characteristic value using known handle.
 */
-void readCharacteristicValue(GBASC *battery_client, uint16 handle);
+void readCharacteristicValue(GBASC *battery_client, u16 handle);
 
 /***************************************************************************
 NAME
@@ -66,7 +66,7 @@ NAME
 DESCRIPTION
     Reads characteristic descriptor value depending on the pending function.
 */
-void readCharacteristicDescriptorValue(GBASC *battery_client, uint16 handle);
+void readCharacteristicDescriptorValue(GBASC *battery_client, u16 handle);
 
 
 #endif

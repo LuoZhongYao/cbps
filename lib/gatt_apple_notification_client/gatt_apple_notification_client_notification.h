@@ -21,7 +21,7 @@ NAME
 DESCRIPTION
     Sends a GATT_ANCS_SET_NS_NOTIFICATION_CFM message to the application task.
 */
-void makeAncsSetNotificationCfmMsg(GANCS *ancs, gatt_ancs_status_t status, uint8 characteristic);
+void makeAncsSetNotificationCfmMsg(GANCS *ancs, gatt_ancs_status_t status, u8 characteristic);
 
 /***************************************************************************
 NAME
@@ -40,6 +40,6 @@ NAME
 DESCRIPTION
     Handles the internal ANCS_INTERNAL_MSG_SET_xx_NOTIFICATION message.
 */
-void ancsSetNotificationRequest(GANCS *ancs, bool notifications_enable, uint8 characteristic);
+void ancsSetNotificationRequest(GANCS *ancs, bool notifications_enable, u8 characteristic);
 
 #endif /* GATT_APPLE_NOTIFICATION_CLIENT_NOTIFICATION_H_ */

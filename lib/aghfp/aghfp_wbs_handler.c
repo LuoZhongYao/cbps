@@ -119,7 +119,7 @@ static void aghfpHandleWbsCodecConReqProcessing(AGHFP *aghfp)
 bool aghfpWbsStartCodecNegotiation(AGHFP *aghfp, aghfp_wbs_negotiate_action wbs_negotiate_action)
 {
 	char bcs[15];
-	uint16 codecs; 		/* Codec bitmap used internally */
+	u16 codecs; 		/* Codec bitmap used internally */
 	wbs_codec codec_id; /* Used to store the actual codec ID */
 	
 	/* Find common supported codecs for the AG and HF */
@@ -188,7 +188,7 @@ void aghfpHandleWbsCodecNegReq(AGHFP *aghfp, wbs_codec codec_id)
 {
     sync_pkt_type		audio_packet_type = aghfp->audio_packet_type;
     aghfp_audio_params	audio_params = aghfp->audio_params;
-	uint16 codec; 		/* Codec bitmap used internally */
+	u16 codec; 		/* Codec bitmap used internally */
 	
     AGHFP_DEBUG(("aghfpHandleWbsCodecNegReq : "));
     
@@ -321,7 +321,7 @@ RETURNS
 
 void aghfpHandleCodecNegotiationReq(AGHFP *aghfp, AGHFP_INTERNAL_CODEC_NEGOTIATION_REQ_T *codecs)
 {
-	uint16 counter_1;
+	u16 counter_1;
 
 	aghfp->hf_codecs = 0;
 
@@ -486,7 +486,7 @@ void AghfpStartWbsCodecNegotiation(AGHFP *aghfp)
 /*
 	Gets the WBS codecs supported by the connected HF.
 */
-uint8 AghfpGetHfWbsCodecsSupported(AGHFP * aghfp)
+u8 AghfpGetHfWbsCodecsSupported(AGHFP * aghfp)
 {
 	if(aghfp->state >= aghfp_slc_connected)
 	{
@@ -503,7 +503,7 @@ uint8 AghfpGetHfWbsCodecsSupported(AGHFP * aghfp)
 		TRUE - WBS codec has been negotiated
 		FALSE - WBS codec has NOT been negotiated
 */
-bool AghfpCodecHasBeenNegotiated(AGHFP * aghfp, uint8 *wbs_codec)
+bool AghfpCodecHasBeenNegotiated(AGHFP * aghfp, u8 *wbs_codec)
 {
 	bool	rtnVal = FALSE;
 
@@ -520,7 +520,7 @@ bool AghfpCodecHasBeenNegotiated(AGHFP * aghfp, uint8 *wbs_codec)
 	Returns the codecs supported by this instantiation of the AGHFP.
 	Return value is only valid AFTER a call to AghfpInit().
 */
-uint16 AghfpSupportedWbsCodecs(AGHFP * aghfp)
+u16 AghfpSupportedWbsCodecs(AGHFP * aghfp)
 {
 	return(aghfp->codecs_info.ag_codecs);
 }

@@ -25,7 +25,7 @@ NAME
 DESCRIPTION
     Send a success GATT_CLIENT_INIT_CFM message to the registered client task.
 */
-void scanParamsSendInitSuccessCfm(GSPC_T *scan_params_client, uint16 scan_interval_window_handle, uint16 scan_refresh_handle);
+void scanParamsSendInitSuccessCfm(GSPC_T *scan_params_client, u16 scan_interval_window_handle, u16 scan_refresh_handle);
 
 /***************************************************************************
 NAME
@@ -43,6 +43,6 @@ NAME
 DESCRIPTION
     Enables Scan refresh notifications from the remote Scan server.
 */
-void scanRefreshEnableNotification(GSPC_T *scan_params_client, uint16 handle);
+void scanRefreshEnableNotification(GSPC_T *scan_params_client, u16 handle);
 
 #endif /* GATT_CAN_PARAMS_CLIENT_MSG_HANDLER_H_ */

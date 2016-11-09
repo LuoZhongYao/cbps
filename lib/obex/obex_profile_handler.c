@@ -11,6 +11,7 @@ DESCRIPTION
 
 #include <memory.h>
 #include <panic.h>
+#include <stdlib.h>
 #include <connection.h>
 #include <stream.h>
 #include <source.h>
@@ -152,13 +153,13 @@ static void obexHandleRfcConnectCfm( Obex    session,
  *  target      - Target header
  **************************************************************************/
 static Obex obexCreateSession( TaskData     appTaskData, 
-                               uint16       sizeAppTask, 
+                               u16       sizeAppTask, 
                                ObexRole     role,
-                               uint16       sizeTarget,
-                               const uint8* target )
+                               u16       sizeTarget,
+                               const u8* target )
 {
     Obex sessionTask;
-    uint16 taskSize = sizeof(OBEX) + sizeAppTask;
+    u16 taskSize = sizeof(OBEX) + sizeAppTask;
 
     /* Create Session Task for OBEX and the application */
     sessionTask = (Obex) PanicUnlessMalloc ( taskSize );
@@ -167,7 +168,7 @@ static Obex obexCreateSession( TaskData     appTaskData,
     OBEX_INFO(("Obex create memory\n"));
 
     sessionTask->task.handler = obexProfileHandler;
-    sessionTask->theApp = (Task) ((uint8*)sessionTask + sizeof(OBEX));
+    sessionTask->theApp = (Task) ((u8*)sessionTask + sizeof(OBEX));
     sessionTask->role = role; 
     sessionTask->state = obex_session;
     sessionTask->sizeTargetWho= sizeTarget;
@@ -199,7 +200,7 @@ static Task obexSessionReq( Obex sessionTask,
                             const bdaddr* addr,
                             ObexChannel trans)
 {
-    uint16 channel = obexGetChannel( trans );
+    u16 channel = obexGetChannel( trans );
 
     if( IsObexL2capChannel( trans ) )
     {
@@ -210,8 +211,8 @@ static Task obexSessionReq( Obex sessionTask,
         /* Create the RFCOMM Connect Request */    
         ConnectionRfcommConnectRequest( &sessionTask->task, 
                                         addr,
-                                        (uint8)channel,
-                                        (uint8)channel,
+                                        (u8)channel,
+                                        (u8)channel,
                                         OBEX_MAX_RFC_FRAME_SIZE);
     }
 
@@ -243,7 +244,7 @@ static Task obexSessionResp(Obex sessionTask,
 {
     Task task = NULL;
     Task appTask = NULL;
-    uint16 channel = obexGetChannel( trans );
+    u16 channel = obexGetChannel( trans );
 
     if( accept )
     {
@@ -254,7 +255,8 @@ static Task obexSessionResp(Obex sessionTask,
         sessionTask->channel = channel;
         sessionTask->auth = auth;
         /* Set unique session ID for each session */
-        if( sessionTask->targetWho ) sessionTask->connID =  (uint16) task; 
+        /* XXX XXX XXX XXX XXX XXX */
+        /* if( sessionTask->targetWho ) sessionTask->connID =  task; */
     }   
    
     if( IsObexL2capChannel( trans ) )
@@ -267,7 +269,7 @@ static Task obexSessionResp(Obex sessionTask,
         ConnectionRfcommConnectResponse( task, 
                                          accept, 
                                          id.u.sink, 
-                                         (uint8)channel, 
+                                         (u8)channel, 
                                          OBEX_MAX_RFC_FRAME_SIZE );
     }
 
@@ -284,7 +286,7 @@ static Task obexSessionResp(Obex sessionTask,
 void obexHandleSessionCfm( Obex       session,
                            ObexStatus status,
                            const bdaddr* addr,
-                           uint16  channel )
+                           u16  channel )
 {
     
     session->channel = channel;
@@ -426,10 +428,10 @@ void obexDeleteSessionTask( Obex session )
  * RETURN
  *  TRUE on success and FALSE on failure
  ***********************************************************************/
-bool obexAuthenticateSession( Obex session, const uint8* pkt, uint16 *len)
+bool obexAuthenticateSession( Obex session, const u8* pkt, u16 *len)
 {
-    const uint8* digest;
-    uint16 pktLen = 0;
+    const u8* digest;
+    u16 pktLen = 0;
 
 
     /*
@@ -488,10 +490,10 @@ bool obexAuthenticateSession( Obex session, const uint8* pkt, uint16 *len)
  * DESCRIPTION
  *  Validate the session by comparing the Target/Who header 
  *************************************************************************/
-bool obexValidateSession( Obex session, const uint8* pkt, uint16 len )
+bool obexValidateSession( Obex session, const u8* pkt, u16 len )
 {
-    uint8* target;
-    uint16 opcode;
+    u8* target;
+    u16 opcode;
 
     opcode = ( IsObexClient( session ))? OBEX_WHO_HDR: OBEX_TARGET_HDR;
 

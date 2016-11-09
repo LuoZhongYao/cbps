@@ -75,11 +75,11 @@ used to implement stubs when features are not required.
 /*
     Return the Codec ID given a codec mask.
 */
-wbs_codec WbsCodecMaskToCodecId(codecs_info *codecs_info_in, uint16 codec_mask)
+wbs_codec WbsCodecMaskToCodecId(codecs_info *codecs_info_in, u16 codec_mask)
 {
-    uint16 counter_1;
-    uint16 test_mask = 1;
-    uint16 codec_index = 0;
+    u16 counter_1;
+    u16 test_mask = 1;
+    u16 codec_index = 0;
     bool   codec_found = FALSE;
 
     for(counter_1 = 0; counter_1 < 16; counter_1++)
@@ -110,11 +110,11 @@ wbs_codec WbsCodecMaskToCodecId(codecs_info *codecs_info_in, uint16 codec_mask)
 /*
     Return the codec mask given a Codec ID.
 */
-uint16 WbsCodecIdToCodecMask(codecs_info *codecs_info_in, wbs_codec codec_id)
+u16 WbsCodecIdToCodecMask(codecs_info *codecs_info_in, wbs_codec codec_id)
  {
-    uint16 counter_1;
-    uint16 test_mask = 1;
-    uint16 codec_index = 0;
+    u16 counter_1;
+    u16 test_mask = 1;
+    u16 codec_index = 0;
     bool   codec_found = FALSE;
     bool   first_bit_found = FALSE;
 

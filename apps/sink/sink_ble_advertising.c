@@ -47,9 +47,9 @@ void bleStopAdvertising(void)
 }
 
 /*******************************************************************************
-NAME    
+NAME
     setupFlagsAdData
-    
+
 RETURN
      size of flag block
 
@@ -58,28 +58,28 @@ DESCRIPTION
 
 PARAMETERS
     ad_data_ptr  Pointer to the advertising data.
-    
+
 RETURNS
     void
 */
-static uint16 setupFlagsAdData(uint8 *ad_data, adv_discoverable_mode_t mode)
+static u16 setupFlagsAdData(u8 *ad_data, adv_discoverable_mode_t mode)
 {
     #define FLAGS_AD_DATA_LENGTH 0x3
-    
-    uint16 flags = 0;
-    
+
+    u16 flags = 0;
+
     if (mode == adv_discoverable_mode_general)
         flags |= BLE_FLAGS_GENERAL_DISCOVERABLE_MODE;
     else if (mode == adv_discoverable_mode_limited)
         flags |= BLE_FLAGS_LIMITED_DISCOVERABLE_MODE;
-    
+
     /* Setup the flags ad data */
     ad_data[0] = 0x02;
     ad_data[1] = ble_ad_type_flags;
     ad_data[2] = flags;
 #ifdef DEBUG_BLE
     {
-        uint16 counter;
+        u16 counter;
         BLE_AD_INFO(("AD Data: flags = ["));
         for (counter=0; counter < FLAGS_AD_DATA_LENGTH; counter++)
         {
@@ -94,12 +94,12 @@ static uint16 setupFlagsAdData(uint8 *ad_data, adv_discoverable_mode_t mode)
 
 
 /*******************************************************************************
-NAME    
+NAME
     updateServicesAdData
 
 DESCRIPTION
     Helper function to update the services UUID enabled in advertisement data
-    
+
 PARAMETERS
     ad_data_ptr      Pointer to the advertising data.
     counter_ptr       Pointer to start adding services from this position in the ad_data memory
@@ -108,8 +108,8 @@ PARAMETERS
 RETURNS
     void
 */
-static void updateServicesAdData(uint8* ad_data_ptr, uint16 *counter_ptr , uint16 num_services)
-{ 
+static void updateServicesAdData(u8* ad_data_ptr, u16 *counter_ptr , u16 num_services)
+{
     if (sinkGattBatteryServiceEnabled() && num_services)
     {
         BLE_AD_INFO(("Battery Service"));
@@ -123,15 +123,15 @@ static void updateServicesAdData(uint8* ad_data_ptr, uint16 *counter_ptr , uint1
 
 
 /*******************************************************************************
-NAME    
+NAME
     setupServicesAdData
 
 DESCRIPTION
     Helper function to setup the services advertisement data
-    
+
 RETURN
     the offset of the last byte to be written in.
-    
+
 PARAMETERS
     ad_data_ptr      Pointer to the advertising data.
     num_free_octets  Number of free bytes in the advertising data.
@@ -139,14 +139,14 @@ PARAMETERS
 RETURNS
     void
 */
-static uint16 setupServicesAdData(uint8* ad_data, uint16 ad_data_index )
+static u16 setupServicesAdData(u8* ad_data, u16 ad_data_index )
 {
     /* How many services have been defined? */
-    uint16 counter = ad_data_index;
-    uint16 num_services = 0;
-    uint16 ad_size;
-    uint8 ad_tag;
-    uint16 num_free_octets = MAX_AD_DATA_SIZE_IN_OCTETS - ad_data_index;
+    u16 counter = ad_data_index;
+    u16 num_services = 0;
+    u16 ad_size;
+    u8 ad_tag;
+    u16 num_free_octets = MAX_AD_DATA_SIZE_IN_OCTETS - ad_data_index;
 
     /* Check if battery service enabled and add to total number of services enabled */
     if (sinkGattBatteryServiceEnabled())
@@ -169,18 +169,18 @@ static uint16 setupServicesAdData(uint8* ad_data, uint16 ad_data_index )
          {
                /* Advertise incomplete list (only advertise the first service based on alpabetical priority) */
                ad_tag = ble_ad_type_more_uuid16;
-        
+
                /* Allocate enough memory to store the services defined for the device */
                ad_size = (AD_DATA_HEADER_SIZE + OCTETS_PER_SERVICE);
          }
-    
+
          /* Setup AD data for the services */
          ad_data[ad_data_index] = ad_size -1;    /* Do not count the 'length' value; length is AD_TAG + AD_DATA */
-         ad_data[ad_data_index+1] = ad_tag ;     /* AD_TAG (either complete or incomplete list of uint16 UUIDs */
-    
+         ad_data[ad_data_index+1] = ad_tag ;     /* AD_TAG (either complete or incomplete list of u16 UUIDs */
+
          /* Start adding services from this position in the ad_data memory */
          counter = AD_DATA_HEADER_SIZE + ad_data_index;
-    
+
          /* Depending on which services have been defined, build the AD data */
          BLE_AD_INFO(("AD Data: services num=%d, included=", num_services));
 
@@ -188,10 +188,10 @@ static uint16 setupServicesAdData(uint8* ad_data, uint16 ad_data_index )
          updateServicesAdData(ad_data, &counter, num_services);
 
          BLE_AD_INFO(("\n"));
-    
+
          #ifdef DEBUG_BLE
          {
-               uint16 idx;
+               u16 idx;
                BLE_AD_INFO(("AD Data: services = ["));
                for (idx=ad_data_index; idx < counter; idx++)
                {
@@ -207,19 +207,19 @@ static uint16 setupServicesAdData(uint8* ad_data, uint16 ad_data_index )
 
 
 /*******************************************************************************
-NAME    
+NAME
     setupLocalNameAdvertisingData
 
 RETURN
     the offset of the last byte to be written in.
-    
+
 DESCRIPTION
-    Helper function to setup advertising data to advertise the devices local 
+    Helper function to setup advertising data to advertise the devices local
     name used by remote devices scanning for BLE services
-*/      
-static uint16 setupLocalNameAdvertisingData(uint8 *ad_data, uint16 ad_index, uint16 size_local_name, const uint8 * local_name)
+*/
+static u16 setupLocalNameAdvertisingData(u8 *ad_data, u16 ad_index, u16 size_local_name, const u8 * local_name)
 {
-	uint16 ad_data_free_space = MAX_AD_DATA_SIZE_IN_OCTETS - ad_index;
+	u16 ad_data_free_space = MAX_AD_DATA_SIZE_IN_OCTETS - ad_index;
 
     /* Is there a local name to be advertised? If so, is there enough free space in AD Data to advertise it? */
     if ( (0 == size_local_name) || ((AD_DATA_HEADER_SIZE+1) >= ad_data_free_space) )
@@ -235,15 +235,15 @@ static uint16 setupLocalNameAdvertisingData(uint8 *ad_data, uint16 ad_index, uin
     else
     {
         /* Can advertise a shortened local name */
-        ad_data[ad_index] = ad_data_free_space - AD_DATA_HEADER_SIZE +1;    
+        ad_data[ad_index] = ad_data_free_space - AD_DATA_HEADER_SIZE +1;
 		ad_data[ad_index+1] = ble_ad_type_shortened_local_name;
 	}
-    
+
     /* Setup the local name advertising data */
     memmove( ad_data + ad_index + AD_DATA_HEADER_SIZE, local_name, ad_data[ad_index] -1 );
 #ifdef DEBUG_BLE
     {
-        uint16 i;
+        u16 i;
         BLE_AD_INFO(("AD Data: local name=[%02x,%02x,", ad_data[ad_index], ad_data[ad_index+1]));
         for (i=0; i<ad_data[ad_index]; i++)
         {
@@ -256,19 +256,19 @@ static uint16 setupLocalNameAdvertisingData(uint8 *ad_data, uint16 ad_index, uin
 }
 
 /******************************************************************************/
-void bleSetupAdvertisingData(uint16 size_local_name, const uint8 *local_name, adv_discoverable_mode_t mode)
+void bleSetupAdvertisingData(u16 size_local_name, const u8 *local_name, adv_discoverable_mode_t mode)
 {
-    uint16 ad_data_index = 0;
-    uint8 *ad_data = malloc( MAX_AD_DATA_SIZE_IN_OCTETS );
-    
+    u16 ad_data_index = 0;
+    u8 *ad_data = malloc( MAX_AD_DATA_SIZE_IN_OCTETS );
+
 	if( NULL != ad_data )
 	{
     	/* Setup the flags advertising data */
         ad_data_index = setupFlagsAdData(ad_data, mode);
-    
+
 		/* Setup the services advertising data */
 		ad_data_index = setupServicesAdData(ad_data, ad_data_index);
-    
+
     	/* Setup the local name advertising data */
     	ad_data_index = setupLocalNameAdvertisingData(ad_data, ad_data_index, size_local_name, local_name );
 
@@ -288,9 +288,9 @@ void bleSetupAdvertisingData(uint16 size_local_name, const uint8 *local_name, ad
 void bleHandleSetAdvertisingData(CL_DM_BLE_SET_ADVERTISING_DATA_CFM_T * cfm)
 {
     ble_gap_event_t event;
-    
+
     BLE_AD_INFO(("CL_DM_BLE_SET_ADVERTISING_DATA_CFM [%x]\n", cfm->status));
-    
+
     if (cfm->status != success)
     {
         BLE_AD_ERROR(("  Failed!\n"));

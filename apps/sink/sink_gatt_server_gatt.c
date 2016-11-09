@@ -26,9 +26,9 @@ DESCRIPTION
 #ifdef DEBUG_GATT
 #define GATT_INFO(x) DEBUG(x)
 #define GATT_ERROR(x) DEBUG(x) TOLERATED_ERROR(x)
-#else 
+#else
 #define GATT_INFO(x)
-#define GATT_ERROR(x) 
+#define GATT_ERROR(x)
 #endif
 
 
@@ -39,7 +39,7 @@ static void handle_read_client_config_indication(Message message)
 {
     gatt_client_connection_t *conn;
     GATT_SERVER_READ_CLIENT_CONFIG_IND_T *msg;
-    uint16 client_config = 0;
+    u16 client_config = 0;
 
     msg = (GATT_SERVER_READ_CLIENT_CONFIG_IND_T*) PanicNull((void*)message);
 
@@ -58,7 +58,7 @@ static void handle_read_client_config_indication(Message message)
     {
         GATT_ERROR(("GATT Server Read Client Config Response failed for CID[%x]\n", msg->cid));
     }
-    
+
     GATT_INFO(("Gatt service read, client_config[0x%x]\n", client_config));
 }
 
@@ -86,7 +86,7 @@ static void handle_write_client_config_indication(Message message)
 
 
 /*******************************************************************************/
-bool sinkGattServerInitialiseTask(uint16 **ptr)
+bool sinkGattServerInitialiseTask(u16 **ptr)
 {
     if (ptr)
     {
@@ -139,10 +139,10 @@ void sinkGattServerMsgHandler(Task task, MessageId id, Message message)
 
 
 /******************************************************************************/
-void sinkGattServerSendServiceChanged(uint16 cid)
+void sinkGattServerSendServiceChanged(u16 cid)
 {
     gatt_client_connection_t *conn;
-    
+
     conn = gattClientFindByCid(cid);
     if ((NULL != conn) && (conn->client_config.gatt & CLIENT_CONFIG_INDICATION))
     {

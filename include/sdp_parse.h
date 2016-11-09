@@ -41,7 +41,7 @@ DESCRIPTION
     Returns TRUE successful in accessing the profile version, FALSE otherwise
 */
 
-bool SdpParseGetProfileVersion(const uint8 size_service_record, const uint8* service_record, uint16 service_class, uint16* profile);
+bool SdpParseGetProfileVersion(const u8 size_service_record, const u8* service_record, u16 service_class, u16* profile);
 
 /*!
 	@brief Insert a profile version into the Service Record
@@ -57,7 +57,7 @@ bool SdpParseGetProfileVersion(const uint8 size_service_record, const uint8* ser
     Returns TRUE successful in inserting the profile version, FALSE otherwise
 */
 
-bool SdpParseInsertProfileVersion(const uint8 size_service_record, const uint8* service_record, uint16 service_class, uint16 profile);
+bool SdpParseInsertProfileVersion(const u8 size_service_record, const u8* service_record, u16 service_class, u16 profile);
 
 /*!
 	@brief Access the Supported Features from the Service Record
@@ -71,7 +71,7 @@ bool SdpParseInsertProfileVersion(const uint8 size_service_record, const uint8* 
     Returns TRUE successful in  accessing the supported features, FALSE otherwise
 */
 
-bool SdpParseGetSupportedFeatures(const uint8 size_service_record, const uint8* service_record, uint16* features);
+bool SdpParseGetSupportedFeatures(const u8 size_service_record, const u8* service_record, u16* features);
 
 /*!
 	@brief insert Supported Features into the Service Record
@@ -85,11 +85,11 @@ bool SdpParseGetSupportedFeatures(const uint8 size_service_record, const uint8* 
     Returns TRUE successful in inserting the supported features, FALSE otherwise
 */
 
-bool SdpParseInsertSupportedFeatures(const uint8 size_service_record, const uint8* service_record, uint16 features);
+bool SdpParseInsertSupportedFeatures(const u8 size_service_record, const u8* service_record, u16 features);
 
 /*!
 	@brief This function allows access to all RFCOMM server channels in the service record, a pointer to an allocated
-		   uint8 array should be passed in along with it's size.  This array will be filled with the channel numbers
+		   u8 array should be passed in along with it's size.  This array will be filled with the channel numbers
 		   found and the number of channels will be returned via chans_found
 
 	@param size_service_record Size of the service record
@@ -98,7 +98,7 @@ bool SdpParseInsertSupportedFeatures(const uint8 size_service_record, const uint
 	
 	@param size_chans The size of the array passed in
 	
-	@param chans Pointer to an allocated uint8 array to be filled with the RFCOMM channels found on success, unaltered 
+	@param chans Pointer to an allocated u8 array to be filled with the RFCOMM channels found on success, unaltered 
 		   otherwise
 		   
 	@param chans_found The number of channels found
@@ -106,7 +106,7 @@ bool SdpParseInsertSupportedFeatures(const uint8 size_service_record, const uint
     Returns TRUE successful in finding one or more Server Channels, FALSE otherwise
 */
 
-bool SdpParseGetMultipleRfcommServerChannels(uint8 size_service_record, uint8* service_record, uint8 size_chans, uint8** chans, uint8* chans_found);
+bool SdpParseGetMultipleRfcommServerChannels(u8 size_service_record, u8* service_record, u8 size_chans, u8** chans, u8* chans_found);
 
 /*!
 	@brief Insert the RFCOMM Server Channel into the Service Record
@@ -120,7 +120,7 @@ bool SdpParseGetMultipleRfcommServerChannels(uint8 size_service_record, uint8* s
     Returns TRUE successful in inserting the Server Channel, FALSE otherwise
 */
 
-bool SdpParseInsertRfcommServerChannel(const uint8 size_service_record, const uint8* service_record, uint8 chan);
+bool SdpParseInsertRfcommServerChannel(const u8 size_service_record, const u8* service_record, u8 chan);
 
 /*!
 	@brief Access a user specified arbitrary attribute from the Service Record, this will only work on simple 
@@ -137,7 +137,7 @@ bool SdpParseInsertRfcommServerChannel(const uint8 size_service_record, const ui
     Returns TRUE successful in accessing the desired attribute, FALSE otherwise
 */
 
-bool SdpParseGetArbitrary(const uint8 size_service_record, const uint8* service_record, ServiceAttributeId id, uint32* val);
+bool SdpParseGetArbitrary(const u8 size_service_record, const u8* service_record, ServiceAttributeId id, u32* val);
 
 
 /*!
@@ -155,7 +155,7 @@ bool SdpParseGetArbitrary(const uint8 size_service_record, const uint8* service_
     Returns TRUE successful in inserting the desired attribute into the service record, FALSE otherwise
 */
 
-bool SdpParseInsertArbitrary(const uint8 size_service_record, const uint8* service_record, ServiceAttributeId id, uint32 val);
+bool SdpParseInsertArbitrary(const u8 size_service_record, const u8* service_record, ServiceAttributeId id, u32 val);
 
 
 /*! 
@@ -176,7 +176,7 @@ bool SdpParseInsertArbitrary(const uint8 size_service_record, const uint8* servi
     Returns TRUE if successful in accessing the service name, FALSE otherwise
 */
 
-bool SdpParseGetServiceName(const uint8 size_service_record, const uint8* service_record, uint8 size_service_name, char** service_name, uint8* length_service_name);
+bool SdpParseGetServiceName(const u8 size_service_record, const u8* service_record, u8 size_service_name, char** service_name, u8* length_service_name);
 
 /*! 
 	@brief Insert a user specified service name into the service record
@@ -192,7 +192,7 @@ bool SdpParseGetServiceName(const uint8 size_service_record, const uint8* servic
     Returns TRUE if successful in inserting the service name into the service record, FALSE otherwise
 */
 
-bool SdpParseInsertServiceName(const uint8 size_service_record, const uint8* service_record, char* service_name);
+bool SdpParseInsertServiceName(const u8 size_service_record, const u8* service_record, char* service_name);
 
 /*! 
 	@brief Access the PBAP Repository attribute in the service record
@@ -206,7 +206,7 @@ bool SdpParseInsertServiceName(const uint8 size_service_record, const uint8* ser
     Returns TRUE if successful in accessing the PBAP Repository, FALSE otherwise
 */
 
-bool SdpParseGetPbapRepos(const uint8 size_service_record, const uint8* service_record, uint8* repos);
+bool SdpParseGetPbapRepos(const u8 size_service_record, const u8* service_record, u8* repos);
 
 /*! 
 	@brief Insert PBAP Repository value
@@ -220,7 +220,7 @@ bool SdpParseGetPbapRepos(const uint8 size_service_record, const uint8* service_
     Returns TRUE if successful in inserting the PBAP Repository value, FALSE otherwise
 */
 
-bool SdpParseInsertPbapRepos(const uint8 size_service_record, const uint8* service_record, uint8 repos);
+bool SdpParseInsertPbapRepos(const u8 size_service_record, const u8* service_record, u8 repos);
 
 /*! 
 	@brief Access the MASInstanceID attribute in the service record
@@ -235,9 +235,9 @@ bool SdpParseInsertPbapRepos(const uint8 size_service_record, const uint8* servi
     Returns TRUE if successful in accessing the MASInstanceID, FALSE otherwise
 */
 
-bool SdpParseGetMapMasInstance( const uint8 size_service_record, 
-                                uint8* service_record, 
-                                uint8* instance_id);
+bool SdpParseGetMapMasInstance( const u8 size_service_record, 
+                                u8* service_record, 
+                                u8* instance_id);
 
 /*! 
 	@brief Access the SupportedMessageTypes attribute in the service record
@@ -251,9 +251,9 @@ bool SdpParseGetMapMasInstance( const uint8 size_service_record,
 
     Returns TRUE if successful, FALSE otherwise
 */
-bool SdpParseGetMapMasMsgFeature( const uint8 size_service_record, 
-                                  uint8* service_record, 
-                                  uint8* msg_feature);
+bool SdpParseGetMapMasMsgFeature( const u8 size_service_record, 
+                                  u8* service_record, 
+                                  u8* msg_feature);
 
 
 /*!
@@ -269,8 +269,8 @@ bool SdpParseGetMapMasMsgFeature( const uint8 size_service_record,
     FALSE otherwise
 */
 
-bool SdpParseGetGoepL2CapPsm( const uint8 size_service_record, 
-                              const uint8* service_record,
-                              uint16* psm );
+bool SdpParseGetGoepL2CapPsm( const u8 size_service_record, 
+                              const u8* service_record,
+                              u16* psm );
 		
 #endif /* SDP_H_ */

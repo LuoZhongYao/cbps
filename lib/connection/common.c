@@ -48,7 +48,7 @@ DESCRIPTION
 RETURNS
     hci_status corresponding to the status passed in
 */
-hci_status connectionConvertHciStatus(uint16 status)
+hci_status connectionConvertHciStatus(u16 status)
 {
     switch (status)
     {
@@ -286,7 +286,7 @@ DESCRIPTION
 RETURNS
     authentication_status corresponding to the status passed in
 */
-authentication_status connectionConvertAuthStatus(uint16 status)
+authentication_status connectionConvertAuthStatus(u16 status)
 {
     switch (status)
     {
@@ -367,14 +367,14 @@ DESCRIPTION
 RETURNS
     hci inquiry mode corresponding to the mode passed in
 */
-uint8 connectionConvertInquiryMode_t(inquiry_mode mode)
+u8 connectionConvertInquiryMode_t(inquiry_mode mode)
 {
     switch(mode)
     {   
         CASE(inquiry_mode_standard, HCI_INQUIRY_MODE_STANDARD);
         CASE(inquiry_mode_rssi, HCI_INQUIRY_MODE_WITH_RSSI);
         CASE(inquiry_mode_eir, HCI_INQUIRY_MODE_WITH_EIR);
-        coerce: return (uint8)mode;       
+        coerce: return (u8)mode;       
         default: 
             CL_DEBUG(("Unrecognised mode %d\n",mode));
             return HCI_INQUIRY_MODE_STANDARD;
@@ -392,7 +392,7 @@ DESCRIPTION
 RETURNS
     CL inquiry mode corresponding to the mode passed in
 */
-inquiry_mode connectionConvertInquiryMode(uint8 mode)
+inquiry_mode connectionConvertInquiryMode(u8 mode)
 {
     switch (mode)
     {   
@@ -418,7 +418,7 @@ DESCRIPTION
 RETURNS
     sdp_open_status corresponding to the status passed in
 */
-sdp_open_status connectionConvertSdpOpenStatus(uint16 status)
+sdp_open_status connectionConvertSdpOpenStatus(u16 status)
 {
     switch(status)
     {
@@ -446,7 +446,7 @@ DESCRIPTION
 RETURNS
     sdp_search_status corresponding to the status passed in
 */
-sdp_search_status connectionConvertSdpSearchStatus(uint16 status)
+sdp_search_status connectionConvertSdpSearchStatus(u16 status)
 {
     switch (status)
     {
@@ -484,7 +484,7 @@ DESCRIPTION
 RETURNS
     rfcomm_disconnect_status corresponding to the status passed in
 */
-rfcomm_disconnect_status connectionConvertRfcommDisconnectStatus(uint16 status)
+rfcomm_disconnect_status connectionConvertRfcommDisconnectStatus(u16 status)
 {
     switch (status)
     {
@@ -682,7 +682,7 @@ dm_protocol_id connectionConvertProtocolId_t(dm_protocol_id_t id)
         return (dm_protocol_id) id;
     else 
     {
-        CL_DEBUG(("Unrecognised id %d\n", (uint16) id));
+        CL_DEBUG(("Unrecognised id %d\n", (u16) id));
         return protocol_unknown;
     }
 }
@@ -721,7 +721,7 @@ DESCRIPTION
 RETURNS
     Blustack HCI scan mode 
 */
-uint8 connectionConvertHciScanEnable(hci_scan_enable mode)
+u8 connectionConvertHciScanEnable(hci_scan_enable mode)
 {
     switch (mode)
     {
@@ -729,7 +729,7 @@ uint8 connectionConvertHciScanEnable(hci_scan_enable mode)
         CASE(hci_scan_enable_inq, HCI_SCAN_ENABLE_INQ);
         CASE(hci_scan_enable_page, HCI_SCAN_ENABLE_PAGE);
         CASE(hci_scan_enable_inq_and_page, HCI_SCAN_ENABLE_INQ_AND_PAGE);
-        coerce: return (uint8)mode;       
+        coerce: return (u8)mode;       
         default:
             CL_DEBUG(("Unrecognised mode %d\n",mode));
             /* safest default is to assume connectable and discoverable */
@@ -783,14 +783,14 @@ DESCRIPTION
 RETURNS
     Bluestack security level
 */
-uint8_t connectionConvertSspSecurityLevel_t(
+u16 connectionConvertSspSecurityLevel_t(
         dm_ssp_security_level level,
         bool outgoing_ok,
         bool authorised,
         bool disable_legacy
         )
 {
-    uint8 secl;
+    u16 secl;
     if(outgoing_ok)
     {
         switch(level)
@@ -868,7 +868,7 @@ DESCRIPTION
 RETURNS
     Bluestack write auth enable
 */
-uint8_t connectionConvertWriteAuthEnable_t(cl_sm_wae write_auth_enable)
+u16 connectionConvertWriteAuthEnable_t(cl_sm_wae write_auth_enable)
 {
     switch(write_auth_enable)
     {
@@ -878,7 +878,7 @@ uint8_t connectionConvertWriteAuthEnable_t(cl_sm_wae write_auth_enable)
         CASE(cl_sm_wae_acl_owner_app, DM_SM_WAE_ACL_OWNER_APP);
         CASE(cl_sm_wae_acl_owner_l2cap, DM_SM_WAE_ACL_OWNER_L2CAP);
         CASE(cl_sm_wae_always, DM_SM_WAE_ALWAYS);
-        coerce: return (uint8_t)write_auth_enable;       
+        coerce: return (u16)write_auth_enable;       
         default:
             CL_DEBUG(("Unrecognised wae %d\n", write_auth_enable));
             return DM_SM_WAE_ACL_NONE;
@@ -1170,7 +1170,7 @@ DESCRIPTION
 RETURNS
     Bluestack role
 */
-hci_role connectionConvertHciRole(uint8 role)
+hci_role connectionConvertHciRole(u8 role)
 {
     switch(role)
     {
@@ -1194,13 +1194,13 @@ DESCRIPTION
 RETURNS
     Bluestack role
 */
-uint8 connectionConvertHciRole_t(hci_role role)
+u8 connectionConvertHciRole_t(hci_role role)
 {
     switch(role)
     {
         CASE(hci_role_master, HCI_MASTER);          
         CASE(hci_role_slave, HCI_SLAVE);
-        coerce: return (uint8)role;       
+        coerce: return (u8)role;       
         case hci_role_dont_care:
         default:
             CL_DEBUG(("Unrecognised role %d\n",role));
@@ -1296,7 +1296,7 @@ DESCRIPTION
 RETURNS
     Connection Lib l2cap_connect_status
 */
-l2cap_connect_status connectionConvertL2capConnectStatus(uint16 result)
+l2cap_connect_status connectionConvertL2capConnectStatus(u16 result)
 {
     switch(result)
     {
@@ -1346,7 +1346,7 @@ l2cap_connect_status connectionConvertL2capConnectStatus(uint16 result)
 
 /*****************************************************************************/
 l2cap_map_connectionless_status connectionConvertL2capMapFixedCidResult(
-        uint16 result
+        u16 result
         )
 {
     switch(result)
@@ -1392,7 +1392,7 @@ l2cap_map_connectionless_status connectionConvertL2capMapFixedCidResult(
 
 #ifndef DISABLE_BLE
 /*****************************************************************************/
-ble_advertising_event_type connectionConvertBleEventType(uint8 event_type)
+ble_advertising_event_type connectionConvertBleEventType(u8 event_type)
 {
     switch(event_type)
     {

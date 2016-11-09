@@ -56,7 +56,7 @@ passed to free. The space could either be on the stack or the heap.
 @param TYPE the type to use to determine how much space to allocate
 */
 #define MESSAGE_MAKE(NAME,TYPE) \
-uint16 NAME##_[1+(sizeof(TYPE) < 4 ? 4 : sizeof(TYPE) < 20 ? sizeof(TYPE) : 0)]; \
+u16 NAME##_[1+(sizeof(TYPE) < 4 ? 4 : sizeof(TYPE) < 20 ? sizeof(TYPE) : 0)]; \
 TYPE * const NAME = sizeof(NAME##_)>1 ? (TYPE *) ((NAME##_[0]=sizeof(TYPE)),(1+NAME##_)) : PanicUnlessNew(TYPE)
 
 
@@ -69,7 +69,7 @@ TYPE * const NAME = sizeof(NAME##_)>1 ? (TYPE *) ((NAME##_[0]=sizeof(TYPE)),(1+N
   @param message The message data (if any).
   @param delay The delay in ms before the message will be sent.
 */
-void MessageSendLater(Task task, MessageId id, void *message, uint32 delay);
+void MessageSendLater(Task task, MessageId id, void *message, u32 delay);
 
 /*!
   @brief Cancel the first queued message with the given task and message id.
@@ -89,19 +89,19 @@ bool MessageCancelFirst(Task task, MessageId id);
    - Fill out 'm' if a message is ready for delivery.
    - Send the VM to sleep until message delivery time if a message 
      exists but is not ready for delivery.
-   - Send the VM to sleep for the range of a uint32 if no message exists.
+   - Send the VM to sleep for the range of a u32 if no message exists.
 */
 void MessageWait(void *m);
 
 /*!
-  @brief Send a message to be be delivered when the corresponding uint16 is zero.
+  @brief Send a message to be be delivered when the corresponding u16 is zero.
 
   @param t The task to deliver the message to.
   @param id The message identifier.
   @param m The message data.
   @param c The condition that must be zero for the message to be delivered.
 */
-void MessageSendConditionally(Task t, MessageId id, Message m, const uint16 *c);
+void MessageSendConditionally(Task t, MessageId id, Message m, const u16 *c);
 
 /*!
   @brief Frees the memory pointer to by data.
@@ -124,7 +124,7 @@ void MessageFree(MessageId id, Message data);
   Also, it will deregister the given task from being
   the recipient of any firmware/bluestack messages.
 */
-uint16 MessageFlushTask(Task task);
+u16 MessageFlushTask(Task task);
 
 /*!
   @brief Register a task to handle system-wide messages.
@@ -189,7 +189,7 @@ Task MessageSinkGetTask(Sink sink);
   A message will be sent when any of the listed status fields may have
   changed.
 */
-Task MessageStatusTask(Task task, uint16 count, const status_field *fields);
+Task MessageStatusTask(Task task, u16 count, const status_field *fields);
 
 /*!
   @brief Register a task to handle HostComms primitives.
@@ -269,7 +269,7 @@ void MessageSend(Task task, MessageId id, void *message);
   @param id The message identifier to search for.
   @return A count of how many such messages were cancelled.
 */
-uint16 MessageCancelAll(Task task, MessageId id);
+u16 MessageCancelAll(Task task, MessageId id);
 
 /*!
   @brief The main scheduler loop; it waits until the next message is due and

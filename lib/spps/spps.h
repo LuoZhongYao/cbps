@@ -124,7 +124,7 @@ typedef struct
 	bdaddr	addr;	
 
     /*! The local server channel.*/
-    uint8   server_channel;
+    u8   server_channel;
 
     /*! The Sink associated with the link. */
     Sink    sink;
@@ -174,7 +174,7 @@ void SppStopService(Task theAppTask);
 */
 
 
-void SppConnectResponse(Task theAppTask, const bdaddr *bd_addr, const bool response, const Sink sink, const uint8 local_server_channel, const uint16 max_payload_size);
+void SppConnectResponse(Task theAppTask, const bdaddr *bd_addr, const bool response, const Sink sink, const u8 local_server_channel, const u16 max_payload_size);
 
 
 #endif /* SPP_SERVER_H_ */

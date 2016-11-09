@@ -22,11 +22,11 @@ DESCRIPTION
     Send an access response to the GATT Manager library.
 */
 static void send_transmit_power_access_rsp(Task task,
-                                          uint16 cid,
-                                          uint16 handle,
-                                          uint16 result,
-                                          uint16 size_value,
-                                          const uint8 *value)
+                                          u16 cid,
+                                          u16 handle,
+                                          u16 result,
+                                          u16 size_value,
+                                          const u8 *value)
 {
     if (!GattManagerServerAccessResponse(task, cid, handle, result, size_value, value))
     {
@@ -43,8 +43,8 @@ DESCRIPTION
     Send an access response to the GATT Manager library.
 */
 static void send_transmit_power_level_access_rsp(const GTPSS *const tps,
-                                                 uint16 cid,
-                                                 uint8 tx_level)
+                                                 u16 cid,
+                                                 u8 tx_level)
 {
     send_transmit_power_access_rsp((Task)&tps->lib_task, 
                                    cid,
@@ -63,7 +63,7 @@ DESCRIPTION
 */
 static void send_transmit_power_access_error_rsp(const GTPSS *const tps,
                                                  const GATT_MANAGER_SERVER_ACCESS_IND_T *const access_ind,
-                                                 uint16 error)
+                                                 u16 error)
 {
     send_transmit_power_access_rsp((Task)&tps->lib_task,
                                    access_ind->cid,
@@ -215,7 +215,7 @@ static void handleConnectionManagerMsgHandler(Task task, MessageId id, Message m
             CL_DM_READ_TX_POWER_CFM_T *readTxCfm = (CL_DM_READ_TX_POWER_CFM_T*)msg;
             if(readTxCfm != NULL)
             {
-                uint16 cid = GattGetCidForBdaddr(&readTxCfm->tpaddr.taddr);
+                u16 cid = GattGetCidForBdaddr(&readTxCfm->tpaddr.taddr);
                 readTxCfm->tpaddr.transport = TRANSPORT_BLE_ACL;
                 if(readTxCfm->status == hci_success)
                 {

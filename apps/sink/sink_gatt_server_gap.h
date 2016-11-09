@@ -54,7 +54,7 @@ RETURNS
     TRUE if the GAP server task was initialised, FALSE otherwise.
 */
 #ifdef GATT_ENABLED
-bool sinkGattGapServerInitialiseTask(uint16 **ptr);
+bool sinkGattGapServerInitialiseTask(u16 **ptr);
 #else
 #define sinkGattGapServerInitialiseTask(ptr) (FALSE)
 #endif

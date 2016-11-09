@@ -18,7 +18,7 @@ Part of ADK 4.0
 /* Macros for creating messages */
 #define MAKE_AGHFP_MESSAGE(TYPE) TYPE##_T *message = malloc(sizeof(TYPE##_T));
 #define MAKE_AGHFP_MESSAGE_WITH_ARRAY(TYPE, len) \
-	TYPE##_T *message = (TYPE##_T*)malloc(sizeof(TYPE##_T) + sizeof(uint16) * len);
+	TYPE##_T *message = (TYPE##_T*)malloc(sizeof(TYPE##_T) + sizeof(u16) * len);
 #define COPY_AGHFP_MESSAGE(src, dst) *dst = *src;
 
 
@@ -150,7 +150,7 @@ enum
 typedef struct
 {
 	aghfp_init_status	status;
-	uint8				rfcomm_channel;
+	u8				rfcomm_channel;
 } AGHFP_INTERNAL_INIT_CFM_T;
 
 
@@ -181,7 +181,7 @@ typedef struct
 typedef struct
 {
 	bdaddr		addr;
-	uint8		rfc_channel;
+	u8		rfc_channel;
 } AGHFP_INTERNAL_RFCOMM_CONNECT_REQ_T;
 
 
@@ -210,20 +210,20 @@ typedef struct
 
 typedef struct
 {
-	uint8 code;
+	u8 code;
 } AGHFP_INTERNAL_TRANSMIT_DTMF_CODE_T;
 
 
 typedef struct
 {
-	uint8 cmd;
+	u8 cmd;
 } AGHFP_INTERNAL_SET_RESPONSE_HOLD_STATUS_REQ_T;
 
 
 typedef struct
 {
-	uint8 mode;
-	uint8 format;
+	u8 mode;
+	u8 format;
 } AGHFP_INTERNAL_NETWORK_OPERATOR_FORMAT_REQ_T;
 
 typedef enum 
@@ -267,7 +267,7 @@ typedef struct
 
 typedef struct
 {
-	uint16 level;
+	u16 level;
 } AGHFP_INTERNAL_SEND_SIGNAL_INDICATOR_T;
 
 
@@ -279,7 +279,7 @@ typedef struct
 
 typedef struct
 {
-	uint16 level;
+	u16 level;
 } AGHFP_INTERNAL_SEND_BATT_CHG_INDICATOR_T;
 
 
@@ -314,62 +314,62 @@ typedef struct
 
 typedef struct
 {
-	uint8 		type_number; 	/* Number type of incoming call */
-	uint16		size_number; 	/* Length of number string for incoming calls */
-	uint16		size_alpha; 	/* Length of alpha string for incoming calls */
-	uint8 	    data[1]; 		/* Array to hold both incoming call number and alpha string */
+	u8 		type_number; 	/* Number type of incoming call */
+	u16		size_number; 	/* Length of number string for incoming calls */
+	u16		size_alpha; 	/* Length of alpha string for incoming calls */
+	u8 	    data[1]; 		/* Array to hold both incoming call number and alpha string */
 } AGHFP_INTERNAL_SET_CALLER_ID_DETAILS_REQ_T;
 
 
 typedef struct
 {
-	uint16 keycode;
+	u16 keycode;
 } AGHFP_INTERNAL_AT_CKPD_CMD_T;
 
 
 typedef struct
 {
-	uint16 hf_supported_features;
+	u16 hf_supported_features;
 } AGHFP_INTERNAL_AT_BRSF_REQ_T;
 
 
 typedef struct
 {
-	uint16 mode;
-    uint16 ind;
+	u16 mode;
+    u16 ind;
 } AGHFP_INTERNAL_AT_CMER_REQ_T;
 
 
 typedef struct
 {
-	uint16 action;
-	uint16 index;
+	u16 action;
+	u16 index;
 } AGHFP_INTERNAL_CALL_HOLD_REQ_T;
 
 
 typedef struct
 {
-    uint16 state;
+    u16 state;
 } AGHFP_INTERNAL_CALLER_ID_SETUP_REQ_T;
 
 
 typedef struct
 {
-    uint16 state;
+    u16 state;
 } AGHFP_INTERNAL_CALL_WAITING_SETUP_REQ_T;
 
 
 typedef struct
 {
-    uint16 size_number;
-	uint8 number[1];
+    u16 size_number;
+	u8 number[1];
 } AGHFP_INTERNAL_DIAL_REQ_T;
 
 
 typedef struct
 {
-    uint16 size_number;
-	uint8 number[1];
+    u16 size_number;
+	u8 number[1];
 } AGHFP_INTERNAL_MEMORY_DIAL_REQ_T;
 
 
@@ -387,20 +387,20 @@ typedef struct
 
 typedef struct
 {
-    uint8   type;
-	uint16  size_number;
-	uint16  size_string;
-	uint8   data[1];
+    u8   type;
+	u16  size_number;
+	u16  size_string;
+	u8   data[1];
 } AGHFP_INTERNAL_SEND_CALLER_ID_T;
 
 
 typedef struct
 {
-    uint8   type;
-	uint16  size_string;		/*    When this message gets destructed, this member needs to be free'd. */
-	uint8  *string; 			/* <- The profile handler needs to free it if it rejects the message,    */
-	uint16  size_number;		/*    otherwise it becomes the responsibility of the message handler.    */
-	uint8   number[1];
+    u8   type;
+	u16  size_string;		/*    When this message gets destructed, this member needs to be free'd. */
+	u8  *string; 			/* <- The profile handler needs to free it if it rejects the message,    */
+	u16  size_number;		/*    otherwise it becomes the responsibility of the message handler.    */
+	u8   number[1];
 } AGHFP_INTERNAL_SEND_CALL_WAITING_NOTIFICATION_T;
 
 
@@ -418,32 +418,32 @@ typedef struct
 
 typedef struct
 {
-	uint16 size_number;
-	uint8 number[1];
+	u16 size_number;
+	u8 number[1];
 } AGHFP_INTERNAL_SEND_PHONE_NUMBER_FOR_VOICE_TAG_T;
 
 
 typedef struct
 {
-	uint8 gain;
+	u8 gain;
 } AGHFP_INTERNAL_SET_REMOTE_MICROPHONE_GAIN_T;
 
 
 typedef struct
 {
-	uint8 volume;
+	u8 volume;
 } AGHFP_INTERNAL_SET_REMOTE_SPEAKER_VOLUME_T;
 
 
 typedef struct
 {
-	uint8 gain;
+	u8 gain;
 } AGHFP_INTERNAL_SYNC_MIC_GAIN_T;
 
 
 typedef struct
 {
-	uint8 volume;
+	u8 volume;
 } AGHFP_INTERNAL_SYNC_SPEAKER_VOLUME_T;
 
 
@@ -459,38 +459,38 @@ typedef struct
 
 typedef struct
 {
-    uint8   id;
-    uint8   type;
-    uint8   service;
-    uint16  size_number;
-	uint8   number[1];
+    u8   id;
+    u8   type;
+    u8   service;
+    u16  size_number;
+	u8   number[1];
 } AGHFP_INTERNAL_SEND_SUBSCRIBER_NUMBER_T;
 
 typedef struct
 {
-    uint8   idx;
-    uint8   dir;
-    uint8   status;
-    uint8   mode;
-    uint8   mpty;
-    uint8   type;
-    uint16  size_number;
-    uint8   number[1];
+    u8   idx;
+    u8   dir;
+    u8   status;
+    u8   mode;
+    u8   mpty;
+    u8   type;
+    u16  size_number;
+    u8   number[1];
 
 } AGHFP_INTERNAL_SEND_CURRENT_CALL_T;
 
 typedef struct
 {
-    uint8 mode;
-	uint16 size_operator;
-	uint8 operator[1];
+    u8 mode;
+	u16 size_operator;
+	u8 operator[1];
 } AGHFP_INTERNAL_SEND_NETWORK_OPERATOR_T;
 
 
 typedef struct
 {
-    uint16 size_data;
-	uint8 data[1];
+    u16 size_data;
+	u8 data[1];
 } AGHFP_INTERNAL_USER_DATA_REQ_T;
 
 
@@ -512,8 +512,8 @@ typedef struct
 
 typedef struct
 {
-	uint16  num_codecs;
-	uint16	codec_uuids[AGHFP_MAX_NUM_CODECS];
+	u16  num_codecs;
+	u16	codec_uuids[AGHFP_MAX_NUM_CODECS];
 } AGHFP_INTERNAL_CODEC_NEGOTIATION_REQ_T;
 
 typedef struct
@@ -616,10 +616,10 @@ typedef enum
 
 typedef struct
 {
-	uint8 		type_number; 	/* Number type of incoming call */
-	uint16		size_number; 	/* Length of number string for incoming calls */
-	uint16		size_alpha; 	/* Length of alpha string for incoming calls */
-	uint8 		*data;	 		/* Array holding both number and alpha string */
+	u8 		type_number; 	/* Number type of incoming call */
+	u16		size_number; 	/* Length of number string for incoming calls */
+	u16		size_alpha; 	/* Length of alpha string for incoming calls */
+	u8 		*data;	 		/* Array holding both number and alpha string */
 } aghfp_call_details;
 
 
@@ -662,12 +662,12 @@ struct __AGHFP
 	aghfp_hf_supported_features	hf_supported_features;	/* A record of what the HF sent in its AT+BRSF */
 	aghfp_features_status		features_status;		/* The current status of features that can be enabled/disabled at run time */
     aghfp_indicator_mask        active_indicators;      /* Mask giving the indicators currently active (all enabled or whatever was in the last AT+BIA from HF) */
-	uint8						local_rfc_server_channel;
+	u8						local_rfc_server_channel;
 	unsigned int				wbs_lm_sco_handle:8;
     unsigned int				indicators_enable:1;
-	uint32						sdp_record_handle;
-	uint32						rx_bandwidth;
-	uint32						tx_bandwidth;
+	u32						sdp_record_handle;
+	u32						rx_bandwidth;
+	u32						tx_bandwidth;
 	sync_link_type				link_type;
 	Sink						audio_sink;
     aghfp_audio_connect_state 	audio_connection_state;
@@ -675,7 +675,7 @@ struct __AGHFP
     aghfp_audio_params			audio_params;
     sync_pkt_type               audio_packet_type_to_try;
 	Sink						rfcomm_sink;
-	uint8						*mapped_rfcomm_sink;	/* Used by aghfp_send_data.c */
+	u8						*mapped_rfcomm_sink;	/* Used by aghfp_send_data.c */
 	
 	bool						service_state;			/* Stores whether or not there currently is network service (ie GSM) */
 
@@ -692,11 +692,11 @@ struct __AGHFP
 	aghfp_call_progress			call_progress;
 	aghfp_call_flags			call_flags;
 	aghfp_call_params			call_params;
-	uint16						ring_repeat_interval;	/* In milliseconds. Default 5000. */
-    uint16                      rfcomm_lock;
+	u16						ring_repeat_interval;	/* In milliseconds. Default 5000. */
+    u16                      rfcomm_lock;
     
     bool                        cind_poll_client ;
-    uint16                      rfc_channel;
+    u16                      rfc_channel;
 };
 
 

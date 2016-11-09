@@ -16,7 +16,7 @@ DESCRIPTION
     Interface to update the discovery instance handles before initiating Discovery .
 */
 bool  hid_client_init_discovery_instance(const GATT_HID_CLIENT_CONFIG_PARAMS_T *const cfg,
-      uint16 end_handle);
+      u16 end_handle);
 
 /***************************************************************************
 NAME
@@ -36,7 +36,7 @@ NAME
 DESCRIPTION
     handle discovery complete internal message .
 */
-void hid_client_complete_discovery(GHIDC_T *const hid_client, uint16 cid);
+void hid_client_complete_discovery(GHIDC_T *const hid_client, u16 cid);
 
 
 /***************************************************************************

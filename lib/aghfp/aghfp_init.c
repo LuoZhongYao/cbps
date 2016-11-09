@@ -74,7 +74,7 @@ are not used.
 MESSAGE RETURNED
  AGHFP_INIT_CFM
 */
-void AghfpInit(Task theAppTask, aghfp_profile aghfp_supported_profile, uint16 supported_features)
+void AghfpInit(Task theAppTask, aghfp_profile aghfp_supported_profile, u16 supported_features)
 {
 	AGHFP *aghfp = PanicUnlessNew(AGHFP);
 
@@ -164,7 +164,7 @@ void aghfpHandleInternalInitReq(AGHFP *aghfp)
 /****************************************************************************
  Send an internal init cfm message.
 */
-void aghfpSendInternalInitCfm(Task task, aghfp_init_status s, uint8 c)
+void aghfpSendInternalInitCfm(Task task, aghfp_init_status s, u8 c)
 {
 	MAKE_AGHFP_MESSAGE(AGHFP_INTERNAL_INIT_CFM);
 	message->status = s;

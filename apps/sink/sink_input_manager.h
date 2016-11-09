@@ -36,7 +36,7 @@ NOTES
 typedef struct
 {
     sinkState   state;
-    uint16      mask;
+    u16      mask;
 }statesLookup_t;
 
 
@@ -79,12 +79,12 @@ typedef enum
 */
 typedef struct
 {
-    uint16  multipleDetectTimer;    /* Timer that is armed immediately  after the first input is pressed, once this timer fires, no further multiple buttons will be included in the "pattern" */
-    uint16  shortTimer;             /* After a short duration, this timer will fire, input manager can assign events when short timer fires */
-    uint16  longTimer;              /* After a long duration, this timer will fire, input manager can assign events when the timer fires */
-    uint16  vLongTimer;             /* After a very long duration, this timer will fire, input manager can assign events when the timer fires */
-    uint16  vvLongTimer;            /* After a very very long duration, this timer will fire, input manager can assign events when the timer fires */
-    uint16  repeatTimer;            /* Every "repeatTimer" duration, this timer will fire, input manager can assign events on short timer firing, such as repeated volume events */
+    u16  multipleDetectTimer;    /* Timer that is armed immediately  after the first input is pressed, once this timer fires, no further multiple buttons will be included in the "pattern" */
+    u16  shortTimer;             /* After a short duration, this timer will fire, input manager can assign events when short timer fires */
+    u16  longTimer;              /* After a long duration, this timer will fire, input manager can assign events when the timer fires */
+    u16  vLongTimer;             /* After a very long duration, this timer will fire, input manager can assign events when the timer fires */
+    u16  vvLongTimer;            /* After a very very long duration, this timer will fire, input manager can assign events when the timer fires */
+    u16  repeatTimer;            /* Every "repeatTimer" duration, this timer will fire, input manager can assign events on short timer firing, such as repeated volume events */
 } timerConfig_t;
 
 
@@ -93,8 +93,8 @@ typedef struct
 */
 typedef struct
 {
-    uint16              mask;           /* Which Input(s) must be set to trigger the event */
-    uint16              state_mask;     /* The application state(s) for which the event *user_event* will be valid */   
+    u16              mask;           /* Which Input(s) must be set to trigger the event */
+    u16              state_mask;     /* The application state(s) for which the event *user_event* will be valid */   
     inputEvent_t        input_event:8;  /* Which input event is required for the event to trigger */
     unsigned            user_event:8;   /* The Application User Event that will be triggered when the input event meets the required conditions (this is offset from EVENTS_USR_MESSAGE_BASE, (i.e. for EventUsrPowerOn, this value will be set to 1) */
 } eventLookupTable_t;
@@ -115,9 +115,9 @@ typedef struct
 */
 typedef struct
 {
-    uint16                  size_lookup_table;  /* The number of entries in the input monitor event lookup table */
+    u16                  size_lookup_table;  /* The number of entries in the input monitor event lookup table */
     inputMonitorConfig_t    *config;            /* The user config data for the input manager */
-    uint16                  down_mask;          /* If a remote control has generated a button press, store the mask of the down (to remember the held buttons down, will also block out new button presses from other input sources) */
+    u16                  down_mask;          /* If a remote control has generated a button press, store the mask of the down (to remember the held buttons down, will also block out new button presses from other input sources) */
     unsigned                ignore:1;           /* Flag set to ignore input events from any "input monitor" task whist another is active (i.e. whilst the VOL- button on a remote is held down, other events from other remotes will be ignored) */
     unsigned                reserved:15;
 } inputManagerTaskData_t;
@@ -131,7 +131,7 @@ DESCRIPTION
     Function for input monitor tasks to use to notify the input manager of 
     an event that has occured.
 */
-void notifyInputManager(inputEvent_t event, uint16 mask, uint16 id);
+void notifyInputManager(inputEvent_t event, u16 mask, u16 id);
 
 
 /****************************************************************************

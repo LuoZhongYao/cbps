@@ -82,7 +82,7 @@
     Support all features and full bitpool range. Note that we trust the source
     to choose a bitpool value suitable for the Bluetooth bandwidth.
 */
-static const uint8 sbc_caps_sink[] = {
+static const u8 sbc_caps_sink[] = {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
     AVDTP_SERVICE_MEDIA_CODEC,
@@ -116,7 +116,7 @@ static const uint8 sbc_caps_sink[] = {
     - MPF-1
     - free rate
 */
-static const uint8 mp3_caps_sink[] = {
+static const u8 mp3_caps_sink[] = {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
     AVDTP_SERVICE_MEDIA_CODEC,
@@ -146,7 +146,7 @@ static const uint8 mp3_caps_sink[] = {
 
 
 /* SBC source caps */
-static const uint8 sbc_caps_source[] = {
+static const u8 sbc_caps_source[] = {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
     AVDTP_SERVICE_MEDIA_CODEC,
@@ -174,7 +174,7 @@ static const uint8 sbc_caps_source[] = {
     - MPF-1
     - free rate
 */
-static const uint8 mp3_caps_source[] = {
+static const u8 mp3_caps_source[] = {
     AVDTP_SERVICE_MEDIA_TRANSPORT,
     0,
     AVDTP_SERVICE_MEDIA_CODEC,
@@ -212,7 +212,7 @@ static const sep_config_type sbc_sep_source_no_select = { SBC_SEID, KALIMBA_RESO
 
 
 
-static uint8 *reconfig_caps = NULL;
+static u8 *reconfig_caps = NULL;
 
 
 void A2dpHandleComplexMessage(Task task, MessageId id, Message message)
@@ -248,11 +248,11 @@ void A2dpHandleComplexMessage(Task task, MessageId id, Message message)
 }
 
 
-void A2dpInitTestExtraDefault( Task theAppTask, uint8 role, bool enable_mp3 )
+void A2dpInitTestExtraDefault( Task theAppTask, u8 role, bool enable_mp3 )
 {
 
     sep_data_type sep[6];
-    uint16 number_of_seps = 0;
+    u16 number_of_seps = 0;
 
 
     if( role & A2DP_INIT_ROLE_SINK)
@@ -287,7 +287,7 @@ void A2dpInitTestExtraDefault( Task theAppTask, uint8 role, bool enable_mp3 )
 }
 
 
-void A2dpInitTestExtraAppselect(Task theAppTask, uint16 linkloss_timeout)
+void A2dpInitTestExtraAppselect(Task theAppTask, u16 linkloss_timeout)
 {
     sep_data_type sep[1];
 
@@ -303,49 +303,49 @@ void A2dpConnectTestExtra(bdaddr *addr)
     if( !A2dpSignallingConnectRequest( addr ) ) Panic();
 
 }
-void A2dpConnectResponseTestExtra(uint16 device_id, bool accept)
+void A2dpConnectResponseTestExtra(u16 device_id, bool accept)
 {
 
     if( !A2dpSignallingConnectResponse( device_id, accept) ) Panic();
 
 }
-void A2dpDisconnectTestExtra(uint16 device_id)
+void A2dpDisconnectTestExtra(u16 device_id)
 {
     if(!A2dpSignallingDisconnectRequest(device_id) ) Panic();
 
 }
 
-void A2dpOpenTestExtra(uint16 device_id)
+void A2dpOpenTestExtra(u16 device_id)
 {
 
     if(! A2dpMediaOpenRequest( device_id, 0, NULL ) ) Panic();
 
 }
-void A2dpOpenResponseTestExtra(uint16 device_id, bool accept)
+void A2dpOpenResponseTestExtra(u16 device_id, bool accept)
 {
 
     if( !A2dpMediaOpenResponse( device_id, accept ) ) Panic();
 
 }
-void A2dpCloseTestExtra(uint16 device_id, uint16 stream_id)
+void A2dpCloseTestExtra(u16 device_id, u16 stream_id)
 {
 
     if( !A2dpMediaCloseRequest( device_id, stream_id ) ) Panic();
 }
-void A2dpMediaStartTestExtra(uint16 device_id, uint16 stream_id)
+void A2dpMediaStartTestExtra(u16 device_id, u16 stream_id)
 {
 
     if( !A2dpMediaStartRequest( device_id, stream_id ) ) Panic();
 
 }
 
-void A2dpMediaStartResponseTestExtra(uint16 device_id, uint16 stream_id, bool accept)
+void A2dpMediaStartResponseTestExtra(u16 device_id, u16 stream_id, bool accept)
 {
     if( !A2dpMediaStartResponse( device_id, stream_id, accept ) ) Panic();
 }
 
 
-void A2dpMediaSuspendTestExtra(uint16 device_id, uint16 stream_id)
+void A2dpMediaSuspendTestExtra(u16 device_id, u16 stream_id)
 {
 
     if(!A2dpMediaSuspendRequest( device_id, stream_id) ) Panic();
@@ -353,26 +353,26 @@ void A2dpMediaSuspendTestExtra(uint16 device_id, uint16 stream_id)
 }
 
 
-void A2dpMediaAvSyncDelayResponseTestExtra(uint16 device_id, uint16 stream_id, uint16 delay)
+void A2dpMediaAvSyncDelayResponseTestExtra(u16 device_id, u16 stream_id, u16 delay)
 {
     if( !A2dpMediaAvSyncDelayResponse( device_id, stream_id, delay ) ) Panic();
 }
 
 
-void A2dpSendMediaPacketTestExtra(uint16 device_id, uint16 stream_id)
+void A2dpSendMediaPacketTestExtra(u16 device_id, u16 stream_id)
 {
-    static const uint8 pkt[] = { 0x80, 0x01, 0x50, 0xcf, 0xcb, 0xd7, 0xd0, 0x20, 0xfa, 0x84, 
+    static const u8 pkt[] = { 0x80, 0x01, 0x50, 0xcf, 0xcb, 0xd7, 0xd0, 0x20, 0xfa, 0x84, 
                                  0xea, 0x9b, 0x05, 0x9c, 0xbd, 0x3b, 0xff, 0xfc, 0xca, 0x88,
                                  0x78, 0x33, 0x98, 0x86, 0x85, 0x66, 0x7f, 0xbe, 0xee, 0xdd };
     Sink media_sink = A2dpMediaGetSink( device_id, stream_id );
-    uint8 *dest = SinkMap(media_sink) +  SinkClaim(media_sink, sizeof(pkt));
+    u8 *dest = SinkMap(media_sink) +  SinkClaim(media_sink, sizeof(pkt));
     memmove(dest, pkt, sizeof(pkt));
     SinkFlush(media_sink, sizeof(pkt));
 }
 
 
 
-void A2dpReconfigureTestExtra(uint16 device_id, uint16 stream_id, uint16 size_sep_caps, uint8 *sep_caps)
+void A2dpReconfigureTestExtra(u16 device_id, u16 stream_id, u16 size_sep_caps, u8 *sep_caps)
 {
     if (reconfig_caps)
     {
@@ -382,14 +382,14 @@ void A2dpReconfigureTestExtra(uint16 device_id, uint16 stream_id, uint16 size_se
 
     if (size_sep_caps)
     {
-        reconfig_caps = (uint8 *)malloc(size_sep_caps);
+        reconfig_caps = (u8 *)malloc(size_sep_caps);
         memmove(reconfig_caps, sep_caps, size_sep_caps);
         A2dpMediaReconfigureRequest( device_id, stream_id, size_sep_caps, reconfig_caps);
     }
 }
 
 static const char sbc_encoder[] = "sbc_encoder/sbc_encoder.kap";
-void A2dpStartKalimbaStreaming(const A2DP *a2dp, uint16 media_sink)
+void A2dpStartKalimbaStreaming(const A2DP *a2dp, uintptr_t media_sink)
 {
     FILE_INDEX index = FILE_NONE;
 

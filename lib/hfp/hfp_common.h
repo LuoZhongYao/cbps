@@ -14,7 +14,7 @@ DESCRIPTION
 #include "hfp.h"
 #include "hfp_private.h"
 
-typedef const uint8 *ptr;
+typedef const u8 *ptr;
 
 
 /****************************************************************************
@@ -100,7 +100,7 @@ NAME
 DESCRIPTION
     Converts type of number to HFP library specific value.
 */
-hfp_number_type hfpConvertNumberType( uint8 type );
+hfp_number_type hfpConvertNumberType( u8 type );
 
 
 /****************************************************************************

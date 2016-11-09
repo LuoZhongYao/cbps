@@ -14,7 +14,7 @@ DESCRIPTION
 #include <connection.h>
 #include "avrcp_connect_handler.h"
 
-const uint16 retx_conftab[] = 
+const u16 retx_conftab[] = 
     {
         L2CAP_AUTOPT_SEPARATOR,
 
@@ -41,7 +41,7 @@ const uint16 retx_conftab[] =
          0xFFFF
     };
 
-const uint16 sig_conftab[] = 
+const u16 sig_conftab[] = 
     {
         L2CAP_AUTOPT_SEPARATOR,
         
@@ -94,7 +94,7 @@ void avrcpSendConnectCfmToApp( AVRCP *avrcp,
         /* Send a Request to delete the Task */
         MessageSendConditionally(&avrcp->task, 
                                   AVRCP_INTERNAL_TASK_DELETE_REQ, 0, 
-                                  (uint16*)&avrcp->sdp_search_mode);
+                                  (u16*)&avrcp->sdp_search_mode);
     }
 
     MessageSend( avrcp->clientTask, AVRCP_CONNECT_CFM, message );
@@ -149,7 +149,7 @@ void avrcpHandleInternalConnectReq(AVRCP                *avrcp,
                                   AVCTP_PSM, 
                                   AVCTP_PSM, 
                                   sizeof(sig_conftab),
-                                  (uint16*) sig_conftab);
+                                  (u16*) sig_conftab);
 }
 
 /****************************************************************************
@@ -183,7 +183,7 @@ void avrcpHandleInternalBrowseConnectReq(AVBP                   *avbp,
                                       AVCTP_BROWSING_PSM, 
                                       AVCTP_BROWSING_PSM, 
                                       sizeof(retx_conftab),
-                                      (uint16*) retx_conftab);
+                                      (u16*) retx_conftab);
      }
      else
      {
@@ -209,7 +209,7 @@ void avrcpHandleInternalL2capConnectRes(AVRCP                        *avrcp,
                                      res->connection_id,
                                      res->signal_id,
                                      sizeof(sig_conftab),
-                                     (uint16*)sig_conftab);
+                                     (u16*)sig_conftab);
 }
 
 /****************************************************************************
@@ -233,7 +233,7 @@ void avrcpHandleInternalBrowseConnectRes(AVBP                        *avbp,
                                    res->connection_id, 
                                    res->signal_id,
                                    sizeof(retx_conftab),
-                                   (uint16*)retx_conftab);
+                                   (u16*)retx_conftab);
      if(accept)
      {
         avrcpSetAvbpState(((AVBP*)(avrcp->avbp_task)), avbpConnecting);

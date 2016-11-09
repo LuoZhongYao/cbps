@@ -46,7 +46,7 @@ NAME
 void *memory_create(size_t size)
 {
     void *memory = malloc(size);
-    MEMORY_DEBUG(("MEMORY: Create; size[0x%x] address[0x%x]\n", size, (uint16)memory));
+    MEMORY_DEBUG(("MEMORY: Create; size[0x%x] address[0x%x]\n", size, (u16)memory));
     return memory;
 }
 
@@ -57,7 +57,7 @@ NAME
 */
 void memory_free(void *memory)
 {
-    MEMORY_DEBUG(("MEMORY: Free; address[0x%x]\n", (uint16)memory));
+    MEMORY_DEBUG(("MEMORY: Free; address[0x%x]\n", (u16)memory));
     free(memory);
 }
 

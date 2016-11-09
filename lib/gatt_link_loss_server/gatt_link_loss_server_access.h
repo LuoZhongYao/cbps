@@ -27,6 +27,6 @@ NAME
 DESCRIPTION
     Sends a alert level response back to the GATT Manager.
 */
-void send_link_loss_alert_level_access_rsp(const GLLSS_T *const link_loss_server, uint16 cid, uint8 alert_level);
+void send_link_loss_alert_level_access_rsp(const GLLSS_T *const link_loss_server, u16 cid, u8 alert_level);
 
 #endif /* GATT_LINK_LOSS_SERVER_ACCESS_H_ */

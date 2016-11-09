@@ -37,19 +37,19 @@ NOTES
 
 typedef struct
 {
-    uint8                   sub_bands;
-    uint8                   blocks;
-    uint16                  frequency;
+    u8                   sub_bands;
+    u8                   blocks;
+    u16                  frequency;
     a2dp_channel_mode       mode;
 } sbc_parameters;
 
 
 
 /*****************************************************************************/
-static void extractSbcParameters(sbc_parameters *sbc, uint8 sbc_format)
+static void extractSbcParameters(sbc_parameters *sbc, u8 sbc_format)
 {
     /* Takes an SBC header and decodes the parameters. */
-    const uint16 freq_lut[] = {16000,32000,44100,48000};
+    const u16 freq_lut[] = {16000,32000,44100,48000};
     sbc->sub_bands = (sbc_format & SBC_HEADER_SUBBANDS_8?8:4);
     sbc->blocks = 4*(1+((sbc_format & SBC_HEADER_BLOCKS_MASK) >> SBC_HEADER_BLOCKS_SHIFT));
     sbc->frequency  = freq_lut[(sbc_format & SBC_HEADER_FREQUENCY_MASK) >> SBC_HEADER_FREQUENCY_SHIFT];
@@ -58,18 +58,18 @@ static void extractSbcParameters(sbc_parameters *sbc, uint8 sbc_format)
 
 
 /*****************************************************************************/
-static uint16 frameLengthFromRate(const sbc_parameters *sbc, uint32 rate)
+static u16 frameLengthFromRate(const sbc_parameters *sbc, u32 rate)
 {
     /* Returns the frame length needed to produce data at the specified rate */
-    return (uint16)((rate * (uint32)sbc->sub_bands * (uint32)sbc->blocks) / ((uint32)8 * (uint32)sbc->frequency));
+    return (u16)((rate * (u32)sbc->sub_bands * (u32)sbc->blocks) / ((u32)8 * (u32)sbc->frequency));
 }
 
 
 /*****************************************************************************/
-static uint8 bitpoolFromFrameLength(const sbc_parameters *sbc, uint16 frame_length)
+static u8 bitpoolFromFrameLength(const sbc_parameters *sbc, u16 frame_length)
 {
     /* Calculates the bitpool required to produce the requested frame length */
-    uint8 bitpool;
+    u8 bitpool;
 
     /* Equations derived from A2DP Spec, Section 12.9. */
     switch(sbc->mode)
@@ -96,7 +96,7 @@ static uint8 bitpoolFromFrameLength(const sbc_parameters *sbc, uint16 frame_leng
 }
 
 
-static void selectOptimalCommonSbcCaps(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+static void selectOptimalCommonSbcCaps(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
     /* Select Channel Mode. Only mono is mandatory at the source. */
     if ((remote_codec_caps[4] & 0x01) && (local_codec_caps[4] & 0x01))
@@ -169,7 +169,7 @@ static void selectOptimalCommonSbcCaps(const uint8 *local_codec_caps, uint8 *rem
 
 
 /**************************************************************************/
-void selectOptimalSbcCapsSink(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalSbcCapsSink(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
     /* All codec remote_codec_caps are mandatory at the Sink end except the sample rates where only
         48k and 44.1k are mandatory, but at least one of these must be supported at the Source end.
@@ -198,7 +198,7 @@ void selectOptimalSbcCapsSink(const uint8 *local_codec_caps, uint8 *remote_codec
 
 
 /**************************************************************************/
-void selectOptimalSbcCapsSource(const uint8 *local_codec_caps, uint8 *remote_codec_caps)
+void selectOptimalSbcCapsSource(const u8 *local_codec_caps, u8 *remote_codec_caps)
 {
     /*
         Select SBC parameters for optimal performance. We now own the
@@ -232,7 +232,7 @@ void selectOptimalSbcCapsSource(const uint8 *local_codec_caps, uint8 *remote_cod
 
 
 /*************************************************************************/
-void getSbcConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_settings)
+void getSbcConfigSettings(const u8 *service_caps, a2dp_codec_settings *codec_settings)
 {
     if (!service_caps)
     {
@@ -279,9 +279,9 @@ void getSbcConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_
 
 
 /*****************************************************************************/
-uint8 a2dpSbcFormatFromConfig(const uint8 *config)
+u8 a2dpSbcFormatFromConfig(const u8 *config)
 {
-    uint8 sbc_format;
+    u8 sbc_format;
 
     /* sample frequency */
     if (config[4] & 0x80)
@@ -304,19 +304,19 @@ uint8 a2dpSbcFormatFromConfig(const uint8 *config)
     /* channel mode */
     if (config[4] & 0x08)
     {
-        sbc_format |= ((uint8) a2dp_mono) << SBC_HEADER_CHANNEL_SHIFT;
+        sbc_format |= ((u8) a2dp_mono) << SBC_HEADER_CHANNEL_SHIFT;
     }
     else if (config[4] & 0x04)
     {
-        sbc_format |= ((uint8) a2dp_dual_channel) << SBC_HEADER_CHANNEL_SHIFT;
+        sbc_format |= ((u8) a2dp_dual_channel) << SBC_HEADER_CHANNEL_SHIFT;
     }
     else if (config[4] & 0x02)
     {
-        sbc_format |= ((uint8) a2dp_stereo) << SBC_HEADER_CHANNEL_SHIFT;
+        sbc_format |= ((u8) a2dp_stereo) << SBC_HEADER_CHANNEL_SHIFT;
     }
     else
     {
-        sbc_format |= ((uint8) a2dp_joint_stereo) << SBC_HEADER_CHANNEL_SHIFT;
+        sbc_format |= ((u8) a2dp_joint_stereo) << SBC_HEADER_CHANNEL_SHIFT;
     }
 
     /* block length */
@@ -354,12 +354,12 @@ uint8 a2dpSbcFormatFromConfig(const uint8 *config)
 
 
 /*****************************************************************************/
-uint8 a2dpSbcSelectBitpool(uint8 sbc_header, uint32 rate, uint16 pdu)
+u8 a2dpSbcSelectBitpool(u8 sbc_header, u32 rate, u16 pdu)
 {
     sbc_parameters sbc;
-    uint16 frame_length;
-    uint16 frames;
-    uint8 bitpool;
+    u16 frame_length;
+    u16 frames;
+    u8 bitpool;
 
     /* Extract sbc_header into more usual structure */
     extractSbcParameters(&sbc, sbc_header);

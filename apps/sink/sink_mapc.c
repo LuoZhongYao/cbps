@@ -4,10 +4,10 @@ Part of ADK 4.0
 
 DESCRIPTION
 	Implementation for handling MAP Client library messages and functionality
-	
+
 FILE
 	sink_mapc.c
-	
+
 */
 
 /****************************************************************************
@@ -36,9 +36,7 @@ FILE
 #include "sink_statemanager.h"
 
 #ifdef DEBUG_MAPC
-    #define MAPC_DEBUG(x) {printf x;}
 #else
-    #define MAPC_DEBUG(x) 
 #endif
 
 #define MAPC_SESSION   Mas
@@ -54,7 +52,7 @@ static void handleMapcMasConnectCfm(MAPC_MAS_CONNECT_CFM_T* pMsg);
 static void handleMapcMasDisconnectInd(MAPC_MAS_DISCONNECT_IND_T* pMsg);
 static void handleMapcMasSetNotificationCfm(MAPC_MAS_SET_NOTIFICATION_CFM_T* pMsg);
 static mapc_link_priority mapcAddDevice( const bdaddr *pAddr);
-static bool handleMapcEventReport(const char* pEventReport, const uint16 vReportLen);
+static bool handleMapcEventReport(const char* pEventReport, const u16 vReportLen);
 
 static const char mapcType[] = "NewMessage";
 
@@ -64,34 +62,34 @@ static const struct TaskData mapc_sdp_task = { handleSdpMessage };
 
 
 /****************************************************************************
-NAME	
+NAME
 	initMap
-    
+
 DESCRIPTION
     Register the Map Notification Server, called at boot time
-    
+
 PARAMS
     none
-    
+
 RETURNS
 	void
 */
 void initMap(void)
 {
     /* Start the Message Notification Server, this only needs to be done once */
-    MapcMnsStart(&theSink.task, TRUE, 0);     
+    MapcMnsStart(&theSink.task, TRUE, 0);
 }
 
 /****************************************************************************
-NAME	
+NAME
 	mapcShutDown
-    
+
 DESCRIPTION
     Unregister the Map Notification Server, called at shut down
-    
+
 PARAMS
     none
-    
+
 RETURNS
 	void
 */
@@ -101,23 +99,23 @@ void mapcShutDown(void)
 }
 
 /****************************************************************************
-NAME	
+NAME
 	mapcGetLinkFromBdAddr
-    
+
 DESCRIPTION
     Searches through any MAP connections looking for a match of bdaddr, if found
     returns the link associated with that bdaddr
-    
+
 PARAMS
     @pAddr
-    
+
 RETURNS
 	mapc_link_priority
 */
 static mapc_link_priority mapcGetLinkFromBdAddr(const bdaddr *pAddr)
 {
     mapc_link_priority device_id = 0;
-    
+
     /* search all possible map connections */
     for(device_id = 0; device_id < MAX_MAPC_CONNECTIONS; device_id ++)
     {
@@ -131,22 +129,22 @@ static mapc_link_priority mapcGetLinkFromBdAddr(const bdaddr *pAddr)
 }
 
 /****************************************************************************
-NAME	
+NAME
 	mapcGetLinkFromMapsSession
-    
+
 DESCRIPTION
     returns the device id associated with the session passed in
-    
+
 PARAMS
     @pAddr
-    
+
 RETURNS
 	mapc_link_priority
 */
 static mapc_link_priority mapcGetLinkFromMapsSession(MAPC_SESSION Session)
 {
     mapc_link_priority device_id = 0;
-    
+
     /* search available MAP connections */
     for(device_id = 0; device_id < MAX_MAPC_CONNECTIONS; device_id ++)
     {
@@ -160,41 +158,41 @@ static mapc_link_priority mapcGetLinkFromMapsSession(MAPC_SESSION Session)
 }
 
 /****************************************************************************
-NAME	
+NAME
 	mapcAddDevice
 DESCRIPTION
     Add a new device for mapc mns service;
-    
+
 PARAMS
     @bdaddr
-    
+
 RETURNS
 	mapc_link_priority
 */
 static mapc_link_priority mapcAddDevice(const bdaddr *pAddr)
 {
     mapc_link_priority priority = mapc_invalid_link;
-    mapcState *state; 
-        
+    mapcState *state;
+
     /* check whether the device has been connected or connecting */
     priority = mapcGetLinkFromBdAddr(pAddr);
 
-    /* If this device has not been added, add it first */    
+    /* If this device has not been added, add it first */
     if(priority == mapc_invalid_link)
     {
-        uint8 device_id = 0;
+        u8 device_id = 0;
         /* search for an unassigned map connection */
         for(device_id = 0; device_id < MAX_MAPC_CONNECTIONS; device_id++)
         {
             state = &(theSink.rundata->mapc_data.state[device_id]);
-            /* if an unassigned map entry exists return link priority */   
+            /* if an unassigned map entry exists return link priority */
             if( state->device_state == mapc_state_idle )
             {
                 priority = (mapc_link_priority)device_id;
                 return priority;
-            }            
+            }
         }
-    }  
+    }
     /* this bdaddr already has a map connection associated with it, check its
        current state return error */
     else
@@ -215,45 +213,45 @@ static mapc_link_priority mapcAddDevice(const bdaddr *pAddr)
 }
 
 /****************************************************************************
-NAME	
+NAME
 	handleServiceSearchAttributeCfm
-    
+
 DESCRIPTION
-    confirmation of the service search for MAP support, if successful the 
+    confirmation of the service search for MAP support, if successful the
     app will progress and attempt to connect to the message access service
-    
+
 PARAMS
     @cfm message
-    
+
 RETURNS
 	void
 */
 static void handleServiceSearchAttributeCfm( const CL_SDP_SERVICE_SEARCH_ATTRIBUTE_CFM_T *cfm)
 {
-    uint8 *rfcomm_channels;	
-    uint8 size_rfcomm_channels = 1;
-    uint8 channels_found = 0;
+    u8 *rfcomm_channels;
+    u8 size_rfcomm_channels = 1;
+    u8 channels_found = 0;
     mapcState *state = NULL;
-    
+
     mapc_link_priority device_id = mapcGetLinkFromBdAddr( &cfm->bd_addr );
-    
+
     /* ensure device_id has been correctly retrieved */
     if(device_id != mapc_invalid_link)
         state = &(theSink.rundata->mapc_data.state[device_id]);
-    
+
     /* if the service search has been successful, parse returned entries */
     if(cfm->status == sdp_response_success)
     {
-        MAPC_DEBUG(("MAPC:\tReceived SDP Response of length %d\n", cfm->size_attributes));
-    
-        rfcomm_channels = mallocPanic(size_rfcomm_channels * sizeof(uint8));
-             
+        LOGD("MAPC:\tReceived SDP Response of length %d\n", cfm->size_attributes);
+
+        rfcomm_channels = mallocPanic(size_rfcomm_channels * sizeof(u8));
+
         /* parse all returned reports */
         if (SdpParseGetMultipleRfcommServerChannels(
-                            cfm->size_attributes, 
-                            (uint8*)cfm->attributes, 
-                            1, 
-                            &rfcomm_channels, 
+                            cfm->size_attributes,
+                            (u8*)cfm->attributes,
+                            1,
+                            &rfcomm_channels,
                             &channels_found) )
         {
             /* If receiving multiple responses, the first record will be stored in this application */
@@ -262,16 +260,16 @@ static void handleServiceSearchAttributeCfm( const CL_SDP_SERVICE_SEARCH_ATTRIBU
                 state->masChannel   = rfcomm_channels[0];
                 state->bdAddr       = cfm->bd_addr;
                 state->device_state = mapc_sdp_searched;
-    
+
                 /* set the link security requirements */
-                ConnectionSmSetSdpSecurityOut(TRUE, &cfm->bd_addr); 
-                    
-                ConnectionSmRegisterOutgoingService(&theSink.task, 
-                                                    &cfm->bd_addr, 
+                ConnectionSmSetSdpSecurityOut(TRUE, &cfm->bd_addr);
+
+                ConnectionSmRegisterOutgoingService(&theSink.task,
+                                                    &cfm->bd_addr,
                                                     protocol_rfcomm,
                                                     state->masChannel,
-                                                    sec4_out_level_2);                
-    
+                                                    sec4_out_level_2);
+
                 /* attempt to connect the message access service */
                 MapcMasConnectRequest( &theSink.task, &cfm->bd_addr, state->masChannel );
             }
@@ -281,8 +279,8 @@ static void handleServiceSearchAttributeCfm( const CL_SDP_SERVICE_SEARCH_ATTRIBU
         {
             if(state)
                 state->device_state = mapc_state_idle;
-            
-            MAPC_DEBUG(("MAPC:NO Channels found\n"));   
+
+            LOGD("MAPC:NO Channels found\n");
         }
         /* ensure memory used in sdp record parsing is free'd */
         freePanic(rfcomm_channels);
@@ -291,22 +289,22 @@ static void handleServiceSearchAttributeCfm( const CL_SDP_SERVICE_SEARCH_ATTRIBU
     else
     {
         /* reset current connection state so that it can be reused */
-        if(state)        
+        if(state)
             state->device_state = mapc_state_idle;
 
-        MAPC_DEBUG(("MAPC:SDP Search Failed. Status = %x, more = %x, error = %x \n", cfm->status, cfm->more_to_come, cfm->error_code));
-        
+        LOGD("MAPC:SDP Search Failed. Status = %x, more = %x, error = %x \n", cfm->status, cfm->more_to_come, cfm->error_code);
+
     }
 }
 
 
 /****************************************************************************
-NAME	
+NAME
 	handleSdpMessage
-    
+
 DESCRIPTION
     Task function to handle responses to MAP specific SDP search requests
-    
+
 RETURNS
 	void
 */
@@ -315,29 +313,29 @@ static void handleSdpMessage (Task task, MessageId id, Message message)
     switch (id)
     {
     case CL_SDP_SERVICE_SEARCH_ATTRIBUTE_CFM:
-        MAPC_DEBUG(("MAPC: CL_SM_GET_INDEXED_ATTRIBUTE_CFM[%d]\n" , ((CL_SDP_SERVICE_SEARCH_ATTRIBUTE_CFM_T*)message)->status)) ;
+        LOGD("MAPC: CL_SM_GET_INDEXED_ATTRIBUTE_CFM[%d]\n" , ((CL_SDP_SERVICE_SEARCH_ATTRIBUTE_CFM_T*)message)->status);
         handleServiceSearchAttributeCfm( (CL_SDP_SERVICE_SEARCH_ATTRIBUTE_CFM_T*) message);
         break;
-        
+
     default:
-        MAPC_DEBUG(("MAPC: Unexpected message, id=0x%X\n", id));
+        LOGD("MAPC: Unexpected message, id=0x%X\n", id);
         break;
     }
 }
 
 
 /****************************************************************************
-NAME	
+NAME
 	handleMapcMessages
-    
+
 DESCRIPTION
     MAP Client Message Handler
-    
+
 PARAMS
     task        associated task
-    pId         message id           
+    pId         message id
     pMessage    message
-    
+
 RETURNS
 	void
 */
@@ -372,7 +370,7 @@ void handleMapcMessages(Task task, MessageId pId, Message pMessage)
     case MAPC_MAS_SET_NOTIFICATION_CFM:
         handleMapcMasSetNotificationCfm((MAPC_MAS_SET_NOTIFICATION_CFM_T*) pMessage);
         break;
-        
+
     case MAPC_MAS_SET_FOLDER_CFM:
     case MAPC_MAS_GET_FOLDER_LISTING_CFM:
     case MAPC_MAS_GET_MESSAGES_LISTING_CFM:
@@ -381,55 +379,55 @@ void handleMapcMessages(Task task, MessageId pId, Message pMessage)
     case MAPC_MAS_UPDATE_INBOX_CFM:
     case MAPC_MAS_SET_MESSAGE_STATUS_CFM:
     break;
-    
+
     case MAPC_APP_MAS_DISCONNECT:
-        MAPC_DEBUG(("MAPC:MAPC_APP_MAS_DISCONNECT\n"));
+        LOGD("MAPC:MAPC_APP_MAS_DISCONNECT\n");
     break;
-        
+
     case MAPC_APP_MAS_CONNECT:
-        MAPC_DEBUG(("MAPC:MAPC_APP_MAS_CONNECT\n"));
+        LOGD("MAPC:MAPC_APP_MAS_CONNECT\n");
     break;
-    
+
     case MAPC_APP_MNS_START:
-        MAPC_DEBUG(("MAPC:MAPC_APP_MNS_START\n"));
+        LOGD("MAPC:MAPC_APP_MNS_START\n");
         MapcMnsStart(&theSink.task, TRUE, 0);
     break;
-   
+
     case MAPC_APP_MAS_SET_NOTIFICATION:
-        MAPC_DEBUG(("MAPC:MAPC_APP_MAS_SET_NOTIFICATION\n"));
+        LOGD("MAPC:MAPC_APP_MAS_SET_NOTIFICATION\n");
         MapcMasSetNotificationRequest(((MAPC_APP_MAS_SET_NOTIFICATION_T*) pMessage)->masSession,
                                       ((MAPC_APP_MAS_SET_NOTIFICATION_T*) pMessage)->action );
-    break; 
-    
+    break;
+
     default:
-        MAPC_DEBUG(("MAPC:Unknown Message - %x\n", pId));
-        break; 
+        LOGD("MAPC:Unknown Message - %x\n", pId);
+        break;
     }
 }
 
 
 /****************************************************************************
-NAME	
+NAME
 	handleMapcMnsStartCfm
-    
+
 DESCRIPTION
     confirmation of start of the message notification service
-    
+
 PARAMS
     pMessage    message
-    
+
 RETURNS
 	void
 */
 static void handleMapcMnsStartCfm(MAPC_MNS_START_CFM_T* pMsg)
 {
-    MAPC_DEBUG(("MAPC:MAPC_MNS_START_CFM- status:[%d] -- ", pMsg->status));
-    
+    LOGD("MAPC:MAPC_MNS_START_CFM- status:[%d] -- ", pMsg->status);
+
     /* if the notification service started succesfully, store its details which
        are not stored by the MAP library */
     if(pMsg->status == mapc_success)
     {
-        MAPC_DEBUG(("MAPC:success. channel = %x, handle = %ld \n", pMsg->mnsChannel, pMsg->sdpHandle));
+        LOGD("MAPC:success. channel = %x, handle = %ld \n", pMsg->mnsChannel, pMsg->sdpHandle);
 
         /* store server channel and handle values */
         theSink.rundata->mapc_data.mnsChannel = pMsg->mnsChannel;
@@ -437,67 +435,67 @@ static void handleMapcMnsStartCfm(MAPC_MNS_START_CFM_T* pMsg)
 
         /* set link encryption requirements */
         ConnectionSmSetSdpSecurityIn(TRUE);
-        ConnectionSmRegisterIncomingService(protocol_rfcomm, pMsg->mnsChannel, sec4_in_level_2 ); 
+        ConnectionSmRegisterIncomingService(protocol_rfcomm, pMsg->mnsChannel, sec4_in_level_2 );
     }
     else
     {
-        MAPC_DEBUG(("MAPC:MAPC Mns start fails\n"));
+        LOGD("MAPC:MAPC Mns start fails\n");
     }
 }
 
 /****************************************************************************
-NAME	
+NAME
 	handleMapcMnsShutdownCfm
-    
+
 DESCRIPTION
     handle after receiving MAPC_MNS_SHUTDOWN_CFM_T
-    
+
 PARAMS
     pMessage    message
-    
+
 RETURNS
 	void
 */
 static void handleMapcMnsShutdownCfm(MAPC_MNS_SHUTDOWN_CFM_T* pMsg)
 {
-    MAPC_DEBUG(("MAPC:MAPC_MNS_SHUTDOWN_CFM: \n"));  
+    LOGD("MAPC:MAPC_MNS_SHUTDOWN_CFM: \n");
 
     /* reset the Message notification service handles after disconnection */
     theSink.rundata->mapc_data.mnsChannel = 0;
     theSink.rundata->mapc_data.sdpHandle  = 0;
-    
+
 }
 
 /****************************************************************************
-NAME	
+NAME
 	handleMapcMnsConnectInd
-    
+
 DESCRIPTION
     handle after receiving MAPC_MNS_CONNECT_IND_T
-    
+
 PARAMS
     pMessage    message
-    
+
 RETURNS
 	void
 */
 static void handleMapcMnsConnectInd(MAPC_MNS_CONNECT_IND_T* pMsg)
 {
-    MAPC_DEBUG(("MAPC:MAPC_MNS_CONNECT_IND: Connect Indication received\n"));
-    
+    LOGD("MAPC:MAPC_MNS_CONNECT_IND: Connect Indication received\n");
+
     MapcMnsConnectResponse( &theSink.task, &pMsg->addr, pMsg->mnsChannel, TRUE, pMsg->connectID );
 }
 
 /****************************************************************************
-NAME	
+NAME
 	handleMapcMnsConnectCfm
-    
+
 DESCRIPTION
     handle after receiving MAPC_MNS_CONNECT_CFM_T
-    
+
 PARAMS
     pMessage    message
-    
+
 RETURNS
 	void
 */
@@ -509,55 +507,55 @@ static void handleMapcMnsConnectCfm(MAPC_MNS_CONNECT_CFM_T* pMsg)
     /* ensure device_id has been correctly retrieved */
     if(device_id != mapc_invalid_link)
         state = &(theSink.rundata->mapc_data.state[device_id]);
-            
-    MAPC_DEBUG(("MAPC:MAPC_MNS_CONNECT_CFM:"));
-        
+
+    LOGD("MAPC:MAPC_MNS_CONNECT_CFM:");
+
     if(pMsg->status == mapc_pending)
     {
-        MAPC_DEBUG(("Connection Pending. channel = %x \n", pMsg->mnsChannel));
-        if(state)        
+        LOGD("Connection Pending. channel = %x \n", pMsg->mnsChannel);
+        if(state)
             state->mnsHandle     = pMsg->mnsSession;
     }
     else if(pMsg->status == mapc_success)
     {
-        MAPC_DEBUG(("Connection Successfull \n"));
-        
-        if(state)        
+        LOGD("Connection Successfull \n");
+
+        if(state)
         {
             state->mnsHandle     = pMsg->mnsSession;
             state->mnsChannel    = pMsg->mnsChannel;
-        
+
             /* Send an message to indicate the mns service connection success */
             MessageSend(&theSink.task, EventSysMapcMnsSuccess, 0);
-        }        
+        }
     }
     else
     {
-        MAPC_DEBUG(("MnS Connection Failed\n"));
-        
+        LOGD("MnS Connection Failed\n");
+
         /* Send an message to indicate the mns service connection success */
         MessageSend(&theSink.task, EventSysMapcMnsFailed, 0);
     }
 }
 
 /****************************************************************************
-NAME	
+NAME
 	handleMapcMnsDisconnectInd
-    
+
 DESCRIPTION
     handle after receiving MAPC_MNS_DISCONNECT_IND_T
-    
+
 PARAMS
     pMessage    message
-    
+
 RETURNS
 	void
 */
 static void handleMapcMnsDisconnectInd(MAPC_MNS_DISCONNECT_IND_T* pMsg)
 {
-    uint8 device_id  = mapcGetLinkFromMapsSession((MAPC_SESSION)(pMsg->mnsSession));
-    
-    MAPC_DEBUG(("MAPC:MAPC_MNS_DISCONNECT_IND\n"));
+    u8 device_id  = mapcGetLinkFromMapsSession((MAPC_SESSION)(pMsg->mnsSession));
+
+    LOGD("MAPC:MAPC_MNS_DISCONNECT_IND\n");
 
     /* process the message notification service disconnect indication */
     MapcMnsDisconnectResponse( pMsg->mnsSession );
@@ -571,25 +569,25 @@ static void handleMapcMnsDisconnectInd(MAPC_MNS_DISCONNECT_IND_T* pMsg)
 }
 
 /****************************************************************************
-NAME	
+NAME
 	handleMapcMasDisconnectInd
-    
+
 DESCRIPTION
     handle after receiving MAPC_MAS_DISCONNECT_IND_T
-    
+
 PARAMS
     MAPC_MAS_DISCONNECT_IND_T pMsg
-    
+
 RETURNS
 	void
 */
 static void handleMapcMasDisconnectInd(MAPC_MAS_DISCONNECT_IND_T* pMsg)
 {
-    uint8 device_id  = mapcGetLinkFromMapsSession((MAPC_SESSION)(pMsg->masSession));
-        
-    MAPC_DEBUG(("MAPC:MAPC_MAS_DISCONNECT_IND.\n"));
+    u8 device_id  = mapcGetLinkFromMapsSession((MAPC_SESSION)(pMsg->masSession));
+
+    LOGD("MAPC:MAPC_MAS_DISCONNECT_IND.\n");
     MapcMasDisconnectResponse( pMsg->masSession );
-    
+
     /* reset connected state if link is valid */
     if(device_id != mapc_invalid_link)
     {
@@ -599,16 +597,16 @@ static void handleMapcMasDisconnectInd(MAPC_MAS_DISCONNECT_IND_T* pMsg)
 }
 
 /****************************************************************************
-NAME	
+NAME
 	handleMapcMasConnectCfm
-    
+
 DESCRIPTION
     Confirmation of the connection of the Message Access Service, if successful
     the next step is to register notification requests
-    
+
 PARAMS
     MAPC_MAS_CONNECT_CFM_T pMsg
-    
+
 RETURNS
 	void
 */
@@ -620,13 +618,13 @@ static void handleMapcMasConnectCfm(MAPC_MAS_CONNECT_CFM_T* pMsg)
     /* ensure device_id has been correctly retrieved */
     if(device_id != mapc_invalid_link)
         state = &(theSink.rundata->mapc_data.state[device_id]);
-    
-    MAPC_DEBUG(("MAPC:MAPC_MAS_CONNECT_CFM- status:[%d] -- ", pMsg->status));
-        
+
+    LOGD("MAPC:MAPC_MAS_CONNECT_CFM- status:[%d] -- ", pMsg->status);
+
     /* connection still in progress */
     if(pMsg->status == mapc_pending)
     {
-        MAPC_DEBUG(("MAPC: Connection Pending. channel = %x \n", pMsg->masChannel));
+        LOGD("MAPC: Connection Pending. channel = %x \n", pMsg->masChannel);
         if(state)
             state->masHandle   = pMsg->masSession;
     }
@@ -634,8 +632,8 @@ static void handleMapcMasConnectCfm(MAPC_MAS_CONNECT_CFM_T* pMsg)
        attempt to register for message notifications */
     else if(pMsg->status == mapc_success)
     {
-        MAPC_DEBUG(("MAPC: Connection successful. channel = %x \n", pMsg->masChannel));
-                  
+        LOGD("MAPC: Connection successful. channel = %x \n", pMsg->masChannel);
+
         /* update app stored link parameters required for subsequent map functions */
         if(state)
         {
@@ -643,10 +641,10 @@ static void handleMapcMasConnectCfm(MAPC_MAS_CONNECT_CFM_T* pMsg)
             state->bdAddr        = pMsg->addr;
             state->masChannel    = pMsg->masChannel;
             state->device_state  = mapc_mas_connected;
-        
+
             /* attempt to register for message notifications */
             /* Register notification */
-            MAPC_DEBUG(("MAPC:Set Mas Notification: TRUE\n"));       
+            LOGD("MAPC:Set Mas Notification: TRUE\n");
             state->device_state = mapc_mns_registering;
             MapcMasSetNotificationRequest(state->masHandle, TRUE);
         }
@@ -654,8 +652,8 @@ static void handleMapcMasConnectCfm(MAPC_MAS_CONNECT_CFM_T* pMsg)
     /* message access service failed to connect for whatever reason */
     else
     {
-        MAPC_DEBUG(("MAPC: MAS Connection Failed\n"));
-        
+        LOGD("MAPC: MAS Connection Failed\n");
+
         /* Reset the MAPC state of current device to allow subsequent connection attempts */
         if(state)
             memset(state, 0, sizeof(mapcState));
@@ -664,33 +662,33 @@ static void handleMapcMasConnectCfm(MAPC_MAS_CONNECT_CFM_T* pMsg)
 
 
 /****************************************************************************
-NAME	
+NAME
 	handleMapcMasSetNotificationCfm
-    
+
 DESCRIPTION
     confirmation of the request to receive message notifcations
-    
+
 PARAMS
     MAPC_MAS_SET_NOTIFICATION_CFM_T pMsg
-    
+
 RETURNS
 	void
 */
 static void handleMapcMasSetNotificationCfm(MAPC_MAS_SET_NOTIFICATION_CFM_T* pMsg)
 {
-    MAPC_DEBUG(("MAPC:MAPC_MAS_SET_NOTIFICATION_CFM- "));
+    LOGD("MAPC:MAPC_MAS_SET_NOTIFICATION_CFM- ");
 
     /* message access service registration of notifications complete */
     if(pMsg->status == mapc_success)
     {
-        uint8 device_id  = mapcGetLinkFromMapsSession((MAPC_SESSION)(pMsg->masSession));
+        u8 device_id  = mapcGetLinkFromMapsSession((MAPC_SESSION)(pMsg->masSession));
         mapcState *state = &(theSink.rundata->mapc_data.state[device_id]);
-        
-        MAPC_DEBUG(("MAPC:SetNotificationCfm Success\n"));
-        
+
+        LOGD("MAPC:SetNotificationCfm Success\n");
+
         if ((state) && device_id != mapc_invalid_link)
         {
-        
+
             if(state->device_state == mapc_mns_registering)
             {
                  /* update state of this device to indicate registration success */
@@ -699,20 +697,20 @@ static void handleMapcMasSetNotificationCfm(MAPC_MAS_SET_NOTIFICATION_CFM_T* pMs
             else if(state->device_state == mapc_mns_unregistering)
             {
                  /* update state of this device to indicate registration success */
-                 state->device_state = mapc_mas_connected;           
-                 
+                 state->device_state = mapc_mas_connected;
+
                  /* since was an unregister request, disconnect the MAS */
                  MapcMasDisconnectRequest( pMsg->masSession );
             }
-            
+
         }
     }
     /* message access service registration of notifications failed */
     else
     {
-        MAPC_DEBUG(("MAPC:SetNotificationCfm Failure %x\n",pMsg->status));
-        
-        /* failed to register message access server notifications, 
+        LOGD("MAPC:SetNotificationCfm Failure %x\n",pMsg->status);
+
+        /* failed to register message access server notifications,
            therefore disconnect the message access connection as no
            longer in use */
         MapcMasDisconnectRequest( pMsg->masSession );
@@ -720,24 +718,24 @@ static void handleMapcMasSetNotificationCfm(MAPC_MAS_SET_NOTIFICATION_CFM_T* pMs
 }
 
 /****************************************************************************
-NAME	
+NAME
 	handleMapcEventReport
-    
+
 DESCRIPTION
     handle data and get the metadata after receiving MAPC_MNS_SEND_EVENT_IND_T
-    
+
 PARAMS
-    @buffer  
+    @buffer
     @buffer_size
-    
+
 RETURNS
 	bool
 */
-static bool handleMapcEventReport(const char* buffer, const uint16 buffer_size )
+static bool handleMapcEventReport(const char* buffer, const u16 buffer_size )
 {
-    uint16 count = strlen(mapcType);
+    u16 count = strlen(mapcType);
     char *p      = (char *)memchr(buffer, mapcType[0], buffer_size);
-    
+
     while (p && p < buffer + buffer_size)
     {
         if(memcmp(p, mapcType, count) == 0)
@@ -745,40 +743,40 @@ static bool handleMapcEventReport(const char* buffer, const uint16 buffer_size )
             return TRUE;
         }
         p += 1;
-        p = (char *)memchr(p, mapcType[0], (uint16)(buffer+buffer_size - p));
+        p = (char *)memchr(p, mapcType[0], (u16)(buffer+buffer_size - p));
     }
-    
+
     return FALSE;
 }
 
 static void handleMapcMnsSendEventInd(MAPC_MNS_SEND_EVENT_IND_T* pMsg)
 {
     MapcResponse response= (pMsg->moreData)? mapc_pending: mapc_success;
- 
-    MAPC_DEBUG(("MAPC:MAPC_MNS_SEND_EVENT_IND - Mas - %d Len = %d\n", 
+
+    MAPC_DEBUG(("MAPC:MAPC_MNS_SEND_EVENT_IND - Mas - %d Len = %d\n",
                    pMsg->masInstanceId,
                    pMsg->sourceLen ));
-    
+
     if(pMsg->sourceLen)
     {
-        MAPC_DEBUG(("MAPC:***** Parsing the Event Object ******\n"));
-        MAPC_DEBUG(("MAPC:***** Or do other works        ******\n"));
-        
-#ifdef DEBUG_MAPC    
-    {
-        uint16 i;
-        const uint8 *lSource = SourceMap(pMsg->eventReport);
+        LOGD("MAPC:***** Parsing the Event Object ******\n");
+        LOGD("MAPC:***** Or do other works        ******\n");
 
-        MAPC_DEBUG(("MAPC:The Event Report Object is: "));
+#ifdef DEBUG_MAPC
+    {
+        u16 i;
+        const u8 *lSource = SourceMap(pMsg->eventReport);
+
+        LOGD("MAPC:The Event Report Object is: ");
 
         for(i = 0; i < pMsg->sourceLen; i++)
-            MAPC_DEBUG(("%c", *(lSource + i))); 
-        
-        MAPC_DEBUG(("\n"));    
+            LOGD("%c", *(lSource + i));
+
+        LOGD("\n");
     }
-#endif        
-        
-        if(handleMapcEventReport((const char*) SourceMap(pMsg->eventReport), (const uint16) pMsg->sourceLen))
+#endif
+
+        if(handleMapcEventReport((const char*) SourceMap(pMsg->eventReport), (const u16) pMsg->sourceLen))
         {
             /* If a new message has been received by the MSE device with type "NewMessage", */
             /* generate a tone or vp for sms message */
@@ -786,7 +784,7 @@ static void handleMapcMnsSendEventInd(MAPC_MNS_SEND_EVENT_IND_T* pMsg)
         }
     }
 
-    /* The application shall not access the source buffer received in the 
+    /* The application shall not access the source buffer received in the
        indication after calling this API.
     */
     MapcMnsSendEventResponse(pMsg->mnsSession, response);
@@ -794,15 +792,15 @@ static void handleMapcMnsSendEventInd(MAPC_MNS_SEND_EVENT_IND_T* pMsg)
 
 
 /****************************************************************************
-NAME	
+NAME
 	mapcMasConnect
-    
+
 DESCRIPTION
     Start Mas connection, including add device and then sdp search;
-    
+
 PARAMS
     @bdaddr
-    
+
 RETURNS
 	void
 */
@@ -811,33 +809,33 @@ static void mapcMasConnect( mapc_link_priority device_id, const bdaddr *pAddr )
     if(device_id != mapc_invalid_link)
     {
         mapcState *state  = &(theSink.rundata->mapc_data.state[device_id]);
-    
-        MAPC_DEBUG(("MAPC:Start SDP ATTR Search for MAP....\n"));
- 
+
+        LOGD("MAPC:Start SDP ATTR Search for MAP....\n");
+
         /* Store the address */
         state->bdAddr       = *pAddr;
         state->device_state = mapc_mas_connecting;
-                
+
         /* start sdp search */
         MapcMasSdpAttrSearchRequest( (Task)&mapc_sdp_task, pAddr );
     }
     else
     {
-        MAPC_DEBUG(("MAPC:The connection has been started or\nThe number of connection has been MAX_MAPC_CONNECTIONS...\n"));       
-    }        
+        LOGD("MAPC:The connection has been started or\nThe number of connection has been MAX_MAPC_CONNECTIONS...\n");
+    }
 }
 
 /****************************************************************************
-NAME	
+NAME
 	mapcMasConnectRequest
-    
+
 DESCRIPTION
     Start Mas connection, including add device and then sdp search, for the
     HFP and A2DP connected devices
-    
+
 PARAMS
     @bdaddr
-    
+
 RETURNS
 	void
 */
@@ -855,34 +853,34 @@ void mapcMasConnectRequest(bdaddr * pAddr)
 
 
 /****************************************************************************
-NAME	
+NAME
 	mapcDisableMns
-    
+
 DESCRIPTION
     Disable Map Message Notification Service
-    
+
 PARAMS
     void
-    
+
 RETURNS
 	void
 */
 void mapcDisconnectMns(void)
 {
     mapc_link_priority device_id = 0;
-   
-    MAPC_DEBUG(("MAPC:Disconnect All\n"));       
+
+    LOGD("MAPC:Disconnect All\n");
 
     /* Set Notification request to FALSE */
     for(device_id = 0; device_id < MAX_MAPC_CONNECTIONS; device_id ++)
     {
         mapcState *state = &(theSink.rundata->mapc_data.state[device_id]);
-         
+
         /* ensure connection is valid before attempting to disconnect */
         if(state->device_state > mapc_state_idle)
         {
             /* Unregister notification */
-            MAPC_DEBUG(("MAPC:Set Mas Notification: FALSE\n"));       
+            LOGD("MAPC:Set Mas Notification: FALSE\n");
             /* update state to indicate unregistering, this will trigger a MAS
                disconnect when the cfm is processed */
             state->device_state = mapc_mns_unregistering;
@@ -893,15 +891,15 @@ void mapcDisconnectMns(void)
 }
 
 /****************************************************************************
-NAME	
+NAME
 	mapcDisconnectDeviceMns
-    
+
 DESCRIPTION
     Disable Map Message Notification Service for the provided device.
-    
+
 PARAMS
     void
-    
+
 RETURNS
     void
 */
@@ -912,18 +910,18 @@ void mapcDisconnectDeviceMns(const bdaddr *bd_addr)
     if(device_id != mapc_invalid_link)
     {
         mapcState *state = &(theSink.rundata->mapc_data.state[device_id]);
-         
+
         /* ensure connection is valid before attempting to disconnect */
         if(state->device_state > mapc_state_idle)
         {
             /* Unregister notification */
-            MAPC_DEBUG(("MAPC:Set Mas Notification: FALSE\n"));       
+            LOGD("MAPC:Set Mas Notification: FALSE\n");
             /* update state to indicate unregistering, this will trigger a MAS
                         disconnect when the cfm is processed */
             state->device_state = mapc_mns_unregistering;
             /* request the notifications requests are cancelled */
             MapcMasSetNotificationRequest( state->masHandle, FALSE );
-        }        
+        }
     }
 }
 

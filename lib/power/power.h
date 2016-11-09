@@ -75,7 +75,7 @@ typedef struct
 {
     vm_adc_source_type source:8;      /* The ADC source */
     unsigned           period_chg:8;  /* Interval (in seconds) between measurements when charging */
-    uint16             period_no_chg; /* Interval (in seconds) between measurements when not charging */
+    u16             period_no_chg; /* Interval (in seconds) between measurements when not charging */
 } power_adc;
 
 /*! 
@@ -143,7 +143,7 @@ typedef struct
     unsigned            raw_limits:1;                  /* Set limits in ADC counts rather than voltage */
     unsigned            drive_pio:1;                   /* Drive thermistor from a PIO */
     unsigned            pio:5;                         /* PIO to use (0-31)*/
-    uint16              limits[POWER_MAX_VTHM_LIMITS]; /* Voltage Thresholds (mV/ADC Counts) */
+    u16              limits[POWER_MAX_VTHM_LIMITS]; /* Voltage Thresholds (mV/ADC Counts) */
 } power_vthm_config;
 
 /*! 
@@ -152,7 +152,7 @@ typedef struct
 typedef struct
 {
     power_adc           adc;                /* VCHG ADC */
-    uint16              limit;              /* VCHG Threshold (mV/POWER_VSCALE) */
+    u16              limit;              /* VCHG Threshold (mV/POWER_VSCALE) */
 } power_vchg_config;
 
 
@@ -167,9 +167,9 @@ typedef struct
     unsigned            unused:8;               /*!< Not used (set to 0) */
     unsigned            no_incr_i_temp:8;       /*!< Temeprature (degC) where current will not be increased */
     unsigned            decr_i_temp:8;          /*!< Temeprature (degC) where current will be decreased */
-    uint16              monitor_period_active;  /*!< Period (ms) to monitor PMU temperature when charger is active */
-    uint16              monitor_period_idle;    /*!< Period (ms) to monitor PMU temperature when charger is idle */
-    uint16              monitor_period_nopwr;   /*!< Period (ms) to monitor PMU temperature when there is no charger power */
+    u16              monitor_period_active;  /*!< Period (ms) to monitor PMU temperature when charger is active */
+    u16              monitor_period_idle;    /*!< Period (ms) to monitor PMU temperature when charger is idle */
+    u16              monitor_period_nopwr;   /*!< Period (ms) to monitor PMU temperature when there is no charger power */
 } power_pmu_temp_mon_config;
 
 /*! 
@@ -201,8 +201,8 @@ typedef struct
 */
 typedef struct
 {
-    uint16 voltage;
-    uint8  level;
+    u16 voltage;
+    u8  level;
 } voltage_reading;
 
 /*!
@@ -365,7 +365,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void PowerChargerSetCurrent(uint8 current);
+void PowerChargerSetCurrent(u8 current);
 
 
 /****************************************************************************
@@ -397,7 +397,7 @@ DESCRIPTION
 RETURNS
     bool
 */
-bool PowerChargerReduceTrim(uint8 trim);
+bool PowerChargerReduceTrim(u8 trim);
 
 
 /****************************************************************************
@@ -412,7 +412,7 @@ DESCRIPTION
 RETURNS
     bool
 */
-bool PowerChargerSetVterm(uint8 vterm);
+bool PowerChargerSetVterm(u8 vterm);
 
 
 #endif     /* POWER_H_ */

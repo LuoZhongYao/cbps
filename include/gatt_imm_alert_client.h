@@ -27,8 +27,8 @@ typedef struct _gatt_imm_alert_client_t
 {
     TaskData lib_task;
     Task app_task;
-    uint16 cid;
-    uint16 alert_handle;
+    u16 cid;
+    u16 alert_handle;
 }_gatt_imm_alert_client_t;
 
 /*! @brief GATT Immediate Alert Service Client[GIASC]Library Instance.
@@ -83,9 +83,9 @@ typedef enum
 */
 typedef struct
 {
-     uint16 cid;        /*!Connection ID of the GATT connection on which the server side immediate alert service need to be accessed*/
-     uint16 start_handle;       /*! The first handle of Immediate Alert service need to be accessed*/
-     uint16 end_handle;         /*!The last handle of Immediate Alert service need to be accessed */
+     u16 cid;        /*!Connection ID of the GATT connection on which the server side immediate alert service need to be accessed*/
+     u16 start_handle;       /*! The first handle of Immediate Alert service need to be accessed*/
+     u16 end_handle;         /*!The last handle of Immediate Alert service need to be accessed */
 } GATT_IMM_ALERT_CLIENT_INIT_PARAMS_T;
 
 /*!
@@ -119,7 +119,7 @@ gatt_imm_alert_client_status GattImmAlertClientInit(
 typedef struct PACK_STRUCT __GATT_IMM_ALERT_CLIENT_INIT_CFM
 {
     const GIASC_T *imm_alert_client;        /*! Reference structure for the instance */
-    uint16 cid;                                          /*! Connection Identifier for remote device */
+    u16 cid;                                          /*! Connection Identifier for remote device */
     gatt_imm_alert_client_status status;      /*!status as per gatt_imm_alert_client_status */
 } GATT_IMM_ALERT_CLIENT_INIT_CFM_T;
 
@@ -152,7 +152,7 @@ gatt_imm_alert_client_status GattImmAlertClientSetAlertLevel(
 typedef struct PACK_STRUCT __GATT_IMM_ALERT_CLIENT_SET_ALERT_CFM
 {
     const GIASC_T *imm_alert_client;        /*! Reference structure for the instance */
-    uint16 cid;                                                                     /*! Connection Identifier for remote device */
+    u16 cid;                                                                     /*! Connection Identifier for remote device */
     gatt_imm_alert_client_status status;                                  /*!status as per gatt_imm_alert_client_status */
 } GATT_IMM_ALERT_CLIENT_SET_ALERT_CFM_T;
 
@@ -170,7 +170,7 @@ typedef struct PACK_STRUCT __GATT_IMM_ALERT_CLIENT_SET_ALERT_CFM
     @return The status result of calling the API.
 
 */
-gatt_imm_alert_client_status GattImmAlertClientDestroy(GIASC_T *imm_alert_client, uint16 cid);
+gatt_imm_alert_client_status GattImmAlertClientDestroy(GIASC_T *imm_alert_client, u16 cid);
 
 #endif /* GATT_IMM_ALERT_CLIENT_H */
 

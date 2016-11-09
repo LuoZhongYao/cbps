@@ -288,12 +288,12 @@ typedef struct
 typedef struct
 {
     Task    theAppTask;
-    uint32 inquiry_lap;
-    uint8   max_responses;
-    uint16  timeout;
-    uint32  class_of_device;
-    uint16      min_period;
-    uint16      max_period;
+    u32 inquiry_lap;
+    u8   max_responses;
+    u16  timeout;
+    u32  class_of_device;
+    u16      min_period;
+    u16      max_period;
 } CL_INTERNAL_DM_INQUIRY_REQ_T;
 
 typedef struct
@@ -321,7 +321,7 @@ typedef struct
 typedef struct
 {
     Task theAppTask;
-    int8 tx_power;
+    i8 tx_power;
 } CL_INTERNAL_DM_WRITE_INQUIRY_TX_REQ_T;
 
 typedef struct
@@ -343,9 +343,9 @@ typedef struct
 
 typedef struct
 {
-    uint8 fec_required;
-    uint8 size_eir_data;
-    uint8 *eir_data; 
+    u8 fec_required;
+    u8 size_eir_data;
+    u8 *eir_data; 
 } CL_INTERNAL_DM_WRITE_EIR_DATA_REQ_T;
 
 typedef struct
@@ -361,16 +361,16 @@ typedef struct
 typedef struct
 {
     bdaddr bd_addr;
-    uint16 flags;
-    uint8 reason;
+    u16 flags;
+    u8 reason;
 } CL_INTERNAL_DM_ACL_FORCE_DETACH_REQ_T;
 
 typedef struct
 {
     Task                theAppTask;
-    uint16              options;
+    u16              options;
     dm_security_mode    security_mode;
-    uint16              config;
+    u16              config;
     cl_sm_wae           write_auth_enable;
     encryption_mode     mode3_enc;
 } CL_INTERNAL_SM_INIT_REQ_T;
@@ -379,7 +379,7 @@ typedef struct
 {
     Task task;
     bdaddr bd_addr;
-    uint32  timeout;
+    u32  timeout;
 } CL_INTERNAL_SM_AUTHENTICATION_REQ_T;
 
 typedef struct
@@ -410,7 +410,7 @@ typedef struct
 typedef struct
 {
     dm_protocol_id          protocol_id;
-    uint32                  channel;
+    u32                  channel;
     dm_ssp_security_level   ssp_sec_level;
     bool                    outgoing_ok;
     bool                    authorised;
@@ -428,16 +428,16 @@ typedef struct
 typedef struct
 {
     dm_protocol_id      protocol_id;
-    uint32              channel;
+    u32              channel;
     bool                outgoing_ok;
     dm_security_in      security_level;
-    uint16               psm;
+    u16               psm;
 } CL_INTERNAL_SM_REGISTER_REQ_T;
 
 typedef struct
 {
     dm_protocol_id  protocol_id;
-    uint32          channel;
+    u32          channel;
 } CL_INTERNAL_SM_UNREGISTER_REQ_T;
 
 typedef struct
@@ -445,7 +445,7 @@ typedef struct
     Task                theAppTask;
     bdaddr              bd_addr;
     dm_protocol_id      protocol_id;
-    uint32              remote_channel;
+    u32              remote_channel;
     dm_security_out     outgoing_security_level;
 } CL_INTERNAL_SM_REGISTER_OUTGOING_REQ_T;
 
@@ -453,7 +453,7 @@ typedef struct
 {
     bdaddr           bd_addr;
     dm_protocol_id   protocol_id;
-    uint32           channel;
+    u32           channel;
 } CL_INTERNAL_SM_UNREGISTER_OUTGOING_REQ_T;
 
 typedef struct
@@ -471,8 +471,8 @@ typedef struct
 typedef struct
 {
     typed_bdaddr            taddr;
-    uint8                   pin_length;
-    uint8                   pin[HCI_MAX_PIN_LENGTH];
+    u8                   pin_length;
+    u8                   pin[HCI_MAX_PIN_LENGTH];
 } CL_INTERNAL_SM_PIN_REQUEST_RES_T;
 
 typedef struct
@@ -481,10 +481,10 @@ typedef struct
     cl_sm_io_capability     io_capability;
     bool                    bonding;
     mitm_setting            mitm;
-    uint16                  key_distribution;
-    uint8                   oob_data;
-    uint8*                  oob_hash_c;
-    uint8*                  oob_rand_r;
+    u16                  key_distribution;
+    u8                   oob_data;
+    u8*                  oob_hash_c;
+    u8*                  oob_rand_r;
 } CL_INTERNAL_SM_IO_CAPABILITY_REQUEST_RES_T;
 
 typedef struct
@@ -497,7 +497,7 @@ typedef struct
 {
     tp_bdaddr           tpaddr;
     bool                cancelled;
-    uint32              numeric_value;
+    u32              numeric_value;
 } CL_INTERNAL_SM_USER_PASSKEY_REQUEST_RES_T;
 
 typedef struct
@@ -517,7 +517,7 @@ typedef struct
 {
     bdaddr           bd_addr;
     dm_protocol_id   protocol_id;
-    uint32           channel;
+    u32           channel;
     bool             incoming;
     bool             authorised;
 } CL_INTERNAL_SM_AUTHORISE_RES_T;
@@ -527,8 +527,8 @@ typedef struct
     Task                    theAppTask;
     bdaddr                  bd_addr;
     DM_SM_KEY_ENC_BREDR_T   enc_bredr;
-    uint16                  trusted;
-    uint16                  bonded;
+    u16                  trusted;
+    u16                  bonded;
 } CL_INTERNAL_SM_ADD_AUTH_DEVICE_REQ_T;
 
 typedef struct
@@ -544,19 +544,19 @@ typedef struct
 
 typedef struct
 {
-    uint32 class_of_device;
+    u32 class_of_device;
 } CL_INTERNAL_DM_WRITE_CLASS_OF_DEVICE_REQ_T;
 
 typedef struct
 {
-    uint16 ps_interval;
-    uint16 ps_window;
+    u16 ps_interval;
+    u16 ps_window;
 } CL_INTERNAL_DM_WRITE_PAGESCAN_ACTIVITY_REQ_T;
 
 typedef struct
 {
-    uint16 is_interval;
-    uint16 is_window;
+    u16 is_interval;
+    u16 is_window;
 } CL_INTERNAL_DM_WRITE_INQSCAN_ACTIVITY_REQ_T;
 
 typedef struct
@@ -583,7 +583,7 @@ typedef struct
 typedef struct
 {
     bdaddr  bd_addr;
-    uint16  clock_offset;
+    u16  clock_offset;
 } CL_INTERNAL_DM_WRITE_CACHED_CLK_OFFSET_REQ_T;
 
 typedef struct
@@ -594,20 +594,20 @@ typedef struct
 typedef struct
 {
     Sink    sink;
-    uint16  flush_timeout;
+    u16  flush_timeout;
 } CL_INTERNAL_DM_WRITE_FLUSH_TIMEOUT_REQ_T;
 
 typedef struct
 {
-    uint16  length_name;
-    uint8   *name;
+    u16  length_name;
+    u8   *name;
 } CL_INTERNAL_DM_CHANGE_LOCAL_NAME_REQ_T;
 
 typedef struct
 {
     Task theAppTask;
-    uint16 num_iac;
-    uint32 iac[1];
+    u16 num_iac;
+    u32 iac[1];
 } CL_INTERNAL_DM_WRITE_IAC_LAP_REQ_T;
 
 typedef struct
@@ -637,7 +637,7 @@ typedef struct
 typedef struct
 {
     Task                theAppTask;
-    uint8   version;
+    u8   version;
 } CL_INTERNAL_DM_SET_BT_VERSION_REQ_T;
 
 typedef struct
@@ -666,24 +666,24 @@ typedef struct
 typedef struct
 {
     Task    theAppTask;
-    uint16  record_length;
-    uint8   *record;
+    u16  record_length;
+    u8   *record;
 } CL_INTERNAL_SDP_REGISTER_RECORD_REQ_T;
 
 typedef struct
 {
     Task    theAppTask;
-    uint32  service_handle;
+    u32  service_handle;
 } CL_INTERNAL_SDP_UNREGISTER_RECORD_REQ_T;
 
 typedef struct
 {
-    uint16 mtu;
+    u16 mtu;
 } CL_INTERNAL_SDP_CONFIG_SERVER_MTU_REQ_T;
 
 typedef struct
 {
-    uint16 mtu;
+    u16 mtu;
 } CL_INTERNAL_SDP_CONFIG_CLIENT_MTU_REQ_T;
 
 typedef struct
@@ -701,32 +701,32 @@ typedef struct
 {
     Task    theAppTask;
     bdaddr  bd_addr;
-    uint16    max_responses;
-    uint16    flags;
-    uint16  length;
-    uint8     search_pattern[1];
+    u16    max_responses;
+    u16    flags;
+    u16  length;
+    u8     search_pattern[1];
 } CL_INTERNAL_SDP_SERVICE_SEARCH_REQ_T;
 
 typedef struct
 {
     Task    theAppTask;
     bdaddr  bd_addr;
-    uint32  service_handle;
-    uint16  size_attribute_list;
-    uint16  max_num_attr;
-    uint16  flags;
-    uint8   attribute_list[1];
+    u32  service_handle;
+    u16  size_attribute_list;
+    u16  max_num_attr;
+    u16  flags;
+    u8   attribute_list[1];
 } CL_INTERNAL_SDP_ATTRIBUTE_SEARCH_REQ_T;
 
 typedef struct
 {
     Task    theAppTask;
     bdaddr  bd_addr;
-    uint16  max_num_attributes; 
-    uint16  size_search_pattern; 
-    uint16  size_attribute_list; 
-    uint16  flags;
-    uint8   search_attr[1];
+    u16  max_num_attributes; 
+    u16  size_search_pattern; 
+    u16  size_attribute_list; 
+    u16  flags;
+    u8   search_attr[1];
 } CL_INTERNAL_SDP_SERVICE_SEARCH_ATTRIBUTE_REQ_T;
 
 typedef struct
@@ -739,43 +739,43 @@ typedef struct
 typedef struct
 {
     Task                        clientTask;
-    uint16                      app_psm;
-    uint16                      flags;
+    u16                      app_psm;
+    u16                      flags;
 } CL_INTERNAL_L2CAP_REGISTER_REQ_T;
 
 typedef struct
 {
     Task    theAppTask;
-    uint16  app_psm;
+    u16  app_psm;
 } CL_INTERNAL_L2CAP_UNREGISTER_REQ_T;
 
 typedef struct
 {
     Task                theAppTask;
     bdaddr          bd_addr;
-    uint16              psm_local;
-    uint16              psm_remote;
-    uint16              length;
-    uint16              *data;
+    u16              psm_local;
+    u16              psm_remote;
+    u16              length;
+    u16              *data;
 } CL_INTERNAL_L2CAP_CONNECT_REQ_T;
 
 typedef struct
 {
     Task                theAppTask;
     bool                response;
-    uint8               identifier;
-    uint16              psm_local;
-    uint16              connection_id;
-    uint16              length;
-    uint16              *data;
+    u8               identifier;
+    u16              psm_local;
+    u16              connection_id;
+    u16              length;
+    u16              *data;
 } CL_INTERNAL_L2CAP_CONNECT_RES_T;
 
 typedef struct
 {
     Task                            theAppTask;
     bdaddr                          bd_addr;
-    uint16                          psm_local;
-    uint16                          psm_remote;
+    u16                          psm_local;
+    u16                          psm_remote;
     l2cap_connectionless_data_type  type;
 } CL_INTERNAL_L2CAP_MAP_CONNECTIONLESS_REQ_T;
 
@@ -799,7 +799,7 @@ typedef struct
 
 typedef struct
 {
-    uint8                 identifier;
+    u8                 identifier;
     Sink                  sink;
 } CL_INTERNAL_L2CAP_DISCONNECT_RSP_T;
 #endif
@@ -809,34 +809,34 @@ typedef struct
 {
     Task                theAppTask;
     typed_bdaddr        taddr;
-    uint16              min_interval;
-    uint16              max_interval;
-    uint16              latency;
-    uint16              timeout;
-    uint16              min_ce_length;
-    uint16              max_ce_length;
+    u16              min_interval;
+    u16              max_interval;
+    u16              latency;
+    u16              timeout;
+    u16              min_ce_length;
+    u16              max_ce_length;
 } CL_INTERNAL_DM_BLE_CONNECTION_PARAMETERS_UPDATE_REQ_T;
 #endif
 
 typedef struct
 {
     Task                    theAppTask;
-    uint8                   suggested_server_channel;
+    u8                   suggested_server_channel;
 } CL_INTERNAL_RFCOMM_REGISTER_REQ_T;
 
 #ifndef CL_EXCLUDE_RFCOMM
 typedef struct
 {
     Task                        theAppTask;
-    uint8                   local_server_channel;
+    u8                   local_server_channel;
 } CL_INTERNAL_RFCOMM_UNREGISTER_REQ_T;
 
 typedef struct
 {
     Task                    theAppTask;
     bdaddr                  bd_addr;
-    uint8                   remote_server_channel;
-    uint16                  security_channel;
+    u8                   remote_server_channel;
+    u16                  security_channel;
     rfcomm_config_params    config;
 } CL_INTERNAL_RFCOMM_CONNECT_REQ_T;
 
@@ -845,7 +845,7 @@ typedef struct
     Task                    theAppTask;
     bool                    response;
     Sink                    sink;    
-    uint8                   server_channel;
+    u8                   server_channel;
     rfcomm_config_params    config;
 
 } CL_INTERNAL_RFCOMM_CONNECT_RES_T;
@@ -880,8 +880,8 @@ typedef struct
 {
     Task                theAppTask;
     Sink                sink;
-    uint8               break_signal;
-    uint8               modem_signal;
+    u8               break_signal;
+    u8               modem_signal;
 } CL_INTERNAL_RFCOMM_CONTROL_REQ_T;
 
 typedef struct
@@ -961,42 +961,42 @@ typedef struct
 typedef struct
 {
     Sink        sink;
-    uint16      timeout;
+    u16      timeout;
 } CL_INTERNAL_DM_SET_LINK_SUPERVISION_TIMEOUT_REQ_T;
 
 typedef struct
 {
     Sink        sink;
-    uint16      size_power_table; 
+    u16      size_power_table; 
     lp_power_table const *power_table;
 } CL_INTERNAL_DM_SET_LINK_POLICY_REQ_T;
 
 typedef struct
 {
     Sink        sink;
-    uint16      max_remote_latency;
-    uint16      min_remote_timeout;
-    uint16      min_local_timeout;
+    u16      max_remote_latency;
+    u16      min_remote_timeout;
+    u16      min_local_timeout;
 } CL_INTERNAL_DM_SET_SNIFF_SUB_RATE_POLICY_REQ_T;
 
 typedef struct
 {
-    uint16 timeout;
+    u16 timeout;
 } CL_INTERNAL_DM_WRITE_PAGE_TIMEOUT_REQ_T;
 
 typedef struct
 {
-    uint8   addr_type;
+    u8   addr_type;
     bdaddr  bd_addr;
-    uint16  ps_base;
-    uint16  size_psdata;
+    u16  ps_base;
+    u16  size_psdata;
 } CL_INTERNAL_SM_GET_ATTRIBUTE_REQ_T;
 
 typedef struct
 {
-    uint16  index;
-    uint16  ps_base;
-    uint16  size_psdata;
+    u16  index;
+    u16  ps_base;
+    u16  size_psdata;
 } CL_INTERNAL_SM_GET_INDEXED_ATTRIBUTE_REQ_T;
 
 #ifndef DISABLE_BLE
@@ -1076,11 +1076,11 @@ typedef struct
 
     sm_init_msg_type    sm_init_msg:4;
 
-    uint16              key_distribution;
+    u16              key_distribution;
     
     sm_device_req_type  deviceReqType:1;
     
-    uint16              TdlNumberOfDevices;
+    u16              TdlNumberOfDevices;
     
     /* Message primitives locks */
     Task                setSecurityModeLock;

@@ -5,7 +5,7 @@
 
 void BdaddrConvertBluestackToVm(bdaddr *out, const BD_ADDR_T *in)
 {
-    out->lap = (uint32)(in->lap);
-    out->uap = (uint8)(in->uap);
-    out->nap = (uint16)(in->nap);
+    out->lap = (u32)(in->lap);
+    out->uap = (u8)(in->uap);
+    out->nap = (u16)(in->nap);
 }

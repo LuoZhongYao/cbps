@@ -79,7 +79,7 @@ RETURNS
     TRUE if the Imm Alert service was successfully added, FALSE otherwise.
 */
 #ifdef GATT_IAS_CLIENT
-bool sinkGattIasClientAddService(uint16 cid, uint16 start, uint16 end);
+bool sinkGattIasClientAddService(u16 cid, u16 start, u16 end);
 #else
 #define sinkGattIasClientAddService(cid, start, end) (FALSE)
 #endif
@@ -97,7 +97,7 @@ PARAMETERS
     cid             The connection ID
 */
 #ifdef GATT_IAS_CLIENT
-void sinkGattIasClientRemoveService(GIASC_T *giasc, uint16 cid);
+void sinkGattIasClientRemoveService(GIASC_T *giasc, u16 cid);
 #else
 #define sinkGattIasClientRemoveService(giasc, cid) ((void)(0))
 #endif
@@ -166,7 +166,7 @@ DESCRIPTION
 
 */
 #ifdef GATT_IAS_CLIENT
-uint16 sinkGattIasClientGetCachedLevel(void);
+u16 sinkGattIasClientGetCachedLevel(void);
 #else
 #define sinkGattIasClientGetCachedLevel() ((void)(0))
 #endif
@@ -185,7 +185,7 @@ PARAMETERS
 
 */
 #ifdef GATT_IAS_CLIENT
-ias_alert_status_t sinkGattIasClientSwitchMode(uint8 alert_level, sink_gatt_ias_dev_type dev_type);
+ias_alert_status_t sinkGattIasClientSwitchMode(u8 alert_level, sink_gatt_ias_dev_type dev_type);
 #else
 #define sinkGattIasClientSwitchMode(alert_level, dev_types) (ias_alert_not_supported)
 #endif

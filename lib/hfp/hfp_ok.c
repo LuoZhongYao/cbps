@@ -90,7 +90,7 @@ static const hfp_lib_status extendedStatusCode[ HFP_CME_MAX_ERROR_CODE - HFP_CME
 
 /* Convert supplied CME ERROR code to internal HFP library status code. */
 /* Unrecongnised codes are mapped to hfp_fail.                          */
-static hfp_lib_status convertErrorCode ( uint16 CmeErrorCode )
+static hfp_lib_status convertErrorCode ( u16 CmeErrorCode )
 {
     if ( (CmeErrorCode >= HFP_CME_MIN_ERROR_CODE) && (CmeErrorCode <= HFP_CME_MAX_ERROR_CODE) )
     {
@@ -463,7 +463,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void handleUnrecognised(const uint8 *data, uint16 length, Task link_ptr)
+void handleUnrecognised(const u8 *data, u16 length, Task link_ptr)
 {
     if (!length)
         return;

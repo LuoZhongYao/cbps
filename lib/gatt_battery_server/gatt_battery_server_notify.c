@@ -13,10 +13,10 @@
 
 
 /****************************************************************************/
-gatt_battery_server_status_t GattBatteryServerSendLevelNotification(const GBASS *battery_server, uint16 number_cids, const uint16 *cids, uint8 battery_level)
+gatt_battery_server_status_t GattBatteryServerSendLevelNotification(const GBASS *battery_server, u16 number_cids, const u16 *cids, u8 battery_level)
 {
     gatt_battery_server_status_t result = gatt_battery_server_status_invalid_parameter;
-    uint16 index = 0;
+    u16 index = 0;
 
     if ((battery_server != NULL) && (battery_level <= 100) && number_cids)
     {

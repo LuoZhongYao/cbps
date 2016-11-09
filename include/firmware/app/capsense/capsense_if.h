@@ -80,11 +80,11 @@ typedef struct
     /*! Pad absolute capacitance. This is the sum of both internal (Cbulk and 
      *  Cint) and external (touch) capacitances.
      */
-    uint16  Cint_fF;
+    u16  Cint_fF;
 
     /*! Pad capacitance change compared to the slow moving average value.
      */
-    int16   Cint_delta_fF;  
+    i16   Cint_delta_fF;  
 } capsense_pad_state;
 
 
@@ -93,7 +93,7 @@ typedef struct
 {
     unsigned int  pad :8;        /*!< Pad number */
     unsigned int  direction :8;  /*!< Whether positive or negative excursion */
-    uint16        time_ms;       /*!< Timestamp of event */
+    u16        time_ms;       /*!< Timestamp of event */
 } capsense_event;
 #endif /* __CAPSENSE_IF_H__ */
 

@@ -24,8 +24,8 @@ FILE
 #define PBAPC_FILTER_FN             (1<<1)
 #define PBAPC_FILTER_N              (1<<2)
 #define PBAPC_FILTER_TEL            (1<<7)
-#define PBAPC_FILTER_LOW            ((uint32)(PBAPC_FILTER_N | PBAPC_FILTER_TEL))
-#define PBAPC_FILTER_HIGH           ((uint32)0)
+#define PBAPC_FILTER_LOW            ((u32)(PBAPC_FILTER_N | PBAPC_FILTER_TEL))
+#define PBAPC_FILTER_HIGH           ((u32)0)
 #define PBAPC_MAX_LIST              (1000)
 #define PBAPC_LIST_START            (0)
 
@@ -56,8 +56,8 @@ typedef enum
 */
 typedef struct 
 {	
-    uint16         PbapBrowseEntryIndex;
-    const uint8*   pbap_srch_val;
+    u16         PbapBrowseEntryIndex;
+    const u8*   pbap_srch_val;
     unsigned       pbap_srch_attr:2;
     unsigned       pbap_active_pb:3;
     unsigned       pbap_ready:1;               /* pbapc library has been initialised */
@@ -175,7 +175,7 @@ PARAMS
 RETURNS
 	void
 */
-void pbapDialPhoneBook( uint8 phonebook );
+void pbapDialPhoneBook( u8 phonebook );
 
 
 #endif /*ENABLE_PBAP*/

@@ -35,9 +35,9 @@ DESCRIPTION
 static void handleIntPullvCard( pbapcState *state, 
                                 PBAPC_INT_GET_VCARD_T *msg )
 {
-    uint8 *obj = NULL;
+    u8 *obj = NULL;
     Source src = 0;
-    uint16 len = 0;
+    u16 len = 0;
     bool ok;
 
     if (state->currCom != pbapc_com_none)
@@ -53,7 +53,7 @@ static void handleIntPullvCard( pbapcState *state,
         return;
     }
 
-    if( !(obj = (uint8*)malloc(PBAPC_OBJ_LEN)) )
+    if( !(obj = (u8*)malloc(PBAPC_OBJ_LEN)) )
     {
         pbapcMsgSendPullvCardErrCfm( state, pbapc_vce_no_param_resources );
         return;
@@ -84,7 +84,7 @@ static void handleIntPullvCard( pbapcState *state,
     /* Add Type Object */
      if( ok ) 
     {
-        const uint8* type = pbapcGetvCardMimeType( &len );
+        const u8* type = pbapcGetvCardMimeType( &len );
         ok &= (src = StreamRegionSource( type, len ) ) &&
           ObexObjAddVariableHdr( state->handle, obex_type_hdr, len, src);
         
@@ -142,8 +142,8 @@ static void handleIntPullvCard( pbapcState *state,
 static void handleIntPullvCardList( pbapcState *state, 
                                     PBAPC_INT_GET_VCARD_LIST_T *msg )
 {
-    uint16 len = WORD_APP_PARAM_LEN; /* for Max List Count size */
-    uint8 *obj = NULL;
+    u16 len = WORD_APP_PARAM_LEN; /* for Max List Count size */
+    u8 *obj = NULL;
     bool ok;
     Source src = 0;
 
@@ -189,7 +189,7 @@ static void handleIntPullvCardList( pbapcState *state,
         len = 0;
         if( msg->phonebook != state->pb.currPb ) 
         {
-            const uint8* name = pbapcGetPbNameFromID( msg->phonebook, &len );
+            const u8* name = pbapcGetPbNameFromID( msg->phonebook, &len );
             src = StreamRegionSource( name, len );
         }
 
@@ -206,7 +206,7 @@ static void handleIntPullvCardList( pbapcState *state,
     /* Add Type object */
     if( ok ) 
     {   
-        const uint8* type =  pbapcGetvCardListingMimeType( &len );
+        const u8* type =  pbapcGetvCardListingMimeType( &len );
         ok &= (src = StreamRegionSource( type, len ) ) &&
           ObexObjAddVariableHdr( state->handle, obex_type_hdr, len, src);
         
@@ -344,9 +344,9 @@ static void handleIntPullContinue( pbapcState *state,
 static void handleIntPullPb( pbapcState *state, 
                              PBAPC_INT_GET_PHONEBOOK_T *msg)
 {
-    uint16 len = 0;
-    uint8 *obj = NULL;
-    const uint8* type = NULL;
+    u16 len = 0;
+    u8 *obj = NULL;
+    const u8* type = NULL;
     Source src = 0;
     bool ok;
 
@@ -457,7 +457,7 @@ static void handleIntAuthClg( pbapcState *state , PBAPC_INT_AUTH_CLG_T* msg)
 {
     if( state->currCom == pbapc_com_connect )
     {
-        const uint8* nonce = (msg)?msg->nonce:NULL;
+        const u8* nonce = (msg)?msg->nonce:NULL;
 
         ObexAuthReqResponse( state->handle, nonce,
                              obex_auth_no_option, 0, NULL );

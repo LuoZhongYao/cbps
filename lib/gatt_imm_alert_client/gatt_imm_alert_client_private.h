@@ -48,15 +48,15 @@ typedef enum
 /* Internal message structure for connect request  */
 typedef struct
 {
-    uint16 cid;                 /* Connection Identifier for remote device */                                                             
-    uint16 start_handle;  /* Start handle of the service */
-    uint16 end_handle;    /* End handle of the service */
+    u16 cid;                 /* Connection Identifier for remote device */                                                             
+    u16 start_handle;  /* Start handle of the service */
+    u16 end_handle;    /* End handle of the service */
 } IMM_ALERT_CLIENT_INETRNAL_MSG_CONNECT_T;
 
 /* Internal message structure for setting alert level */
 typedef struct
 {
-    uint16 alert_level; /*Alert level that need to be set */
+    u16 alert_level; /*Alert level that need to be set */
 } IMM_ALERT_CLIENT_INTERNAL_MSG_SET_ALERT_T;
 
 #endif /* GATT_IMM_ALERT_CLIENT_PRIVATE_H */

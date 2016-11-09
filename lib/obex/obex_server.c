@@ -28,7 +28,7 @@ DESCRIPTION
  * RETURNS
  **************************************************************************/
 Task ObexConnectResponse( Sink					sink,
-                          uint8                 rfcChannel,
+                          u8                 rfcChannel,
                           bool                  accept,
                           const ObexConnParams* connParams)  
 {
@@ -107,9 +107,9 @@ void ObexSetPathResponse( Obex session, ObexResponse response )
  *
  * RETURNS
  **************************************************************************/
-Task ObexL2capConnectResponse( uint16                psm,
-                               uint8                 identifier,
-                               uint16                connId,
+Task ObexL2capConnectResponse( u16                psm,
+                               u8                 identifier,
+                               u16                connId,
                                bool                  accept,
                                const ObexConnParams* connParams ) 
 {

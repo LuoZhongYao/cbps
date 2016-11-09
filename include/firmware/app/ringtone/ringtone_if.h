@@ -134,7 +134,7 @@ static char if_ringtone_h_id[]
 
 /*
   What we need is some completely opaque type that will give an error if
-  dereferenced. It must be able to hold a uint16 and a uint16 * and must
+  dereferenced. It must be able to hold a u16 and a u16 * and must
   be a basic type (ie. not a union). 
 */
 /*!
@@ -226,7 +226,7 @@ These are the commands that can be put in a #ringtone_note.
         timbre is #ringtone_tone_sine.
 */
 #define RINGTONE_TIMBRE(t) \
-    ((ringtone_note) (RINGTONE_SEQ_TIMBRE | (uint16) ringtone_tone_##t))
+    ((ringtone_note) (RINGTONE_SEQ_TIMBRE | (u16) ringtone_tone_##t))
 
 /*!
 	This sets the volume decay rate.  As each tone is played, its volume decreases

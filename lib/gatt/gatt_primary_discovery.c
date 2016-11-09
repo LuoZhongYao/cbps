@@ -24,18 +24,18 @@ NOTES
 
 #if (GATT_FEATURES & GATT_PRIMARY_DISCOVERY)
 
-static const uint32 uuid_primary_service = ATT_UUID_PRI_SERVICE;
+static const u32 uuid_primary_service = ATT_UUID_PRI_SERVICE;
 
 /* search pattern for sdp search
  * DataElSeq - See Core V4.0 SDP Specification P221 Sec 3.2 & 3.3 */
-static const uint8 sdp_search[] = {
+static const u8 sdp_search[] = {
     0x35, 0x03,         /* DataElHeader(Type:0b00110 Size:0b101), 3 bytes */
     0x19, 0x00, 0x07    /* UUID16(Type:0b00011 Size:0b001), ATT 0x0007 */
 };
 
 /* search pattern for sdp attributes
  * DataElSeq - See Core V4.0 SDP Specification P221 Sec 3.2 & 3.3 */
-static const uint8 sdp_search_attr[] = {
+static const u8 sdp_search_attr[] = {
     0x35, 0x06,         /* DataElHeader(Type:0b00110 Size:0b101), 6 bytes */
     0x09, 0x00, 0x04,   /* UINT16(Type:0b00001 Size:0b001),
                                             ProtocolDescriptorList 0x0004 */
@@ -69,7 +69,7 @@ RETURNS
 void gattHandleClSdpServiceSearchAttributeCfm(
     CL_SDP_SERVICE_SEARCH_ATTRIBUTE_CFM_T *m)
 {
-    uint16 id = 0;
+    u16 id = 0;
     cid_map_t *conn = PanicNull(gattFindConnAddr(&m->bd_addr));/* never NULL */
 
     /* Use GATT_DISCOVER_ALL_BREDR_SERVICES_CFM to populate the response.
@@ -109,7 +109,7 @@ void gattHandleClSdpServiceSearchAttributeCfm(
             sdtSequence, sdtUUID, sdtUnsignedInteger, sdtUnsignedInteger,
 
             sdtUnsignedInteger, sdtSequence, sdtUUID };
-        uint16 i;
+        u16 i;
         
         sdp.begin = m->attributes;
         sdp.end = m->attributes + m->size_attributes;
@@ -227,8 +227,8 @@ RETURNS
 static cid_map_t *get_temp_conn(Task task)
 {
     gattState *gatt = (gattState*)gattGetTask();
-    uint16 cid = 0x003f; /* maximum fixed cid */
-    uint16 i;
+    u16 cid = 0x003f; /* maximum fixed cid */
+    u16 i;
     
     /* create special connection instance for the SDP search */
     for (i = 1; i < MAX_ATT_CONNECTIONS; i++)
@@ -242,7 +242,7 @@ static cid_map_t *get_temp_conn(Task task)
 
 #if (GATT_FEATURES & GATT_DISC_ALL_PRIMARY_SERVICES)
 
-void GattDiscoverAllPrimaryServicesRequest(Task theAppTask, uint16 cid)
+void GattDiscoverAllPrimaryServicesRequest(Task theAppTask, u16 cid)
 {
     cid_map_t *conn;
 
@@ -335,7 +335,7 @@ void gattHandleAttReadByGroupTypeCfm(ATT_READ_BY_GROUP_TYPE_CFM_T *m)
 {
     cid_map_t *conn = PanicNull(gattFindConn(m->cid)); /* never NULL */
     STASH(conn, stash, DISCOVER_ALL_PRIMARY_SERVICES);
-    uint8 *data;
+    u8 *data;
     bool more;
     bool send;
 
@@ -388,7 +388,7 @@ void gattHandleAttReadByGroupTypeCfm(ATT_READ_BY_GROUP_TYPE_CFM_T *m)
 #if (GATT_FEATURES & GATT_DISC_PRIMARY_SERVICE)
 
 void GattDiscoverPrimaryServiceRequest(Task theAppTask,
-                                       uint16 cid,
+                                       u16 cid,
                                        gatt_uuid_type_t uuid_type,
                                        const gatt_uuid_t *uuid)
 {
@@ -450,10 +450,10 @@ static void search_sdp_service(const bdaddr *addr,
                                gatt_uuid_type_t uuid_type,
                                const gatt_uuid_t *uuidc)
 {
-    uint16 len;
-    uint16 i;
-    uint8 *search;
-    uint8 *p;
+    u16 len;
+    u16 i;
+    u8 *search;
+    u8 *p;
     gatt_uuid_t uuid[4];
 
     memmove(uuid, uuidc, GATT_UUID_SIZE);

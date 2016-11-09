@@ -43,7 +43,7 @@ NOTES
 * RETURNS
 *    void
 *******************************************************************************/
-static void avrcpSetVendorPacketHeader(uint8 *ptr,
+static void avrcpSetVendorPacketHeader(u8 *ptr,
                      const AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *req)
 {
     /* AVRCP header */
@@ -75,7 +75,7 @@ static void avrcpSetVendorPacketHeader(uint8 *ptr,
 *******************************************************************************/
 void avrcpSendVendordependentCfmToClient(AVRCP *avrcp, 
                                         avrcp_status_code status, 
-                                        uint8 response)
+                                        u8 response)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_VENDORDEPENDENT_CFM);
     message->status = status;
@@ -122,12 +122,12 @@ void avrcpSendVendordependentCfmToClient(AVRCP *avrcp,
 void avrcpHandleInternalVendorDependentReq(AVRCP *avrcp, 
                                 const AVRCP_INTERNAL_VENDORDEPENDENT_REQ_T *req)
 {
-    uint8* ptr;
-    uint16 header_size= AVRCP_VENDOR_HEADER_SIZE; 
+    u8* ptr;
+    u16 header_size= AVRCP_VENDOR_HEADER_SIZE; 
     avrcp_status_code result = avrcp_success;
-    uint16 avctp_header_size= AVCTP_SINGLE_PKT_HEADER_SIZE; 
-    uint16 max_mtu = avrcp->l2cap_mtu - AVCTP_SINGLE_PKT_HEADER_SIZE;
-    uint16 packet_size = req->data_length+ AVRCP_VENDOR_HEADER_SIZE;
+    u16 avctp_header_size= AVCTP_SINGLE_PKT_HEADER_SIZE; 
+    u16 max_mtu = avrcp->l2cap_mtu - AVCTP_SINGLE_PKT_HEADER_SIZE;
+    u16 packet_size = req->data_length+ AVRCP_VENDOR_HEADER_SIZE;
 
     /* Check whether it is a Meta Data Command. For Meta Data Commands, avrcp 
        fills the extra data before calling it */
@@ -139,7 +139,7 @@ void avrcpHandleInternalVendorDependentReq(AVRCP *avrcp,
         /* Store the Transaction ID and Event for Notification registration */
         if(req->extra_data[0] == AVRCP_REGISTER_NOTIFICATION_PDU_ID)
         {
-            uint8 event = req->pending - avrcp_events_start_dummy;
+            u8 event = req->pending - avrcp_events_start_dummy;
 
             if( isEventRegistered(avrcp,event))
             {
@@ -264,8 +264,8 @@ void avrcpHandleInternalVendorDependentReq(AVRCP *avrcp,
  *MESSAGE RETURNED
 *****************************************************************************/
 void avrcpHandleVendorResponse(AVRCP *avrcp, 
-                         const uint8 *ptr, 
-                               uint16 packet_size)
+                         const u8 *ptr, 
+                               u16 packet_size)
 {
     if(avrcp->pending == avrcp_vendor)
     {
@@ -389,10 +389,10 @@ void avrcpHandleInternalVendorDependentRes(AVRCP *avrcp,
  *
  *MESSAGE RETURNED
 *****************************************************************************/
-void avrcpHandleVendorCommand(AVRCP *avrcp, const uint8 *ptr, uint16 packet_size)
+void avrcpHandleVendorCommand(AVRCP *avrcp, const u8 *ptr, u16 packet_size)
 {
-    uint16 op_len;
-    uint32 cid;  
+    u16 op_len;
+    u32 cid;  
 
 
     /* Check the Request has Valid length */

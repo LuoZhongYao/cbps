@@ -51,17 +51,17 @@ NOTES
 *    
 *PARAMETERS
 *   avrcp            - Task
-*   uint16           - Unique Player ID
+*   u16           - Unique Player ID
 *
 *RETURN
 *  AVRCP_SET_ADDRESSED_PLAYER_CFM 
 *****************************************************************************/
-void AvrcpSetAddressedPlayerRequest( AVRCP*  avrcp, uint16  player_id )
+void AvrcpSetAddressedPlayerRequest( AVRCP*  avrcp, u16  player_id )
 {
-    uint8 player[AVRCP_PLAYER_ID_SIZE];
+    u8 player[AVRCP_PLAYER_ID_SIZE];
     avrcp_status_code status;
 
-    /* Convert to uint8 values */
+    /* Convert to u8 values */
     AVRCP_UINT16_TO_UINT8(player_id, player, 0);
 
     status = avrcpMetadataControlCommand(avrcp, 
@@ -147,8 +147,8 @@ void AvrcpSetAddressedPlayerResponse(AVRCP*              avrcp,
 *******************************************************************************/
 void AvrcpEventAddressedPlayerChangedResponse(AVRCP*    avrcp, 
                                     avrcp_response_type response, 
-                                    uint16              player_id, 
-                                    uint16              uid_counter)
+                                    u16              player_id, 
+                                    u16              uid_counter)
 {
       /* Only send a response if this event was registered by the CT. */
     if (isEventRegistered(avrcp,EVENT_ADDRESSED_PLAYER_CHANGED))

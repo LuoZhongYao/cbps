@@ -24,9 +24,9 @@ static void handleWriteClientConfigResp(GBASC *battery_client, const GATT_MANAGE
 
 
 /****************************************************************************/
-void writeClientConfigValue(GBASC *battery_client, bool notifications_enable, uint16 handle)
+void writeClientConfigValue(GBASC *battery_client, bool notifications_enable, u16 handle)
 {
-    uint8 value[2];
+    u8 value[2];
     
     value[0] = notifications_enable ? BATTERY_SERVICE_NOTIFICATION_VALUE : 0;
     value[1] = 0;

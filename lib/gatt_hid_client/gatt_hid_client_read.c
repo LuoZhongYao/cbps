@@ -64,7 +64,7 @@ static void  hid_client_read_hindinfo_cfm(GHIDC_T *const hid_client,
 
     /* Make the protocol read infor message */
     MAKE_HID_CLIENT_MESSAGE_WITH_LEN( GATT_HID_CLIENT_READ_INFO_CFM,cfm->size_value);
-    memset(message, 0, sizeof(GATT_HID_CLIENT_READ_INFO_CFM_T) + cfm->size_value - sizeof(uint8));
+    memset(message, 0, sizeof(GATT_HID_CLIENT_READ_INFO_CFM_T) + cfm->size_value - sizeof(u8));
     /* Fill in confirmation message parameters */
     message->hid_client = hid_client;
     message->status = hid_client_status;
@@ -96,7 +96,7 @@ static void hid_client_read_ext_reference_cfm(GHIDC_T *const hid_client,
     gatt_hid_client_status hid_client_status = hid_client_convert_status(cfm->status);
 
     MAKE_HID_CLIENT_MESSAGE_WITH_LEN( GATT_HID_CLIENT_READ_EXT_REF_CFM,cfm->size_value);
-    memset(message, 0, sizeof(GATT_HID_CLIENT_READ_EXT_REF_CFM_T) + cfm->size_value - sizeof(uint8));
+    memset(message, 0, sizeof(GATT_HID_CLIENT_READ_EXT_REF_CFM_T) + cfm->size_value - sizeof(u8));
     /* Fill in confirmation message parameters */
     message->hid_client = hid_client;
     message->status = hid_client_status;
@@ -127,7 +127,7 @@ static void hid_client_read_ccd_cfm(GHIDC_T *const hid_client,
     gatt_hid_client_status hid_client_status = hid_client_convert_status(cfm->status);
 
     MAKE_HID_CLIENT_MESSAGE_WITH_LEN( GATT_HID_CLIENT_READ_CCD_CFM,cfm->size_value);
-    memset(message, 0, sizeof(GATT_HID_CLIENT_READ_CCD_CFM_T) + cfm->size_value - sizeof(uint8));
+    memset(message, 0, sizeof(GATT_HID_CLIENT_READ_CCD_CFM_T) + cfm->size_value - sizeof(u8));
     /* Fill in confirmation message parameters */
     message->hid_client = hid_client;
     message->status = hid_client_status;
@@ -136,9 +136,9 @@ static void hid_client_read_ccd_cfm(GHIDC_T *const hid_client,
     /* If status is success, then fill in the data */
     if ((hid_client_status == gatt_hid_client_status_success)&&(cfm->size_value))
     {    
-        uint16 report_id;
-        uint16 count;
-        uint16 num_ccd = hid_client->num_boot_ccd+ hid_client->num_report_ccd;
+        u16 report_id;
+        u16 count;
+        u16 num_ccd = hid_client->num_boot_ccd+ hid_client->num_report_ccd;
 
         /*Get report handle from ccd handle*/
         for(count = 0;count < num_ccd ;count++)
@@ -174,13 +174,13 @@ DESCRIPTION
 */
 static void hid_client_read_report_id_map_cfm(GHIDC_T *const hid_client)
 {
-    uint16 count = 0;
-    uint16 index=0;
+    u16 count = 0;
+    u16 index=0;
     /* Temporary instance of report map ID used to go through available reports */
     gatt_hid_client_report_id_map_t *report_id_map = NULL;
 
     MAKE_HID_CLIENT_MESSAGE_WITH_LEN( GATT_HID_CLIENT_REPORT_ID_MAP_CFM,(hid_client->num_report_id*4));
-    memset(message, 0, sizeof(GATT_HID_CLIENT_REPORT_ID_MAP_CFM_T) + (hid_client->num_report_id*4) - sizeof(uint8));
+    memset(message, 0, sizeof(GATT_HID_CLIENT_REPORT_ID_MAP_CFM_T) + (hid_client->num_report_id*4) - sizeof(u8));
    /* Fill in confirmation message parameters */
     message->hid_client = hid_client;
     message->num_reports = hid_client->num_report_id;
@@ -207,12 +207,12 @@ DESCRIPTION
 static void hid_client_read_get_report_cfm(GHIDC_T *const hid_client,
                  GATT_MANAGER_READ_CHARACTERISTIC_VALUE_CFM_T* cfm)
 {
-    uint16 report_id;
+    u16 report_id;
    /* Convert GATT lib status to HID lib status */
     gatt_hid_client_status hid_client_status = hid_client_convert_status(cfm->status);
 
     MAKE_HID_CLIENT_MESSAGE_WITH_LEN( GATT_HID_CLIENT_GET_REPORT_CFM,cfm->size_value);
-    memset(message, 0, sizeof(GATT_HID_CLIENT_GET_REPORT_CFM_T) + cfm->size_value - sizeof(uint8));
+    memset(message, 0, sizeof(GATT_HID_CLIENT_GET_REPORT_CFM_T) + cfm->size_value - sizeof(u8));
    /* Fill in confirmation message parameters */
     message->hid_client = hid_client;
     message->status = hid_client_status;
@@ -250,7 +250,7 @@ static void   hid_client_read_report_map_cfm(GHIDC_T *const hid_client,
     gatt_hid_client_status hid_client_status = hid_client_convert_status(cfm->status);
 
     MAKE_HID_CLIENT_MESSAGE_WITH_LEN( GATT_HID_CLIENT_READ_REPORT_MAP_CFM,cfm->size_value);
-    memset(message, 0, sizeof(GATT_HID_CLIENT_READ_REPORT_MAP_CFM_T) + cfm->size_value - sizeof(uint8));
+    memset(message, 0, sizeof(GATT_HID_CLIENT_READ_REPORT_MAP_CFM_T) + cfm->size_value - sizeof(u8));
 
    /* Fill in confirmation message parameters */
     message->hid_client = hid_client;
@@ -289,7 +289,7 @@ static void   hid_client_read_boot_report_value_cfm(GHIDC_T *const hid_client,
     gatt_hid_client_status hid_client_status = hid_client_convert_status(cfm->status);
 
     MAKE_HID_CLIENT_MESSAGE_WITH_LEN( GATT_HID_CLIENT_READ_BOOT_REPORT_CFM,cfm->size_value);
-    memset(message, 0, sizeof(GATT_HID_CLIENT_READ_BOOT_REPORT_CFM_T) + cfm->size_value - sizeof(uint8));
+    memset(message, 0, sizeof(GATT_HID_CLIENT_READ_BOOT_REPORT_CFM_T) + cfm->size_value - sizeof(u8));
 
    /* Fill in confirmation message parameters */
     message->hid_client = hid_client;
@@ -344,7 +344,7 @@ static void hid_client_read_boot_report_uuid_cfm(GHIDC_T *const hid_client,
     gatt_hid_client_status hid_client_status = hid_client_convert_status(cfm->status);
 
     MAKE_HID_CLIENT_MESSAGE_WITH_LEN(GATT_HID_CLIENT_READ_BOOT_REPORT_CFM,cfm->size_value);
-    memset(message, 0, sizeof(GATT_HID_CLIENT_READ_BOOT_REPORT_CFM_T) + cfm->size_value - sizeof(uint8));
+    memset(message, 0, sizeof(GATT_HID_CLIENT_READ_BOOT_REPORT_CFM_T) + cfm->size_value - sizeof(u8));
 
    /* Fill in confirmation message parameters */
     message->hid_client = hid_client;
@@ -373,9 +373,9 @@ static bool hid_client_read_ccd(GHIDC_T *const hid_client, gatt_hid_ccd_type mod
     
     if(VALIDATE_HID_CLIENT(hid_client))
     {
-        uint16 count;
-        uint16 num_ccd = hid_client->num_boot_ccd+ hid_client->num_report_ccd;
-        uint16 ccd_handle = INVALID_HID_HANDLE;
+        u16 count;
+        u16 num_ccd = hid_client->num_boot_ccd+ hid_client->num_report_ccd;
+        u16 ccd_handle = INVALID_HID_HANDLE;
 
         for(count = 0;count < num_ccd ;count++)
         {
@@ -577,7 +577,7 @@ void hid_client_read_report_map(GHIDC_T *const hid_client)
 void hid_client_read_boot_report(GHIDC_T *const hid_client,
       HID_CLIENT_INTERNAL_MSG_READ_BOOT_REPORT_T *msg)
 {
-    uint16 handle = INVALID_HID_HANDLE;
+    u16 handle = INVALID_HID_HANDLE;
     gatt_uuid_t uuid[4];
     uuid[0] = GATT_HID_INVALID_UUID;
     if(VALIDATE_HID_CLIENT(hid_client))
@@ -763,11 +763,11 @@ gatt_hid_client_status GattHidGetReportIDMap(GHIDC_T *const hid_client)
 
 /****************************************************************************/
 gatt_hid_client_status GattHidGetReport(GHIDC_T *const hid_client,
-                                uint16 report_id)
+                                u16 report_id)
 {
     gatt_hid_client_status   retval =  gatt_hid_client_status_invalid_param;
-    uint16 type = 0;
-    uint16 report_handle = 0;
+    u16 type = 0;
+    u16 report_handle = 0;
 
     /* Validate the Input Parameters */
     if(VALIDATE_INPUT_PARAM(hid_client))

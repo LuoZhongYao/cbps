@@ -26,10 +26,10 @@ Copyright (c) 2015 Qualcomm Technologies International, Ltd.
 /* GATT Client Configuration attributes that need to be stored per client */
 typedef struct __gatt_client_attributes_t
 {
-    uint16 gatt;
-    uint16 battery_local;
-    uint16 battery_remote;
-    uint16 battery_peer;
+    u16 gatt;
+    u16 battery_local;
+    u16 battery_remote;
+    u16 battery_peer;
 } gatt_client_attributes_t;
 
 
@@ -83,13 +83,13 @@ typedef enum __gatt_attribute_service_t
 typedef struct __gatt_server_read_name_t
 {
     bool        requested;  /* Flag to indicate if client requested read of local name */
-    uint16      offset;     /* Offset for local name repsonse */   
+    u16      offset;     /* Offset for local name repsonse */   
 } gatt_client_gap_read_name_t;
 
 typedef struct __gatt_client_connection
 {
     void *data;                                 /* Connection specific data */
-    uint16 cid;                                 /* The ID of the client connection */
+    u16 cid;                                 /* The ID of the client connection */
     gatt_client_attributes_t client_config;     /* Client Service Configuration set by by the client */
     gatt_client_gap_read_name_t gap_read_name;  /* Records the clients read of the local name using GAP */
     BITFIELD role:2;                            /* Records the GAP role for the client connection */
@@ -100,8 +100,8 @@ typedef struct __gatt_client_connection
 typedef struct __gatt_client_discovery
 {
     gatt_client_tasks_t service;
-    uint16 start_handle;
-    uint16 end_handle;
+    u16 start_handle;
+    u16 end_handle;
 } gatt_client_discovery_t;
 
 /* List of remote services */
@@ -120,15 +120,15 @@ typedef struct __gatt_client_services
     GDISC    *disc;
     GGATTC *gattc;
     GSPC_T *spc;
-    uint16 size_client_data;
-    uint16 client_data[1];
+    u16 size_client_data;
+    u16 client_data[1];
 } gatt_client_services_t;
 
 /* Client data */
 typedef struct __gatt_client
 {
     gatt_client_connection_t connection[MAX_GATT_CLIENT_CONNECTIONS];
-    uint16 number_connections;
+    u16 number_connections;
     gatt_cache_t cache;
 } gatt_client_t;
 
@@ -148,7 +148,7 @@ PARAMETERS
 RETURNS    
     TRUE if the connection was successfully added, FALSE otherwise.
 */
-bool gattClientAdd(uint16 cid, const typed_bdaddr *client_taddr, ble_gap_role_t client_gap_role);
+bool gattClientAdd(u16 cid, const typed_bdaddr *client_taddr, ble_gap_role_t client_gap_role);
 
 
 /****************************************************************************
@@ -164,7 +164,7 @@ PARAMETERS
 RETURNS    
     The GATT connection instance if found, NULL otherwise.
 */
-gatt_client_connection_t *gattClientFindByCid(uint16 cid);
+gatt_client_connection_t *gattClientFindByCid(u16 cid);
 
 
 /****************************************************************************
@@ -180,7 +180,7 @@ PARAMETERS
 RETURNS    
     TRUE if the connection was found and removed. FALSE otherwise.
 */
-bool gattClientRemove(uint16 cid);
+bool gattClientRemove(u16 cid);
 
 
 /*******************************************************************************
@@ -198,7 +198,7 @@ RETURNS
     Pointer to the memory that can be used by the new service if successsful.
     Will return NULL if the service can't be added. 
 */
-uint16 *gattClientAddService(gatt_client_connection_t *connection, uint16 size_service);
+u16 *gattClientAddService(gatt_client_connection_t *connection, u16 size_service);
 
 
 /*******************************************************************************
@@ -217,7 +217,7 @@ PARAMETERS
     more            Indicates if discovery is still in progress.
     
 */
-void gattClientStoreDiscoveredService(uint16 cid, uint16 uuid_type, uint32 *uuid, uint16 start, uint16 end, bool more);
+void gattClientStoreDiscoveredService(u16 cid, u16 uuid_type, u32 *uuid, u16 start, u16 end, bool more);
 
 
 /*******************************************************************************
@@ -324,7 +324,7 @@ RETURNS
     None
 */
 #ifdef GATT_ENABLED
-void gattClientDisconnect(uint16 cid);
+void gattClientDisconnect(u16 cid);
 #else
 #define gattClientDisconnect(cid) ((void)(0))
 #endif
@@ -445,7 +445,7 @@ RETURNS
 
 */
 #ifdef GATT_ENABLED
-void gattClientServiceChanged(uint16 cid);
+void gattClientServiceChanged(u16 cid);
 #else
 #define gattClientServiceChanged(cid) ((void)(0))
 #endif
@@ -463,7 +463,7 @@ PARAMETERS
 
 */
 #ifdef GATT_ENABLED
-void gattClientRediscoverServices(uint16 cid);
+void gattClientRediscoverServices(u16 cid);
 #else
 #define gattClientRediscoverServices(cid) ((void)(0))
 #endif
@@ -501,7 +501,7 @@ PARAMETERS
 
 */
 #ifdef GATT_ENABLED
-void gattClientStoreConfigAttributes(uint16 cid, gatt_attribute_service_t client_service);
+void gattClientStoreConfigAttributes(u16 cid, gatt_attribute_service_t client_service);
 #else
 #define gattClientStoreConfigAttributes(cid, client_service) ((void)(0))
 #endif
@@ -521,7 +521,7 @@ PARAMETERS
 
 */
 #ifdef GATT_ENABLED
-bool gattClientGapNameReadRequested(uint16 cid, uint16 offset);
+bool gattClientGapNameReadRequested(u16 cid, u16 offset);
 #else
 #define gattClientGapNameReadRequested(cid, offset) (FALSE)
 #endif
@@ -542,7 +542,7 @@ PARAMETERS
 
 */
 #ifdef GATT_ENABLED
-void gattClientGapNameReadResponse(GGAPS *gap_server, uint16 size_local_name, uint8 *local_name);
+void gattClientGapNameReadResponse(GGAPS *gap_server, u16 size_local_name, u8 *local_name);
 #else
 #define gattClientGapNameReadResponse(gap_server, size_local_name, local_name) ((void)(0))
 #endif

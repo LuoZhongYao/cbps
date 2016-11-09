@@ -245,11 +245,11 @@ typedef enum
 */
 typedef struct{
     /*! First 0-28 bits for fixed attributes mask 29-31 are reserved */
-    uint32  filterLow;
+    u32  filterLow;
 
     /*! bit 0-6 are reserverd bit 7 to enable proprietary bits and
         bits 8-31 contains the proprietary attributes */
-    uint32  filterHigh;
+    u32  filterHigh;
          
 }PbapcPhoneBookFilter;
 
@@ -264,10 +264,10 @@ typedef struct{
     PbapcFormatValues     format;
 
     /*! Maximum number of entries requested */
-    uint16                maxList;
+    u16                maxList;
     
     /*! Start offset for the list */
-    uint16                listStart;
+    u16                listStart;
 
 }PbapcPullPhonebookParams;
 
@@ -282,16 +282,16 @@ typedef struct{
     PbapcSearchValues   srchAttr;
 
     /*! Search String */
-    const uint8*        srchVal;
+    const u8*        srchVal;
 
     /*! Search string length. Search string must be less than 25 chars */
-    uint8              srchValLen;
+    u8              srchValLen;
 
     /*! Maximum number of entries requested */
-    uint16                maxList;
+    u16                maxList;
     
     /*! Start offset for the list */
-    uint16                listStart;
+    u16                listStart;
    
 }PbapcPullvCardListParams;
 
@@ -318,7 +318,7 @@ typedef struct
     pbapc_lib_status status;
 
     /*! The sdp Handle valid on success */
-    uint32  sdpHandle;
+    u32  sdpHandle;
 
 } PBAPC_INIT_CFM_T;
 
@@ -330,7 +330,7 @@ typedef struct
 typedef struct
 {
     /*! PBAPC Session Handle.*/
-    uint16     device_id;
+    u16     device_id;
     
     /*! BDADDR of the remote device */
     bdaddr     bdAddr;
@@ -340,7 +340,7 @@ typedef struct
 
     /*! Maximum size of packet transferable during this session. Equals
       min(client_packet_size , server_packet_size). */
-    uint16          packetSize;        
+    u16          packetSize;        
 
     /*! Supported repositories.  */
     PbapcPhoneRepository   repositories;
@@ -354,19 +354,19 @@ typedef struct
 typedef struct
 {
     /*! PBAPC Session Handle.*/
-    uint16     device_id;     
+    u16     device_id;     
     
     /*! The Challenge nonce string */ 
-    uint8 nonce[PBAPC_OBEX_SIZE_DIGEST];
+    u8 nonce[PBAPC_OBEX_SIZE_DIGEST];
 
     /*! The options field in the challenge */
     PbapcObexAuthOptions options;
     
     /*! Length of realm string */
-    uint16 sizeRealm;
+    u16 sizeRealm;
 
     /*! The realm string */
-    const uint8* realm;
+    const u8* realm;
 
 } PBAPC_AUTH_REQUEST_IND_T;
 
@@ -377,10 +377,10 @@ typedef struct
 typedef struct
 {
     /*! PBAPC Session Handle.*/
-    uint16     device_id;       
+    u16     device_id;       
     
     /*! The digest response string */ 
-    uint8 digest[PBAPC_OBEX_SIZE_DIGEST];
+    u8 digest[PBAPC_OBEX_SIZE_DIGEST];
 
 } PBAPC_AUTH_RESPONSE_CFM_T;
 
@@ -397,22 +397,22 @@ typedef struct
 typedef struct
 {
     /*! PBAPC Session Handle.*/
-    uint16     device_id;
+    u16     device_id;
 
     /*! Status of the Pull operation */
     pbapc_lib_status status;
 
     /*! Size of the phonebook if the request param maxList was 0. */
-    uint16    pbookSize;
+    u16    pbookSize;
 
     /*! New Missed Calls valid only for mch phone book object. */
-    uint8    newMissCalls;
+    u8    newMissCalls;
 
     /*! Source containing the phone book data. */
     Source  src;
 
     /*! Data length in the source */
-    uint16  dataLen;
+    u16  dataLen;
 } PBAPC_PULL_PHONEBOOK_CFM_T;
 
 
@@ -423,7 +423,7 @@ typedef struct
 typedef struct
 {
     /*! PBAPC Session Handle.*/
-    uint16     device_id;
+    u16     device_id;
 
     /*! The current status of the PBAPC library. */
     pbapc_lib_status status;
@@ -449,22 +449,22 @@ typedef struct
 typedef struct
 {
     /*! PBAPC Session Handle.*/
-    uint16     device_id;
+    u16     device_id;
 
     /*! Status of the Pull operation */
     pbapc_lib_status status;
 
     /*! Size of the phonebook if the request param maxList was 0. */
-    uint16    pbookSize;
+    u16    pbookSize;
 
     /*! New Missed Calls valid only for mch phone book object. */
-    uint8    newMissCalls;
+    u8    newMissCalls;
 
     /*! Source containing the phone book data. */
     Source  src;
 
     /*! Data length in the source */
-    uint16  dataLen;
+    u16  dataLen;
 } PBAPC_PULL_VCARD_LISTING_CFM_T;
 
 /*!
@@ -479,7 +479,7 @@ typedef struct
 typedef struct
 {
     /*! PBAPC Session Handle.*/
-    uint16     device_id;
+    u16     device_id;
 
     /*! Status of the Pull operation */
     pbapc_lib_status status;
@@ -488,7 +488,7 @@ typedef struct
     Source  src;
 
     /*! Data length in the source */
-    uint16  dataLen;
+    u16  dataLen;
 } PBAPC_PULL_VCARD_ENTRY_CFM_T;
 
 
@@ -505,7 +505,7 @@ typedef struct
 typedef struct
 {
     /*! PBAPC Session Handle.*/
-    uint16     device_id;
+    u16     device_id;
 
     /*! The current status of the PBAPC library. */
     pbapc_lib_status status;
@@ -549,7 +549,7 @@ void PbapcConnectRequest( Task theAppTask, const bdaddr *bd_addr );
     
     @return device id of the link
 */
-uint16 PbapcGetLinkFrmAddr(const bdaddr *bdAddr);
+u16 PbapcGetLinkFrmAddr(const bdaddr *bdAddr);
 
 /*
     @brief Respond to an authentication challenge during connect.
@@ -572,11 +572,11 @@ uint16 PbapcGetLinkFrmAddr(const bdaddr *bdAddr);
     @endlink is sent to the application.
          
 */
-void PbapcConnectAuthResponse( uint16 device_id,
-                               const uint8 *digest, 
-                               uint16 sizeUserId, 
-                               const uint8 *userId, 
-                               const uint8 *nonce);
+void PbapcConnectAuthResponse( u16 device_id,
+                               const u8 *digest, 
+                               u16 sizeUserId, 
+                               const u8 *userId, 
+                               const u8 *nonce);
 
 /*!
     @brief Download the phonebook using PullPhonebook Function
@@ -594,7 +594,7 @@ void PbapcConnectAuthResponse( uint16 device_id,
     @endlink  is sent to the application.
     
 */
-void PbapcPullPhonebookRequest( uint16 device_id, 
+void PbapcPullPhonebookRequest( u16 device_id, 
                                 PbapcPhoneRepository repository, 
                                 PbapcPhoneBook phonebook,
                                 const PbapcPullPhonebookParams *params );
@@ -613,7 +613,7 @@ void PbapcPullPhonebookRequest( uint16 device_id,
     @return Message @link PBAPC_SET_PHONEBOOK_CFM_T PBAPC_SET_PHONEBOOK_CFM 
     @endlink  is sent to the application.
 */
-void PbapcSetPhonebookRequest( uint16 device_id, 
+void PbapcSetPhonebookRequest( u16 device_id, 
                                PbapcPhoneRepository repository, 
                                PbapcPhoneBook phonebook );
 
@@ -633,7 +633,7 @@ void PbapcSetPhonebookRequest( uint16 device_id,
     @return Message @link PBAPC_PULL_VCARD_LISTING_CFM_T 
     PBAPC_PULL_VCARD_LISTING_CFM @endlink  is sent to the application.
 */
-void PbapcPullVcardListingRequest( uint16 device_id, 
+void PbapcPullVcardListingRequest( u16 device_id, 
                                    PbapcPhoneBook phonebook, 
                                    const PbapcPullvCardListParams *params );
 
@@ -651,8 +651,8 @@ void PbapcPullVcardListingRequest( uint16 device_id,
     @return Message @link PBAPC_PULL_VCARD_ENTRY_CFM_T 
     PBAPC_PULL_VCARD_ENTRY_CFM @endlink is sent to the application.
 */
-void PbapcPullVcardEntryRequest( uint16 device_id,
-                                 uint32 entry, 
+void PbapcPullVcardEntryRequest( u16 device_id,
+                                 u32 entry, 
                                  const PbapcPullvCardEntryParams* params );
 
 /*!
@@ -669,7 +669,7 @@ void PbapcPullVcardEntryRequest( uint16 device_id,
     @return The library returns one of the PBAPC_PULL_*_CFM message
     depends on the ongoing pull operation with more data.
 */
-void PbapcPullContinue(uint16 device_id);
+void PbapcPullContinue(u16 device_id);
 
 /*!
     @brief Request to terminate the ongoing Pull operation
@@ -686,7 +686,7 @@ void PbapcPullContinue(uint16 device_id);
     on aborting an ongoing pull operation. If there is no pull operation in 
     progress it just free up the resources without returning any message.
 */
-void PbapcPullComplete(uint16 device_id);
+void PbapcPullComplete(u16 device_id);
 
 
 /*!
@@ -696,14 +696,14 @@ void PbapcPullComplete(uint16 device_id);
     @return Mesasge @link PBAPC_DISCONNECT_IND_T PBAPC_DISCONNECT_IND@endlink
     is sent to the application.
 */
-void PbapcDisconnectRequest(uint16 device_id);
+void PbapcDisconnectRequest(u16 device_id);
 
 /*!
     @brief Check how many PBAPC links have been connected
     
     @return the number of pbapc links.
 */
-uint8 PbapcGetNoOfConnection(void);
+u8 PbapcGetNoOfConnection(void);
         
 /*!
 	@brief Obtain the properties of the remote server.
@@ -711,7 +711,7 @@ uint8 PbapcGetNoOfConnection(void);
 	
 	@return the server to obtain the supported repositories mask.
 */
-uint8 PbapcGetServerProperties(uint16 device_id);
+u8 PbapcGetServerProperties(u16 device_id);
 
 /*!
 	@brief Obtain the sink of the corresponding pbap link.
@@ -719,7 +719,7 @@ uint8 PbapcGetServerProperties(uint16 device_id);
 	
 	@return the sink of obex connection.
 */
-Sink PbapcGetSink(uint16 device_id);
+Sink PbapcGetSink(u16 device_id);
 
 #endif /* PBAP_CLIENT_H_ */
 

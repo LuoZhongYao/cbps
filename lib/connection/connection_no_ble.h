@@ -204,43 +204,43 @@ DESCRIPTION
 /*! \name Bluestack Key Value Pair macros
     
     The Bluestack Key / Value table for L2CAP configuration is constructed from
-    an array of uint16 values. These macros help format values to uint16.
+    an array of u16 values. These macros help format values to u16.
 */
 
 
 /*! \{ */
 /*!
-    @brief Returns a uint16 of 'value'.
+    @brief Returns a u16 of 'value'.
 */
-#define BKV_UINT16V(value)  ((uint16)((value)&0xFFFF))
+#define BKV_UINT16V(value)  ((u16)((value)&0xFFFF))
 /*!
-    @brief Get the high uint16 of a uint32 bit value
+    @brief Get the high u16 of a u32 bit value
 */
-#define BKV_UINT32H(value)  ((uint16)(((uint32)(value) >> 16) & 0xFFFF))
+#define BKV_UINT32H(value)  ((u16)(((u32)(value) >> 16) & 0xFFFF))
 /*!
-    @brief Get the low uint16 of a uint32 bit value
+    @brief Get the low u16 of a u32 bit value
 */
 #define BKV_UINT32L(value)  BKV_UINT16V(value)
 /*!
-    @brief Turn a uint32 value into 2, comma separated uint16 values in 
-    big-endian order (high uint16, low uint16).
+    @brief Turn a u32 value into 2, comma separated u16 values in 
+    big-endian order (high u16, low u16).
 */
 #define BKV_UINT32V(value)    BKV_UINT32H(value),BKV_UINT32L(value) 
 /*!
-    @brief Specify a uint16 range in the order most preferred value, least 
-    preferred value, results in two comma separated uint16 values.
+    @brief Specify a u16 range in the order most preferred value, least 
+    preferred value, results in two comma separated u16 values.
  */
  #define BKV_UINT16R(most_preferred,least_preferred) \
     BKV_UINT16V(least_preferred), BKV_UINT16V(most_preferred)
 /*!
-    @brief Specify a uint32 range in the order most preferred value, least 
-    preferred value, results in four comma separated uint16 values.
+    @brief Specify a u32 range in the order most preferred value, least 
+    preferred value, results in four comma separated u16 values.
 */
 #define BKV_UINT32R(most_preferred,least_preferred) \
     BKV_UINT32V(least_preferred),BKV_UINT32V(most_preferred)
 /*!
     @brief Macro to combine Flow and Error Control Mode and the Mode fallback 
-    mask into a single uint16 value
+    mask into a single u16 value
 */
 #define BKV_16_FLOW_MODE(mode,fallback_mask) \
     ((((mode)<<8)&0xFF00)|(fallback_mask))
@@ -250,7 +250,7 @@ DESCRIPTION
     These are Key / Value pairs.
 
     Advanced L2CAP configuration can be performed using a Key / Value table of
-    uint16 values. This configuration table is used by Bluestack to negotiate
+    u16 values. This configuration table is used by Bluestack to negotiate
     the L2CAP parameters with a peer automatically.
 
     Note 1 - QOS_SERVICE: This uint16_t is encoded as two uint8_ts's:
@@ -287,116 +287,116 @@ DESCRIPTION
 /*!
     @brief 16 bit, exact - incoming MTU
 */
-#define L2CAP_AUTOPT_MTU_IN               ((uint16)0x0001) 
+#define L2CAP_AUTOPT_MTU_IN               ((u16)0x0001) 
 /*!
     @brief 16 bit, minimum - peer MTU
 */
-#define L2CAP_AUTOPT_MTU_OUT              ((uint16)0x0102) 
+#define L2CAP_AUTOPT_MTU_OUT              ((u16)0x0102) 
 /*!
     @brief 32 bit, range - peer flush (us)  - note that HCI limit still applies
 */
-#define L2CAP_AUTOPT_FLUSH_IN             ((uint16)0x0703) 
+#define L2CAP_AUTOPT_FLUSH_IN             ((u16)0x0703) 
 /*!
     @brief 32 bit, range - local flush (us) - note that HCI limit still applies
 */
-#define L2CAP_AUTOPT_FLUSH_OUT            ((uint16)0x0704) 
+#define L2CAP_AUTOPT_FLUSH_OUT            ((u16)0x0704) 
 /*!
     @brief 16 bit, exact - shared service type (note1)
 */
-#define L2CAP_AUTOPT_QOS_SERVICE          ((uint16)0x0005) 
+#define L2CAP_AUTOPT_QOS_SERVICE          ((u16)0x0005) 
 /*!
     @brief 32 bit, range - incoming token rate/flowspec interarrival
 */
-#define L2CAP_AUTOPT_QOS_RATE_IN          ((uint16)0x0706) 
+#define L2CAP_AUTOPT_QOS_RATE_IN          ((u16)0x0706) 
 /*!
     @brief 32 bit, range - outgoing token rate/flowspec interarrival
 */
-#define L2CAP_AUTOPT_QOS_RATE_OUT         ((uint16)0x0707) 
+#define L2CAP_AUTOPT_QOS_RATE_OUT         ((u16)0x0707) 
 /*!
     @brief 32 bit, range - incoming token bucket
 */
-#define L2CAP_AUTOPT_QOS_BUCKET_IN        ((uint16)0x0708) 
+#define L2CAP_AUTOPT_QOS_BUCKET_IN        ((u16)0x0708) 
 /*!
     @brief 32 bit, range - outgoing token bucket
 */
-#define L2CAP_AUTOPT_QOS_BUCKET_OUT       ((uint16)0x0709) 
+#define L2CAP_AUTOPT_QOS_BUCKET_OUT       ((u16)0x0709) 
 /*!
     @brief 32 bit, range - incoming peak bandwidth
 */
-#define L2CAP_AUTOPT_QOS_PEAK_IN          ((uint16)0x070a) 
+#define L2CAP_AUTOPT_QOS_PEAK_IN          ((u16)0x070a) 
 /*!
     @brief 32 bit, range - outgoing peak bandwidth
 */
-#define L2CAP_AUTOPT_QOS_PEAK_OUT         ((uint16)0x070b) 
+#define L2CAP_AUTOPT_QOS_PEAK_OUT         ((u16)0x070b) 
 /*!
     @brief 32 bit, range - incoming qos/flowspec access latency
 */
-#define L2CAP_AUTOPT_QOS_LATENCY_IN       ((uint16)0x070c) 
+#define L2CAP_AUTOPT_QOS_LATENCY_IN       ((u16)0x070c) 
 /*!
     @brief 32 bit, range - outgoing qos/flowspec access latency
 */
-#define L2CAP_AUTOPT_QOS_LATENCY_OUT      ((uint16)0x070d) 
+#define L2CAP_AUTOPT_QOS_LATENCY_OUT      ((u16)0x070d) 
 /*!
     @brief 32 bit, range - incoming delay variation
 */
-#define L2CAP_AUTOPT_QOS_DELAY_IN         ((uint16)0x070e) 
+#define L2CAP_AUTOPT_QOS_DELAY_IN         ((u16)0x070e) 
 /*!
     @brief 32 bit, range - outgoing delay variation
 */
-#define L2CAP_AUTOPT_QOS_DELAY_OUT        ((uint16)0x070f) 
+#define L2CAP_AUTOPT_QOS_DELAY_OUT        ((u16)0x070f) 
 /*!
     @brief 16 bit, range - incoming max SDU size
 */
-#define L2CAP_AUTOPT_FS_SDU_SIZE_IN       ((uint16)0x0310) 
+#define L2CAP_AUTOPT_FS_SDU_SIZE_IN       ((u16)0x0310) 
 /*!
     @brief 16 bit, range - incoming max SDU size
 */
-#define L2CAP_AUTOPT_FS_SDU_SIZE_OUT      ((uint16)0x0311) 
+#define L2CAP_AUTOPT_FS_SDU_SIZE_OUT      ((u16)0x0311) 
 /*!
     @brief 16 bit, exact - shared flow control mode (note3)
 */
-#define L2CAP_AUTOPT_FLOW_MODE            ((uint16)0x0012) 
+#define L2CAP_AUTOPT_FLOW_MODE            ((u16)0x0012) 
 /*!
     @brief 16 bit, range - incoming window size
 */
-#define L2CAP_AUTOPT_FLOW_WINDOW_IN       ((uint16)0x0313) 
+#define L2CAP_AUTOPT_FLOW_WINDOW_IN       ((u16)0x0313) 
 /*!
     @brief 16 bit, range - peer window size
 */
-#define L2CAP_AUTOPT_FLOW_WINDOW_OUT      ((uint16)0x0314) 
+#define L2CAP_AUTOPT_FLOW_WINDOW_OUT      ((u16)0x0314) 
 /*!
     @brief 16 bit, range - peer maximum retransmit
 */
-#define L2CAP_AUTOPT_FLOW_MAX_RETX_IN     ((uint16)0x0315) 
+#define L2CAP_AUTOPT_FLOW_MAX_RETX_IN     ((u16)0x0315) 
 /*!
     @brief 16 bit, range - local maximum retransmit
 */
-#define L2CAP_AUTOPT_FLOW_MAX_RETX_OUT    ((uint16)0x0316) 
+#define L2CAP_AUTOPT_FLOW_MAX_RETX_OUT    ((u16)0x0316) 
 /*!
     @brief 16 bit, range - incoming max PDU payload size
 */
-#define L2CAP_AUTOPT_FLOW_MAX_PDU_IN      ((uint16)0x0317) 
+#define L2CAP_AUTOPT_FLOW_MAX_PDU_IN      ((u16)0x0317) 
 /*!
     @brief 16 bit, range - outgoing maximum PDU size
 */
-#define L2CAP_AUTOPT_FLOW_MAX_PDU_OUT     ((uint16)0x0318) 
+#define L2CAP_AUTOPT_FLOW_MAX_PDU_OUT     ((u16)0x0318) 
 /*!
     @brief 16 bit, exact - use FCS or not (note4)
 */
-#define L2CAP_AUTOPT_FCS                  ((uint16)0x0019) 
+#define L2CAP_AUTOPT_FCS                  ((u16)0x0019) 
 /*!
     @brief 16 bit, exact - shared flowspec service type (note2)
 */
-#define L2CAP_AUTOPT_FS_SERVICE           ((uint16)0x001A) 
+#define L2CAP_AUTOPT_FS_SERVICE           ((u16)0x001A) 
 
 /*!
     @brief 32 bit, exact - cached getinfo ext.feats
 */
-#define L2CAP_AUTOPT_EXT_FEATS            ((uint16)0x0420) 
+#define L2CAP_AUTOPT_EXT_FEATS            ((u16)0x0420) 
 /*!
     @brief 16 bit, exact - ward off reconfiguration attempts
 */
-#define L2CAP_AUTOPT_DISABLE_RECONF       ((uint16)0x0021) 
+#define L2CAP_AUTOPT_DISABLE_RECONF       ((u16)0x0021) 
 
 /*!
     *brief Indicates the end of a configuration table (conftab)
@@ -880,10 +880,10 @@ typedef enum
 */
 typedef struct
 {
-   uint32            tx_bandwidth;
-   uint32            rx_bandwidth;
-   uint16            max_latency;
-   uint16            voice_settings;
+   u32            tx_bandwidth;
+   u32            rx_bandwidth;
+   u16            max_latency;
+   u16            voice_settings;
    sync_retx_effort  retx_effort;
    sync_pkt_type     packet_type;
 } sync_config_params;
@@ -895,9 +895,9 @@ typedef struct
 typedef struct
 {
     /*! eSCO receive bandwidth.  Will be zero for SCO. */
-    uint32          rx_bandwidth;   
+    u32          rx_bandwidth;   
     /*! eSCO transmit bandwidth.  Will be zero for SCO. */
-    uint32          tx_bandwidth;   
+    u32          tx_bandwidth;   
     /*! Specifies whether a SCO or eSCO packet type was obtained. */
     sync_link_type  link_type;      
 } sync_link_params;
@@ -1014,7 +1014,7 @@ typedef enum
     @brief Specifies that RSSI parameter returned in CL_DM_INQUIRE_RESULT 
     primitive is unknown.
 */
-#define CL_RSSI_UNKNOWN ((int16)0x7FFF)
+#define CL_RSSI_UNKNOWN ((i16)0x7FFF)
 
 /*! 
     @brief Definition of Authentication (Pairing status).
@@ -1178,7 +1178,7 @@ interaction is acceptable, Secure Connection necessary */
 /*! 
   @brief DM Security setting for incoming connections.
 */
-typedef uint16 dm_security_in;
+typedef u16 dm_security_in;
     
 /*! \name DM Security setting for outgoing connections.
 
@@ -1257,7 +1257,7 @@ interaction is acceptable, Secure Connection necessary. */
 /*! 
   @brief DM Security setting for outgoing connections.
 */
-typedef uint16 dm_security_out;
+typedef u16 dm_security_out;
     
 /*! 
   @brief DM SSP security levels (as defined in 2.1 spec).
@@ -1585,7 +1585,7 @@ enum lp_power_mode
     lp_passive = 0xff        
 };
 
-typedef uint8 lp_power_mode;
+typedef u8 lp_power_mode;
 
 
 /*! 
@@ -1633,22 +1633,22 @@ typedef struct
     /*! Sniff minimum interval. Time = N x 0.625, Range 0x0002 (1.25 msec) to 
         0xFFFE (40.9), only even values are valid. Only used if lp_power_mode is 
         lp_sniff. */
-    uint16          min_interval;    
+    u16          min_interval;    
     /*! Sniff maximum interval. Time = N x 0.625, Range 0x0002 (1.25 msec) to 
         0xFFFE (40.9 sec), only even values are valid. Only used if 
         lp_power_mode is lp_sniff.*/
-    uint16          max_interval;    
+    u16          max_interval;    
     /*! Number of Baseband receive slots for sniff attempt. Length = N * 1.25 
         msec, Range 0x0001 (1.25 msec) to 0x7FFF (40.9 sec) Only used if 
         lp_power_mode is lp_sniff.*/
-    uint16          attempt;        
+    u16          attempt;        
     /*! Number of Baseband receive slots for sniff timeout. Length = N * 1.25 
         msec, Range 0x0000 (0 msec) to 0x7FFF (40.9 sec) Only used if 
         lp_power_mode is lp_sniff. */
-    uint16          timeout;        
+    u16          timeout;        
     /*! The time spent in this state of the power table, in seconds. This must 
         be 0 for the last entry in the table. */
-    uint16          time;            
+    u16          time;            
 } lp_power_table;
 
 
@@ -1662,19 +1662,19 @@ typedef struct
 typedef struct
 {
     /*! Level of the service required e.g. best effort. */
-    uint8       service_type;    
+    u8       service_type;    
     /*! Average data rate with which data is transmitted. */
-    uint32      token_rate;     
+    u32      token_rate;     
     /*! Specifies a limit on the "burstiness" with which data may be
       transmitted. */
-    uint32      token_bucket;   
+    u32      token_bucket;   
     /*! This limits how fast L2CAP packets can be sent back-to-back. */
-    uint32      peak_bw;        
+    u32      peak_bw;        
     /*! Maximum acceptable latency of an L2CAP packet. */
-    uint32      latency;        
+    u32      latency;        
     /*! Difference between the maximum and minimum acceptable delay of an L2CAP
       packet. */
-    uint32      delay_var;      
+    u32      delay_var;      
 } qos_flow;
 
 /*! 
@@ -1682,15 +1682,15 @@ typedef struct
 */
 typedef struct 
 {
-    uint8    baud_rate;             /*!< The port baud rate.*/
-    uint8    data_bits;             /*!< The data bits.*/
-    uint8    stop_bits;             /*!< The stop bits.*/
-    uint8    parity;                /*!< Parity.*/
-    uint8    parity_type;           /*!< The parity type.*/
-    uint8    flow_ctrl_mask;        /*!< The flow control mask.*/
-    uint8    xon;                   /*!< Xon*/
-    uint8    xoff;                  /*!< Xoff*/
-    uint16   parameter_mask;        /*!< The parameter mask.*/
+    u8    baud_rate;             /*!< The port baud rate.*/
+    u8    data_bits;             /*!< The data bits.*/
+    u8    stop_bits;             /*!< The stop bits.*/
+    u8    parity;                /*!< Parity.*/
+    u8    parity_type;           /*!< The parity type.*/
+    u8    flow_ctrl_mask;        /*!< The flow control mask.*/
+    u8    xon;                   /*!< Xon*/
+    u8    xoff;                  /*!< Xoff*/
+    u16   parameter_mask;        /*!< The parameter mask.*/
 } port_par;
 
 /*!
@@ -1699,15 +1699,15 @@ typedef struct
 typedef struct
 {   
     /*! Maximum RFCOMM payload size.*/
-    uint16  max_payload_size;      
+    u16  max_payload_size;      
     /*! RFCOMM modem status.*/
-    uint8   modem_signal;          
+    u8   modem_signal;          
     /*! The break signal, range 0-15 in increments of 200ms.*/
-    uint8   break_signal;          
+    u8   break_signal;          
     /*! Modem Status timeout during connection in milliseconds. If the 
     timeout occurs before a RFC_MODEM_STATUS_IND is received, then the 
     connection is completed anyway.*/
-    uint16  msc_timeout;           
+    u16  msc_timeout;           
 } rfcomm_config_params;
 
 
@@ -1877,7 +1877,7 @@ typedef enum
     message to the application.  See msg_group enum for definitions of the 
     message groups.
 */
-typedef uint16 msg_filter;
+typedef u16 msg_filter;
 
 
 /*! 
@@ -2085,13 +2085,13 @@ typedef struct
     /*! The HCI Status.*/
     hci_status  status;                 
     /*! The Transmit Latency.*/
-    uint16      transmit_latency;       
+    u16      transmit_latency;       
     /*! The Receive Latency.*/
-    uint16      receive_latency;        
+    u16      receive_latency;        
     /*! The Remote Sniff Timeout.*/
-    uint16      remote_timeout;         
+    u16      remote_timeout;         
     /*! The Local Sniff Timeout.*/
-    uint16      local_timeout;          
+    u16      local_timeout;          
 } CL_DM_SNIFF_SUB_RATING_IND_T;
 
 /*! 
@@ -2105,7 +2105,7 @@ typedef struct
     /*! The Bluetooth address of the remote device.*/
     bdaddr        bd_addr;                
     /*! The link supervision timeout.*/
-    uint16        timeout;                
+    u16        timeout;                
 } CL_DM_LINK_SUPERVISION_TIMEOUT_IND_T;
 
 
@@ -2113,7 +2113,7 @@ typedef struct
     @brief Specifies that RSSI parameter returned in CL_DM_INQUIRE_RESULT 
     primitive is unknown.
 */
-#define CL_RSSI_UNKNOWN ((int16)0x7FFF)
+#define CL_RSSI_UNKNOWN ((i16)0x7FFF)
 
 /*! 
     @brief Message informing the client of an inquiry result or that the
@@ -2137,20 +2137,20 @@ typedef struct
     /*! Bluetooth address of the discovered device. */
     bdaddr              bd_addr;                
     /*! Class of device of the discovered device. */
-    uint32              dev_class;                
+    u32              dev_class;                
     /*! Clock offset of the discovered device. */
-    uint16              clock_offset;            
+    u16              clock_offset;            
     /*! Page scan repetition mode of the discovered device. */
     page_scan_rep_mode  page_scan_rep_mode;        
     /*! Page scan mode of the discovered device. */
     page_scan_mode      page_scan_mode;        
     /*! RSSI of the discovered device.  Set to CL_RSSI_UNKNOWN if value not 
      available. */
-    int16               rssi;
+    i16               rssi;
     /*! The size of the EIR data recovered. */
-    uint8               size_eir_data;
+    u8               size_eir_data;
     /*! The EIR data recovered. */
-    uint8               eir_data[1];
+    u8               eir_data[1];
 } CL_DM_INQUIRE_RESULT_T;
 
 
@@ -2172,12 +2172,12 @@ typedef struct
     /*! The Bluetooth address of the remote device.*/
     bdaddr      bd_addr;                
     /*! Length of the remote name read.*/
-    uint16      size_remote_name;        
+    u16      size_remote_name;        
     /*! Pointer to the remote name. The client should not attempt to free 
         this pointer, the memory will be freed when the message is 
         destroyed. If the client needs access to this data after the message
         has been destroyed it is the client's responsibility to copy it. */ 
-    uint8       remote_name[1];            
+    u8       remote_name[1];            
 } CL_DM_REMOTE_NAME_COMPLETE_T;
 
 /*! 
@@ -2196,12 +2196,12 @@ typedef struct
     /*! Indicates the success or failure of the function call.*/           
     hci_status  status;                    
     /*! Length of the local name read.*/
-    uint16      size_local_name;        
+    u16      size_local_name;        
     /*! Pointer to the remote name. The client should not attempt to free 
         this pointer, the memory will be freed when the message is 
         destroyed. If the client needs access to this data after the message
         has been destroyed it is the client's responsibility to copy it. */ 
-    uint8       local_name[1];            
+    u8       local_name[1];            
 } CL_DM_LOCAL_NAME_COMPLETE_T;
 
 
@@ -2222,7 +2222,7 @@ typedef struct
     hci_status  status;     
     /*! The local inquiry TX power if the request was successful, otherwise
       invalid. */
-    int8        tx_power;    
+    i8        tx_power;    
 } CL_DM_READ_INQUIRY_TX_CFM_T;
 
 /*! 
@@ -2243,7 +2243,7 @@ typedef struct
     hci_status  status;
     /*! The local device TX power if the request was successful, otherwise
       invalid. */
-    int8        tx_power;
+    i8        tx_power;
     /*! Typed Bd address of the remote device which is accessing the TX 
       power */
     tp_bdaddr tpaddr;
@@ -2265,7 +2265,7 @@ typedef struct
     hci_status    status;     
     /*! The local class of device if the request was successful, otherwise
       invalid. */
-    uint32        dev_class;    
+    u32        dev_class;    
 } CL_DM_CLASS_OF_DEVICE_CFM_T;
 
 
@@ -2306,11 +2306,11 @@ typedef struct
     /*! The Synchronous connection sink. */
     Sink             audio_sink;     
     /*! Receive bandwidth. */
-    uint32           rx_bandwidth;   
+    u32           rx_bandwidth;   
     /*! Transmit bandwidth. */
-    uint32           tx_bandwidth;   
+    u32           tx_bandwidth;   
     /*! Link Manager SCO Handle. */
-    uint8            sco_handle;     
+    u8            sco_handle;     
 } CL_DM_SYNC_CONNECT_CFM_T;
 
 
@@ -2374,7 +2374,7 @@ typedef struct
 typedef struct
 {
     hci_status      status;         /*!< HCI status code.*/
-    uint8           link_quality;   /*!< The link quality setting.*/
+    u8           link_quality;   /*!< The link quality setting.*/
     Sink            sink;           /*!< The sink.*/
 } CL_DM_LINK_QUALITY_CFM_T;
 
@@ -2385,7 +2385,7 @@ typedef struct
 typedef struct
 {
     hci_status      status;         /*!< HCI status code.*/
-    uint8           rssi;           /*!< RSSI value.*/
+    u8           rssi;           /*!< RSSI value.*/
     Sink            sink;           /*!< The sink.*/
 } CL_DM_RSSI_CFM_T;
 
@@ -2397,7 +2397,7 @@ typedef struct
 {
     hci_status  status;         /*!< HCI status code.*/
     Sink        sink;           /*!< The sink.*/
-    uint16      features[4];    /*!< Features.*/
+    u16      features[4];    /*!< Features.*/
 } CL_DM_REMOTE_FEATURES_CFM_T;
 
 
@@ -2408,10 +2408,10 @@ typedef struct
 {
     hci_status      status;             /*!< HCI status code.*/
     hci_version     hciVersion;         /*!< HCI version.*/
-    uint16          hciRevision;        /*!< HCI revision.*/
-    uint8           lmpVersion;         /*!< The LMP version.*/
-    uint16          manufacturerName;   /*!< The manufacturer name.*/
-    uint16          lmpSubVersion;      /*!< The LMP sub version.*/
+    u16          hciRevision;        /*!< HCI revision.*/
+    u8           lmpVersion;         /*!< The LMP version.*/
+    u16          manufacturerName;   /*!< The manufacturer name.*/
+    u16          lmpSubVersion;      /*!< The LMP sub version.*/
 } CL_DM_LOCAL_VERSION_CFM_T;
 
 
@@ -2421,9 +2421,9 @@ typedef struct
 typedef struct
 {
     hci_status      status;             /*!< HCI status code.*/
-    uint8           lmpVersion;         /*!< The LMP version.*/
-    uint16          manufacturerName;   /*!< The manufacturer name.*/
-    uint16          lmpSubVersion;      /*!< The LMP sub version.*/
+    u8           lmpVersion;         /*!< The LMP version.*/
+    u16          manufacturerName;   /*!< The manufacturer name.*/
+    u16          lmpSubVersion;      /*!< The LMP sub version.*/
 } CL_DM_REMOTE_VERSION_CFM_T;
 
 
@@ -2434,7 +2434,7 @@ typedef struct
 {
     hci_status      status;         /*!< HCI status code.*/
     Sink            sink;           /*!< The sink.*/
-    uint16          clock_offset;   /*!< The clock offset value.*/
+    u16          clock_offset;   /*!< The clock offset value.*/
 } CL_DM_CLOCK_OFFSET_CFM_T;
 
 
@@ -2460,7 +2460,7 @@ typedef struct
     bool                            incoming;        
     /*! The class of device of the remote device. Valid for incoming
       connections only. */
-    uint32                          dev_class;
+    u32                          dev_class;
     /*! HCI status code. If the primitive received from Bluestack contains an 
         HCI status code its value will be used to set this field, otherwise the 
         status will be set to hci_error_unrecognised to indicate this field is 
@@ -2468,15 +2468,15 @@ typedef struct
     hci_status                      status;
     /*! Flags indicating connection type and direction. See DM_ACL_FLAG_* 
         bitfield flags in app/bluestack/dm_prim.h. */
-    uint16                          flags;
+    u16                          flags;
     /*! BLE Connection Interval. */
-    uint16                          conn_interval;           
+    u16                          conn_interval;           
     /*! BLE Connection Latency. */
-    uint16                          conn_latency;       
+    u16                          conn_latency;       
     /*! BLE Connection supervision timeout.*/
-    uint16                          supervision_timeout;
+    u16                          supervision_timeout;
     /*! BLE Connection clock accuracy. */
-    uint8                           clock_accuracy;
+    u8                           clock_accuracy;
 } CL_DM_ACL_OPENED_IND_T;
 
 
@@ -2544,8 +2544,8 @@ typedef struct
     /*! HCI status code.*/
     hci_status      status;
     bool            fec_required;
-    uint8           size_eir_data;
-    uint8           eir_data[1];
+    u8           size_eir_data;
+    u8           eir_data[1];
 } CL_DM_READ_EIR_DATA_CFM_T;
 
 /*!
@@ -2559,7 +2559,7 @@ typedef struct
 typedef struct
 {
     bdaddr      bd_addr;
-    uint16      security_channel;
+    u16      security_channel;
 } CL_SM_REGISTER_OUTGOING_SERVICE_CFM_T;
 
 /*!
@@ -2582,9 +2582,9 @@ typedef struct
     /*! oob_data. */
     oob_data_setting    oob_data;
     /*! Pointer to the hash C value to send the remote device out of band.*/
-    uint8               oob_hash_c[CL_SIZE_OOB_DATA];
+    u8               oob_hash_c[CL_SIZE_OOB_DATA];
     /*! Pointer to the rand R value to send the remote device out of band.*/    
-    uint8               oob_rand_r[CL_SIZE_OOB_DATA];
+    u8               oob_rand_r[CL_SIZE_OOB_DATA];
 } CL_SM_READ_LOCAL_OOB_DATA_CFM_T;
 
 /*! 
@@ -2655,7 +2655,7 @@ typedef struct
     /*! The Bluetooth address of the remote device.*/
     tp_bdaddr   tpaddr;
     /*! The value for the user to compare.*/
-    uint32      numeric_value;
+    u32      numeric_value;
     /*! TRUE if a response is required. A response must not be sent if FALSE.*/
     bool        response_required;
 } CL_SM_USER_CONFIRMATION_REQ_IND_T;
@@ -2683,7 +2683,7 @@ typedef struct
     /*! The Bluetooth address of the remote device.*/
     tp_bdaddr   tpaddr;
     /*! The passkey to display.*/
-    uint32      passkey;
+    u32      passkey;
 } CL_SM_USER_PASSKEY_NOTIFICATION_IND_T;
 
 /*! 
@@ -2714,7 +2714,7 @@ typedef struct
     /*! The protocol identifier (protocol_l2cap or protocol_rfcomm).*/
     dm_protocol_id  protocol_id;        
     /*!< The channel*/
-    uint32          channel;            
+    u32          channel;            
     /*! TRUE for incoming connection, FALSE for outgoing connection */
     bool            incoming;           
 } CL_SM_AUTHORISE_IND_T;
@@ -2806,7 +2806,7 @@ typedef struct
     /*! The connection library status.*/    
     sds_status              status;            
     /*! The service handle.*/
-    uint32                  service_handle;    
+    u32                  service_handle;    
 } CL_SDP_REGISTER_CFM_T;
 
 
@@ -2818,7 +2818,7 @@ typedef struct
     /*! SDS Status.*/
     sds_status              status;                
     /*! The service handle.*/
-    uint32                  service_handle;        
+    u32                  service_handle;        
 } CL_SDP_UNREGISTER_CFM_T;
 
 
@@ -2848,18 +2848,18 @@ typedef struct
     /*! The SDP search status.*/
     sdp_search_status   status;                
     /*! The number of records.*/
-    uint16              num_records;        
+    u16              num_records;        
     /*! The error code.*/
-    uint16              error_code;            
+    u16              error_code;            
     /*! The Bluetooth address.*/
     bdaddr              bd_addr;            
     /*! The size of the record list.*/
-    uint16              size_records;        
+    u16              size_records;        
     /*! The record list. The client should not attempt to free this pointer,
       the memory will be freed when the message is destroyed. If the client
       needs access to this data after the message has been destroyed it is the
       client's responsibility to copy it. */
-    uint8               records[1];            
+    u8               records[1];            
 } CL_SDP_SERVICE_SEARCH_CFM_T;
 
 /*! 
@@ -2870,17 +2870,17 @@ typedef struct
     /*! The SDP search status.*/
     sdp_search_status   status;
     /*! The number of records.*/
-    uint16              num_records;
+    u16              num_records;
     /*! The error code.*/
-    uint16              error_code;
+    u16              error_code;
     /*! The Bluetooth address.*/
     bdaddr              bd_addr;
     /*! The size of the record list.*/
-    uint16              size_records;
+    u16              size_records;
     /*! Reference to the record list. The client shall free this pointer when
       the memory is not needed anymore. The memory will not be freed when the
       message is destroyed. */
-    uint8               *records;
+    u8               *records;
 } CL_SDP_SERVICE_SEARCH_REF_CFM_T;
 
 /*! 
@@ -2891,16 +2891,16 @@ typedef struct
     /*! The SDP search status.*/
     sdp_search_status   status;                    
     /*! The error code.*/
-    uint16              error_code;                
+    u16              error_code;                
     /*! The Bluetooth address.*/
     bdaddr              bd_addr;                
     /*! The size of the attribute list.*/
-    uint16              size_attributes;        
+    u16              size_attributes;        
     /*! The attribute list. The client should not attempt to free this pointer,
       the memory will be freed when the message is destroyed. If the client
       needs access to this data after the message has been destroyed it is the
       client's responsibility to copy it. */
-    uint8               attributes[1];            
+    u8               attributes[1];            
 } CL_SDP_ATTRIBUTE_SEARCH_CFM_T;
 
 /*! 
@@ -2912,15 +2912,15 @@ typedef struct
     /*! The SDP search status.*/
     sdp_search_status   status;
     /*! The error code.*/
-    uint16              error_code;
+    u16              error_code;
     /*! The Bluetooth address.*/
     bdaddr              bd_addr;
     /*! The size of the attribute list.*/
-    uint16              size_attributes;
+    u16              size_attributes;
     /*! Reference to the attribute list. The client shall free this pointer
       when the memory is not needed anymore. The memory will not be freed
       when the message is destroyed. */
-    uint8               *attributes;
+    u8               *attributes;
 } CL_SDP_ATTRIBUTE_SEARCH_REF_CFM_T;
 
 /*! 
@@ -2934,16 +2934,16 @@ typedef struct
     /*! Is more information to come. Yes(TRUE) or No(FALSE).*/
     bool                more_to_come;            
     /*! The error code.*/
-    uint16              error_code;                
+    u16              error_code;                
     /*! The Bluetooth address.*/
     bdaddr              bd_addr;                
     /*! The size of the attribute list returned.*/
-    uint16              size_attributes;        
+    u16              size_attributes;        
     /*! The attribute list. The client should not attempt to free this pointer,
       the memory will be freed when the message is destroyed. If the client
       needs access to this data after the message has been destroyed it is the
       client's responsibility to copy it. */
-    uint8               attributes[1];            
+    u8               attributes[1];            
 
 } CL_SDP_SERVICE_SEARCH_ATTRIBUTE_CFM_T;
 
@@ -2958,15 +2958,15 @@ typedef struct
     /*! Is more information to come. Yes(TRUE) or No(FALSE).*/
     bool                more_to_come;
     /*! The error code.*/
-    uint16              error_code;
+    u16              error_code;
     /*! The Bluetooth address.*/
     bdaddr              bd_addr;
     /*! The size of the attribute list returned.*/
-    uint16              size_attributes;
+    u16              size_attributes;
     /*!< Reference to the attribute list. The client shall free this pointer
       when the memory is not needed anymore. The memory will not be freed
       when the message is destroyed. */
-    uint8               *attributes;
+    u8               *attributes;
 
 } CL_SDP_SERVICE_SEARCH_ATTRIBUTE_REF_CFM_T;
 
@@ -2980,7 +2980,7 @@ typedef struct
       success, otherwise it will be set to fail. */
     connection_lib_status   status;        
     /*! The PSM the client task requested to register. */
-    uint16                  psm;        
+    u16                  psm;        
 } CL_L2CAP_REGISTER_CFM_T;
 
 
@@ -2994,7 +2994,7 @@ typedef struct
       success, otherwise it will be set to fail.*/
     connection_lib_status   status;        
     /*! The PSM the client requested to unregister. */
-    uint16                  psm;        
+    u16                  psm;        
 } CL_L2CAP_UNREGISTER_CFM_T;
 
 
@@ -3012,7 +3012,7 @@ typedef struct
       established. */
     l2cap_connect_status    status;                    
     /*! The local PSM that was connected to. */
-    uint16                  psm_local;                
+    u16                  psm_local;                
     /*! Sink identifying the connection. The sink is used to send data to the
       remote device and must be stored by the client task. */
     Sink                    sink;                    
@@ -3020,17 +3020,17 @@ typedef struct
       match this CFM message to the response sent to the connection lib where
       multiple connections are being established simultaneously to the same
       device. */
-    uint16                  connection_id;   
+    u16                  connection_id;   
     /*! The Bluetooth device address of the connecting device. */
     bdaddr                  addr;
     /*! The MTU advertised by the remote device. */
-    uint16                  mtu_remote;                
+    u16                  mtu_remote;                
     /*! The flush timeout in use by the remote device. */
-    uint16                  flush_timeout_remote;    
+    u16                  flush_timeout_remote;    
     /*! The Quality of Service settings of the remote device. */
     qos_flow                qos_remote;
     /*! The flow mode agreed with the remote device */
-    uint8                   mode;
+    u8                   mode;
 } CL_L2CAP_CONNECT_CFM_T;
 
 
@@ -3050,13 +3050,13 @@ typedef struct
       connection. */
     bdaddr        bd_addr;            
     /*! Local PSM that the remote device is attempting to connect to. */
-    uint16        psm;   
+    u16        psm;   
     /*! The channel identifier, should be copied directly into the response 
         function.*/
-    uint8         identifier;
+    u8         identifier;
     /*! Unique signal identifier for the connection attempt, should be copied 
         directly into the response function.*/
-    uint16        connection_id;        
+    u16        connection_id;        
 } CL_L2CAP_CONNECT_IND_T;
 
 
@@ -3072,13 +3072,13 @@ typedef struct
     /*! Indicates if the mapping was successful or the reason for failure. */
     l2cap_map_connectionless_status     status;
     /*! The local PSM used for the mapping. */
-    uint16                              local_psm;
+    u16                              local_psm;
     /*! The Sink associated with the mapping, if successful.*/
     Sink                                sink;
     /*! The Bluetooth device address the device mapped to.*/
     bdaddr                              addr;
     /*! The L2CAP Fixed CID used for connectionless data.*/
-    uint16                              fixed_cid;
+    u16                              fixed_cid;
 } CL_L2CAP_MAP_CONNECTIONLESS_CFM_T;
 
 
@@ -3098,9 +3098,9 @@ typedef struct
     /*! The Bluetooth device address the device mapped to.*/
     bdaddr                              addr;
     /*! The L2CAP Fixed CID used for connectionless data.*/
-    uint16                              fixed_cid;
+    u16                              fixed_cid;
     /*! Local Connectionless PSM.*/
-    uint16                              local_psm;
+    u16                              local_psm;
 } CL_L2CAP_MAP_CONNECTIONLESS_IND_T;
 
 /*!
@@ -3130,7 +3130,7 @@ typedef struct
 {
     /*! L2CAP link identifier which needs to be passed back in the Disconnect 
       response. */
-    uint8                       identifier;
+    u8                       identifier;
     /*! Indicates the L2CAP connection has been disconnected and the status of
       the disconnect. */
     l2cap_disconnect_status     status;        
@@ -3177,7 +3177,7 @@ typedef struct
     /*! The connection library status.*/
     connection_lib_status    status;                
     /*! The server channel.*/
-    uint8                    server_channel;        
+    u8                    server_channel;        
 } CL_RFCOMM_REGISTER_CFM_T;
 
 /*! 
@@ -3188,7 +3188,7 @@ typedef struct
     /*! The connection library status. */
     connection_lib_status   status;
     /*! The server channel.*/
-    uint8                    server_channel;        
+    u8                    server_channel;        
 } CL_RFCOMM_UNREGISTER_CFM_T;
 
 /*! 
@@ -3199,9 +3199,9 @@ typedef struct
     /*! The RFCOMM connection status.*/
     rfcomm_connect_status   status;                
     /*! The server channel.*/
-    uint8                   server_channel;        
+    u8                   server_channel;        
     /*! The RFCOMM payload size.*/
-    uint16                  payload_size;            
+    u16                  payload_size;            
     /*! The sink.*/
     Sink                    sink;    
     /*! Device address. */
@@ -3217,9 +3217,9 @@ typedef struct
     /*! The RFCOMM connection status.*/
     rfcomm_connect_status   status;                
     /*! The server channel.*/
-    uint8                   server_channel;        
+    u8                   server_channel;        
     /*! The RFCOMM payload size.*/
-    uint16                  payload_size;            
+    u16                  payload_size;            
     /*! The sink.*/
     Sink                    sink;    
     /*! Device address. */
@@ -3235,7 +3235,7 @@ typedef struct
     /*! The Bluetooth address of the remote device.*/
     bdaddr  bd_addr;                    
     /*! The local server channel.*/
-    uint8   server_channel;                
+    u8   server_channel;                
     /*! The sink associated with the connection. */
     Sink    sink;
 } CL_RFCOMM_CONNECT_IND_T;
@@ -3300,9 +3300,9 @@ typedef struct
     /*! The sink.*/
     Sink    sink;      
     /*! The break signal, range 0-15 in increments of 200ms.*/
-    uint8  break_signal;  
+    u8  break_signal;  
     /*! The modem signal.*/
-    uint8  modem_signal;            
+    u8  modem_signal;            
 } CL_RFCOMM_CONTROL_IND_T;
 
 /*! 
@@ -3361,7 +3361,7 @@ typedef struct
     /*! New power mode. */
     lp_power_mode   mode;
     /*! Sniff internal. */
-    uint16          interval;
+    u16          interval;
 } CL_DM_MODE_CHANGE_EVENT_T;
 
 /*! 
@@ -3375,12 +3375,12 @@ typedef struct
     /*! Bluetooth address of requested device. */
     bdaddr                  bd_addr;
     /*! The size of the attribute data. */
-    uint16                  size_psdata;                
+    u16                  size_psdata;                
     /*! The attribute data. The client should not attempt to free this pointer,
       the memory will be freed when the message is destroyed. If the client
       needs access to this data after the message has been destroyed it is the
       client's responsibility to copy it. */
-    uint8                   psdata[1];                    
+    u8                   psdata[1];                    
 } CL_SM_GET_ATTRIBUTE_CFM_T;
 
 
@@ -3395,12 +3395,12 @@ typedef struct
     /*! Bluetooth address of requested device. */
     typed_bdaddr            taddr;
     /*! The size of the attribute data. */
-    uint16                  size_psdata;                
+    u16                  size_psdata;                
     /*! The attribute data. The client should not attempt to free this pointer,
       the memory will be freed when the message is destroyed. If the client
       needs access to this data after the message has been destroyed it is the
       client's responsibility to copy it. */
-    uint8                   psdata[1];                    
+    u8                   psdata[1];                    
 } CL_SM_GET_INDEXED_ATTRIBUTE_CFM_T;
 
 
@@ -3447,12 +3447,12 @@ typedef struct
     /*! Type of link key */
     cl_sm_link_key_type     link_key_type;
     /*! Size of the linkkey */
-    uint16                  size_link_key;
+    u16                  size_link_key;
     /*! The linkkey. The client should not attempt to free this pointer,
       the memory will be freed when the message is destroyed. If the client
       needs access to this data after the message has been destroyed it is the
       client's responsibility to copy it. */
-    uint16                  link_key[1];
+    u16                  link_key[1];
 } CL_SM_GET_AUTH_DEVICE_CFM_T;
 
 /* These types are used for both BLE and NON-BLE bluestack message
@@ -3497,7 +3497,7 @@ void ConnectionInitEx(Task theAppTask, const msg_filter *msgFilter );
 void ConnectionInitEx2(
         Task theAppTask,
         const msg_filter *msgFilter,
-        uint16 TdlNumberOfDevices  
+        u16 TdlNumberOfDevices  
         );
 
 /*! @brief This function is called to initialise the Multipoint Connection
@@ -3518,8 +3518,8 @@ void ConnectionInitEx2(
 void ConnectionInitEx3(
         Task theAppTask,
         const msg_filter *msgFilter,
-        uint16 TdlNumberOfDevices,
-        uint16 options
+        u16 TdlNumberOfDevices,
+        u16 options
         );
 
 /*! 
@@ -3660,10 +3660,10 @@ void ConnectionReadInquiryMode(Task theAppTask);
 */
 void ConnectionInquire(
         Task theAppTask,
-        uint32 inquiry_lap,
-        uint8 max_responses,
-        uint16 timeout,
-        uint32 class_of_device
+        u32 inquiry_lap,
+        u8 max_responses,
+        u16 timeout,
+        u32 class_of_device
         );
 
 
@@ -3737,12 +3737,12 @@ void ConnectionInquire(
 */
 void ConnectionInquirePeriodic(
         Task theAppTask,
-        uint16 min_period,
-        uint16 max_period,
-        uint32 inquiry_lap,
-        uint8 max_responses,
-        uint16 timeout,
-        uint32 class_of_device
+        u16 min_period,
+        u16 max_period,
+        u32 inquiry_lap,
+        u8 max_responses,
+        u16 timeout,
+        u32 class_of_device
         );
 
 
@@ -3803,7 +3803,7 @@ void ConnectionReadLocalName(Task theAppTask);
 
     This is a BT2.1 only feature
 */
-void ConnectionWriteInquiryTx(int8 tx_power);
+void ConnectionWriteInquiryTx(i8 tx_power);
 
 
 /*! 
@@ -3839,7 +3839,7 @@ void ConnectionReadTxPower(Task theAppTask, const tp_bdaddr *tpaddr);
     @param interval The interval to use.
     @param window The window to use.
 */
-void ConnectionWritePagescanActivity(uint16 interval, uint16 window);
+void ConnectionWritePagescanActivity(u16 interval, u16 window);
 
 
 /*! 
@@ -3849,7 +3849,7 @@ void ConnectionWritePagescanActivity(uint16 interval, uint16 window);
     @param interval The interval to use.
     @param window The window to use.
 */
-void ConnectionWriteInquiryscanActivity(uint16 interval, uint16 window);
+void ConnectionWriteInquiryscanActivity(u16 interval, u16 window);
 
 /*! 
     @brief This function is called to set the inquiry access code the device 
@@ -3863,8 +3863,8 @@ void ConnectionWriteInquiryscanActivity(uint16 interval, uint16 window);
 */
 void ConnectionWriteInquiryAccessCode(
         Task theAppTask,
-        const uint32 *iac,
-        uint16 num_iac
+        const u32 *iac,
+        u16 num_iac
         );
 
 /*!
@@ -3908,7 +3908,7 @@ void ConnectionWriteScanEnable(hci_scan_enable mode);
     @param local_name The name to change the local name to. This can be a
     maximum of 32 characters.
 */
-void ConnectionChangeLocalName(uint16 size_local_name, const uint8 *local_name);
+void ConnectionChangeLocalName(u16 size_local_name, const u8 *local_name);
 
 
 /*!
@@ -3925,9 +3925,9 @@ void ConnectionChangeLocalName(uint16 size_local_name, const uint8 *local_name);
     This is a BT2.1 only feature
 */
 void ConnectionWriteEirData(
-        uint8 fec_required,
-        uint8 size_eir_data,
-        const uint8 *eir_data
+        u8 fec_required,
+        u8 size_eir_data,
+        const u8 *eir_data
         );
 
 
@@ -3950,7 +3950,7 @@ void ConnectionReadEirData(Task theAppTask);
     
     @param cod Class of Device.
 */
-void ConnectionWriteClassOfDevice(uint32 cod);
+void ConnectionWriteClassOfDevice(u32 cod);
 
 
 /*! 
@@ -3988,7 +3988,7 @@ void ConnectionWriteCachedPageMode(
     @param bd_addr The Bluetooth address of the remote device.
     @param clk_offset The clock offset.
 */
-void ConnectionWriteCachedClockOffset(const bdaddr *bd_addr, uint16 clk_offset);
+void ConnectionWriteCachedClockOffset(const bdaddr *bd_addr, u16 clk_offset);
 
 
 /*! 
@@ -4033,7 +4033,7 @@ void ConnectionClearParameterCache(const bdaddr *bd_addr);
     means that the retransmissions are carried out until physical link loss
     occurs.
 */
-void ConnectionWriteFlushTimeout(Sink sink, uint16 flush_timeout);
+void ConnectionWriteFlushTimeout(Sink sink, u16 flush_timeout);
 
 
 /*! 
@@ -4164,7 +4164,7 @@ void ConnectionGetRssiBdaddr(Task theAppTask, const tp_bdaddr *tpaddr);
 typedef struct
 {
     hci_status      status;         /*!< HCI status code.*/
-    uint8           rssi;           /*!< RSSI value.*/
+    u8           rssi;           /*!< RSSI value.*/
     tp_bdaddr       tpaddr;         /*!< The address of the remote device. */
 } CL_DM_RSSI_BDADDR_CFM_T;
 
@@ -4296,7 +4296,7 @@ void ConnectionSmSetSecurityMode(
 */
 void ConnectionSmSetSecurityLevel(
         dm_protocol_id protocol_id,
-        uint32 channel,
+        u32 channel,
         dm_ssp_security_level ssp_sec_level,
         bool outgoing_ok,
         bool authorised,
@@ -4348,7 +4348,7 @@ void ConnectionSmSecModeConfig(
 */
 void ConnectionSmRegisterIncomingService(
         dm_protocol_id protocol_id,
-        uint32 channel,
+        u32 channel,
         dm_security_in security
         );
 
@@ -4365,7 +4365,7 @@ void ConnectionSmRegisterIncomingService(
 */
 void ConnectionSmUnRegisterIncomingService(
         dm_protocol_id protocol_id,
-        uint32 channel
+        u32 channel
         );
 
 
@@ -4400,7 +4400,7 @@ void ConnectionSmRegisterOutgoingService(
         Task theAppTask,
         const bdaddr* bd_addr,
         dm_protocol_id protocol_id,
-        uint32 channel,
+        u32 channel,
         dm_security_out security
         );
 
@@ -4449,7 +4449,7 @@ void ConnectionSmRegisterOutgoingService(
 void ConnectionSmUnRegisterOutgoingService(
         const bdaddr* bd_addr,
         dm_protocol_id protocol_id,
-        uint32 channel
+        u32 channel
         );
 
 
@@ -4491,7 +4491,7 @@ void ConnectionSmReadLocalOobData(Task theAppTask, TRANSPORT_T transport);
 void ConnectionSmAuthenticate(
         Task theAppTask,
         const bdaddr* bd_addr,
-        uint16 timeout
+        u16 timeout
         );
 
 
@@ -4522,7 +4522,7 @@ void ConnectionSmCancelAuthenticate(Task theAppTask, bool force);
 
     A CL_SM_ENCRYPT_CFM message will be sent as a result of this function call.
 */
-void ConnectionSmEncrypt(Task theAppTask, Sink sink, uint16 encrypt);
+void ConnectionSmEncrypt(Task theAppTask, Sink sink, u16 encrypt);
 
 
 /*! 
@@ -4575,7 +4575,7 @@ void ConnectionSmEncryptionKeyRefreshSink(Sink sink);
 void ConnectionSmAuthoriseResponse(
         const bdaddr* bd_addr,
         dm_protocol_id protocol_id,
-        uint32 channel,
+        u32 channel,
         bool incoming,
         bool authorised
         );
@@ -4594,8 +4594,8 @@ void ConnectionSmAuthoriseResponse(
 */
 void ConnectionSmPinCodeResponse(
         const typed_bdaddr* taddr,
-        uint16 size_pin_code,
-        const uint8* pin_code
+        u16 size_pin_code,
+        const u8* pin_code
         ); 
 
 
@@ -4625,7 +4625,7 @@ void ConnectionSmChangeLinkKey(Sink sink);
 */
 void ConnectionDmAclDetach(
         const bdaddr* bd_addr,
-        uint8 reason,
+        u8 reason,
         bool detach_all
         );
 
@@ -4638,7 +4638,7 @@ void ConnectionDmAclDetach(
 
     On return, the device will have been deleted from the paired device list.
 */
-void ConnectionSmDeleteAuthDeviceReq(uint8 type, const bdaddr* bd_addr);
+void ConnectionSmDeleteAuthDeviceReq(u8 type, const bdaddr* bd_addr);
 
 /*!
     @brief Specialises ConnectionSmDeleteAuthDeviceReq() to provide backward 
@@ -4662,7 +4662,7 @@ void ConnectionSmDeleteAuthDeviceReq(uint8 type, const bdaddr* bd_addr);
     The user persistent attribute data associated with a device will also be 
     deleted.
 */
-void ConnectionSmDeleteAllAuthDevices(uint16 ps_base);
+void ConnectionSmDeleteAllAuthDevices(u16 ps_base);
 
 
 /*!
@@ -4680,11 +4680,11 @@ void ConnectionSmDeleteAllAuthDevices(uint16 ps_base);
 void ConnectionSmAddAuthDevice(
         Task theAppTask,
         const bdaddr *peer_bd_addr,
-        uint16 trusted,
-        uint16 bonded,
-        uint8 key_type,
-        uint16 size_link_key,
-        const uint16* link_key
+        u16 trusted,
+        u16 bonded,
+        u8 key_type,
+        u16 size_link_key,
+        const u16* link_key
         );
 
 /*!
@@ -4764,10 +4764,10 @@ void ConnectionSmIoCapabilityResponse(
         cl_sm_io_capability io_capability,
         mitm_setting        mitm,
         bool                bonding,
-        uint16              key_distribution,
-        uint16              oob_data,
-        uint8*              oob_hash_c,
-        uint8*              oob_rand_r
+        u16              key_distribution,
+        u16              oob_data,
+        u8*              oob_hash_c,
+        u8*              oob_rand_r
         ); 
 
 
@@ -4800,7 +4800,7 @@ void ConnectionSmUserConfirmationResponse(
 void ConnectionSmUserPasskeyResponse(
         const tp_bdaddr*    tpaddr,
         bool                cancelled,
-        uint32              passkey
+        u32              passkey
         );
 
 
@@ -4844,11 +4844,11 @@ void ConnectionSmSendKeypressNotificationRequest(
  
 */
 void ConnectionSmPutAttributeReq(
-        uint16 ps_base,
-        uint8 addr_type,
+        u16 ps_base,
+        u8 addr_type,
         const bdaddr* bd_addr,
-        uint16 size_psdata,
-        const uint8* psdata
+        u16 size_psdata,
+        const u8* psdata
         );
 
 /*!
@@ -4885,10 +4885,10 @@ void ConnectionSmPutAttributeReq(
     will be sent in response.
 */
 void ConnectionSmGetAttributeReq(
-        uint16 ps_base,
-        uint8 addr_type,
+        u16 ps_base,
+        u8 addr_type,
         const bdaddr* bd_addr,
-        uint16 size_psdata
+        u16 size_psdata
         );
 
 /*!
@@ -4925,11 +4925,11 @@ void ConnectionSmGetAttributeReq(
     was passed as a parameter. 
 */
 bool ConnectionSmGetAttributeNowReq(
-        uint16 ps_base,
-        uint8 addr_type,
+        u16 ps_base,
+        u8 addr_type,
         const bdaddr* bd_addr,
-        uint16 size_psdata,
-        uint8 *psdata
+        u16 size_psdata,
+        u8 *psdata
         );
 
 /*!
@@ -4961,9 +4961,9 @@ bool ConnectionSmGetAttributeNowReq(
     attribute will be sent in response.
 */
 void ConnectionSmGetIndexedAttribute(
-        uint16 ps_base,
-        uint16 index,
-        uint16 size_psdata
+        u16 ps_base,
+        u16 index,
+        u16 size_psdata
         );
 
 /*! 
@@ -4985,10 +4985,10 @@ void ConnectionSmGetIndexedAttribute(
     was passed as a parameter. 
 */
 bool ConnectionSmGetIndexedAttributeNowReq(
-        uint16          ps_base,
-        uint16          index,
-        uint16          size_psdata,
-        uint8           *psdata,
+        u16          ps_base,
+        u16          index,
+        u16          size_psdata,
+        u8           *psdata,
         typed_bdaddr    *taddr
         );
 
@@ -5011,7 +5011,7 @@ bool ConnectionSmGetIndexedAttributeNowReq(
 void ConnectionSmSetTrustLevel(
         Task theAppTask,
         const bdaddr* bd_addr,
-        uint16 trusted
+        u16 trusted
         );
 
 
@@ -5035,8 +5035,8 @@ void ConnectionSmUpdateMruDevice(const bdaddr *bd_addr);
 */
 void ConnectionRegisterServiceRecord(
         Task theAppTask,
-        uint16 size_service_record,
-        const uint8 *service_record
+        u16 size_service_record,
+        const u8 *service_record
         );
 
 
@@ -5049,7 +5049,7 @@ void ConnectionRegisterServiceRecord(
 */
 void ConnectionUnregisterServiceRecord(
         Task theAppTask,
-        uint32 service_record_hdl
+        u32 service_record_hdl
         );
 
 
@@ -5058,7 +5058,7 @@ void ConnectionUnregisterServiceRecord(
 
     @param mtu The size of L2CAP MTU to use.
 */
-void ConnectionSetSdpServerMtu(uint16 mtu);
+void ConnectionSetSdpServerMtu(u16 mtu);
 
 
 /*! 
@@ -5066,7 +5066,7 @@ void ConnectionSetSdpServerMtu(uint16 mtu);
 
     @param mtu The size of L2CAP MTU to use.
 */
-void ConnectionSetSdpClientMtu(uint16 mtu);
+void ConnectionSetSdpClientMtu(u16 mtu);
 
 
 /*! 
@@ -5099,9 +5099,9 @@ void ConnectionSdpCloseSearchRequest(Task theAppTask);
 void ConnectionSdpServiceSearchRequest(
         Task theAppTask,
         const bdaddr *bd_addr,
-        uint16 max_num_recs,
-        uint16 size_search_pattern,
-        const uint8 *search_pattern
+        u16 max_num_recs,
+        u16 size_search_pattern,
+        const u8 *search_pattern
         );
 
 /*! 
@@ -5121,9 +5121,9 @@ void ConnectionSdpServiceSearchRequest(
 void ConnectionSdpServiceSearchRefRequest(
         Task theAppTask,
         const bdaddr *bd_addr,
-        uint16 max_num_recs,
-        uint16 size_search_pattern,
-        const uint8 *search_pattern
+        u16 max_num_recs,
+        u16 size_search_pattern,
+        const u8 *search_pattern
         );
 
 /*! 
@@ -5139,10 +5139,10 @@ void ConnectionSdpServiceSearchRefRequest(
 void ConnectionSdpAttributeSearchRequest(
         Task theAppTask,
         const bdaddr *bd_addr,
-        uint16 max_num_recs,
-        uint32 service_hdl,
-        uint16 size_attribute_list,
-        const uint8 *attribute_list
+        u16 max_num_recs,
+        u32 service_hdl,
+        u16 size_attribute_list,
+        const u8 *attribute_list
         );
 
 /*! 
@@ -5163,10 +5163,10 @@ void ConnectionSdpAttributeSearchRequest(
 void ConnectionSdpAttributeSearchRefRequest(
         Task theAppTask,
         const bdaddr *bd_addr,
-        uint16 max_num_recs,
-        uint32 service_hdl,
-        uint16 size_attribute_list,
-        const uint8 *attribute_list
+        u16 max_num_recs,
+        u32 service_hdl,
+        u16 size_attribute_list,
+        const u8 *attribute_list
         );
 
 /*! 
@@ -5185,11 +5185,11 @@ void ConnectionSdpAttributeSearchRefRequest(
 void ConnectionSdpServiceSearchAttributeRequest(
         Task theAppTask,
         const bdaddr *bd_addr,
-        uint16 max_attributes,
-        uint16 size_search_pattern,
-        const uint8 *search_pattern,
-        uint16 size_attribute_list,
-        const uint8 *attribute_list
+        u16 max_attributes,
+        u16 size_search_pattern,
+        const u8 *search_pattern,
+        u16 size_attribute_list,
+        const u8 *attribute_list
         );
 
 /*! 
@@ -5212,11 +5212,11 @@ void ConnectionSdpServiceSearchAttributeRequest(
 void ConnectionSdpServiceSearchAttributeRefRequest(
         Task theAppTask,
         const bdaddr *bd_addr,
-        uint16 max_attributes,
-        uint16 size_search_pattern,
-        const uint8 *search_pattern,
-        uint16 size_attribute_list,
-        const uint8 *attribute_list
+        u16 max_attributes,
+        u16 size_search_pattern,
+        const u8 *search_pattern,
+        u16 size_attribute_list,
+        const u8 *attribute_list
         );
 
 /*! 
@@ -5247,7 +5247,7 @@ void ConnectionSdpTerminatePrimitiveRequest(Task theAppTask);
     The client task will receive a CL_L2CAP_REGISTER_CFM message from the 
     Connection library indicating the outcome of this request.
 */
-void ConnectionL2capRegisterRequest(Task theAppTask, uint16 psm, uint16 flags);
+void ConnectionL2capRegisterRequest(Task theAppTask, u16 psm, u16 flags);
 
 /*! 
     @brief Unregister an L2CAP PSM from the Connection library.
@@ -5265,7 +5265,7 @@ void ConnectionL2capRegisterRequest(Task theAppTask, uint16 psm, uint16 flags);
     The client task will receive a CL_L2CAP_UNREGISTER_CFM message from the 
     Connection library indicating the outcome of this request.
 */
-void ConnectionL2capUnregisterRequest(Task theAppTask, uint16 psm);
+void ConnectionL2capUnregisterRequest(Task theAppTask, u16 psm);
 
 
 /*! 
@@ -5287,7 +5287,7 @@ void ConnectionL2capUnregisterRequest(Task theAppTask, uint16 psm);
 
     @param conftab_length The length of the configuration table data array.
 
-    @param conftab Pointer to a configuration table of uint16 values. These are
+    @param conftab Pointer to a configuration table of u16 values. These are
     key value pairs defining configuration options to be passed to Bluestack. 
     This pointer will be passed to Bluestack at which time the VM memory slot
     for it will be freed.
@@ -5299,10 +5299,10 @@ void ConnectionL2capUnregisterRequest(Task theAppTask, uint16 psm);
 void ConnectionL2capConnectRequest(
         Task theAppTask,
         const bdaddr *bd_addr,
-        uint16 psm_local,
-        uint16 psm_remote,
-        uint16 conftab_length,
-        uint16* conftab
+        u16 psm_local,
+        u16 psm_remote,
+        u16 conftab_length,
+        u16* conftab
         );
 
 
@@ -5335,7 +5335,7 @@ void ConnectionL2capConnectRequest(
 
     @param conftab_length The length of the configuration table data array.
 
-    @param conftab Pointer to a configuration table of uint16 values. These are
+    @param conftab Pointer to a configuration table of u16 values. These are
     key value pairs defining configuration options to be passed to Bluestack. 
     This pointer will be passed to Bluestack at which time the VM memory slot
     for it will be freed.
@@ -5352,11 +5352,11 @@ void ConnectionL2capConnectRequest(
 void ConnectionL2capConnectResponse(
         Task theAppTask,
         bool response,
-        uint16 psm,
-        uint16 connection_id,
-        uint8 identifier,
-        uint16 conftab_length,
-        uint16* conftab
+        u16 psm,
+        u16 connection_id,
+        u8 identifier,
+        u16 conftab_length,
+        u16* conftab
         );
 
 
@@ -5385,7 +5385,7 @@ void ConnectionL2capDisconnectRequest(Task theAppTask, Sink sink);
 
     Once this message has been sent, the sink is no longer valid.
 */
-void ConnectionL2capDisconnectResponse(uint8 identifier, Sink sink);
+void ConnectionL2capDisconnectResponse(u8 identifier, Sink sink);
 
 /*!
     @brief Request to map L2CAP connectionless data to a remote device.
@@ -5411,8 +5411,8 @@ void ConnectionL2capDisconnectResponse(uint8 identifier, Sink sink);
 void ConnectionL2capMapConnectionlessRequest(
         Task theAppTask,
         const bdaddr *bd_addr,
-        uint16 psm_local,
-        uint16 psm_remote,
+        u16 psm_local,
+        u16 psm_remote,
         l2cap_connectionless_data_type type
         );
 
@@ -5464,7 +5464,7 @@ void ConnectionL2capUnmapConnectionlessRequest(Sink sink);
 */
 void ConnectionRfcommAllocateChannel(
         Task theAppTask,
-        uint8 suggested_server_channel
+        u8 suggested_server_channel
         );
 
 /*! 
@@ -5478,7 +5478,7 @@ void ConnectionRfcommAllocateChannel(
 
 void ConnectionRfcommDeallocateChannel(
         Task theAppTask,
-        uint8 local_server_channel
+        u8 local_server_channel
         );
 
 /*! 
@@ -5499,8 +5499,8 @@ void ConnectionRfcommDeallocateChannel(
 void ConnectionRfcommConnectRequest(
         Task theAppTask,
         const bdaddr* bd_addr,
-        uint16 security_channel,
-        uint8 remote_server_chan,
+        u16 security_channel,
+        u8 remote_server_chan,
         const rfcomm_config_params *config
         );
 
@@ -5523,7 +5523,7 @@ void ConnectionRfcommConnectResponse(
         Task theAppTask,
         bool response,
         const Sink sink,
-        uint8 local_server_channel,
+        u8 local_server_channel,
         const rfcomm_config_params *config
         );
 
@@ -5605,8 +5605,8 @@ void ConnectionRfcommPortNegResponse(
 void ConnectionRfcommControlSignalRequest(
         Task theAppTask,
         Sink sink,
-        uint8 break_signal,
-        uint8 modem_signal
+        u8 break_signal,
+        u8 modem_signal
         );
 
 /*!
@@ -5647,7 +5647,7 @@ void ConnectionEnterDutMode(void);
     @param sink The sink.
     @param timeout The timeout in 0.625ms units.
 */
-void ConnectionSetLinkSupervisionTimeout(Sink sink, uint16 timeout);
+void ConnectionSetLinkSupervisionTimeout(Sink sink, u16 timeout);
 
 
 /*!
@@ -5672,7 +5672,7 @@ void ConnectionSetLinkSupervisionTimeout(Sink sink, uint16 timeout);
 */
 void ConnectionSetLinkPolicy(
         Sink sink,
-        uint16 size_power_table,
+        u16 size_power_table,
         lp_power_table const *power_table
         );
 
@@ -5696,9 +5696,9 @@ void ConnectionSetLinkPolicy(
 */
 void ConnectionSetSniffSubRatePolicy(
         Sink sink,
-        uint16 max_remote_latency,
-        uint16 min_remote_timeout,
-        uint16 min_local_timeout
+        u16 max_remote_latency,
+        u16 min_remote_timeout,
+        u16 min_local_timeout
         );
 
 /*!
@@ -5720,7 +5720,7 @@ void ConnectionSetSniffSubRatePolicy(
     device to create an ACL. Use of this function is not recommended unless
     absolutely necessary.
 */
-void ConnectionSetPageTimeout(uint16 page_timeout);
+void ConnectionSetPageTimeout(u16 page_timeout);
 
 /*!
     @brief This function is called to set the priority flag of a device stored
@@ -5774,6 +5774,6 @@ bool ConnectionAuthIsPriorityDevice(
     @return Number of devices in the Trusted Device Index.
 */
 
-uint16 ConnectionTrustedDeviceListSize(void);
+u16 ConnectionTrustedDeviceListSize(void);
 
 #endif    /* CONNECTION_NO_BLE_H_ */

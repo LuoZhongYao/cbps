@@ -65,7 +65,7 @@ usb_attached_status UsbAttachedStatus(void);
    descriptor_length parameters must be set to 0, NULL, 0 respectively.
    Otherwise, usb_interface_error is returned. 
 */
-UsbInterface UsbAddInterface(const UsbCodes *codes, uint16 type, const uint8 *if_descriptor, uint16 descriptor_length);
+UsbInterface UsbAddInterface(const UsbCodes *codes, u16 type, const u8 *if_descriptor, u16 descriptor_length);
 
 /*!
    @brief Adds USB endpoints to the interface passed. See the USB2.0 spec section 9.6.6
@@ -79,7 +79,7 @@ UsbInterface UsbAddInterface(const UsbCodes *codes, uint16 type, const uint8 *if
    BlueCore is already enumerated on the bus, PSKEY_HOST_INTERFACE is not set 
    to USB or PSKEY_USB_VM_CONTROL is FALSE.
 */
-bool UsbAddEndPoints(UsbInterface interface, uint16 num_end_points, const EndPointInfo *end_point_info);
+bool UsbAddEndPoints(UsbInterface interface, u16 num_end_points, const EndPointInfo *end_point_info);
 
 /*!
    @brief Adds a USB descriptor to an interface or endpoint.
@@ -95,7 +95,7 @@ bool UsbAddEndPoints(UsbInterface interface, uint16 num_end_points, const EndPoi
    
    This API is normally used to add HID report or class specific endpoint descriptors.
 */
-bool UsbAddDescriptor(UsbInterface interface, uint16 type, const uint8 *descriptor, uint16 descriptor_length);
+bool UsbAddDescriptor(UsbInterface interface, u16 type, const u8 *descriptor, u16 descriptor_length);
 
 /*!
   @brief Adds a USB String Descriptor. See the USB2.0 spec section 9.6.7
@@ -113,11 +113,11 @@ bool UsbAddDescriptor(UsbInterface interface, uint16 type, const uint8 *descript
   Example:
   In order to register string descriptor 11 as "Test".
 
-  const uint16 myStringDescriptor[] = {((uint16)'T'), ((uint16)'e'), ((uint16)'s'), ((uint16)'t'), 
-                                       ((uint16)'\\0')};
+  const u16 myStringDescriptor[] = {((u16)'T'), ((u16)'e'), ((u16)'s'), ((u16)'t'), 
+                                       ((u16)'\\0')};
   UsbAddStringDescriptor(11, myStringDescriptor);
 */
-bool UsbAddStringDescriptor(uint8 string_index, const uint16 *string_descriptor);
+bool UsbAddStringDescriptor(u8 string_index, const u16 *string_descriptor);
 
 /*!
     @brief Add an Interface Association Descriptor to a USB interface
@@ -127,7 +127,7 @@ bool UsbAddStringDescriptor(uint8 string_index, const uint16 *string_descriptor)
     @return TRUE if the Interface Association descriptor was added correctly, else FALSE.
     A FALSE value will be returned if an invalid if_num is given.
 */
-bool UsbAddInterfaceAssociationDescriptor(uint16 if_num, const uint8 *ia_descriptor, uint16 descriptor_length);
+bool UsbAddInterfaceAssociationDescriptor(u16 if_num, const u8 *ia_descriptor, u16 descriptor_length);
 
 /*!
   @brief Adds a DFU interface to the USB port.
@@ -164,7 +164,7 @@ void UsbAddDfuInterface(void);
     configuration descriptor for the new configuration will just be copied
     over from the first configuration.
 */
-uint16 UsbAddConfiguration(const ConfigDescriptorInfo *desc_info);
+u16 UsbAddConfiguration(const ConfigDescriptorInfo *desc_info);
 
 /*!
     @brief Determine the state of the USB device

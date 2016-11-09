@@ -135,7 +135,7 @@ static bool handleGattServiceChangedCCfgAccessRequest(Task gatt_task, GATT_MANAG
         {
             if(ind->size_value == CLIENT_CONFIG_ACCESS_SIZE)
             {
-                uint16 value = (ind->value[0] & 0xFF) | ((ind->value[1] << 8) & 0xFF00);
+                u16 value = (ind->value[0] & 0xFF) | ((ind->value[1] << 8) & 0xFF00);
                 gattServerSendWriteClientConfigInd(gatt_server->app_task, ind->cid, value);
                 GattManagerServerAccessResponse(gatt_task, ind->cid, ind->handle, gatt_status_success, 0, NULL);
             }
@@ -186,9 +186,9 @@ bool gattServerHandleGattManagerAccessInd(Task gatt_task, GATT_MANAGER_SERVER_AC
 }
 
 /******************************************************************************/
-bool GattServerReadClientConfigResponse(GGATTS *gatt_server, uint16 cid, uint16 handle, uint16 config)
+bool GattServerReadClientConfigResponse(GGATTS *gatt_server, u16 cid, u16 handle, u16 config)
 {
-    uint8 config_resp[CLIENT_CONFIG_ACCESS_SIZE];
+    u8 config_resp[CLIENT_CONFIG_ACCESS_SIZE];
 
     config_resp[0] = config & 0xFF;
     config_resp[1] = (config >> 8) & 0xFF;

@@ -73,7 +73,7 @@ RETURNS
     The size of the battery server data.
 */
 #ifdef GATT_BATTERY_SERVER
-uint16 sinkGattBatteryServerCalculateSize(void);
+u16 sinkGattBatteryServerCalculateSize(void);
 #else
 #define sinkGattBatteryServerCalculateSize() (0)
 #endif
@@ -94,7 +94,7 @@ RETURNS
     TRUE if the Battery server was initialised correctly, FALSE otherwise.
 */
 #ifdef GATT_BATTERY_SERVER
-bool sinkGattBatteryServerInitialise(uint16 **ptr);
+bool sinkGattBatteryServerInitialise(u16 **ptr);
 #else
 #define sinkGattBatteryServerInitialise(ptr) (TRUE)
 #endif

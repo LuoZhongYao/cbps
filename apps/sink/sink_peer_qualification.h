@@ -26,7 +26,7 @@ bool peerQualificationAdvanceRelayState (RelayEvent relay_event);
 #endif
 
 #ifdef ENABLE_PEER
-void handlePeerQualificationReconfigureCfm(uint16 DeviceId, uint16 StreamId, a2dp_status_code status);
+void handlePeerQualificationReconfigureCfm(u16 DeviceId, u16 StreamId, a2dp_status_code status);
 #else
 #define handlePeerQualificationReconfigureCfm(DeviceId, StreamId, status) ((void)0)
 #endif
@@ -38,7 +38,7 @@ void handlePeerQualificationEnablePeerOpen(void);
 #endif
 
 #ifdef ENABLE_PEER
-bool peerQualificationReplaceDelayReportServiceCaps (uint8 *dest_service_caps, uint16 *size_dest_service_caps, const uint8 *src_service_caps, uint16 size_src_service_caps);
+bool peerQualificationReplaceDelayReportServiceCaps (u8 *dest_service_caps, u16 *size_dest_service_caps, const u8 *src_service_caps, u16 size_src_service_caps);
 #else
 #define peerQualificationReplaceDelayReportServiceCaps (dest_service_caps, size_dest_service_caps, src_service_caps, size_src_service_caps) (FALSE)
 #endif

@@ -17,8 +17,8 @@ typedef struct
 {
  	unsigned    event:8;
  	unsigned 	type:8;
- 	uint16  	pio_mask;
- 	uint16  	state_mask;
+ 	u16  	pio_mask;
+ 	u16  	state_mask;
 }event_config_type;
 
 typedef enum ButtonsTimeTag
@@ -74,8 +74,8 @@ typedef struct ButtonEventsTag
 typedef struct ButtonPatternTag
 {
 	sinkEvents_t 		EventToSend ;
-    uint16          NumberOfMatches ;
-    uint32          ButtonToMatch[BM_NUM_BUTTONS_PER_MATCH_PATTERN] ;   
+    u16          NumberOfMatches ;
+    u32          ButtonToMatch[BM_NUM_BUTTONS_PER_MATCH_PATTERN] ;   
 }ButtonMatchPattern_t ;
 
 typedef struct ButtonTranslationTag
@@ -88,11 +88,11 @@ typedef struct ButtonTranslationTag
 /* Definition of the button configuration */
 typedef struct
 {
-    uint16 double_press_time;
-    uint16 long_press_time;
-    uint16 very_long_press_time; 
-	uint16 repeat_time;
-	uint16 very_very_long_press_time ;
+    u16 double_press_time;
+    u16 long_press_time;
+    u16 very_long_press_time; 
+	u16 repeat_time;
+	u16 very_very_long_press_time ;
   
 	unsigned debounce_number:8 ;
   	unsigned debounce_period_ms:8;
@@ -105,12 +105,12 @@ typedef struct
     TaskData    task;
 	Task        client;   
    
-    uint32 		gButtonPIOLevelMask ;           /* mask used set PIO debounce state, not required for capsense input assignments */
-    uint32      gOldPIOState;                   /* last PIO state used to merge in with the capsense data */
-    uint32      gPerformInputEdgeCheck;         /* bit mask of translated inputs that are configured for edge detect */
-    uint32      gPerformInputLevelCheck;        /* bit mask of translated inputs that are configured for level detect */
-    uint32      gBOldInputState;                 /* bit mask of translated pio and capsense inputs last seen as pressed */
-    uint32      gBMultipleState  ;    
+    u32 		gButtonPIOLevelMask ;           /* mask used set PIO debounce state, not required for capsense input assignments */
+    u32      gOldPIOState;                   /* last PIO state used to merge in with the capsense data */
+    u32      gPerformInputEdgeCheck;         /* bit mask of translated inputs that are configured for edge detect */
+    u32      gPerformInputLevelCheck;        /* bit mask of translated inputs that are configured for level detect */
+    u32      gBOldInputState;                 /* bit mask of translated pio and capsense inputs last seen as pressed */
+    u32      gBMultipleState  ;    
     
     button_config_type * button_config ;        /*the button durations etc*/
     
@@ -121,10 +121,10 @@ typedef struct
              
     ButtonMatchPattern_t gButtonPatterns [BM_NUM_BUTTON_MATCH_PATTERNS]; /*the button match patterns*/
 			
-    uint16      gButtonMatchProgress[BM_NUM_BUTTON_MATCH_PATTERNS] ;  /*the progress achieved*/
+    u16      gButtonMatchProgress[BM_NUM_BUTTON_MATCH_PATTERNS] ;  /*the progress achieved*/
     
 #ifdef ENABLE_CAPSENSE    
-    uint16      gOldCapState;                   /* last stored state of the capsense switches */
+    u16      gOldCapState;                   /* last stored state of the capsense switches */
 #endif
     
     /* array of input vs button translations */
@@ -168,7 +168,7 @@ DESCRIPTION
 RETURNS
     
 */
-void buttonManagerAddMapping ( event_config_type * event_config , uint8 index) ;
+void buttonManagerAddMapping ( event_config_type * event_config , u8 index) ;
 
 /****************************************************************************
 DESCRIPTION
@@ -177,7 +177,7 @@ DESCRIPTION
 RETURNS
  void
 */    
-void buttonManagerAddPatternMapping ( ButtonsTaskData *pButtonsTask, uint16 pSystemEvent , uint16 * pButtonsToMatch, uint16 lPatternIndex ) ;
+void buttonManagerAddPatternMapping ( ButtonsTaskData *pButtonsTask, u16 pSystemEvent , u16 * pButtonsToMatch, u16 lPatternIndex ) ;
 
 
 /****************************************************************************
@@ -203,7 +203,7 @@ DESCRIPTION
 RETURNS
  void
 */    
-void BMButtonDetected ( uint32 pButtonMask  , ButtonsTime_t pTime ) ;
+void BMButtonDetected ( u32 pButtonMask  , ButtonsTime_t pTime ) ;
 
 /****************************************************************************
 DESCRIPTION

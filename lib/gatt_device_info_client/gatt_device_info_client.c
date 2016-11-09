@@ -102,7 +102,7 @@ gatt_device_info_client_status_t GattDeviceInfoClientReadCharRequest( GDISC *dev
                                                 gatt_device_info_type_t device_info_type)
 {
     gatt_device_info_client_status_t retval = gatt_device_info_client_status_not_supported;
-    uint16 device_info_char_handle = INVALID_DEVICE_INFO_HANDLE;
+    u16 device_info_char_handle = INVALID_DEVICE_INFO_HANDLE;
 
     /* Validate the input parameters */
     if((device_info_client == NULL) || (device_info_type >= gatt_device_info_client_invalid_char))

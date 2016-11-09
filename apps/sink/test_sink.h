@@ -24,11 +24,11 @@ typedef enum {
 } vm2host_sink;
 
 typedef struct {
-    uint16 state;    /*!< The Sink app state. */
+    u16 state;    /*!< The Sink app state. */
 } SINK_TEST_STATE_T;
 
 typedef struct {
-    uint16 event;   /*!< The Sink app event. */
+    u16 event;   /*!< The Sink app event. */
 } SINK_TEST_EVENT_T;
 
 /* HS State notification */
@@ -45,13 +45,13 @@ typedef enum {
 } host2vm_sink;
 
 typedef struct {
-    uint16 event;
+    u16 event;
 } SINK_TEST_EVENT_MSG_T;
 
 typedef struct {
-    uint16 length;
-    uint16 bcspType;
-    uint16 funcId;
+    u16 length;
+    u16 bcspType;
+    u16 funcId;
 
     union {
         SINK_TEST_EVENT_MSG_T SINK_TEST_EVENT_MSG;

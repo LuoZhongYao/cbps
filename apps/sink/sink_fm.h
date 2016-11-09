@@ -41,7 +41,7 @@ typedef enum
 typedef struct
 {
     bool fmRxOn;
-    uint16 fmRxTunedFreq;
+    u16 fmRxTunedFreq;
     Sink sink;
     fm_stored_freq fmStoredFreq;
     fm_rx_data_t *fm_plugin_data;

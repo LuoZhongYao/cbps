@@ -29,13 +29,13 @@ DESCRIPTION
 static const char*  opFindTag( const char *s ,
                                const char *e ,
                                const char *tag,
-                               uint16 tagLen )
+                               u16 tagLen )
 {
     while( s != e )
     {
         while( s != e && *s != *tag ) s++;
 
-       if((uint16)(e-s) < tagLen ) return e;
+       if((u16)(e-s) < tagLen ) return e;
        if((memcmp(s, tag, tagLen) == 0) ) break;
        s++;
     }
@@ -60,13 +60,13 @@ static const char*  opFindTag( const char *s ,
  ************************************************************************/
 char *opDecode( ObexParseData*     element,
                    const char*     tag,
-                   uint16          tagLen,
-                   uint16          *maxValLen )
+                   u16          tagLen,
+                   u16          *maxValLen )
 {
     const char *s = element->object;
     const char *e = s + element->len;
     char * value = NULL;
-    uint16 valLen = *maxValLen;
+    u16 valLen = *maxValLen;
 
     *maxValLen = 0;
 
@@ -91,7 +91,7 @@ char *opDecode( ObexParseData*     element,
 
     }
     
-    if( (uint16)(e-s) < valLen ) valLen = e-s;
+    if( (u16)(e-s) < valLen ) valLen = e-s;
     
     if(valLen && (value = malloc(valLen)))
     {

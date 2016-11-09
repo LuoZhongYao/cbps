@@ -41,7 +41,7 @@ RETURNS
     The size of data contained in ps_data
 
 */
-uint16 defaults_get_value(uint16 ps_key, void *ps_data, uint16 ps_size);
+u16 defaults_get_value(u16 ps_key, void *ps_data, u16 ps_size);
 
 
 #endif /* _SOURCE_DEFAULTS_H_ */

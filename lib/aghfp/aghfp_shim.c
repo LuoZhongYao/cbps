@@ -25,7 +25,7 @@ void AghfpHandleComplexMessage(Task task, MessageId id, Message message)
 		case AGHFP_APP_AUDIO_PARAMS_REQUIRED_IND:
         {
             AGHFP_APP_AUDIO_PARAMS_REQUIRED_IND_TEST_EXTRA_T *newmsg = malloc(sizeof(AGHFP_APP_AUDIO_PARAMS_REQUIRED_IND_TEST_EXTRA_T)); 
-            newmsg->task = (uint16) task;
+            newmsg->task = task;
             MessageSend(task, AGHFP_APP_AUDIO_PARAMS_REQUIRED_IND_TEST_EXTRA, newmsg);
         }
         break;
@@ -47,7 +47,7 @@ void AghfpSlcConnectResponseTestExtra(AGHFP *aghfp, bool response, const bdaddr 
 	AghfpSlcConnectResponse(aghfp, response);
 }
 
-void AghfpAudioConnectTestExtra(AGHFP *aghfp, sync_pkt_type packet_type, uint32 bandwidth, uint16 max_latency, uint16 voice_settings, sync_retx_effort retx_effort, bool override_wbs)
+void AghfpAudioConnectTestExtra(AGHFP *aghfp, sync_pkt_type packet_type, u32 bandwidth, u16 max_latency, u16 voice_settings, sync_retx_effort retx_effort, bool override_wbs)
 {
 	aghfp_audio_params params;
 	params.bandwidth = bandwidth;
@@ -65,7 +65,7 @@ void AghfpAudioConnectTestExtraDefaults(AGHFP *aghfp, sync_pkt_type packet_type)
 }
 
 
-void AghfpAudioConnectResponseTestExtra(AGHFP *aghfp, bool response, sync_pkt_type packet_type, uint32 bandwidth, uint16 max_latency, uint16 voice_settings, sync_retx_effort retx_effort, bool override_wbs)
+void AghfpAudioConnectResponseTestExtra(AGHFP *aghfp, bool response, sync_pkt_type packet_type, u32 bandwidth, u16 max_latency, u16 voice_settings, sync_retx_effort retx_effort, bool override_wbs)
 {
 	aghfp_audio_params params;
 	params.bandwidth = bandwidth;
@@ -83,7 +83,7 @@ void AghfpAudioConnectResponseTestExtraDefaults(AGHFP *aghfp, bool response, syn
 }
 
 
-void AghfpSetAudioParamsTestExtra(AGHFP *aghfp, sync_pkt_type packet_type, uint32 bandwidth, uint16 max_latency, uint16 voice_settings, sync_retx_effort retx_effort, bool override_wbs)
+void AghfpSetAudioParamsTestExtra(AGHFP *aghfp, sync_pkt_type packet_type, u32 bandwidth, u16 max_latency, u16 voice_settings, sync_retx_effort retx_effort, bool override_wbs)
 {
 	aghfp_audio_params params;
 	params.bandwidth = bandwidth;
@@ -108,7 +108,7 @@ void AghfpAudioTransferConnectionTestExtraDefault(AGHFP *aghfp, aghfp_audio_tran
 }
 
 
-void AghfpAudioTransferConnectionTestExtraParams(AGHFP *aghfp, aghfp_audio_transfer_direction direction, sync_pkt_type packet_type, uint32 bandwidth, uint16 max_latency, uint16 voice_settings, sync_retx_effort retx_effort, bool override_wbs)
+void AghfpAudioTransferConnectionTestExtraParams(AGHFP *aghfp, aghfp_audio_transfer_direction direction, sync_pkt_type packet_type, u32 bandwidth, u16 max_latency, u16 voice_settings, sync_retx_effort retx_effort, bool override_wbs)
 {
     aghfp_audio_params audio_params;
     audio_params.bandwidth = bandwidth;
@@ -119,9 +119,9 @@ void AghfpAudioTransferConnectionTestExtraParams(AGHFP *aghfp, aghfp_audio_trans
     AghfpAudioTransferConnection(aghfp, direction, packet_type, &audio_params);
 }
 
-void AghfpSendCallerIdTestExtra(AGHFP *aghfp, uint8 type_number, uint16 size_number, uint16 size_string, uint16 size_data, const uint8 *data)
+void AghfpSendCallerIdTestExtra(AGHFP *aghfp, u8 type_number, u16 size_number, u16 size_string, u16 size_data, const u8 *data)
 {
-    const uint8 *string = NULL;
+    const u8 *string = NULL;
 
     /* Unused in shim only needed for rfcli */
     size_data = size_data;
@@ -132,9 +132,9 @@ void AghfpSendCallerIdTestExtra(AGHFP *aghfp, uint8 type_number, uint16 size_num
 }
 
 
-void AghfpSendCallWaitingNotificationTestExtra(AGHFP *aghfp, uint8 type_number, uint16 size_number, uint16 size_string, uint16 size_data, const uint8 *data)
+void AghfpSendCallWaitingNotificationTestExtra(AGHFP *aghfp, u8 type_number, u16 size_number, u16 size_string, u16 size_data, const u8 *data)
 {
-	const uint8 *string = NULL;
+	const u8 *string = NULL;
     /* Unused in shim only needed for rfcli */
     size_data = size_data;
 
@@ -144,7 +144,7 @@ void AghfpSendCallWaitingNotificationTestExtra(AGHFP *aghfp, uint8 type_number, 
 }
 
 
-void AghfpSendSubscriberNumberTestExtra(AGHFP *aghfp, uint8 id, uint8 type, uint8 service, uint16 size_number, uint8 *number)
+void AghfpSendSubscriberNumberTestExtra(AGHFP *aghfp, u8 id, u8 type, u8 service, u16 size_number, u8 *number)
 {
     aghfp_subscriber_info sub;
   	sub.type = type;
@@ -156,7 +156,7 @@ void AghfpSendSubscriberNumberTestExtra(AGHFP *aghfp, uint8 id, uint8 type, uint
 }
 
 
-void AghfpSendCurrentCallTestExtra(AGHFP *aghfp, uint8 idx, aghfp_call_dir dir, aghfp_call_state status, aghfp_call_mode mode, aghfp_call_mpty mpty, uint8 type, uint16 size_number, uint8 *number)
+void AghfpSendCurrentCallTestExtra(AGHFP *aghfp, u8 idx, aghfp_call_dir dir, aghfp_call_state status, aghfp_call_mode mode, aghfp_call_mpty mpty, u8 type, u16 size_number, u8 *number)
 {
     aghfp_call_info call;
    	call.idx = idx;
@@ -172,7 +172,7 @@ void AghfpSendCurrentCallTestExtra(AGHFP *aghfp, uint8 idx, aghfp_call_dir dir, 
 }
 
 
-void AghfpCallCreateAudioTestExtra (AGHFP *aghfp, aghfp_call_dir direction, bool in_band, sync_pkt_type packet_type, uint32 bandwidth, uint16 max_latency, uint16 voice_settings, sync_retx_effort retx_effort)
+void AghfpCallCreateAudioTestExtra (AGHFP *aghfp, aghfp_call_dir direction, bool in_band, sync_pkt_type packet_type, u32 bandwidth, u16 max_latency, u16 voice_settings, sync_retx_effort retx_effort)
 {
 	aghfp_audio_params params;
 	params.bandwidth = bandwidth;

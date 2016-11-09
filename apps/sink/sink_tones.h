@@ -38,7 +38,7 @@ DESCRIPTION
 RETURNS
     void
 */
-uint16 TonesGetToneVolume(bool PlayToneAtDefaultLevel);
+u16 TonesGetToneVolume(bool PlayToneAtDefaultLevel);
 
 /****************************************************************************
 NAME    
@@ -50,7 +50,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void TonesPlayTone ( uint16 pTone , bool pCanQueue , bool PlayToneAtDefaultLevel) ;
+void TonesPlayTone ( u16 pTone , bool pCanQueue , bool PlayToneAtDefaultLevel) ;
 
 /****************************************************************************
 NAME    
@@ -74,7 +74,7 @@ DESCRIPTION
 RETURNS
     Volume in dB/60
 */
-int16 TonesGetToneVolumeInDb(audio_plugin_mch_group_t group);
+i16 TonesGetToneVolumeInDb(audio_plugin_mch_group_t group);
 
 #endif
 

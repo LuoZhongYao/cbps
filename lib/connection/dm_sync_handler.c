@@ -32,12 +32,12 @@ NOTES
 
 typedef struct 
 {
-    uint8   link_type;
-    uint8   tesco;
-    uint16  rx_packet_length;
-    uint16  tx_packet_length;
+    u8   link_type;
+    u8   tesco;
+    u16  rx_packet_length;
+    u16  tx_packet_length;
     Sink    sink;
-    uint8   sco_handle;     /* LMP SCO Handle. */
+    u8   sco_handle;     /* LMP SCO Handle. */
 } link_params;
 
 
@@ -136,7 +136,7 @@ void connectionHandleSyncRegisterReq(const CL_INTERNAL_SYNC_REGISTER_REQ_T *req)
     */
     MAKE_PRIM_T(DM_SYNC_REGISTER_REQ);
     prim->phandle = 0;
-    prim->pv_cbarg = (uint16)req->theAppTask;
+    prim->pv_cbarg = req->theAppTask;
     VmSendDmPrim(prim);    
     
     {
@@ -146,7 +146,7 @@ void connectionHandleSyncRegisterReq(const CL_INTERNAL_SYNC_REGISTER_REQ_T *req)
                 connectionGetCmTask(),
                 CL_INTERNAL_SYNC_REGISTER_TIMEOUT_IND,
                 message,
-                (uint32)SYNC_REGISTER_TIMEOUT
+                (u32)SYNC_REGISTER_TIMEOUT
                 );
     }
 }
@@ -176,7 +176,7 @@ void connectionHandleSyncRegisterCfm(const DM_SYNC_REGISTER_CFM_T *cfm)
         MAKE_CL_MESSAGE(CL_DM_SYNC_REGISTER_CFM);
         message->status = success;
         MessageSend(
-                (Task) ((uint16)cfm->pv_cbarg),
+                cfm->pv_cbarg,
                 CL_DM_SYNC_REGISTER_CFM,
                 message
                 );
@@ -202,7 +202,7 @@ void connectionHandleSyncRegisterTimeoutInd(
     MAKE_CL_MESSAGE(CL_DM_SYNC_REGISTER_CFM);
     message->status = fail;
     MessageSend(
-            (Task) ((uint16)ind->theAppTask),
+            ind->theAppTask,
             CL_DM_SYNC_REGISTER_CFM,
             message
             );
@@ -227,7 +227,7 @@ void connectionHandleSyncUnregisterReq(
     /* Send an unregister request to BlueStack */
     MAKE_PRIM_T(DM_SYNC_UNREGISTER_REQ);
     prim->phandle = 0;
-    prim->pv_cbarg = (uint16)req->theAppTask;
+    prim->pv_cbarg = req->theAppTask;
     VmSendDmPrim(prim);
     
     {
@@ -237,7 +237,7 @@ void connectionHandleSyncUnregisterReq(
                 connectionGetCmTask(),
                 CL_INTERNAL_SYNC_UNREGISTER_TIMEOUT_IND,
                 message,
-                (uint32)SYNC_UNREGISTER_TIMEOUT
+                (u32)SYNC_UNREGISTER_TIMEOUT
                 );
     }
 }
@@ -267,7 +267,7 @@ void connectionHandleSyncUnregisterCfm(const DM_SYNC_UNREGISTER_CFM_T *cfm)
         MAKE_CL_MESSAGE(CL_DM_SYNC_UNREGISTER_CFM);
         message->status = success;
         MessageSend(
-                (Task) ((uint16)cfm->pv_cbarg),
+                (Task) (cfm->pv_cbarg),
                 CL_DM_SYNC_UNREGISTER_CFM,
                 message
                 );
@@ -293,7 +293,7 @@ void connectionHandleSyncUnregisterTimeoutInd(
     MAKE_CL_MESSAGE(CL_DM_SYNC_UNREGISTER_CFM);
     message->status = fail;
     MessageSend(
-            (Task) ((uint16)ind->theAppTask),
+            ind->theAppTask,
             CL_DM_SYNC_UNREGISTER_CFM,
             message
             );
@@ -331,7 +331,7 @@ void connectionHandleSyncConnectReq(const CL_INTERNAL_SYNC_CONNECT_REQ_T *req)
 
         MAKE_PRIM_T(DM_SYNC_CONNECT_REQ);
         prim->phandle  = 0;
-        prim->pv_cbarg = (uint16) req->theAppTask;
+        prim->pv_cbarg = req->theAppTask;
         prim->length   = 0;
 
         BdaddrConvertVmToBluestack(&prim->bd_addr, &tpaddr.taddr.addr);
@@ -394,7 +394,7 @@ void connectionHandleSyncConnectCfm(
     /* Tell the client task that we have a cfm for the Sync request */
     sendSyncConnectCfmToClient(
             theAppTask,
-            (Task) ((uint16)cfm->pv_cbarg),
+            (Task) (cfm->pv_cbarg),
             &addr,
             cfm->status,
             &params
@@ -419,7 +419,7 @@ void connectionHandleSyncConnectInd(const DM_SYNC_CONNECT_IND_T *ind)
         MAKE_CL_MESSAGE(CL_DM_SYNC_CONNECT_IND);
         BdaddrConvertBluestackToVm(&message->bd_addr, &ind->bd_addr);
         MessageSend(
-                (Task) ((uint16)ind->pv_cbarg),
+                (Task) (ind->pv_cbarg),
                 CL_DM_SYNC_CONNECT_IND,
                 message
                 );
@@ -458,7 +458,7 @@ void connectionHandleSyncConnectCompleteInd(
     /* Tell the client task that we have a cfm for the Sync request */
     sendSyncConnectCfmToClient(
             theAppTask,
-            (Task) ((uint16)ind->pv_cbarg),
+            (Task) (ind->pv_cbarg),
             &addr,
             ind->status,
             &params
@@ -526,7 +526,7 @@ void connectionHandleSyncDisconnectReq(
     /* Send a SCO disconnect request to BlueStack */
     MAKE_PRIM_T(DM_SYNC_DISCONNECT_REQ);
     prim->handle = PanicZero(SinkGetScoHandle(req->audio_sink));;
-    prim->reason = (uint16)req->reason;
+    prim->reason = (u16)req->reason;
     VmSendDmPrim(prim);
 }
 
@@ -561,7 +561,7 @@ void connectionHandleSyncDisconnectInd(const DM_SYNC_DISCONNECT_IND_T *ind)
         
         message->status = hci_success;
         MessageSend(
-                (Task) ((uint16)ind->pv_cbarg), 
+                (Task) (ind->pv_cbarg), 
                 CL_DM_SYNC_DISCONNECT_IND, 
                 message
                 );
@@ -600,7 +600,7 @@ void connectionHandleSyncDisconnectCfm(const DM_SYNC_DISCONNECT_CFM_T *cfm)
         message->reason = hci_success; 
         
         MessageSend(
-                (Task) ((uint16)cfm->pv_cbarg),
+                (Task) (cfm->pv_cbarg),
                 CL_DM_SYNC_DISCONNECT_IND,
                 message
                 );
@@ -678,7 +678,7 @@ void connectionHandleSyncRenegotiateInd(const DM_SYNC_RENEGOTIATE_IND_T *ind)
         message->audio_sink = StreamScoSink(ind->handle);
         message->status = connectionConvertHciStatus(ind->status);
         MessageSend(
-                (Task) ((uint16)ind->pv_cbarg),
+                (Task) (ind->pv_cbarg),
                 CL_DM_SYNC_RENEGOTIATE_IND,
                 message
                 );
@@ -708,7 +708,7 @@ void connectionHandleSyncRenegotiateCfm(const DM_SYNC_RENEGOTIATE_CFM_T *cfm)
         message->audio_sink = StreamScoSink(cfm->handle);
         message->status = connectionConvertHciStatus(cfm->status);
         MessageSend(
-                (Task) ((uint16)cfm->pv_cbarg),
+                (Task) (cfm->pv_cbarg),
                 CL_DM_SYNC_RENEGOTIATE_IND,
                 message
                 );

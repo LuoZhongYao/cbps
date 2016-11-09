@@ -40,11 +40,11 @@ typedef struct
     csrSubwooferInput   input;      /* Required for plugging correct Kalimba port */
     csrSubwooferOutput  output;     /* Required for plugging correct Kalimba port */
     
-    uint16  swat_system_volume_db;  /* The soundbar system volume */
-    uint16  swat_trim_gain_db;      /* The trim gain from the soundbar */
-    uint16  adc_volume;             /* Default ADC volume */
-    uint16  sample_rate;            /* Sample rate received from Soundbar */
-    uint16  adc_sample_rate;        /* Sample rate of the ADC when in Analog mode */
+    u16  swat_system_volume_db;  /* The soundbar system volume */
+    u16  swat_trim_gain_db;      /* The trim gain from the soundbar */
+    u16  adc_volume;             /* Default ADC volume */
+    u16  sample_rate;            /* Sample rate received from Soundbar */
+    u16  adc_sample_rate;        /* Sample rate of the ADC when in Analog mode */
     
 } subwooferPluginConnectParams;
 
@@ -54,7 +54,7 @@ typedef struct
     unsigned    unused:11;
     unsigned    eq_bank:4;   /* Specify an absolute EQ bank to use (1,2,3) */
     unsigned    cycle_eq:1;  /* Set this to just cycle to next EQ bank; if not set, uses eq_bank value to select the EQ bank to use */
-    uint16      sample_rate; /* Sample rate received from Soundbar */
+    u16      sample_rate; /* Sample rate received from Soundbar */
  
 } subwooferPluginModeParams;
 

@@ -258,7 +258,7 @@ void swatHandleIncomingScoDisconnect(Sink sink, hci_status status)
 
 
 /*****************************************************************************/
-void swatHandleUnresponsiveMediaLL(uint16 device_id)
+void swatHandleUnresponsiveMediaLL(u16 device_id)
 {
     SWAT_DEBUG(("[SWAT] Device ID[%x] did not respond to the last SWAT command\n", device_id));
     

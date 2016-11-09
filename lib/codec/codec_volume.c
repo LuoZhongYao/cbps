@@ -18,16 +18,16 @@ DESCRIPTION
 
 typedef struct
 {
-    int16 volMax;
-    int16 volMin;
-    int16 x0;
-    int16 y0;
-    int16 x1;
-    int16 y1;
-    int16 dx;
-    int16 dy;
-    int16 e;
-    int16 dB;
+    i16 volMax;
+    i16 volMin;
+    i16 x0;
+    i16 y0;
+    i16 x1;
+    i16 y1;
+    i16 dx;
+    i16 dy;
+    i16 e;
+    i16 dB;
 }convert_volume_db_t;
 
 /****************************************************************************
@@ -41,16 +41,16 @@ RETURNS
  dB value
 
 */
-int16 VolumeConvertDACGainToDB(uint16 DAC_Gain)
+i16 VolumeConvertDACGainToDB(u16 DAC_Gain)
 {
-    int32 Result;    
+    i32 Result;    
     
     /* convert from 0 to 15 DAC gain to -45 to 0dB */  
     Result = (DAC_Gain * (0 - MIN_CODEC_GAIN_DB)) / CODEC_STEPS;
     Result += MIN_CODEC_GAIN_DB;
     Result *= DB_DSP_SCALING_FACTOR;
     
-    return (int16)Result;
+    return (i16)Result;
 }
 
 /****************************************************************************
@@ -64,7 +64,7 @@ RETURNS
  dB value
 
 */
-int16 VolumeConvertStepsToDB(int16 Volume, volume_group_config_t * volMappingConfig)
+i16 VolumeConvertStepsToDB(i16 Volume, volume_group_config_t * volMappingConfig)
 {
     /* Volume - volume number from 1 to no_of_steps (it is assumed that vol 0 will be mute)
      dbMin - minimum volume in integer dB returned when Volume is 1
@@ -74,7 +74,7 @@ int16 VolumeConvertStepsToDB(int16 Volume, volume_group_config_t * volMappingCon
 
      if a single segment line is required, then set avrcpKnee to 0 and dbKnee to dbMin */
 
-    int16 result;
+    i16 result;
     convert_volume_db_t * convert = PanicUnlessMalloc(sizeof(convert_volume_db_t));
     
     convert->volMax = (volMappingConfig->no_of_steps - 1);
@@ -127,7 +127,7 @@ RETURNS
  dac gain and dB dsp value
 
 */
-void CodecCalcHybridValues(hybrid_gains_t * gains, int16 volume)
+void CodecCalcHybridValues(hybrid_gains_t * gains, i16 volume)
 {
     /* Ensure volume is within allowed range of between -80dB and 0dB */
     if((volume > MAXIMUM_DIGITAL_VOLUME_0DB))
@@ -154,7 +154,7 @@ void CodecCalcHybridValues(hybrid_gains_t * gains, int16 volume)
     gains->dsp_db_scaled = (volume - ((CODEC_STEPS - gains->dac_gain) * DB_TO_DAC * -1));
 }
 
-void CodecSetInputGain(Task codecTask, uint16 volume, codec_channel channel)
+void CodecSetInputGain(Task codecTask, u16 volume, codec_channel channel)
 {
 	MAKE_CODEC_MESSAGE(CODEC_INTERNAL_INPUT_GAIN_REQ);
 	message->volume = volume;
@@ -163,7 +163,7 @@ void CodecSetInputGain(Task codecTask, uint16 volume, codec_channel channel)
 }
 
 
-void CodecSetInputGainNow(Task codecTask, uint16 volume, codec_channel channel)
+void CodecSetInputGainNow(Task codecTask, u16 volume, codec_channel channel)
 {
     Source input_source;
     
@@ -182,7 +182,7 @@ void CodecSetInputGainNow(Task codecTask, uint16 volume, codec_channel channel)
 }
 
 
-void CodecSetOutputGain(Task codecTask, uint16 volume, codec_channel channel)
+void CodecSetOutputGain(Task codecTask, u16 volume, codec_channel channel)
 {
 	MAKE_CODEC_MESSAGE(CODEC_INTERNAL_OUTPUT_GAIN_REQ);
     message->volume = volume;
@@ -191,7 +191,7 @@ void CodecSetOutputGain(Task codecTask, uint16 volume, codec_channel channel)
 }
 
 
-void CodecSetOutputGainNow(Task codecTask, uint16 volume, codec_channel channel)
+void CodecSetOutputGainNow(Task codecTask, u16 volume, codec_channel channel)
 {
     Sink output_sink;
     
@@ -231,7 +231,7 @@ RETURNS
  none
 
 */
-void CodecSetOutputGainLater(Task codecTask, uint16 volume, codec_channel channel, uint16 delay)
+void CodecSetOutputGainLater(Task codecTask, u16 volume, codec_channel channel, u16 delay)
 {
 	MAKE_CODEC_MESSAGE(CODEC_INTERNAL_OUTPUT_GAIN_REQ);
     message->volume = volume;

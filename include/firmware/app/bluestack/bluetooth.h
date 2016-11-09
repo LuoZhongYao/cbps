@@ -81,7 +81,7 @@ Public Defines
 *============================================================================*/
 /*! \name   Primitive segmentation
     \brief  These definitions are used in the get_message and put_message in the
-            uint16 parameter. We are using it as an event id
+            u16 parameter. We are using it as an event id
     \{ */
 
 #define	LC_PRIM			1

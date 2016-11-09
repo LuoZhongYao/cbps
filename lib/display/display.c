@@ -17,7 +17,7 @@ DESCRIPTION
 typedef struct display_Tag
 {
     Task plugin; 
-    uint16 max_length;
+    u16 max_length;
     
 }DISPLAY_t ;
 
@@ -76,11 +76,11 @@ void DisplaySetState( bool state )
     
 */
 void DisplaySetText( char* text, 
-                     uint8 txtlen, 
-                     uint8 line,
+                     u8 txtlen, 
+                     u8 line,
                      bool  scroll,
-                     uint16 scroll_update,
-                     uint16 scroll_pause,
+                     u16 scroll_update,
+                     u16 scroll_pause,
                      bool  flash,
                      bool  display_time )
 {
@@ -115,7 +115,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void DisplaySetVolume( uint16 volume  )
+void DisplaySetVolume( u16 volume  )
 {
     if ( DISPLAY.plugin )   
     {
@@ -134,7 +134,7 @@ void DisplaySetVolume( uint16 volume  )
     @param  icon state  
     
 */
-void DisplaySetIcon( uint8 icon, bool state )
+void DisplaySetIcon( u8 icon, bool state )
 {
     if ( DISPLAY.plugin )   
     {
@@ -152,7 +152,7 @@ void DisplaySetIcon( uint8 icon, bool state )
     @param  battery level 
     
 */
-void DisplaySetBatteryLevel( uint8 battery_level )
+void DisplaySetBatteryLevel( u8 battery_level )
 {
     if ( DISPLAY.plugin )   
     {

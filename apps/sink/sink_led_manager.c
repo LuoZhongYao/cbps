@@ -3,10 +3,10 @@ Copyright (c) 2004 - 2015 Qualcomm Technologies International, Ltd.
 
 FILE NAME
     sink_LED_manager.c
-    
+
 DESCRIPTION
     Module responsible for managing the PIO outputs including LEDs
-    
+
 */
 
 /****************************************************************************
@@ -34,9 +34,7 @@ DEFINITIONS
 
 
 #ifdef DEBUG_LM
-#define LM_DEBUG(x) {printf x;}
 #else
-#define LM_DEBUG(x) 
 #endif
 
 
@@ -52,29 +50,29 @@ static void LEDManagerInitActiveLEDS      ( void ) ;
 static void LEDManagerCreateFilterPatterns( void ) ;
 
 /****************************************************************************
-NAME	
+NAME
 	ledManagerMemoryInit
 
 DESCRIPTION
-	Initialise memory for led manager, this has moved from theSink as ran 
+	Initialise memory for led manager, this has moved from theSink as ran
     out of globals space.
 
 RETURNS
 	void
-    
+
 */
-void LedManagerMemoryInit(void) 
+void LedManagerMemoryInit(void)
 {
 	/* Allocate memory to hold the led manager states */
-    LM_DEBUG(("LM Mem Init Task 0x%x, active leds 0x%x:\n",sizeof(LedTaskData),(sizeof(LEDActivity_t) * SINK_NUM_LEDS) )) ;    
+    LOGD("LM Mem Init Task 0x%x, active leds 0x%x:\n",sizeof(LedTaskData),(sizeof(LEDActivity_t) * SINK_NUM_LEDS) );
 	theSink.theLEDTask = mallocPanic(sizeof(LedTaskData));
     memset(theSink.theLEDTask, 0, sizeof(LedTaskData));
-    
- 
+
+
 }
 
 /****************************************************************************
-NAME 
+NAME
  PIOManagerInit
 
 DESCRIPTION
@@ -82,48 +80,49 @@ DESCRIPTION
 
 RETURNS
  void
-    
+
 */
-void LEDManagerInit ( void ) 
-{        
-    LM_DEBUG(("LM Init :\n")) ;
-    
+void LEDManagerInit ( void )
+{
+    LOGD("LM Init :\n");
+
     /* allocate memory for LED events */
-    LM_DEBUG(("LM num event patterns %d,%d:\n", theSink.theLEDTask->gEventPatternsAllocated,LM_MAX_NUM_PATTERNS)) ;
-                
+    LOGD("LM num event patterns %d,%d:\n", theSink.theLEDTask->gEventPatternsAllocated,LM_MAX_NUM_PATTERNS);
+
     theSink.theLEDTask->pEventPatterns = mallocPanic(LM_MAX_NUM_PATTERNS * sizeof(LEDPattern_t));
     memset(theSink.theLEDTask->pEventPatterns, 0, LM_MAX_NUM_PATTERNS * sizeof(LEDPattern_t));
-    
+
     /* allocate memory for LED filters */
-    LM_DEBUG(("LM num filter patterns %d,%d :\n", theSink.theLEDTask->gLMNumFiltersUsed,LM_NUM_FILTER_EVENTS)) ;
+    LOGD("LM num filter patterns %d,%d :\n", theSink.theLEDTask->gLMNumFiltersUsed,LM_NUM_FILTER_EVENTS);
 
     theSink.theLEDTask->pEventFilters = mallocPanic(LM_NUM_FILTER_EVENTS * sizeof(LEDFilter_t));
     memset(theSink.theLEDTask->pEventFilters, 0, LM_NUM_FILTER_EVENTS * sizeof(LEDFilter_t));
-    
-    LM_DEBUG(("LM Mem state pat. %d, ev filt %d\n",LM_MAX_NUM_PATTERNS * sizeof(LEDPattern_t), LM_NUM_FILTER_EVENTS * sizeof(LEDFilter_t) )) ;   
-   
+
+    LOGD("LM Mem state pat. %d, ev filt %d\n",LM_MAX_NUM_PATTERNS * sizeof(LEDPattern_t), LM_NUM_FILTER_EVENTS * sizeof(LEDFilter_t) );
+
     theSink.theLEDTask->gLEDSSuspend = FALSE;
-                
-    LM_DEBUG(("LM : p[%x][%x][%x]\n" ,  (int)theSink.theLEDTask->gStatePatterns ,
-                                        (int)theSink.theLEDTask->pEventPatterns ,
-                                        (int)theSink.theLEDTask->gActiveLEDS    
-            )) ;
-    
+
+    LOGD("p[%x][%x][%x]\n",
+         theSink.theLEDTask->gStatePatterns ,
+         theSink.theLEDTask->pEventPatterns ,
+         theSink.theLEDTask->gActiveLEDS
+        );
+
     /*create the patterns we want to use*/
     LEDManagerInitStatePatterns ( ) ;
     LEDManagerInitActiveLEDS( ) ;
     LEDManagerInitEventPatterns( ) ;
-    
+
     memset(theSink.theLEDTask->Queue, 0, sizeof(LEDEventQueue_t));
-    
+
     /*the filter information*/
     LEDManagerCreateFilterPatterns( ) ;
-    
+
     LedsInit ( ) ;
 
 }
 /****************************************************************************
-NAME 
+NAME
  LEDManagerInitActiveLEDS
 
 DESCRIPTION
@@ -131,19 +130,19 @@ DESCRIPTION
 
 RETURNS
  void
-    
+
 */
-static void LEDManagerInitActiveLEDS ( void ) 
+static void LEDManagerInitActiveLEDS ( void )
 {
-    uint16 lIndex = 0; 
- 
+    u16 lIndex = 0;
+
     for ( lIndex= 0 ; lIndex < SINK_NUM_LEDS ; lIndex ++ )
     {
-        LedsSetLedActivity ( &theSink.theLEDTask->gActiveLEDS [ lIndex ] , IT_Undefined , 0 , 0 ) ;    
+        LedsSetLedActivity ( &theSink.theLEDTask->gActiveLEDS [ lIndex ] , IT_Undefined , 0 , 0 ) ;
     }
 }
 /****************************************************************************
-NAME 
+NAME
  LEDManagerInitStatePatterns
 
 DESCRIPTION
@@ -151,23 +150,23 @@ DESCRIPTION
 
 RETURNS
  void
-    
+
 */
-static void LEDManagerInitStatePatterns ( void ) 
+static void LEDManagerInitStatePatterns ( void )
 {
-    uint16 lIndex = 0; 
- 
+    u16 lIndex = 0;
+
     for ( lIndex= 0 ; lIndex < SINK_NUM_STATES ; lIndex ++ )
     {
         LEDPatternState_t *lStatePattern = &(theSink.theLEDTask->gStatePatterns[lIndex]);
-        
+
         memset(lStatePattern, 0, sizeof(LEDPatternState_t));
-        lStatePattern->Colour     = LED_COL_LED_A ;  
+        lStatePattern->Colour     = LED_COL_LED_A ;
     }
-     
+
 }
 /****************************************************************************
-NAME 
+NAME
  LEDManagerInitEventPatterns
 
 DESCRIPTION
@@ -175,72 +174,72 @@ DESCRIPTION
 
 RETURNS
  void
-    
+
 */
 static void LEDManagerInitEventPatterns ( void )
 {
-    uint16 lIndex = 0; 
- 
+    u16 lIndex = 0;
+
     for ( lIndex= 0 ; lIndex < LM_MAX_NUM_PATTERNS ; lIndex ++ )
     {
         LEDPattern_t *lEventPattern = &(theSink.theLEDTask->pEventPatterns[lIndex]);
-        
+
         memset(lEventPattern, 0, sizeof(LEDPattern_t));
-        lEventPattern->pattern.Colour     = LED_COL_LED_A ;  
-    } 
+        lEventPattern->pattern.Colour     = LED_COL_LED_A ;
+    }
 }
 /****************************************************************************
-NAME 
+NAME
  LEDManagerCreateFilterPatterns
 
 DESCRIPTION
- Creates the Filter patterns space 
+ Creates the Filter patterns space
 
 RETURNS
  void
-    
+
 */
 static void LEDManagerCreateFilterPatterns ( void )
 {
-    uint16 lIndex = 0 ;
-    
+    u16 lIndex = 0 ;
+
 
     for (lIndex = 0 ; lIndex < LM_NUM_FILTER_EVENTS ; lIndex++ )
     {
         LEDFilter_t *lEventFilter = &(theSink.theLEDTask->pEventFilters [ lIndex ]);
-        
+
         memset(lEventFilter, 0, sizeof(LEDFilter_t));
     }
-    
+
     LED_SETACTIVEFILTERS(0x0);
 }
- 
+
 
 #ifdef DEBUG_LM
 /****************************************************************************
-NAME 
+NAME
  LMPrintPattern
 
 DESCRIPTION
     debug fn to output a LED pattern
-    
+
 RETURNS
  void
 */
 
-void LMPrintPattern ( LEDPattern_t * pLED ) 
+void LMPrintPattern ( LEDPattern_t * pLED )
 {
 #ifdef DEBUG_PRINT_ENABLED
     const char * const lColStrings [ 5 ] =   {"LED_E ","LED_A","LED_B","ALT","Both"} ;
     if(pLED)
     {
-        LM_DEBUG(("[%d][%d] [%d][%d][%d] ", pLED->pattern.LED_A , pLED->pattern.LED_B, pLED->pattern.OnTime ,pLED->pattern.OffTime ,pLED->pattern.RepeatTime)) ;  
-        LM_DEBUG(("[%d] [%d] [%s]\n",       pLED->pattern.NumFlashes, pLED->pattern.TimeOut, lColStrings[pLED->pattern.Colour])) ;    
-        LM_DEBUG(("[%d]\n",       pLED->pattern.OverideDisable)) ;    
+        LOGD("[%d][%d] [%d][%d][%d] ", pLED->pattern.LED_A , pLED->pattern.LED_B, pLED->pattern.OnTime ,pLED->pattern.OffTime ,pLED->pattern.RepeatTime);
+        LOGD("[%d] [%d] [%s]\n",       pLED->pattern.NumFlashes, pLED->pattern.TimeOut, lColStrings[pLED->pattern.Colour]);
+        LOGD("[%d]\n",       pLED->pattern.OverideDisable);
     }
     else
     {
-        LM_DEBUG(("LMPrintPattern = NULL \n")) ;  
+        LOGD("LMPrintPattern = NULL \n");
     }
 #endif
 
@@ -258,61 +257,61 @@ static bool ledManagerCanPlayPattern(LEDPattern_t* pattern)
 
 
 /****************************************************************************
-NAME 
+NAME
  LEDManagerIndicateEvent
 
 DESCRIPTION
  displays event notification
     This function also enables / disables the event filter actions - if a normal event indication is not
-    associated with the event, it checks to see if a filer is set up for the event 
+    associated with the event, it checks to see if a filer is set up for the event
 
 RETURNS
  void
-    
+
 */
 
-void LEDManagerIndicateEvent ( MessageId pEvent ) 
+void LEDManagerIndicateEvent ( MessageId pEvent )
 {
-	uint8 i,lPatternIndex;
-    uint16 lEventIndex = pEvent ;
+	u8 i,lPatternIndex;
+    u16 lEventIndex = pEvent ;
     LEDPattern_t * lPattern = NULL;
-    
+
     lPatternIndex = NO_STATE_OR_EVENT;
-    LM_DEBUG(("LM IndicateEvent [%x]\n", lEventIndex)) ;   
-    
+    LOGD("LM IndicateEvent [%x]\n", lEventIndex);
+
     /* search for a matching event */
     for(i=0;i<theSink.theLEDTask->gEventPatternsAllocated;i++)
     {
         if((theSink.theLEDTask->pEventPatterns[i]).StateOrEvent == lEventIndex)
         {
             lPatternIndex = i;
-            lPattern      = &(theSink.theLEDTask->pEventPatterns[i]);            
+            lPattern      = &(theSink.theLEDTask->pEventPatterns[i]);
             break;
         }
     }
-        
+
     /*if there is an event configured*/
     if ( lPatternIndex != NO_STATE_OR_EVENT )
-    {    
+    {
         /*only indicate if LEDs are enabled*/
         if (ledManagerCanPlayPattern(lPattern))
         {
-    
-            LM_DEBUG(("LM : IE[%x]\n",pEvent )) ;
- 
+
+            LOGD("IE[%x]\n",pEvent );
+
             /*only update if wer are not currently indicating an event*/
             if ( ! theSink.theLEDTask->gCurrentlyIndicatingEvent )
             {
                 ledsIndicateLedsPattern(lPattern, lPatternIndex, IT_EventIndication);
-            }    
+            }
             else
             {
                 if (theSink.features.QueueLEDEvents )
                 {
-                    uint8 i;
+                    u8 i;
                     /*try and add it to the queue*/
-                    LM_DEBUG(("LM: Queue LED Event [%x]\n" , pEvent )) ;
-					
+                    LOGD("Queue LED Event [%x]\n" , pEvent );
+
                     for(i = 0; i < sizeof(LEDEventQueue_t); i++)
                     {
                         if(theSink.theLEDTask->Queue[i] == 0)
@@ -321,33 +320,33 @@ void LEDManagerIndicateEvent ( MessageId pEvent )
                             break;
                         }
                     }
-                    
+
 #ifdef DEBUG_LM
 					if(i == sizeof(LEDEventQueue_t))
                     {
-                        LM_DEBUG(("LM: Err Queue Full!!\n")) ;
+                        LOGD("Err Queue Full!!\n");
                     }
 #endif
-                }    
+                }
             }
         }
         else
         {
-            LM_DEBUG(("LM : No IE disabled\n")) ;
-        }  
+            LOGD("No IE disabled\n");
+        }
     }
     else
     {
-        LM_DEBUG(("LM: NoEvPatCfg %x\n",pEvent )) ;
+        LOGD("NoEvPatCfg %x\n",pEvent );
     }
-    
+
     /*indicate a filter if there is one present*/
     LedsCheckForFilter ( pEvent ) ;
-	
+
 }
 
 /****************************************************************************
-NAME	
+NAME
 	LEDManagerIndicateQueuedEvent
 
 DESCRIPTION
@@ -355,28 +354,28 @@ DESCRIPTION
 
 RETURNS
 	void
-    
+
 */
 void LedManagerIndicateQueuedEvent(void)
 {
-    uint8 i;
-    LM_DEBUG(("LM : Queue [%x]", theSink.theLEDTask->Queue[0]));
-    
+    u8 i;
+    LOGD("Queue [%x]", theSink.theLEDTask->Queue[0]);
+
     LEDManagerIndicateEvent(theSink.theLEDTask->Queue[0]) ;
-    
+
     /* Shuffle the queue */
     for(i = 1; i < sizeof(LEDEventQueue_t); i++)
     {
-        LM_DEBUG(("[%x]", theSink.theLEDTask->Queue[i]));
+        LOGD("[%x]", theSink.theLEDTask->Queue[i]);
         theSink.theLEDTask->Queue[i - 1] = theSink.theLEDTask->Queue[i];
     }
-    
-    LM_DEBUG(("\n"));
+
+    LOGD("\n");
     theSink.theLEDTask->Queue[sizeof(LEDEventQueue_t) - 1] = 0;
 }
 
 /****************************************************************************
-NAME	
+NAME
 	LEDManagerIndicateState
 
 DESCRIPTION
@@ -384,26 +383,26 @@ DESCRIPTION
 
 RETURNS
 	void
-    
+
 */
 
-void LEDManagerIndicateState ( sinkState pState )  
-{   
+void LEDManagerIndicateState ( sinkState pState )
+{
     /* Flags controlling which led indications are to be displayed are set to false by default */
-    bool displayLedIndication = FALSE; 
+    bool displayLedIndication = FALSE;
     bool displayLedIndicationCurrState = FALSE;
     bool displayLedIndicationLowBatt = FALSE;
-    
-    /* Local variables and led pattern pointers are required for ledsIndicateLedsPattern(...) function 
-    to display the Led pattern */      
-    uint8 i,lPatternIndex, lowBattPatternIndex; 
-    
+
+    /* Local variables and led pattern pointers are required for ledsIndicateLedsPattern(...) function
+    to display the Led pattern */
+    u8 i,lPatternIndex, lowBattPatternIndex;
+
     LEDPatternState_t * lPattern = NULL;
     LEDPatternState_t * lowBattPattern = NULL;
-    
+
     lPatternIndex = NO_STATE_OR_EVENT;
     lowBattPatternIndex = NO_STATE_OR_EVENT;
-	
+
     /* search for a matching state and low battery warning pattern */
 	for(i=0;i<theSink.theLEDTask->gStatePatternsAllocated;i++)
     {
@@ -417,11 +416,11 @@ void LEDManagerIndicateState ( sinkState pState )
         {
             /* update indicated low battery warning and associated led pattern */
              lowBattPatternIndex = i;
-             lowBattPattern = &theSink.theLEDTask->gStatePatterns[i];            
-        }        
-    }       
-        
-    /* Determine what the LED indication status should be and set the associated flags to be 
+             lowBattPattern = &theSink.theLEDTask->gStatePatterns[i];
+        }
+    }
+
+    /* Determine what the LED indication status should be and set the associated flags to be
     processed in the next step for a proper LED indication handling mechanism */
 
     if( powerManagerIsVbatLow() ) /* In low battery warning state */
@@ -432,17 +431,17 @@ void LEDManagerIndicateState ( sinkState pState )
                  displayLedIndication = FALSE;
              else
              {
-                 displayLedIndication = TRUE;    
-                 displayLedIndicationCurrState = TRUE;  
+                 displayLedIndication = TRUE;
+                 displayLedIndicationCurrState = TRUE;
                  displayLedIndicationLowBatt = FALSE;
              }
         }
         else   /* There is a low battery warning LED pattern defined */
         {
-             
-            displayLedIndication = TRUE;    
+
+            displayLedIndication = TRUE;
             displayLedIndicationLowBatt = TRUE;
-            displayLedIndicationCurrState = FALSE;            
+            displayLedIndicationCurrState = FALSE;
         }
     }
 
@@ -452,134 +451,134 @@ void LEDManagerIndicateState ( sinkState pState )
             displayLedIndication = FALSE;
         else
         {
-            displayLedIndication = TRUE; 
+            displayLedIndication = TRUE;
             displayLedIndicationCurrState = TRUE;
             displayLedIndicationLowBatt = FALSE;
         }
     }
-    
+
     /* Now process the flags previously set and display the associated LED pattern */
     if(displayLedIndication)
-    {           
+    {
         if(displayLedIndicationLowBatt) /* Associated Low Power Led Indication to be Displayed */
-        {            
+        {
             LEDPattern_t lowBattPatternSt;
             lowBattPatternSt.StateOrEvent = lowBattPattern->state;
             lowBattPatternSt.pattern = *lowBattPattern;
-            
+
             /*if there is a pattern associated with the Low Battery Warning Mode and not disabled, indicate it*/
             theSink.theLEDTask->gStateCanOverideDisable = lowBattPatternSt.pattern.OverideDisable;
-                          
+
             /* only indicate if LEDs are enabled*/
             if (ledManagerCanPlayPattern(&lowBattPatternSt))
             {
-                LM_DEBUG(("LM : Low Battery LED Indication Being Processed\n IS[%x]\n", pState)) ;
-    
+                LOGD("Low Battery LED Indication Being Processed\n IS[%x]\n", pState);
+
                 if (    ( theSink.theLEDTask->gActiveLEDS[lowBattPatternSt.pattern.LED_A].Type != IT_EventIndication  )
                      && ( theSink.theLEDTask->gActiveLEDS[lowBattPatternSt.pattern.LED_B].Type != IT_EventIndication  ) )
-                {   
+                {
                     /*Indicate the LED Pattern of Low Battery Warning Mode*/
-                    ledsIndicateLedsPattern(&lowBattPatternSt, lowBattPatternIndex, IT_StateIndication);        
+                    ledsIndicateLedsPattern(&lowBattPatternSt, lowBattPatternIndex, IT_StateIndication);
                 }
             }
-            
+
             else /* No Led Indication to be processed due to ledManagerCanPlayPattern(lowBattPattern) returning false */
-            {           
-                LM_DEBUG(("LM: NoStCfg[%x]\n",pState)) ;
-                LedsIndicateNoState ( ) ; 
+            {
+                LOGD("NoStCfg[%x]\n",pState);
+                LedsIndicateNoState ( ) ;
             }
         }
-        
+
         else if(displayLedIndicationCurrState) /* Not in Low Power Warning Mode, Associated State Led Indication to be Displayed */
         {
             LEDPattern_t lPatternSt;
             lPatternSt.StateOrEvent = lPattern->state;
             lPatternSt.pattern = *lPattern;
-            
+
             /*if there is a pattern associated with the state and not disabled, indicate it*/
             theSink.theLEDTask->gStateCanOverideDisable = lPatternSt.pattern.OverideDisable;
-                
+
             /* only indicate if LEDs are enabled*/
             if (ledManagerCanPlayPattern(&lPatternSt))
             {
-                LM_DEBUG(("LM : State LED Indication Being Processed\n IS[%x]\n", pState)) ;
-    
+                LOGD("State LED Indication Being Processed\n IS[%x]\n", pState);
+
                 if (    ( theSink.theLEDTask->gActiveLEDS[lPatternSt.pattern.LED_A].Type != IT_EventIndication  )
                      && ( theSink.theLEDTask->gActiveLEDS[lPatternSt.pattern.LED_B].Type != IT_EventIndication  ) )
-                {   
+                {
                    /*Indicate the LED Pattern of Event/State*/
-                   ledsIndicateLedsPattern(&lPatternSt, lPatternIndex, IT_StateIndication);        
+                   ledsIndicateLedsPattern(&lPatternSt, lPatternIndex, IT_StateIndication);
                 }
             }
-            
+
             else /* No Led Indication to be processed due to ledManagerCanPlayPattern(lPattern) returning false */
-            {           
-                LM_DEBUG(("LM: NoStCfg[%x]\n",pState)) ;
-                LedsIndicateNoState ( ) ; 
+            {
+                LOGD("NoStCfg[%x]\n",pState);
+                LedsIndicateNoState ( ) ;
             }
         }
     }
     else /* No Led Indication to be processed due to no associated pattern having been found to display */
     {
-        LM_DEBUG(("LM : DIS NoStCfg[%x]\n", pState)) ;
-        LedsIndicateNoState ( ) ; 
+        LOGD("DIS NoStCfg[%x]\n", pState);
+        LedsIndicateNoState ( ) ;
     }
 }
 
 /****************************************************************************
-NAME	
+NAME
 	LedManagerDisableLEDS
 
 DESCRIPTION
     Disable LED indications
 RETURNS
 	void
-    
+
 */
 void LedManagerDisableLEDS ( void )
 {
-    LM_DEBUG(("LM Disable LEDS\n")) ;
+    LOGD("LM Disable LEDS\n");
 
     /*turn off all current LED Indications if not overidden by state or filter */
     if (!theSink.theLEDTask->gStateCanOverideDisable && !LedActiveFiltersCanOverideDisable())
     {
         LedsIndicateNoState ( ) ;
-    }    
-    
+    }
+
     theSink.theLEDTask->gLEDSEnabled = FALSE ;
 }
 
 /****************************************************************************
-NAME	
+NAME
 	LedManagerEnableLEDS
 
 DESCRIPTION
     Enable LED indications
 RETURNS
 	void
-    
+
 */
 void LedManagerEnableLEDS ( void )
 {
-    LM_DEBUG(("LM Enable LEDS\n")) ;
-    
+    LOGD("LM Enable LEDS\n");
+
     theSink.theLEDTask->gLEDSEnabled = TRUE ;
-         
-    LEDManagerIndicateState ( stateManagerGetState() ) ;    
+
+    LEDManagerIndicateState ( stateManagerGetState() ) ;
 }
 
 
 /****************************************************************************
-NAME	
+NAME
 	LedManagerToggleLEDS
 
 DESCRIPTION
     Toggle Enable / Disable LED indications
 RETURNS
 	void
-    
+
 */
-void LedManagerToggleLEDS ( void ) 
+void LedManagerToggleLEDS ( void )
 {
     if ( theSink.theLEDTask->gLEDSEnabled )
     {
@@ -592,7 +591,7 @@ void LedManagerToggleLEDS ( void )
 }
 
 /****************************************************************************
-NAME	
+NAME
 	LedManagerResetLEDIndications
 
 DESCRIPTION
@@ -601,40 +600,40 @@ DESCRIPTION
     Used if you have a permanent LED event indication that you now want to interrupt
 RETURNS
 	void
-    
+
 */
 void LedManagerResetLEDIndications ( void )
-{    
+{
     LedsResetAllLeds ( ) ;
-    
+
     theSink.theLEDTask->gCurrentlyIndicatingEvent = FALSE ;
-    
+
     LEDManagerIndicateState (stateManagerGetState() ) ;
 }
 
 /****************************************************************************
-NAME	
+NAME
 	LEDManagerResetStateIndNumRepeatsComplete
 
 DESCRIPTION
     Resets the LED Number of Repeats complete for the current state indication
-       This allows the time of the led indication to be reset every time an event 
+       This allows the time of the led indication to be reset every time an event
        occurs.
 RETURNS
 	void
-    
+
 */
-void LEDManagerResetStateIndNumRepeatsComplete  ( void ) 
+void LEDManagerResetStateIndNumRepeatsComplete  ( void )
 {
-    uint8 i,lPatternIndex;   
+    u8 i,lPatternIndex;
     LEDPatternState_t * lPattern = NULL;
-    
+
     /*get state*/
     sinkState lState = stateManagerGetState() ;
-    
-    /*get pattern*/   
+
+    /*get pattern*/
     lPatternIndex = NO_STATE_OR_EVENT;
-        
+
     /* search for a matching state */
     for(i=0;i<theSink.theLEDTask->gStatePatternsAllocated;i++)
     {
@@ -645,8 +644,8 @@ void LEDManagerResetStateIndNumRepeatsComplete  ( void )
             lPatternIndex = i;
             break;
         }
-    }       
-       
+    }
+
     /* does pattern exist for this state */
     if (lPattern)
     {
@@ -655,27 +654,27 @@ void LEDManagerResetStateIndNumRepeatsComplete  ( void )
         {
             /*reset num repeats complete to 0*/
             lLED->NumRepeatsComplete = 0 ;
-        }    
+        }
     }
 }
 
 /****************************************************************************
-NAME	
+NAME
 	LEDManagerCheckTimeoutState
 
 DESCRIPTION
     checks the led timeout state and resets it if required, this function is called from
     an event or volume button press to re-enable led indications as and when required
-    to do so 
+    to do so
 RETURNS
 	void
-    
+
 */
 void LEDManagerCheckTimeoutState( void )
 {
     /*handles the LED event timeouts - restarts state indications if we have had a user generated event only*/
     if (theSink.theLEDTask->gLEDSStateTimeout)
-    {   
+    {
         /* send message that can be used to show an led pattern when led's are re-enabled following a timeout */
         MessageSend( &theSink.task, EventSysResetLEDTimeout, 0);
     }
@@ -689,7 +688,7 @@ void LEDManagerCheckTimeoutState( void )
 
 
 /****************************************************************************
-NAME	
+NAME
 	LedManagerForceDisable
 
 DESCRIPTION
@@ -715,7 +714,7 @@ void LedManagerForceDisable( bool disable )
         {
             /* Resume LED indications */
             theSink.theLEDTask->gLEDSSuspend = FALSE;
-            LEDManagerIndicateState(stateManagerGetState());  
+            LEDManagerIndicateState(stateManagerGetState());
             LedsEnableFilterOverrides(TRUE);
         }
     }

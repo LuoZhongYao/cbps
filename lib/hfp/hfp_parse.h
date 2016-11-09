@@ -12,48 +12,48 @@
 #include <source.h>
 #endif
 
-const uint8 *parseData(const uint8 *s, const uint8 *e, Task task);
-void handleUnrecognised(const uint8 *data, uint16 length, Task task);
+const u8 *parseData(const u8 *s, const u8 *e, Task task);
+void handleUnrecognised(const u8 *data, u16 length, Task task);
 
 #ifdef __XAP__
-uint16 parseSource(Source rfcDataIncoming, Task task);
+u16 parseSource(Source rfcDataIncoming, Task task);
 #endif
 
 struct sequence
 {
-  const uint8 *data;
-  uint16 length;
+  const u8 *data;
+  u16 length;
 };
 
 struct value_hfpCsrFeaturesHandleModifyIndicatorsInd_p
 {
-  uint16 ind;
-  uint16 val;
+  u16 ind;
+  u16 val;
 };
 struct region_hfpCsrFeaturesHandleModifyIndicatorsInd_p
 {
-  uint16 count;
-  const uint8 *s;
-  const uint8 *e;
-  uint16 next;
-  const uint8 *next_s;
+  u16 count;
+  const u8 *s;
+  const u8 *e;
+  u16 next;
+  const u8 *next_s;
 };
-struct value_hfpCsrFeaturesHandleModifyIndicatorsInd_p get_hfpCsrFeaturesHandleModifyIndicatorsInd_p(const struct region_hfpCsrFeaturesHandleModifyIndicatorsInd_p*, uint16);
+struct value_hfpCsrFeaturesHandleModifyIndicatorsInd_p get_hfpCsrFeaturesHandleModifyIndicatorsInd_p(const struct region_hfpCsrFeaturesHandleModifyIndicatorsInd_p*, u16);
 
 struct value_hfpHandleCallHoldInfoRange_p
 {
-  uint16 lower;
-  uint16 upper;
+  u16 lower;
+  u16 upper;
 };
 struct region_hfpHandleCallHoldInfoRange_p
 {
-  uint16 count;
-  const uint8 *s;
-  const uint8 *e;
-  uint16 next;
-  const uint8 *next_s;
+  u16 count;
+  const u8 *s;
+  const u8 *e;
+  u16 next;
+  const u8 *next_s;
 };
-struct value_hfpHandleCallHoldInfoRange_p get_hfpHandleCallHoldInfoRange_p(const struct region_hfpHandleCallHoldInfoRange_p*, uint16);
+struct value_hfpHandleCallHoldInfoRange_p get_hfpHandleCallHoldInfoRange_p(const struct region_hfpHandleCallHoldInfoRange_p*, u16);
 
 struct value_hfpHandleCallHoldInfo_p
 {
@@ -61,51 +61,51 @@ struct value_hfpHandleCallHoldInfo_p
 };
 struct region_hfpHandleCallHoldInfo_p
 {
-  uint16 count;
-  const uint8 *s;
-  const uint8 *e;
-  uint16 next;
-  const uint8 *next_s;
+  u16 count;
+  const u8 *s;
+  const u8 *e;
+  u16 next;
+  const u8 *next_s;
 };
-struct value_hfpHandleCallHoldInfo_p get_hfpHandleCallHoldInfo_p(const struct region_hfpHandleCallHoldInfo_p*, uint16);
+struct value_hfpHandleCallHoldInfo_p get_hfpHandleCallHoldInfo_p(const struct region_hfpHandleCallHoldInfo_p*, u16);
 
 struct value_hfpHandleIndicatorStatus_d
 {
-  uint16 n;
+  u16 n;
 };
 struct region_hfpHandleIndicatorStatus_d
 {
-  uint16 count;
-  const uint8 *s;
-  const uint8 *e;
-  uint16 next;
-  const uint8 *next_s;
+  u16 count;
+  const u8 *s;
+  const u8 *e;
+  u16 next;
+  const u8 *next_s;
 };
-struct value_hfpHandleIndicatorStatus_d get_hfpHandleIndicatorStatus_d(const struct region_hfpHandleIndicatorStatus_d*, uint16);
+struct value_hfpHandleIndicatorStatus_d get_hfpHandleIndicatorStatus_d(const struct region_hfpHandleIndicatorStatus_d*, u16);
 
 struct hfpHandleCurrentCallsWithNumber
 {
-  uint16 dir;
-  uint16 idx;
+  u16 dir;
+  u16 idx;
   struct sequence ignore;
-  uint16 mode;
-  uint16 mprty;
+  u16 mode;
+  u16 mprty;
   struct sequence number;
-  uint16 status;
-  uint16 type;
+  u16 status;
+  u16 type;
 };
 struct hfpHandleCurrentCalls
 {
-  uint16 dir;
-  uint16 idx;
+  u16 dir;
+  u16 idx;
   struct sequence ignore;
-  uint16 mode;
-  uint16 mprty;
-  uint16 status;
+  u16 mode;
+  u16 mprty;
+  u16 status;
 };
 struct hfpHandleResponseWbsCodec
 {
-  uint16 codec;
+  u16 codec;
 };
 struct hfpCsrFeaturesHandleModifyIndicatorsInd
 {
@@ -113,11 +113,11 @@ struct hfpCsrFeaturesHandleModifyIndicatorsInd
 };
 struct hfpHandleMicrophoneGain
 {
-  uint16 gain;
+  u16 gain;
 };
 struct hfpHandleSpeakerGain
 {
-  uint16 gain;
+  u16 gain;
 };
 struct hfpHandleDataResponse
 {
@@ -130,33 +130,33 @@ struct hfpHandleDataResponseExtended
 };
 struct hfpHandleSupportedFeaturesInd
 {
-  uint16 supportedfeat;
+  u16 supportedfeat;
 };
 struct hfpHandleInBandRingTone
 {
-  uint16 enable;
+  u16 enable;
 };
 struct hfpHandleResponseHold
 {
-  uint16 state;
+  u16 state;
 };
 struct hfpHandleVoiceRecognitionStatus
 {
-  uint16 enable;
+  u16 enable;
 };
 struct hfpHandleCallWaitingNotificationWithName
 {
-  uint16 class;
+  u16 class;
   struct sequence ignore;
   struct sequence name;
   struct sequence num;
-  uint16 type;
+  u16 type;
 };
 struct hfpHandleCallWaitingNotification
 {
   struct sequence ignore;
   struct sequence num;
-  uint16 type;
+  u16 type;
 };
 struct hfpHandleCallWaitingNotificationIllegal
 {
@@ -173,8 +173,8 @@ struct hfpHandleCallHoldInfo
 };
 struct hfpHandleIndicatorStatusUpdate
 {
-  uint16 index;
-  uint16 value;
+  u16 index;
+  u16 value;
 };
 struct hfpHandleIndicatorStatus
 {
@@ -191,13 +191,13 @@ struct hfpHandleCallerIdWithName
   struct sequence num;
   struct sequence saddr;
   struct sequence satype;
-  uint16 type;
+  u16 type;
 };
 struct hfpHandleCallerId
 {
   struct sequence ignore;
   struct sequence num;
-  uint16 type;
+  u16 type;
 };
 struct hfpHandleCallerIdIllegal
 {
@@ -208,20 +208,20 @@ struct hfpHandleSubscriberNumber
 {
   struct sequence alpha;
   struct sequence number;
-  uint16 service;
+  u16 service;
   struct sequence speed;
-  uint16 type;
+  u16 type;
 };
 struct hfpHandleNetworkOperatorModeName
 {
-  uint16 format;
-  uint16 mode;
+  u16 format;
+  u16 mode;
   struct sequence operator;
 };
 struct hfpHandleNetworkOperatorMode
 {
   struct sequence ignore;
-  uint16 mode;
+  u16 mode;
 };
 struct hfpHandleNull
 {
@@ -229,40 +229,40 @@ struct hfpHandleNull
 };
 struct hfpCsrFeaturesHandleBandwidthCodecRes
 {
-  uint16 battlevel;
-  uint16 callername;
-  uint16 codecbandwidths;
-  uint16 codecs;
+  u16 battlevel;
+  u16 callername;
+  u16 codecbandwidths;
+  u16 codecs;
   struct sequence ignore;
-  uint16 pwrsource;
-  uint16 rawtext;
-  uint16 sms;
+  u16 pwrsource;
+  u16 rawtext;
+  u16 sms;
 };
 struct hfpCsrFeaturesHandleCodecRes
 {
-  uint16 battlevel;
-  uint16 callername;
-  uint16 codecs;
+  u16 battlevel;
+  u16 callername;
+  u16 codecs;
   struct sequence ignore;
-  uint16 pwrsource;
-  uint16 rawtext;
-  uint16 sms;
+  u16 pwrsource;
+  u16 rawtext;
+  u16 sms;
 };
 struct hfpCsrFeaturesHandleNormalRes
 {
-  uint16 battlevel;
-  uint16 callername;
+  u16 battlevel;
+  u16 callername;
   struct sequence ignore;
-  uint16 pwrsource;
-  uint16 rawtext;
-  uint16 sms;
+  u16 pwrsource;
+  u16 rawtext;
+  u16 sms;
 };
 struct hfpCsrFeaturesHandleSmsInd
 {
   struct sequence ignore;
   struct sequence senderName;
   struct sequence senderNum;
-  uint16 smsIndex;
+  u16 smsIndex;
 };
 struct hfpCsrFeaturesHandleTextInd
 {
@@ -270,7 +270,7 @@ struct hfpCsrFeaturesHandleTextInd
 };
 struct hfpHandleExtendedError
 {
-  uint16 err;
+  u16 err;
 };
 struct hfpCsrFeaturesHandleGetSmsRes
 {

@@ -26,7 +26,7 @@ NOTES
 
 
 /*****************************************************************************/
-void ConnectionSmEncrypt(Task theAppTask, Sink sink, uint16 encrypt)
+void ConnectionSmEncrypt(Task theAppTask, Sink sink, u16 encrypt)
 {
 #ifdef CONNECTION_DEBUG_LIB
     if ((encrypt != TRUE) && (encrypt != FALSE))

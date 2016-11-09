@@ -33,20 +33,20 @@ DESCRIPTION
 /*******************************************************************************
 NAME
     gattServiceInitialised
-    
+
 DESCRIPTION
     Called when the GATT service is initialised.
-    
+
 PARAMETERS
     gbasc    The GATT client instance pointer
-    
+
 */
 static void gattServiceInitialised(const GGATTC *gattc)
 {
-    uint16 index = 0;
+    u16 index = 0;
     gatt_client_services_t *data = NULL;
     gatt_client_connection_t *client = NULL;
-    
+
     for (index = 0; index < GATT_CLIENT.number_connections; index++)
     {
         client = &GATT_CLIENT.connection[index];
@@ -56,26 +56,26 @@ static void gattServiceInitialised(const GGATTC *gattc)
             /* GATT service has been discovered, now check for security requirements */
             gattClientProcessSecurityRequirements(client, data);
         }
-    }   
+    }
 }
 
 
 /*******************************************************************************
 NAME
     sinkGattClientInitCfm
-    
+
 DESCRIPTION
     Handle the GATT_CLIENT_INIT_CFM message.
-    
+
 PARAMETERS
     cfm    The GATT_CLIENT_INIT_CFM message
-    
+
 */
 static void sinkGattClientInitCfm(const GATT_CLIENT_INIT_CFM_T *cfm)
 {
     GATT_SERVICE_CLIENT_INFO(("GATT_CLIENT_INIT_CFM status[%u]\n",
                                        cfm->status));
-    
+
     /* The service initialisation is complete */
     gattServiceInitialised(cfm->gatt_client);
 }
@@ -84,13 +84,13 @@ static void sinkGattClientInitCfm(const GATT_CLIENT_INIT_CFM_T *cfm)
 /*******************************************************************************
 NAME
     sinkGattClientServiceChangedInd
-    
+
 DESCRIPTION
     Handle the GATT_CLIENT_SERVICE_CHANGED_IND message.
-    
+
 PARAMETERS
     ind    The GATT_CLIENT_SERVICE_CHANGED_IND message
-    
+
 */
 static void sinkGattClientServiceChangedInd(const GATT_CLIENT_SERVICE_CHANGED_IND_T *ind)
 {
@@ -98,42 +98,42 @@ static void sinkGattClientServiceChangedInd(const GATT_CLIENT_SERVICE_CHANGED_IN
                                        ind->cid,
                                        ind->start_handle,
                                        ind->end_handle));
-    
+
     gattClientServiceChanged(ind->cid);
 }
 
 
 /****************************************************************************/
-bool sinkGattClientServiceAdd(uint16 cid, uint16 start, uint16 end)
+bool sinkGattClientServiceAdd(u16 cid, u16 start, u16 end)
 {
     GGATTC *gattc = NULL;
     gatt_client_init_params_t init_params;
     gatt_client_services_t *client_services = NULL;
     gatt_client_connection_t *connection = gattClientFindByCid(cid);
-    uint16 *service = gattClientAddService(connection, sizeof(GGATTC));
-    
+    u16 *service = gattClientAddService(connection, sizeof(GGATTC));
+
     if (service)
     {
         client_services = gattClientGetServiceData(connection);
         client_services->gattc = (GGATTC *)service;
         gattc = client_services->gattc;
-        
+
         init_params.cid = cid;
         init_params.start_handle = start;
         init_params.end_handle = end;
-        
+
         if (GattClientInit(sinkGetBleTask(), gattc, &init_params, NULL) == gatt_client_status_success)
-        {            
+        {
             return TRUE;
         }
     }
-    
+
     return FALSE;
 }
 
 
 /****************************************************************************/
-void sinkGattClientServiceRemove(GGATTC *ggattc, uint16 cid)
+void sinkGattClientServiceRemove(GGATTC *ggattc, u16 cid)
 {
     GattClientDestroy(ggattc, cid);
 }

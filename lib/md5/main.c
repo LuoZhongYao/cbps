@@ -31,7 +31,7 @@ static void print_digest(unsigned char digest[16])
 static void time_trial(void)
 {
     MD5_CTX context;
-    uint32 endTime, startTime;
+    u32 endTime, startTime;
     unsigned char block[TEST_BLOCK_LEN], digest[16];
     unsigned int i;
 
@@ -102,7 +102,7 @@ const static struct
 
 static void test_suite(void)
 {
-    uint16 i;
+    u16 i;
     printf("MD5 test suite:\n");
     for(i = 0; i < sizeof(test_cases)/sizeof(*test_cases); ++i)
         verify(test_cases[i].input, test_cases[i].output);

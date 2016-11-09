@@ -13,8 +13,8 @@
 #define HANDLE_DEVICE_NAME              (0x0003)
 #define HANDLE_DEVICE_APPEARANCE        (0x0005)
 
-uint16 *GattGetDatabase(uint16 *len);
-uint16 GattGetDatabaseSize(void);
+u16 *GattGetDatabase(u16 *len);
+u16 GattGetDatabaseSize(void);
 
 #endif
 

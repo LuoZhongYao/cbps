@@ -500,9 +500,9 @@ RETURNS
 */
 void aghfpHandleSyncConnectInd(AGHFP *aghfp, const CL_DM_SYNC_CONNECT_IND_T *ind)
 {
-    uint16 i=0;
-    uint16 my_audio = 0;
-    uint16 num_sinks = 5;
+    u16 i=0;
+    u16 my_audio = 0;
+    u16 num_sinks = 5;
     tp_bdaddr tp_addr = { {TYPED_BDADDR_PUBLIC, { 0, 0, 0 }}, TRANSPORT_BREDR_ACL};
 
     /* Sink array to store the sinks on the acl. */

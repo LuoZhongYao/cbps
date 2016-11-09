@@ -52,18 +52,18 @@ DESCRIPTION
     mono audio received from the remote device and sent to USB) */
 #define USB_AUDIO_STEREO_SPEAKER
 #ifdef USB_MIC_16K      /* Back channel is output at 16 kHz over USB */
-  #define USB_AUDIO_SAMPLE_RATE_MIC           (uint32)16000
+  #define USB_AUDIO_SAMPLE_RATE_MIC           (u32)16000
 #else
-  #define USB_AUDIO_SAMPLE_RATE_MIC           (uint32)48000
+  #define USB_AUDIO_SAMPLE_RATE_MIC           (u32)48000
 #endif
-#define USB_AUDIO_SAMPLE_RATE_SPEAKER       (uint32)48000
+#define USB_AUDIO_SAMPLE_RATE_SPEAKER       (u32)48000
 #define USB_AUDIO_CHANNELS_SPEAKER          2
 #define USB_AUDIO_CHANNEL_CONFIG_SPEAKER    3
 #else
 /* Lync build set to 16kHz USB audio (mono audio received from USB and sent to remote device, 
     mono audio received from the remote device and sent to USB) */
-#define USB_AUDIO_SAMPLE_RATE_MIC           (uint32)16000
-#define USB_AUDIO_SAMPLE_RATE_SPEAKER       (uint32)16000
+#define USB_AUDIO_SAMPLE_RATE_MIC           (u32)16000
+#define USB_AUDIO_SAMPLE_RATE_SPEAKER       (u32)16000
 #define USB_AUDIO_CHANNELS_SPEAKER          1
 #define USB_AUDIO_CHANNEL_CONFIG_SPEAKER    1
 #endif
@@ -438,7 +438,7 @@ DESCRIPTION
     Send number to dial to the Host
     
 */
-bool usb_send_device_command_dial_number(uint16 size_number, uint8 *number);
+bool usb_send_device_command_dial_number(u16 size_number, u8 *number);
 
 
 /****************************************************************************
@@ -449,7 +449,7 @@ DESCRIPTION
     Send memory location to dial to the Host
     
 */
-bool usb_send_device_command_dial_memory(uint16 size_number, uint8 *number);
+bool usb_send_device_command_dial_memory(u16 size_number, u8 *number);
 
 
 /****************************************************************************
@@ -502,7 +502,7 @@ NAME
 DESCRIPTION
     Gets the configured USB sample rate for the speaker.
 */    
-uint32 usb_get_speaker_sample_rate(void);
+u32 usb_get_speaker_sample_rate(void);
 
 
 #endif /* _SOURCE_USB_H_ */

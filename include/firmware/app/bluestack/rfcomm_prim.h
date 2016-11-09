@@ -301,7 +301,7 @@ typedef struct
     RFC_PRIM_T type;              /*!< Always RFC_REGISTER_REQ */
     phandle_t  phandle;           /*!< Protocol handle for callback */   
     uint8_t    flags;             /*!< Not currently used */
-    uint16_t   context;           /*!< User specified context */
+    Task       context;           /*!< User specified context */
     uint8_t    loc_serv_chan_req; /*!< Serv. chan num the app would like to register */
 
 } RFC_REGISTER_REQ_T;
@@ -321,7 +321,7 @@ typedef struct
     phandle_t     phandle;          /*!< Protocol handle */
     uint8_t       loc_serv_chan;    /*!< Local server channel */
     bool_t        accept;           /*!< Accept flag */
-    uint16_t      context;          /*!< Echoed back from REQ */
+    Task          context;          /*!< Echoed back from REQ */
 
 } RFC_REGISTER_CFM_T;
 
@@ -351,7 +351,7 @@ typedef struct
     phandle_t        phandle;         /*!< Protocol handle */
     uint8_t          loc_serv_chan;   /*!< The local server channel unregistered */
     RFC_RESPONSE_T   status;          /*!< Status of the request */
-    uint16_t         context;         /*!< Previously stored for this channel */
+    Task             context;         /*!< Previously stored for this channel */
 
 } RFC_UNREGISTER_CFM_T;
 
@@ -469,7 +469,7 @@ typedef struct
 
     */ 
     uint8_t           flags;                
-    uint16_t          context;              /*!< Host specified context */
+    Task              context;              /*!< Host specified context */
 
     /* Requested connection parameters.
     */ 
@@ -508,7 +508,7 @@ typedef struct
     uint8_t            loc_serv_chan;       /*!< The local server channel to which a client connection has been requested */
     uint8_t            flags;               /*!< Currently unused, must be 0 */
     uint16_t           conn_id;             /*!< Allocated connection id */
-    uint16_t           context;             /*!< Previously registered for this channel */
+    Task               context;             /*!< Previously registered for this channel */
     l2ca_controller_t  local_l2cap_control; /*!< Local L2CAP controller ID (AMP) */
 
 } RFC_SERVER_CONNECT_IND_T;
@@ -571,7 +571,7 @@ typedef struct
     uint8_t           flags;                /*!< Additional options that were set. */
     uint16_t          conn_id;              /*!< Connection identifier. Unique whether the connection is a stream or not. */
     RFC_RESPONSE_T    status;               /*!< Success or failure */
-    uint16_t          context;              /*!< Previously stored for this channel */
+    Task              context;              /*!< Previously stored for this channel */
     uint16_t          max_payload_size;     /*!< Maximum over the air RFCOMM data size */
     l2ca_controller_t remote_l2cap_control; /*!< Remote L2CAP controller ID */
     l2ca_controller_t local_l2cap_control;  /*!< Local L2CAP controller ID */

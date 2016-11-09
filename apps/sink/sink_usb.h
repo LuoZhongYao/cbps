@@ -67,14 +67,14 @@ typedef struct
     unsigned            out_mute:1;             /* Speaker mute flag */
     unsigned            unused:4;
     
-    int16               out_l_vol;              /* Speaker l volume from USB host */
+    i16               out_l_vol;              /* Speaker l volume from USB host */
 } usb_info;
 
 #if defined(ENABLE_USB_AUDIO)
 
 typedef struct
 {
-    uint32                               sample_rate;
+    u32                               sample_rate;
     const usb_device_class_audio_config* usb_descriptors;
     usb_plugin_type                      plugin_type;
 } usb_plugin_info;
@@ -114,7 +114,7 @@ RETURNS
     void
 */ 
 #ifdef ENABLE_USB
-void usbSetBootMode(uint8 bootmode);
+void usbSetBootMode(u8 bootmode);
 #else
 #define usbSetBootMode(x) ((void)(0))
 #endif

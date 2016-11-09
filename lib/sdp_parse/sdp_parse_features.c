@@ -18,7 +18,7 @@ DESCRIPTION
 
 /* Find Supported Features */
 
-static bool findSupportedFeatures(const uint8 length, const uint8* begin, Region* value)
+static bool findSupportedFeatures(const u8 length, const u8* begin, Region* value)
 {
 	ServiceDataType type;
 	Region record;
@@ -39,12 +39,12 @@ static bool findSupportedFeatures(const uint8 length, const uint8* begin, Region
 
 /* Access Supported Features */
 
-bool SdpParseGetSupportedFeatures(const uint8 size_service_record, const uint8* service_record, uint16* features)
+bool SdpParseGetSupportedFeatures(const u8 size_service_record, const u8* service_record, u16* features)
 {
 	Region value;
     if(findSupportedFeatures(size_service_record, service_record, &value))
     {
-		*features = (uint16) RegionReadUnsigned(&value);
+		*features = (u16) RegionReadUnsigned(&value);
 		/* Accessed Successfully */
 		return TRUE;
     }
@@ -54,13 +54,13 @@ bool SdpParseGetSupportedFeatures(const uint8 size_service_record, const uint8* 
 
 /* Insert Supported Features */
 
-bool SdpParseInsertSupportedFeatures(const uint8 size_service_record, const uint8* service_record, uint16 features)
+bool SdpParseInsertSupportedFeatures(const u8 size_service_record, const u8* service_record, u16 features)
 {
 	Region value;
 
 	if (findSupportedFeatures(size_service_record, service_record, &value) && RegionSize(&value) == 2)
 	{
-		RegionWriteUnsigned(&value, (uint32) features);
+		RegionWriteUnsigned(&value, (u32) features);
 		/* Inserted Successfully */
 		return TRUE;
 	}

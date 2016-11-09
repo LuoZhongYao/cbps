@@ -30,12 +30,12 @@ NOTES
 
 
 /******************************************************************************/
-bool GattServerSendServiceChangedIndication(GGATTS *gatt_server, uint16 cid)
+bool GattServerSendServiceChangedIndication(GGATTS *gatt_server, u16 cid)
 {
     if (gatt_server)
     {
         /* Service changed, set the "changed range" to the full database */
-        uint8 value[4] = {0x00, 0x00, 0xFF, 0xFF};
+        u8 value[4] = {0x00, 0x00, 0xFF, 0xFF};
         GattManagerRemoteClientIndicate(&gatt_server->lib_task, cid, HANDLE_GATT_SERVICE_CHANGED, 4, value);
         return TRUE;
     }

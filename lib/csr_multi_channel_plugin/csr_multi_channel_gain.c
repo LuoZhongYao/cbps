@@ -21,16 +21,16 @@ DESCRIPTION
 #include <stdlib.h>
 #include <codec.h>
 
-static uint16 system_gain_from_master(int16 master)
+static u16 system_gain_from_master(i16 master)
 {
     /* Convert dB master volume to DAC based system volume */
-    int16 system = (CODEC_STEPS + (master / DB_TO_DAC));
+    i16 system = (CODEC_STEPS + (master / DB_TO_DAC));
     
     /* DAC gain only goes down to -45dB, DSP volume control goes to -60dB */
     if(system < 0)
         system = 0;
     
-    return (uint16)system;
+    return (u16)system;
 }
 
 static i2s_out_t get_i2s_chan(multi_channel_out_t mch_out)
@@ -58,7 +58,7 @@ static i2s_out_t get_i2s_chan(multi_channel_out_t mch_out)
     return i2s_out_1_left;
 }
 
-static int16 get_trim(multi_channel_out_t mch_out, bool skip_i2s_trim)
+static i16 get_trim(multi_channel_out_t mch_out, bool skip_i2s_trim)
 {
     audio_output_hardware_type_t type = config->mapping[mch_out].endpoint.type;
     
@@ -107,7 +107,7 @@ static void overrideDigitalVolumeWithMute(const multi_channel_group_t group,
 }
 
 void CsrMultiChanGainGetDigital(const multi_channel_group_t group, 
-                                const int16 master_gain, const int16 tone_gain,
+                                const i16 master_gain, const i16 tone_gain,
                                 multi_channel_gain_t* gain_info)
 {
     hybrid_gains_t hybrid;
@@ -170,7 +170,7 @@ void CsrMultiChanGainGetDigital(const multi_channel_group_t group,
 }
 
 void CsrMultiChanGainGetDigitalOnly(const multi_channel_group_t group, 
-                                    const int16 master_gain, const int16 tone_gain,
+                                    const i16 master_gain, const i16 tone_gain,
                                     multi_channel_gain_t* gain_info)
 {
     PRINT(("CsrMultiChanGainGetDigitalOnly  "));
@@ -196,7 +196,7 @@ void CsrMultiChanGainGetDigitalOnly(const multi_channel_group_t group,
     get_all_trims(group, FALSE, gain_info);
 }
 
-static void set_hardware_gain(multi_channel_out_t mch_out, int16 hardware_gain, int16 trim)
+static void set_hardware_gain(multi_channel_out_t mch_out, i16 hardware_gain, i16 trim)
 {
 #ifdef ANC
 
@@ -218,7 +218,7 @@ static void set_hardware_gain(multi_channel_out_t mch_out, int16 hardware_gain, 
         {
             Sink sink = csrMultiChanGetSink(mch_out);
             /* Calculate system value corresponding to the hardware gain */
-            uint16 system_gain = system_gain_from_master(hardware_gain);
+            u16 system_gain = system_gain_from_master(hardware_gain);
             PanicFalse(SinkConfigure(sink, STREAM_CODEC_OUTPUT_GAIN, system_gain));
         }
         break;
@@ -244,7 +244,7 @@ static void set_hardware_gain(multi_channel_out_t mch_out, int16 hardware_gain, 
 #define get_trim_if_enabled(inc_i2s_trim, gain_info, group, chan) (inc_i2s_trim ? get_trim(gain_info, group, chan) : 0)
 
 static void set_all_hardware_gains(const multi_channel_group_t group,
-                                   const int16 hardware_gain, 
+                                   const i16 hardware_gain, 
                                    const bool inc_i2s_trim,
                                    const multi_channel_gain_t* gain_info)
 {
@@ -267,10 +267,10 @@ static void set_all_hardware_gains(const multi_channel_group_t group,
 }
 
 void CsrMultiChanGainSetHardware(const multi_channel_group_t group,
-                                 const int16 master_gain,
+                                 const i16 master_gain,
                                  const multi_channel_gain_t* gain_info)
 {
-    int16 hardware_gain;
+    i16 hardware_gain;
     hybrid_gains_t hybrid;
     bool inc_i2s_trim = FALSE;
     
@@ -316,7 +316,7 @@ void CsrMultiChanGainSetHardware(const multi_channel_group_t group,
 }
 
 void CsrMultiChanGainSetHardwareOnly(const multi_channel_group_t group,
-                                     const int16 master_gain)
+                                     const i16 master_gain)
 {
     /* When not muting I2S trims should be adjusted to include the channel trim */
     bool inc_i2s_trim = (master_gain != DIGITAL_VOLUME_MUTE);

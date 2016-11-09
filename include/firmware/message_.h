@@ -12,11 +12,11 @@
 /*!
 Message identifier type.
 */
-typedef uint16 MessageId;
+typedef u16 MessageId;
 /*!
 Message delay type.
 */
-typedef uint32 Delay;
+typedef u32 Delay;
 /*!
 Message type.
 */

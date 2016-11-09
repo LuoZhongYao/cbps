@@ -47,9 +47,9 @@ gatt_hid_client_status hid_client_convert_status(gatt_status_t gatt_status)
 }
 
 /***************************************************************************/
-void hid_client_set_notifications_for_report_id(GHIDC_T *const hid_client, uint16 report_id, bool enable)
+void hid_client_set_notifications_for_report_id(GHIDC_T *const hid_client, u16 report_id, bool enable)
 {
-    uint16 count = 0;
+    u16 count = 0;
     /* Get Report handle form Report ID */
     for(count = 0;count < hid_client->num_report_id;count++)
     {
@@ -63,9 +63,9 @@ void hid_client_set_notifications_for_report_id(GHIDC_T *const hid_client, uint1
 }
 
 /***************************************************************************/
-bool hid_client_get_notifications_for_report_id(GHIDC_T *const hid_client, uint16 report_id)
+bool hid_client_get_notifications_for_report_id(GHIDC_T *const hid_client, u16 report_id)
 {
-    uint16 count = 0;
+    u16 count = 0;
     /* Get Report handle form Report ID */
     for(count = 0;count < hid_client->num_report_id;count++)
     {
@@ -80,12 +80,12 @@ bool hid_client_get_notifications_for_report_id(GHIDC_T *const hid_client, uint1
 
 /***************************************************************************/
 bool  hid_client_get_report_handle_and_type_from_id(GHIDC_T *const hid_client,
-          uint16 report_id,
-          uint16 *report_handle,
-          uint16 *type)
+          u16 report_id,
+          u16 *report_handle,
+          u16 *type)
 {
         gatt_hid_client_report_id_map_t *report_id_map = NULL;
-        uint16 count = 0;
+        u16 count = 0;
         /* Reset return param*/
         *report_handle = 0;
         *type = 0;
@@ -107,10 +107,10 @@ bool  hid_client_get_report_handle_and_type_from_id(GHIDC_T *const hid_client,
 
 /***************************************************************************/
 bool hid_client_get_report_id_from_handle(GHIDC_T *const hid_client,
-     uint16 report_handle,
-     uint16 *report_id)
+     u16 report_handle,
+     u16 *report_id)
 {
-    uint16 count = 0;
+    u16 count = 0;
     gatt_hid_client_report_id_map_t *report_id_map = NULL;
     /* Reset return param*/
     *report_id = 0;
@@ -132,10 +132,10 @@ bool hid_client_get_report_id_from_handle(GHIDC_T *const hid_client,
 
 /***************************************************************************/
 bool hid_client_validate_notifitcaion_handle(GHIDC_T *const hid_client,
-     uint16 handle,
-     uint16 *report_id)
+     u16 handle,
+     u16 *report_id)
 {
-    uint16 count = 0;
+    u16 count = 0;
     gatt_hid_client_report_id_map_t *report_id_map = NULL;
     /* Reset return param*/
     *report_id = 0;

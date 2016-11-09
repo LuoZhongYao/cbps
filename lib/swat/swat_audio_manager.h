@@ -107,6 +107,6 @@ DESCRIPTION
     Function to handle when a low latency SWAT media channel has become
     unresponsive
 */
-void swatHandleUnresponsiveMediaLL(uint16 device_id);
+void swatHandleUnresponsiveMediaLL(u16 device_id);
 
 #endif /* _SWAT_AUDIO_MANAGER_H_ */

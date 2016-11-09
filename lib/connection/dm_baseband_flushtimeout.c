@@ -29,7 +29,7 @@ NOTES
 
 
 /*****************************************************************************/
-void ConnectionWriteFlushTimeout(Sink sink, uint16 flush_timeout)
+void ConnectionWriteFlushTimeout(Sink sink, u16 flush_timeout)
 {
 #ifdef CONNECTION_DEBUG_LIB    
     if (sink == 0)

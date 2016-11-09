@@ -79,7 +79,7 @@ static void handleAudioMessage(Task task, MessageId id, Message message)
                 message->features = connect_message->features;
                 message->params = connect_message->params;
                 
-                MessageSendConditionally(task, AUDIO_PLUGIN_CONNECT_MSG, message, (const uint16 *)AudioBusyPtr());
+                MessageSendConditionally(task, AUDIO_PLUGIN_CONNECT_MSG, message, (const u16 *)AudioBusyPtr());
             } 
             else
             {        /*connect the audio*/
@@ -99,7 +99,7 @@ static void handleAudioMessage(Task task, MessageId id, Message message)
             
             if (IsAudioBusy())
             {
-                MessageSendConditionally(task, AUDIO_PLUGIN_DISCONNECT_MSG,0 ,(const uint16 *)AudioBusyPtr());
+                MessageSendConditionally(task, AUDIO_PLUGIN_DISCONNECT_MSG,0 ,(const u16 *)AudioBusyPtr());
             }
             else
             {
@@ -118,7 +118,7 @@ static void handleAudioMessage(Task task, MessageId id, Message message)
                 message->mode = mode_message->mode;
                 message->params = mode_message->params;
         
-                MessageSendConditionally(task, AUDIO_PLUGIN_SET_MODE_MSG, message, (const uint16 *)AudioBusyPtr());        
+                MessageSendConditionally(task, AUDIO_PLUGIN_SET_MODE_MSG, message, (const u16 *)AudioBusyPtr());        
             }
             else
             {
@@ -136,7 +136,7 @@ static void handleAudioMessage(Task task, MessageId id, Message message)
                  MAKE_AUDIO_MESSAGE (AUDIO_PLUGIN_SET_VOLUME_MSG);
                  message->volume = volume_message->volume;
                  
-                 MessageSendConditionally(task, AUDIO_PLUGIN_SET_VOLUME_MSG, message, (const uint16 *)AudioBusyPtr() );  
+                 MessageSendConditionally(task, AUDIO_PLUGIN_SET_VOLUME_MSG, message, (const u16 *)AudioBusyPtr() );  
             }
             else
             {

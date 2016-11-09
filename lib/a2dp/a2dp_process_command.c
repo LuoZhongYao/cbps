@@ -34,12 +34,12 @@ NOTES
 #define SEP_INDEX_INVALID (0xFF)
 
 
-static const uint8 media_transport_caps[] = { AVDTP_SERVICE_MEDIA_TRANSPORT, 0x00 };
-static const uint8 content_protection_caps[] = { AVDTP_SERVICE_CONTENT_PROTECTION, 0x02, AVDTP_CP_TYPE_SCMS_LSB, AVDTP_CP_TYPE_SCMS_MSB };
-static const uint8 delay_reporting_caps[] = { AVDTP_SERVICE_DELAY_REPORTING, 0x00 };
+static const u8 media_transport_caps[] = { AVDTP_SERVICE_MEDIA_TRANSPORT, 0x00 };
+static const u8 content_protection_caps[] = { AVDTP_SERVICE_CONTENT_PROTECTION, 0x02, AVDTP_CP_TYPE_SCMS_LSB, AVDTP_CP_TYPE_SCMS_MSB };
+static const u8 delay_reporting_caps[] = { AVDTP_SERVICE_DELAY_REPORTING, 0x00 };
 
 
-static uint8 getLocalSeid (remote_device *device)
+static u8 getLocalSeid (remote_device *device)
 {
     sep_data_type *current_sep = (sep_data_type *)blockGetCurrent( device->device_id, data_block_sep_list );
     
@@ -51,10 +51,10 @@ static uint8 getLocalSeid (remote_device *device)
     return 0;
 }
 
-static uint8 getSepIndexBySeid (remote_device *device, uint16 seid)
+static u8 getSepIndexBySeid (remote_device *device, u16 seid)
 {
-    uint8 index;
-    uint8 max_index = blockGetSize( device->device_id, data_block_sep_list ) / sizeof( sep_data_type );
+    u8 index;
+    u8 max_index = blockGetSize( device->device_id, data_block_sep_list ) / sizeof( sep_data_type );
     sep_data_type *pSeps = (sep_data_type *)PanicNull( blockGetBase( device->device_id, data_block_sep_list ) );
 
     for ( index=0; index<max_index; index++ )
@@ -70,13 +70,13 @@ static uint8 getSepIndexBySeid (remote_device *device, uint16 seid)
     return SEP_INDEX_INVALID;
 }
 
-static void updateConfiguredServiceCaps (remote_device *device, uint8 local_sep_index, const uint8 *new_service_caps, uint16 new_service_caps_size)
+static void updateConfiguredServiceCaps (remote_device *device, u8 local_sep_index, const u8 *new_service_caps, u16 new_service_caps_size)
 {
-    const uint8 *media_codec_caps;
-    uint8 *configured_caps;
-    uint16 media_codec_caps_size;
-    uint16 service_caps_size;
-    uint16 configured_caps_size;
+    const u8 *media_codec_caps;
+    u8 *configured_caps;
+    u16 media_codec_caps_size;
+    u16 service_caps_size;
+    u16 configured_caps_size;
     bool content_protection_supported = FALSE;
     bool delay_reporting_supported = FALSE;
     
@@ -142,11 +142,11 @@ static void updateConfiguredServiceCaps (remote_device *device, uint8 local_sep_
     
     if (service_caps_size)
     {
-        uint8 *service_caps;
-        uint8 *write_ptr;
+        u8 *service_caps;
+        u8 *write_ptr;
         
         /* Allocate temporary storage area */    
-        write_ptr = service_caps = (uint8 *)PanicNull( malloc(service_caps_size) );
+        write_ptr = service_caps = (u8 *)PanicNull( malloc(service_caps_size) );
         
         /* Fill temporary storage area with most current information */
         memmove(write_ptr, media_transport_caps, sizeof(media_transport_caps));
@@ -172,7 +172,7 @@ static void updateConfiguredServiceCaps (remote_device *device, uint8 local_sep_
         
         /* Update configured service caps data block */
         blockRemove( device->device_id, data_block_configured_service_caps );
-        configured_caps = (uint8 *)PanicNull( blockAdd( device->device_id, data_block_configured_service_caps, service_caps_size, sizeof(uint8) ));
+        configured_caps = (u8 *)PanicNull( blockAdd( device->device_id, data_block_configured_service_caps, service_caps_size, sizeof(u8) ));
         memmove(configured_caps, service_caps, service_caps_size);
         
         /* Release the temporary storage area */
@@ -181,13 +181,13 @@ static void updateConfiguredServiceCaps (remote_device *device, uint8 local_sep_
 }
 
 
-static uint16 getFilteredServiceCaps (uint8 *filtered_caps, uint8 filter, const uint8 *full_caps, uint16 size_full_caps)
+static u16 getFilteredServiceCaps (u8 *filtered_caps, u8 filter, const u8 *full_caps, u16 size_full_caps)
 {
-    uint16 size_filtered_caps = 0;
+    u16 size_filtered_caps = 0;
     
     while (size_full_caps)
     {
-        uint16 size = full_caps[1] + 2;
+        u16 size = full_caps[1] + 2;
         
         if (filter!=full_caps[0])
         {   /* Copy this service category as it is not being filtered out */
@@ -217,9 +217,9 @@ DESCRIPTION
 RETURNS
     TRUE if SEP could be found, FALSE otherwise
 */
-bool a2dpSetSepAvailable (remote_device *device, uint8 seid, bool available)
+bool a2dpSetSepAvailable (remote_device *device, u8 seid, bool available)
 {
-    uint8 sep_index = getSepIndexBySeid(device, seid);
+    u8 sep_index = getSepIndexBySeid(device, seid);
 
     if (sep_index != SEP_INDEX_INVALID)
     {
@@ -251,9 +251,9 @@ DESCRIPTION
 RETURNS
     Availability state
 */
-a2dp_sep_status a2dpGetSepAvailability (remote_device *device, uint8 seid)
+a2dp_sep_status a2dpGetSepAvailability (remote_device *device, u8 seid)
 {
-    uint8 sep_index = getSepIndexBySeid(device, seid);
+    u8 sep_index = getSepIndexBySeid(device, seid);
 
     if (sep_index != SEP_INDEX_INVALID)
     {
@@ -275,13 +275,13 @@ DESCRIPTION
 RETURNS
     void
 */
-uint16 a2dpProcessDiscoverCommand (remote_device *device, uint16 *payload_size)
+u16 a2dpProcessDiscoverCommand (remote_device *device, u16 *payload_size)
 {
     Sink sink = device->signal_conn.connection.active.sink;
     sep_data_type *sep_ptr = (sep_data_type *)PanicNull( blockGetBase( device->device_id, data_block_sep_list ) );
-    uint8 sep_cnt = blockGetSize( device->device_id, data_block_sep_list ) / sizeof(sep_data_type);
-    uint8 *payload;
-    uint8 i;
+    u8 sep_cnt = blockGetSize( device->device_id, data_block_sep_list ) / sizeof(sep_data_type);
+    u8 *payload;
+    u8 i;
     
     *payload_size = 0;
     for (i=0; i<sep_cnt; i++)
@@ -312,7 +312,7 @@ uint16 a2dpProcessDiscoverCommand (remote_device *device, uint16 *payload_size)
                 *payload++ = sep_config->seid << 2;
             }
             
-            *payload++ = (uint8) ((sep_config->media_type << 4) | ((sep_config->role==a2dp_sink) ? (0x01<<3) :0x00));
+            *payload++ = (u8) ((sep_config->media_type << 4) | ((sep_config->role==a2dp_sink) ? (0x01<<3) :0x00));
             
             /**payload_size += 2;*/
         }
@@ -333,12 +333,12 @@ DESCRIPTION
 RETURNS
     void
 */
-uint16 a2dpProcessGetCapabilitiesCommand (remote_device *device, uint16 *payload_size)
+u16 a2dpProcessGetCapabilitiesCommand (remote_device *device, u16 *payload_size)
 {
-    const uint8 *ptr = device->signal_conn.connection.active.received_packet;
-    uint8 sep_index = getSepIndexBySeid(device, (ptr[2]>>2) & 0x3f);
+    const u8 *ptr = device->signal_conn.connection.active.received_packet;
+    u8 sep_index = getSepIndexBySeid(device, (ptr[2]>>2) & 0x3f);
     Sink sink = device->signal_conn.connection.active.sink;
-    uint8 *payload;
+    u8 *payload;
 
     *payload_size = 0;
     
@@ -349,7 +349,7 @@ uint16 a2dpProcessGetCapabilitiesCommand (remote_device *device, uint16 *payload
     else
     {
         const sep_config_type *sep_config = ((const sep_data_type *)PanicNull( blockGetIndexed( device->device_id, data_block_sep_list, sep_index ) ))->sep_config;
-        uint16 size_caps = getFilteredServiceCaps( NULL, AVDTP_SERVICE_DELAY_REPORTING, sep_config->caps, sep_config->size_caps);
+        u16 size_caps = getFilteredServiceCaps( NULL, AVDTP_SERVICE_DELAY_REPORTING, sep_config->caps, sep_config->size_caps);
         
         if ((payload = a2dpGrabSink(sink, size_caps)) == NULL)
         {
@@ -373,13 +373,13 @@ DESCRIPTION
 RETURNS
     void
 */
-uint16 a2dpProcessSetConfigurationCommand (remote_device *device, uint16 *payload_size)
+u16 a2dpProcessSetConfigurationCommand (remote_device *device, u16 *payload_size)
 {
-    const uint8 *ptr = device->signal_conn.connection.active.received_packet;
-    uint8 sep_index = getSepIndexBySeid(device, (ptr[2]>>2) & 0x3f);
-    uint16 packet_size = device->signal_conn.connection.active.received_packet_length;
-    uint8 unsupported_service;
-    uint8 error_cat, error_code;
+    const u8 *ptr = device->signal_conn.connection.active.received_packet;
+    u8 sep_index = getSepIndexBySeid(device, (ptr[2]>>2) & 0x3f);
+    u16 packet_size = device->signal_conn.connection.active.received_packet_length;
+    u8 unsupported_service;
+    u8 error_cat, error_code;
 
     *payload_size = 0;
     if (sep_index == SEP_INDEX_INVALID)
@@ -390,7 +390,7 @@ uint16 a2dpProcessSetConfigurationCommand (remote_device *device, uint16 *payloa
     {
         sep_data_type *sep_ptr = (sep_data_type *)PanicNull( blockGetIndexed( device->device_id, data_block_sep_list, sep_index ) );
         const sep_config_type *sep_config = sep_ptr->sep_config;
-        const uint8 *codec_data = NULL;
+        const u8 *codec_data = NULL;
         
         if ((sep_config->role == a2dp_source) && (device->signal_conn.status.stream_state == avdtp_stream_configuring))
         {   /* Remote device is attempting to configure a source SEP while we are currently configuring - give priority to source */
@@ -449,10 +449,10 @@ DESCRIPTION
 RETURNS
     void
 */
-uint16 a2dpProcessGetConfigurationCommand (remote_device *device, uint16 *payload_size)
+u16 a2dpProcessGetConfigurationCommand (remote_device *device, u16 *payload_size)
 {
-    const uint8 *ptr = device->signal_conn.connection.active.received_packet;
-    uint8 sep_index = getSepIndexBySeid(device, (ptr[2]>>2) & 0x3f);
+    const u8 *ptr = device->signal_conn.connection.active.received_packet;
+    u8 sep_index = getSepIndexBySeid(device, (ptr[2]>>2) & 0x3f);
     Sink sink = device->signal_conn.connection.active.sink;
     
     *payload_size = 0;
@@ -466,7 +466,7 @@ uint16 a2dpProcessGetConfigurationCommand (remote_device *device, uint16 *payloa
     }
     else
     {
-        uint8 *payload;
+        u8 *payload;
                 
         *payload_size = blockGetSize( device->device_id, data_block_configured_service_caps );
         /* build header with transaction label from request. */
@@ -494,13 +494,13 @@ DESCRIPTION
 RETURNS
     void
 */
-uint16 a2dpProcessReconfigureCommand (remote_device *device, uint16 *payload_size)
+u16 a2dpProcessReconfigureCommand (remote_device *device, u16 *payload_size)
 {
-    const uint8 *reconfig_caps = device->signal_conn.connection.active.received_packet + 3;
-    uint16 reconfig_caps_size = device->signal_conn.connection.active.received_packet_length - 3;
-    uint8 error_cat, error_code;
-    uint8 unsupported_service;
-    uint8 sep_index = getSepIndexBySeid(device, (device->signal_conn.connection.active.received_packet[2]>>2) & 0x3f);
+    const u8 *reconfig_caps = device->signal_conn.connection.active.received_packet + 3;
+    u16 reconfig_caps_size = device->signal_conn.connection.active.received_packet_length - 3;
+    u8 error_cat, error_code;
+    u8 unsupported_service;
+    u8 sep_index = getSepIndexBySeid(device, (device->signal_conn.connection.active.received_packet[2]>>2) & 0x3f);
 
     *payload_size = 0;
     /*
@@ -558,12 +558,12 @@ DESCRIPTION
 RETURNS
     void
 */
-uint16 a2dpProcessGetAllCapabilitiesCommand (remote_device *device, uint16 *payload_size)
+u16 a2dpProcessGetAllCapabilitiesCommand (remote_device *device, u16 *payload_size)
 {
-    const uint8 *ptr = device->signal_conn.connection.active.received_packet;
-    uint8 sep_index = getSepIndexBySeid(device, (ptr[2]>>2) & 0x3f);
+    const u8 *ptr = device->signal_conn.connection.active.received_packet;
+    u8 sep_index = getSepIndexBySeid(device, (ptr[2]>>2) & 0x3f);
     Sink sink = device->signal_conn.connection.active.sink;
-    uint8 *payload;
+    u8 *payload;
 
     *payload_size = 0;
     
@@ -574,7 +574,7 @@ uint16 a2dpProcessGetAllCapabilitiesCommand (remote_device *device, uint16 *payl
     else
     {
         const sep_config_type *sep_config = ((const sep_data_type *)PanicNull( blockGetIndexed( device->device_id, data_block_sep_list, sep_index ) ))->sep_config;
-        uint16 size_caps = getFilteredServiceCaps( NULL, 0, sep_config->caps, sep_config->size_caps);
+        u16 size_caps = getFilteredServiceCaps( NULL, 0, sep_config->caps, sep_config->size_caps);
         
         if ((payload = a2dpGrabSink(sink, size_caps)) == NULL)
         {
@@ -598,10 +598,10 @@ DESCRIPTION
 RETURNS
     void
 */
-uint16 a2dpProcessDelayReportCommand (remote_device *device)
+u16 a2dpProcessDelayReportCommand (remote_device *device)
 {
-    const uint8 *ptr = device->signal_conn.connection.active.received_packet;
-    uint8 sep_index = getSepIndexBySeid(device, (ptr[2]>>2) & 0x3f);
+    const u8 *ptr = device->signal_conn.connection.active.received_packet;
+    u8 sep_index = getSepIndexBySeid(device, (ptr[2]>>2) & 0x3f);
 
     if (sep_index == SEP_INDEX_INVALID)
     {
@@ -617,7 +617,7 @@ uint16 a2dpProcessDelayReportCommand (remote_device *device)
     }
     else
     {
-        device->media_conn[0].status.delay = ((uint16)ptr[3]<<8) | ptr[4];
+        device->media_conn[0].status.delay = ((u16)ptr[3]<<8) | ptr[4];
         return avdtp_ok;
     }
 }
@@ -633,10 +633,10 @@ DESCRIPTION
 RETURNS
     void
 */
-uint16 a2dpProcessOpenCommand (remote_device *device)
+u16 a2dpProcessOpenCommand (remote_device *device)
 {
-    const uint8 *ptr = device->signal_conn.connection.active.received_packet;
-    uint8 sep_index = getSepIndexBySeid(device, (ptr[2]>>2) & 0x3f);
+    const u8 *ptr = device->signal_conn.connection.active.received_packet;
+    u8 sep_index = getSepIndexBySeid(device, (ptr[2]>>2) & 0x3f);
 
     if (sep_index == SEP_INDEX_INVALID)
     {
@@ -663,15 +663,15 @@ DESCRIPTION
 RETURNS
     void
 */
-uint16 a2dpProcessStartCommand (remote_device *device)
+u16 a2dpProcessStartCommand (remote_device *device)
 {
-    const uint8 *ptr = device->signal_conn.connection.active.received_packet + 2;
-    uint16 seids = device->signal_conn.connection.active.received_packet_length - 2;
+    const u8 *ptr = device->signal_conn.connection.active.received_packet + 2;
+    u16 seids = device->signal_conn.connection.active.received_packet_length - 2;
 
     while (seids--)
     {
-        uint8 seid = (*ptr++ >> 2) & 0x3f;
-        uint8 sep_index = getSepIndexBySeid(device, seid);
+        u8 seid = (*ptr++ >> 2) & 0x3f;
+        u8 sep_index = getSepIndexBySeid(device, seid);
 
         if (sep_index == SEP_INDEX_INVALID)
         {
@@ -698,10 +698,10 @@ DESCRIPTION
 RETURNS
     void
 */
-uint16 a2dpProcessCloseCommand(remote_device *device)
+u16 a2dpProcessCloseCommand(remote_device *device)
 {
-    const uint8 *ptr = device->signal_conn.connection.active.received_packet;
-    uint8 sep_index = getSepIndexBySeid(device, (ptr[2]>>2) & 0x3f);
+    const u8 *ptr = device->signal_conn.connection.active.received_packet;
+    u8 sep_index = getSepIndexBySeid(device, (ptr[2]>>2) & 0x3f);
     
     if (sep_index == SEP_INDEX_INVALID)
     {
@@ -739,15 +739,15 @@ DESCRIPTION
 RETURNS
     void
 */
-uint16 a2dpProcessSuspendCommand (remote_device *device)
+u16 a2dpProcessSuspendCommand (remote_device *device)
 {
-    const uint8 *ptr = device->signal_conn.connection.active.received_packet + 2;
-    uint16 seids = device->signal_conn.connection.active.received_packet_length - 2;
+    const u8 *ptr = device->signal_conn.connection.active.received_packet + 2;
+    u16 seids = device->signal_conn.connection.active.received_packet_length - 2;
     
     while (seids--)
     {
-        uint8 seid = (*ptr++ >> 2) & 0x3f;
-        uint8 sep_index = getSepIndexBySeid(device, seid);
+        u8 seid = (*ptr++ >> 2) & 0x3f;
+        u8 sep_index = getSepIndexBySeid(device, seid);
 
         if (sep_index == SEP_INDEX_INVALID)
         {
@@ -776,7 +776,7 @@ RETURNS
 */
 bool a2dpProcessAbortCommand(remote_device *device)
 {
-    const uint8* ptr = device->signal_conn.connection.active.received_packet;
+    const u8* ptr = device->signal_conn.connection.active.received_packet;
     sep_data_type *current_sep;
 
     if ( (current_sep = (sep_data_type *)blockGetCurrent( device->device_id, data_block_sep_list )) != NULL )
@@ -794,13 +794,13 @@ bool a2dpProcessAbortCommand(remote_device *device)
 bool a2dpProcessDiscoverResponse(remote_device *device)
 {
     const sep_config_type *sep_config = ((sep_data_type *)PanicNull( blockGetCurrent( device->device_id, data_block_sep_list ) ))->sep_config;
-    const uint8* ptr = (const uint8 *)PanicNull(device->signal_conn.connection.active.received_packet);
-    uint16 packet_size = device->signal_conn.connection.active.received_packet_length;
-    uint8 sep_style;
-    uint8 discovered_remote_seps;
-    uint32 store_seps;
-    uint32 sep_mask;
-    uint16 i;
+    const u8* ptr = (const u8 *)PanicNull(device->signal_conn.connection.active.received_packet);
+    u16 packet_size = device->signal_conn.connection.active.received_packet_length;
+    u8 sep_style;
+    u8 discovered_remote_seps;
+    u32 store_seps;
+    u32 sep_mask;
+    u16 i;
     sep_info *remote_sep;
 
     /* clear record of discovered SEPs */
@@ -808,8 +808,8 @@ bool a2dpProcessDiscoverResponse(remote_device *device)
 
     ptr += 2;
 
-    sep_style = (uint8)sep_config->media_type << 4;
-    /*sep_style |= ((uint8)sep_config->role ^ 0x01) << 3;*/  /* Note: Making an assumption about an enumerated type */
+    sep_style = (u8)sep_config->media_type << 4;
+    /*sep_style |= ((u8)sep_config->role ^ 0x01) << 3;*/  /* Note: Making an assumption about an enumerated type */
     discovered_remote_seps = 0;
     store_seps = 0;
     sep_mask = 0x0001;
@@ -858,11 +858,11 @@ bool a2dpProcessDiscoverResponse(remote_device *device)
 
 bool a2dpProcessGetCapabilitiesResponse(remote_device *device)
 {
-    const uint8 *remote_caps = (const uint8 *)PanicNull(device->signal_conn.connection.active.received_packet) + 2;
-    uint16 remote_caps_size = device->signal_conn.connection.active.received_packet_length - 2;
-    uint8 error_cat, error_code;
-    const uint8 *remote_codec;
-    uint8 sep_index = getSepIndexBySeid(device, device->local_sep.seid);
+    const u8 *remote_caps = (const u8 *)PanicNull(device->signal_conn.connection.active.received_packet) + 2;
+    u16 remote_caps_size = device->signal_conn.connection.active.received_packet_length - 2;
+    u8 error_cat, error_code;
+    const u8 *remote_codec;
+    u8 sep_index = getSepIndexBySeid(device, device->local_sep.seid);
     const sep_config_type *sep_config = ((sep_data_type *)PanicNull( blockGetIndexed( device->device_id, data_block_sep_list, sep_index ) ))->sep_config;
 
     if ( !a2dpValidateServiceCaps(remote_caps, remote_caps_size, FALSE, FALSE, TRUE, &error_cat, &error_code) )
@@ -893,16 +893,16 @@ bool a2dpProcessGetCapabilitiesResponse(remote_device *device)
     return TRUE;
 }
 
-uint16 a2dpSelectConfigurationParameters(remote_device *device)
+u16 a2dpSelectConfigurationParameters(remote_device *device)
 {
-    uint8 sep_index = getSepIndexBySeid(device, device->local_sep.seid);
+    u8 sep_index = getSepIndexBySeid(device, device->local_sep.seid);
     const sep_config_type *sep_config = ((sep_data_type *)PanicNull( blockGetIndexed( device->device_id, data_block_sep_list, sep_index ) ))->sep_config;
     
     blockSetCurrent( device->device_id, data_block_sep_list, sep_index );
     
     if (sep_config->library_selects_settings)
     {
-        uint8 *remote_service_caps = (uint8 *)PanicNull( blockGetBase(device->device_id, data_block_configured_service_caps) );
+        u8 *remote_service_caps = (u8 *)PanicNull( blockGetBase(device->device_id, data_block_configured_service_caps) );
         
         if (!a2dpSelectOptimalCodecSettings(device, remote_service_caps))
         {
@@ -920,9 +920,9 @@ uint16 a2dpSelectConfigurationParameters(remote_device *device)
 }
 
 
-bool a2dpProcessCodecConfigureResponse(remote_device *device, uint8 local_seid, const uint8 *codec_caps, uint16 size_codec_caps)
+bool a2dpProcessCodecConfigureResponse(remote_device *device, u8 local_seid, const u8 *codec_caps, u16 size_codec_caps)
 {
-    uint8 sep_index = getSepIndexBySeid(device, local_seid);
+    u8 sep_index = getSepIndexBySeid(device, local_seid);
     
     if ((sep_index == SEP_INDEX_INVALID) || (local_seid != device->local_sep.seid))
     {
@@ -937,7 +937,7 @@ bool a2dpProcessCodecConfigureResponse(remote_device *device, uint8 local_seid, 
 
 void a2dpProcessReconfigureResponse(remote_device *device)
 {
-    uint8 sep_index = getSepIndexBySeid(device, device->local_sep.seid);
+    u8 sep_index = getSepIndexBySeid(device, device->local_sep.seid);
     
     updateConfiguredServiceCaps(device, sep_index, device->reconfig_caps, device->reconfig_caps_size);
     

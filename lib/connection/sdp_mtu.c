@@ -26,7 +26,7 @@ NOTES
 #ifndef CL_EXCLUDE_SDP
 
 /*****************************************************************************/
-void ConnectionSetSdpServerMtu(uint16 mtu)
+void ConnectionSetSdpServerMtu(u16 mtu)
 {
 #ifdef CONNECTION_DEBUG_LIB	
 	if (mtu < L2CA_MTU_MINIMUM)
@@ -43,7 +43,7 @@ void ConnectionSetSdpServerMtu(uint16 mtu)
 
 
 /*****************************************************************************/
-void ConnectionSetSdpClientMtu(uint16 mtu)
+void ConnectionSetSdpClientMtu(u16 mtu)
 {
 #ifdef CONNECTION_DEBUG_LIB	
 	if (mtu < L2CA_MTU_MINIMUM)

@@ -103,7 +103,7 @@ typedef struct
        /*! The application task to route upstream plugin messages to */
     Task            app_task ;
         /*! Word to hold the length of the longest line on the display */
-  uint16          *max_length;
+  u16          *max_length;
    
 } DISPLAY_PLUGIN_INIT_MSG_T ;
 
@@ -135,14 +135,14 @@ typedef struct
             
    unsigned        unused:1;
       /*! amount of delay in ms before the text will start to move */        
-   uint16          scroll_pause;
+   u16          scroll_pause;
       /*! amount of time in ms before the display scroll updates */
-  uint16          scroll_update;
+  u16          scroll_update;
      /*! amount of time in seconds the text will be displayed, 0 is infinity until changed */
-   uint16          display_time;
+   u16          display_time;
   
        /*!length of the text to display*/
- uint8           text_length;
+ u8           text_length;
        /*! text to display */
  char            text[1];
 }DISPLAY_PLUGIN_SET_TEXT_MSG_T ;
@@ -155,7 +155,7 @@ typedef struct
 typedef struct 
 {
         /*! The volume at which to set on the display */
-    uint16          volume ;
+    u16          volume ;
 }DISPLAY_PLUGIN_SET_VOLUME_MSG_T ;
 
 /*!
@@ -167,7 +167,7 @@ typedef struct
 typedef struct 
 {
          /*! The required display icon */
-    uint8          icon ;
+    u8          icon ;
          /*! The required  icon state */
     bool           state ;  
 }DISPLAY_PLUGIN_SET_ICON_MSG_T ;
@@ -180,7 +180,7 @@ typedef struct
 typedef struct 
 {
          /*! The battery level which to set on the display */
-    uint16          battery_level ;
+    u16          battery_level ;
 }DISPLAY_PLUGIN_SET_BATTERY_MSG_T ;
 
 /*!

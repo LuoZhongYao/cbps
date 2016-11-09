@@ -18,8 +18,8 @@ Copyright (c) 2010 - 2016 Qualcomm Technologies International, Ltd.
 #include "usb_device_audio.h"
 #include "usb_device_class_private.h"
 
-static uint32 current_speaker_sample_freq = SAMPLE_RATE_48K;
-static uint32 current_mic_sample_freq = SAMPLE_RATE_48K;
+static u32 current_speaker_sample_freq = SAMPLE_RATE_48K;
+static u32 current_mic_sample_freq = SAMPLE_RATE_48K;
 
 static const usb_device_class_audio_volume_config usb_audio_volume_default =
 {
@@ -85,7 +85,7 @@ static const UsbCodes usb_codes_as = {B_INTERFACE_CLASS_AUDIO, /* bInterfaceClas
     Format of PCM stream:
     | Mono LSB | Mono MSB |
 */
-static const uint8 interface_descriptor_control_mic_and_speaker[] =
+static const u8 interface_descriptor_control_mic_and_speaker[] =
 {
     /* Class Specific Header */
     0x0A,         /* bLength */
@@ -167,7 +167,7 @@ static const uint8 interface_descriptor_control_mic_and_speaker[] =
 };
 
 
-static const uint8 interface_descriptor_control_mic[] =
+static const u8 interface_descriptor_control_mic[] =
 {
     /* Class Specific Header */
     0x09,         /* bLength */
@@ -214,7 +214,7 @@ static const uint8 interface_descriptor_control_mic[] =
 };
 
 
-static const uint8 interface_descriptor_control_speaker[] =
+static const u8 interface_descriptor_control_speaker[] =
 {
     /* Class Specific Header */
     0x09,         /* bLength */
@@ -262,7 +262,7 @@ static const uint8 interface_descriptor_control_speaker[] =
 };
 
 
-static const uint8 interface_descriptor_streaming_speaker[] =
+static const u8 interface_descriptor_streaming_speaker[] =
 {
     /* Class Specific AS interface descriptor */
     0x07,         /* bLength */
@@ -311,7 +311,7 @@ static const uint8 interface_descriptor_streaming_speaker[] =
 };
 
 
-static const uint8 interface_descriptor_streaming_mic[] =
+static const u8 interface_descriptor_streaming_mic[] =
 {
     /* Class Specific AS interface descriptor */
     0x07,         /* bLength */
@@ -344,7 +344,7 @@ static const uint8 interface_descriptor_streaming_mic[] =
 };
 
 
-static const uint8 audio_endpoint_user_data[] =
+static const u8 audio_endpoint_user_data[] =
 {
     0, /* bRefresh */
     0  /* bSyncAddress */
@@ -424,11 +424,11 @@ static void handleAudioControlClassRequest(Source req);
 static void handleAudioStreamingClassRequest(usb_interface_type interface_type, Source req);
 
 
-static uint8 usbAudioGetRate(usb_device_class_descriptor descriptor, uint32 *supported_rates)
+static u8 usbAudioGetRate(usb_device_class_descriptor descriptor, u32 *supported_rates)
 {
-    const uint8* ptr = descriptor.descriptor;
-    const uint8* end = ptr + descriptor.size_descriptor;
-    uint8 i;
+    const u8* ptr = descriptor.descriptor;
+    const u8* end = ptr + descriptor.size_descriptor;
+    u8 i;
     while(ptr < end)
     {
         usb_format_descriptor* format = (usb_format_descriptor*) ptr;
@@ -440,7 +440,7 @@ static uint8 usbAudioGetRate(usb_device_class_descriptor descriptor, uint32 *sup
                 {
                     for (i = 0; (i < format->num_freq) && (i < SUPPORTED_FREQUENCIES); i++)
                     {
-                        supported_rates[i] = (format->freq[i*3]) | ((uint16)format->freq[(i*3)+1] << 8) | ((uint32)format->freq[(i*3)+2] << 16);
+                        supported_rates[i] = (format->freq[i*3]) | ((u16)format->freq[(i*3)+1] << 8) | ((u32)format->freq[(i*3)+2] << 16);
                     }
                     return format->num_freq;
                 }
@@ -537,7 +537,7 @@ static void audioStreamingHandler(Task task, MessageId id, Message message)
 }
 
 
-static uint16* audioGetPtr(uint8 control, uint8 code, uint8 unit_id, uint8 channel)
+static u16* audioGetPtr(u8 control, u8 code, u8 unit_id, u8 channel)
 {
     if(control == VOLUME_CONTROL)
     {
@@ -549,16 +549,16 @@ static uint16* audioGetPtr(uint8 control, uint8 code, uint8 unit_id, uint8 chann
             {
                 /* Get pointer to vol for this channel */
                 if((channel == CHANNEL_LEFT) || (channel == CHANNEL_MASTER))
-                    return (uint16*)&device->audio.out_l_vol;
+                    return (u16*)&device->audio.out_l_vol;
                 else if(channel == CHANNEL_RIGHT)
-                    return (uint16*)&device->audio.out_r_vol;
+                    return (u16*)&device->audio.out_r_vol;
             }
             else if(code == MIN)
-                return (uint16*)&usb_audio_volume->speaker_min;
+                return (u16*)&usb_audio_volume->speaker_min;
             else if(code == MAX)
-                return (uint16*)&usb_audio_volume->speaker_max;
+                return (u16*)&usb_audio_volume->speaker_max;
             else if(code == RES)
-                return (uint16*)&usb_audio_volume->speaker_res;
+                return (u16*)&usb_audio_volume->speaker_res;
         }
         else if(unit_id == MIC_FU)
         {
@@ -566,14 +566,14 @@ static uint16* audioGetPtr(uint8 control, uint8 code, uint8 unit_id, uint8 chann
             {
                 /* Get pointer to vol for this channel */
                 if((channel == CHANNEL_LEFT) || (channel == CHANNEL_MASTER))
-                    return (uint16*)&device->audio.in_vol;
+                    return (u16*)&device->audio.in_vol;
             }
             else if(code == MIN)
-                return (uint16*)&usb_audio_volume->mic_min;
+                return (u16*)&usb_audio_volume->mic_min;
             else if(code == MAX)
-                return (uint16*)&usb_audio_volume->mic_max;
+                return (u16*)&usb_audio_volume->mic_max;
             else if(code == RES)
-                return (uint16*)&usb_audio_volume->mic_res;
+                return (u16*)&usb_audio_volume->mic_res;
         }
     }
     else if(control == MUTE_CONTROL && code == CUR && channel == CHANNEL_MASTER)
@@ -581,21 +581,21 @@ static uint16* audioGetPtr(uint8 control, uint8 code, uint8 unit_id, uint8 chann
         PRINT(("%s MUTE CODE - 0x%X CHANNEL - 0x%X\n", (unit_id == MIC_FU) ? "MIC" : "SPEAKER", code, channel));
         /* Can only get CUR for mute */
         if(unit_id == MIC_FU)
-            return &device->audio.in_mute;
+            return (u16*)&(device->audio.in_mute);
         else if(unit_id == SPEAKER_FU)
-            return &device->audio.out_mute;
+            return (u16*)&(device->audio.out_mute);
     }
     /* Unsupported request */
     return NULL;
 }
 
 
-static uint16 audioGetLevel(Sink sink, uint8 control, uint8 code, uint8 unit_id, uint8 channel)
+static u16 audioGetLevel(Sink sink, u8 control, u8 code, u8 unit_id, u8 channel)
 {
-    uint8*  p_snk;
+    u8*  p_snk;
     
     /* Get pointer to requested value */
-    uint16* pv =  audioGetPtr(control, code, unit_id, channel);
+    u16* pv =  audioGetPtr(control, code, unit_id, channel);
     
     if(pv)
     {
@@ -620,10 +620,10 @@ static uint16 audioGetLevel(Sink sink, uint8 control, uint8 code, uint8 unit_id,
 }
 
 
-static void audioGainRound(uint8 hi, uint8 lo, int16* res)
+static void audioGainRound(u8 hi, u8 lo, i16* res)
 {
     /* Convert hi byte to signed int */
-    int16 temp = (hi & 0x80) ? (hi - 0xFF) : hi;
+    i16 temp = (hi & 0x80) ? (hi - 0xFF) : hi;
     /* Round up if lo byte >= 0.5 (where 1 = 1/256) */
     if(lo >= 0x80) temp ++;
     
@@ -634,16 +634,16 @@ static void audioGainRound(uint8 hi, uint8 lo, int16* res)
 }
 
 
-static bool audioSetLevel(Source source, uint8 control, uint8 code, uint8 unit_id, uint8 channel)
+static bool audioSetLevel(Source source, u8 control, u8 code, u8 unit_id, u8 channel)
 {
-    int16 val;
-    const uint8* p_src = SourceMap(source);
-    uint16* pv = audioGetPtr(control, code, unit_id, channel);
+    i16 val;
+    const u8* p_src = SourceMap(source);
+    u16* pv = audioGetPtr(control, code, unit_id, channel);
     
     if(control == MUTE_CONTROL)
     {
         if (SourceSize(source) >= 1)
-            val = (int16)p_src[0];
+            val = (i16)p_src[0];
     }
     else
     {
@@ -652,7 +652,7 @@ static bool audioSetLevel(Source source, uint8 control, uint8 code, uint8 unit_i
             if (device->audio.user_audio_levels)
             {
                 /* if user defined levels then just store raw value */
-                val = (int16)p_src[0] | (p_src[1] << 8);
+                val = (i16)p_src[0] | (p_src[1] << 8);
             }
             else
             {
@@ -665,7 +665,7 @@ static bool audioSetLevel(Source source, uint8 control, uint8 code, uint8 unit_i
     /* Only allow setting current levels */
     if(pv && (code == CUR))
     {
-        if((int16)(*pv) != val)
+        if((i16)(*pv) != val)
         {
             *pv = val;
             /* Level has changed, notify application */
@@ -683,12 +683,12 @@ static bool audioSetLevel(Source source, uint8 control, uint8 code, uint8 unit_i
 
 static void handleAudioControlClassRequest(Source req)
 {
-    uint16 packet_size;
+    u16 packet_size;
     Sink sink = StreamSinkFromSource(req);
-    uint8 channel;
-    uint8 unit_id;
-    uint8 code;
-    uint8 control;
+    u8 channel;
+    u8 unit_id;
+    u8 code;
+    u8 control;
     
     /* Check for outstanding Class requests */
     while ((packet_size = SourceBoundary(req)) != 0)
@@ -746,7 +746,7 @@ static void handleAudioControlClassRequest(Source req)
 
 static void handleAudioStreamingClassRequest(usb_interface_type interface_type, Source req)
 {
-    uint16 packet_size;
+    u16 packet_size;
     Sink sink = StreamSinkFromSource(req);
     
     /* Check for outstanding Class requests */
@@ -771,8 +771,8 @@ static void handleAudioStreamingClassRequest(usb_interface_type interface_type, 
             if(usbresp.original_request.wIndex == end_point_iso_in || usbresp.original_request.wIndex == end_point_iso_out)
             {
                 /* Get the supported rate */
-                uint32 supported_rates[SUPPORTED_FREQUENCIES];
-                uint8 num_freq;
+                u32 supported_rates[SUPPORTED_FREQUENCIES];
+                u8 num_freq;
                 if(usbresp.original_request.wIndex == end_point_iso_in)
                 {
                     num_freq = usbAudioGetRate(usb_audio_config->streaming_speaker, supported_rates);
@@ -784,9 +784,9 @@ static void handleAudioStreamingClassRequest(usb_interface_type interface_type, 
                 
                 if (usbresp.original_request.bRequest == SET_CUR)
                 {
-                    uint8 i;
-                    const uint8* rate = SourceMap(req);
-                    uint32 new_rate  = (uint32)rate[0] | ((uint32)rate[1] << 8) | ((uint32)rate[2] << 16);
+                    u8 i;
+                    const u8* rate = SourceMap(req);
+                    u32 new_rate  = (u32)rate[0] | ((u32)rate[1] << 8) | ((u32)rate[2] << 16);
                     /* Reject bad value */
                     for (i=0; i < num_freq; i++)
                     {
@@ -817,22 +817,22 @@ static void handleAudioStreamingClassRequest(usb_interface_type interface_type, 
                 else if (usbresp.original_request.bRequest == GET_CUR)
                 {
                     /* Return current value */
-                    uint8 *ptr;
+                    u8 *ptr;
                     if ((ptr = claimSink(sink, 3)) != 0)
                     {
                         /* store sample rate in static variable */
                         if(interface_type == usb_interface_audio_streaming_speaker)                            
                         {
-                            ptr[0] = (uint16)(current_speaker_sample_freq & 0xff);
-                            ptr[1] = (uint16)(current_speaker_sample_freq >> 8);
-                            ptr[2] = (uint16)(current_speaker_sample_freq >> 16);
+                            ptr[0] = (u16)(current_speaker_sample_freq & 0xff);
+                            ptr[1] = (u16)(current_speaker_sample_freq >> 8);
+                            ptr[2] = (u16)(current_speaker_sample_freq >> 16);
                             PRINT(("Get Speaker Rate %lu - %X\n", current_speaker_sample_freq, usbresp.success));
                         }
                         else
                         {                        
-                            ptr[0] = (uint16)(current_mic_sample_freq & 0xff);
-                            ptr[1] = (uint16)(current_mic_sample_freq >> 8);
-                            ptr[2] = (uint16)(current_mic_sample_freq >> 16);
+                            ptr[0] = (u16)(current_mic_sample_freq & 0xff);
+                            ptr[1] = (u16)(current_mic_sample_freq >> 8);
+                            ptr[2] = (u16)(current_mic_sample_freq >> 16);
                             PRINT(("Get Mic Rate %lu - %X\n", current_mic_sample_freq, usbresp.success));
                         }                        
                         usbresp.data_length = 3;
@@ -885,7 +885,7 @@ bool usbConfigureAudioVolume(usb_device_class_config config, const usb_device_cl
 }
 
 
-bool usbEnumerateAudio(uint16 usb_device_class)
+bool usbEnumerateAudio(u16 usb_device_class)
 {
     if(!usb_audio_config)
     {
@@ -931,7 +931,7 @@ Source usbAudioSpeakerSource(void)
 }
 
 
-void usbAudioGetLevels(uint16* levels)
+void usbAudioGetLevels(u16* levels)
 {
     /* Copy global structure into response */
     usb_device_class_audio_levels* audio_levels = (usb_device_class_audio_levels*)levels;
@@ -969,12 +969,12 @@ UsbInterface usbAudioGetInterfaceId(usb_device_class_get_value interface)
 }
 
 /* Access function to allow VM code to read sample frequency from lib */
-uint32 usbAudioGetSpeakerSampleFreq(void)
+u32 usbAudioGetSpeakerSampleFreq(void)
 {
     return current_speaker_sample_freq;
 }
 
-uint32 usbAudioGetMicSampleFreq(void)
+u32 usbAudioGetMicSampleFreq(void)
 {
     return current_mic_sample_freq;
 }

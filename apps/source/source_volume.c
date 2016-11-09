@@ -30,7 +30,7 @@ DESCRIPTION
 
 typedef struct
 {
-    uint16 speaker_value;   /* speaker index value */
+    u16 speaker_value;   /* speaker index value */
     bool speaker_mute;      /* specifies if this index should be counted as a speaker mute */
 } VOLUME_SPEAKER_INDEX_T;
 
@@ -82,7 +82,7 @@ void volume_initialise(void)
 NAME    
     volume_set_dongle_levels - Updates the local volume levels
 */
-bool volume_set_dongle_levels(uint8 mic_vol, uint8 speaker_vol, uint8 sidetone_vol, uint8 eq_index)
+bool volume_set_dongle_levels(u8 mic_vol, u8 speaker_vol, u8 sidetone_vol, u8 eq_index)
 {
     bool value_changed = FALSE;
     
@@ -164,7 +164,7 @@ AUDIO_MODE_T volume_get_mute_mode(void)
 NAME    
     volume_usb_levels_changed_ind - Updates the volume based on USB audio changes
 */
-void volume_usb_levels_changed_ind(uint8 mic_vol_level, uint8 playback_vol_level, bool mic_mute, bool speaker_mute)
+void volume_usb_levels_changed_ind(u8 mic_vol_level, u8 playback_vol_level, bool mic_mute, bool speaker_mute)
 {
     bool volumes_changed = FALSE;
     bool old_speaker_mute_mode = theSource->volume_data.speaker_mute;

@@ -65,9 +65,9 @@ void AvrcpListAppAttributeRequest( AVRCP *avrcp )
 * API to send ListPlayerApplicationSettingValue  to the CT. 
 * All parameters are described in the header file.
 *******************************************************************************/
-void AvrcpListAppValueRequest(AVRCP *avrcp, uint16 attribute_id)
+void AvrcpListAppValueRequest(AVRCP *avrcp, u16 attribute_id)
 {
-    uint8 status_params[] = {0};
+    u8 status_params[] = {0};
     avrcp_status_code status;
 
     status_params[0] = attribute_id;
@@ -95,10 +95,10 @@ void AvrcpListAppValueRequest(AVRCP *avrcp, uint16 attribute_id)
 *  All parameters are described in the header file.
 ******************************************************************************/
 void AvrcpGetAppValueRequest( AVRCP   *avrcp, 
-                              uint16  size_attributes, 
+                              u16  size_attributes, 
                               Source  attributes )
 {
-    uint8 extra_params[AVRCP_APP_NUM_ATTR_HDR_SIZE];
+    u8 extra_params[AVRCP_APP_NUM_ATTR_HDR_SIZE];
     avrcp_status_code status;
 
     extra_params[0] = size_attributes;
@@ -126,11 +126,11 @@ void AvrcpGetAppValueRequest( AVRCP   *avrcp,
 *  All parameters are described in the header file.
 ******************************************************************************/
 void AvrcpSetAppValueRequest( AVRCP *avrcp, 
-                              uint16 size_attributes, 
+                              u16 size_attributes, 
                               Source attributes )
 {
     avrcp_status_code status;
-    uint8 num_attr[1];
+    u8 num_attr[1];
 
 
     /* Size of Attributes should be multiple of 2 contains the ID & 
@@ -165,10 +165,10 @@ void AvrcpSetAppValueRequest( AVRCP *avrcp,
 *  All parameters are described in the header file.
 *****************************************************************************/
 void AvrcpGetAppAttributeTextRequest( AVRCP *avrcp, 
-                                      uint16 size_attributes, 
+                                      u16 size_attributes, 
                                       Source attributes )
 {
-    uint8 extra_params[AVRCP_APP_NUM_ATTR_HDR_SIZE];
+    u8 extra_params[AVRCP_APP_NUM_ATTR_HDR_SIZE];
     avrcp_status_code status;
 
     extra_params[0] = size_attributes;
@@ -197,11 +197,11 @@ void AvrcpGetAppAttributeTextRequest( AVRCP *avrcp,
 *  All parameters are described in the header file.   
 *****************************************************************************/
 void AvrcpGetAppValueTextRequest(   AVRCP *avrcp, 
-                                    uint16 attribute_id, 
-                                    uint16 size_values, 
+                                    u16 attribute_id, 
+                                    u16 size_values, 
                                     Source values )
 {
-    uint8 extra_params[AVRCP_APP_VAL_TXT_HDR_SIZE];
+    u8 extra_params[AVRCP_APP_VAL_TXT_HDR_SIZE];
     avrcp_status_code status;
 
     extra_params[0] = attribute_id;
@@ -232,7 +232,7 @@ void AvrcpGetAppValueTextRequest(   AVRCP *avrcp,
 void AvrcpInformBatteryStatusRequest(AVRCP *avrcp, 
                                   avrcp_battery_status battery_status)
 {
-    uint8 status_params[] = {0};
+    u8 status_params[] = {0};
     avrcp_status_code status;
 
     status_params[0] = battery_status;
@@ -257,11 +257,11 @@ void AvrcpInformBatteryStatusRequest(AVRCP *avrcp,
 *  API function to send InformDisplayableCharacterSet command to TG.
 *****************************************************************************/
 void AvrcpInformCharacterSetRequest( AVRCP   *avrcp, 
-                                     uint16  size_attributes, 
+                                     u16  size_attributes, 
                                      Source  attributes )
 {
     avrcp_status_code status;
-    uint8 num_char_set[1];
+    u8 num_char_set[1];
 
     /* Validate the number of attributes are in pair */
     if(size_attributes % 2)
@@ -300,7 +300,7 @@ void AvrcpInformCharacterSetRequest( AVRCP   *avrcp,
 *******************************************************************************/
 void AvrcpListAppAttributeResponse( AVRCP *avrcp, 
                                     avrcp_response_type response, 
-                                    uint16 size_attributes, 
+                                    u16 size_attributes, 
                                     Source attributes )
 {
     /* Send the response only if the command arrived to start with. */
@@ -326,7 +326,7 @@ void AvrcpListAppAttributeResponse( AVRCP *avrcp,
 *******************************************************************************/
 void AvrcpListAppValueResponse( AVRCP              *avrcp, 
                                 avrcp_response_type response, 
-                                uint16              size_values, 
+                                u16              size_values, 
                                 Source              values )
 {
     /* Send the response only if the command arrived to start with. */
@@ -353,7 +353,7 @@ void AvrcpListAppValueResponse( AVRCP              *avrcp,
 ******************************************************************************/
 void AvrcpGetAppValueResponse( AVRCP *avrcp, 
                                avrcp_response_type response, 
-                               uint16 size_values, 
+                               u16 size_values, 
                                Source values)
 {
     /* Send the response only if the command arrived to start with. */
@@ -402,8 +402,8 @@ void AvrcpSetAppValueResponse(AVRCP *avrcp, avrcp_response_type response)
 ******************************************************************************/
 void AvrcpGetAppAttributeTextResponse(  AVRCP *avrcp, 
                                         avrcp_response_type response, 
-                                        uint16 number_of_attributes, 
-                                        uint16 size_attributes, 
+                                        u16 number_of_attributes, 
+                                        u16 size_attributes, 
                                         Source attributes)
 {
     /* Send the response only if the command arrived to start with. */
@@ -433,8 +433,8 @@ void AvrcpGetAppAttributeTextResponse(  AVRCP *avrcp,
 ******************************************************************************/
 void AvrcpGetAppValueTextResponse( AVRCP *avrcp, 
                                    avrcp_response_type response, 
-                                   uint16 number_of_values,
-                                   uint16 size_values, 
+                                   u16 number_of_values,
+                                   u16 size_values, 
                                    Source values)
 {
     /* Send the response only if the command arrived to start with. */

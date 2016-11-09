@@ -35,7 +35,7 @@ swatTaskData *swat = 0;  /* Pointer located in global space */
 
 
 /****************************************************************************/
-void SwatInit(Task clientTask, uint16 max_remote_devs, swat_role role, bool auto_handle, const uint8 *service_record, uint16 size_service_record, const sync_config_params * esco_config)
+void SwatInit(Task clientTask, u16 max_remote_devs, swat_role role, bool auto_handle, const u8 *service_record, u16 size_service_record, const sync_config_params * esco_config)
 {
     /* Attempt to initialise the task data */
     if ( !swat )
@@ -61,7 +61,7 @@ void SwatInit(Task clientTask, uint16 max_remote_devs, swat_role role, bool auto
         /* Use service record supplied by client */
         if (service_record)
         {
-            ConnectionRegisterServiceRecord(&swat->l2cap_task, (sizeof(uint8) * size_service_record), service_record);
+            ConnectionRegisterServiceRecord(&swat->l2cap_task, (sizeof(u8) * size_service_record), service_record);
         }
         /* Use library default service record */
         else

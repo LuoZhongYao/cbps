@@ -30,7 +30,7 @@ typedef struct
 		/*! lines of text on the display */
     unsigned         lines:4 ;	
 		/*! length of lines of text on the display */
-    uint8            length ;
+    u8            length ;
 
 }DisplayExamplePluginTaskdata;
 
@@ -49,12 +49,12 @@ typedef enum DisplayExIntMessage
     /*the  message to scroll text*/
 typedef struct 
 {
-    uint8 line ;  
-    uint16 scroll_update ;
+    u8 line ;  
+    u16 scroll_update ;
 	bool bounce;
 	
 			/*!length of the text to display*/
-	uint8			text_length;
+	u8			text_length;
 		/*! text to display */
 	char			text[1];
     
@@ -63,7 +63,7 @@ typedef struct
     /*the  message to clear text line*/
 typedef struct 
 {
-    uint8 line ;  
+    u8 line ;  
 } DispExClearLineMessage_T;
 
 

@@ -13,7 +13,7 @@ Part of ADK 4.0
 aghfp_call_flags aghfpConvertDisconnectStatusToCallFlag (aghfp_disconnect_status status);
 bool aghfpCallManagerActive (AGHFP *aghfp);
 bool aghfpCallManagerActiveNotComplete (AGHFP *aghfp);
-void aghfpManageCall (AGHFP *aghfp, aghfp_call_event call_event, uint16 event_value);
+void aghfpManageCall (AGHFP *aghfp, aghfp_call_event call_event, u16 event_value);
 void aghfpResetCallerIdDetails (AGHFP *aghfp);
 void aghfpHandleSetCallerIdDetails (AGHFP *aghfp, AGHFP_INTERNAL_SET_CALLER_ID_DETAILS_REQ_T *req);
 void aghfpHandleCallCreateAudio (AGHFP *aghfp, AGHFP_INTERNAL_CALL_MGR_CREATE_WITH_AUDIO_REQ_T *req);

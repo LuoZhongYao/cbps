@@ -52,15 +52,15 @@ NOTES
 
 typedef struct
 {
-    uint16                     no_prompts;
-    uint16                     no_prompts_per_lang;
+    u16                     no_prompts;
+    u16                     no_prompts_per_lang;
 } voice_prompts_header;
 
 typedef struct
 {
-    uint32              size;
+    u32              size;
     voice_prompts_codec decompression;
-    uint16              playback_rate;
+    u16              playback_rate;
     bool                stereo;
 } voice_prompt;
 
@@ -77,19 +77,19 @@ typedef struct
     /*! Decompression to use */
     voice_prompts_codec decompression;
     /*! Playback rate */
-    uint16              playback_rate;
+    u16              playback_rate;
     /*! DSP re-sample rate */
-    uint16              resample_rate_with_coefficient_applied;
+    u16              resample_rate_with_coefficient_applied;
     /*! The language */
-    uint16              language;
+    u16              language;
     /*! The volume at which to play the tone */
-    int16               prompt_volume;
+    i16               prompt_volume;
     /*! stereo or mono */
     bool                stereo;
     /*! flag that indicates if the prompt is mixing with existing audio */
     bool                mixing;
     /*! prompt index Id. */
-    uint16              prompt_id;   
+    u16              prompt_id;   
     /*! If this is a tone, pointer to the ringtone_note */
     ringtone_note       *tone;   
 } PHRASE_DATA_T ;
@@ -127,8 +127,8 @@ static void sendDspSampleRateMessages(void)
 #ifdef ANC
     /* If using ANC then we need to give an indication of the sample rate required
        when the ANC mics are connected. */
-    uint32 anc_sample_rate = AncGetDacSampleRate();
-    uint16 anc_sample_rate_flag = DSP_ANC_SAMPLE_RATE_NONE;
+    u32 anc_sample_rate = AncGetDacSampleRate();
+    u16 anc_sample_rate_flag = DSP_ANC_SAMPLE_RATE_NONE;
 
     if (anc_sample_rate == ANC_SAMPLE_RATE_96K)
     {
@@ -206,7 +206,7 @@ static void sendDspMultiChannelMessages(void)
     /* Set the hardware type of each output */
     if (!KalimbaSendLongMessage(MESSAGE_SET_MULTI_CHANNEL_OUTPUT_TYPES,
                                 sizeof(AUDIO_PLUGIN_SET_MULTI_CHANNEL_OUTPUT_TYPES_MSG_T),
-                                (const uint16*)&message))
+                                (const u16*)&message))
     {
         PRINT(("DECODER: Message MESSAGE_SET_MULTI_CHANNEL_OUTPUT_TYPES failed!\n"));
         Panic();
@@ -228,7 +228,7 @@ DESCRIPTION
     helper function to determine whether voice prompt to be played is adpcm or pcm which
     can then be mixed by the other dsp applications.
 */
-bool CsrVoicePromptsIsMixable(uint16 id, uint16 language, Task codec_task)
+bool CsrVoicePromptsIsMixable(u16 id, u16 language, Task codec_task)
 {
     Source lSource = NULL ;
     voice_prompt prompt;
@@ -283,9 +283,9 @@ bool CsrVoicePromptsIsMixable(uint16 id, uint16 language, Task codec_task)
 
 static Source csrVoicePromptsGetPrompt(voice_prompt* prompt, PHRASE_DATA_T * pData)
 {
-    const uint8* rx_array;
+    const u8* rx_array;
     Source lSource = NULL;
-    uint16 index;
+    u16 index;
 
     char file_name[17];
 
@@ -295,7 +295,7 @@ static Source csrVoicePromptsGetPrompt(voice_prompt* prompt, PHRASE_DATA_T * pDa
     /* determine if this is a tone */
     if(pData->tone)
     {
-        PRINT(("VP: Prompt is a tone 0x%x\n", (uint16)pData->tone));    
+        PRINT(("VP: Prompt is a tone 0x%x\n", (u16)pData->tone));    
     
         /* update current tone playing status */
         SetTonePlaying(TRUE);
@@ -340,9 +340,9 @@ static Source csrVoicePromptsGetPrompt(voice_prompt* prompt, PHRASE_DATA_T * pDa
     /*    rx_array[0] not used*/
     /*    rx_array[1] index, not used */
     prompt->stereo        = rx_array[4];
-    prompt->size          = ((uint32)rx_array[5] << 24) | ((uint32)rx_array[6] << 16) | ((uint16)rx_array[7] << 8) | (rx_array[8]);
+    prompt->size          = ((u32)rx_array[5] << 24) | ((u32)rx_array[6] << 16) | ((u16)rx_array[7] << 8) | (rx_array[8]);
     prompt->decompression = rx_array[9];
-    prompt->playback_rate = ((uint16)rx_array[10] << 8) | (rx_array[11]);   
+    prompt->playback_rate = ((u16)rx_array[10] << 8) | (rx_array[11]);   
     
     /* The size of the prompt must be limited to 16 bits for I2C and SPI as the firmware traps only support a 16 bit size */
     if (prompt->size > PROMPT_MAX_SIZE)
@@ -430,7 +430,7 @@ DESCRIPTION
     Initialise indexing.
 */
 
-void CsrVoicePromptsPluginInit ( uint16 no_prompts, uint16 no_languages )
+void CsrVoicePromptsPluginInit ( u16 no_prompts, u16 no_languages )
 {
     PRINT(("VP: Init %d prompts %d languages ", no_prompts, no_languages));
     header.no_prompts = no_prompts;
@@ -488,7 +488,7 @@ void CsrVoicePromptPluginPlayDsp(kalimba_state state)
             PanicFalse(StreamConnect(phrase_data->source, lSink));
         
         taskdata = MessageSinkTask( lSink , (TaskData*) &csr_voice_prompts_plugin);
-        PRINT(("VP: sink task now %x was %x.\n",(uint16)&csr_voice_prompts_plugin,(uint16)taskdata));
+        PRINT(("VP: sink task now %x was %x.\n",(u16)&csr_voice_prompts_plugin,(u16)taskdata));
         
         using_tone_port = TRUE;
     }
@@ -604,7 +604,7 @@ static void CsrVoicePromptsPluginPlayDigit(void)
                 /* Configure sink */
                 lSink = StreamKalimbaSink(TONE_VP_MIXING_DSP_PORT);
                 
-                PRINT(("VP: play dsp mix lSink = %x lSource = %x\n",(uint16)lSink,(uint16)lSource));
+                PRINT(("VP: play dsp mix lSink = %x lSource = %x\n",(u16)lSink,(u16)lSource));
                 
                 /* Get messages when source has finished */
                 taskdata = MessageSinkTask( lSink , (TaskData*) &csr_voice_prompts_plugin);
@@ -681,12 +681,12 @@ static void CsrVoicePromptsPluginPlayDigit(void)
                 
                 /* stream voice prompt data to the DSP tone mixing port */                
                 lSink = StreamKalimbaSink(TONE_VP_MIXING_DSP_PORT);
-                PRINT(("VP: play dsp mix lSink = %x lSource = %x\n",(uint16)lSink,(uint16)lSource));                               
+                PRINT(("VP: play dsp mix lSink = %x lSource = %x\n",(u16)lSink,(u16)lSource));                               
                 
                 /* Get messages when source has finished */
                 taskdata = MessageSinkTask( lSink , (TaskData*) &csr_voice_prompts_plugin);
 
-                PRINT(("VP: sink task now %x was %x\n",(uint16)&csr_voice_prompts_plugin,(uint16)taskdata));
+                PRINT(("VP: sink task now %x was %x\n",(u16)&csr_voice_prompts_plugin,(u16)taskdata));
                 
                 /* Configure PCM prompt playback */    
                 KalimbaSendMessage(MESSAGE_SET_TONE_RATE_MESSAGE_ID, phrase_data->playback_rate , (phrase_data->stereo?PROMPT_STEREO:0)|PROMPT_ISPROMPT, 0, 0);        
@@ -729,7 +729,7 @@ DESCRIPTION
     plays a number phrase using the audio plugin    
 */
 
-void CsrVoicePromptsPluginPlayPhrase (uint16 id , uint16 language, Task codec_task , uint16 prompt_volume , AudioPluginFeatures features)
+void CsrVoicePromptsPluginPlayPhrase (u16 id , u16 language, Task codec_task , u16 prompt_volume , AudioPluginFeatures features)
 {
     if(phrase_data != NULL)
         Panic();
@@ -756,7 +756,7 @@ void CsrVoicePromptsPluginPlayPhrase (uint16 id , uint16 language, Task codec_ta
 DESCRIPTION
     plays a tone using the audio plugin    
 */
-void CsrVoicePromptsPluginPlayTone ( TaskData *task, ringtone_note * tone, Task codec_task, uint16 tone_volume, AudioPluginFeatures features)
+void CsrVoicePromptsPluginPlayTone ( TaskData *task, ringtone_note * tone, Task codec_task, u16 tone_volume, AudioPluginFeatures features)
 {
     if(tone == NULL)
         Panic();
@@ -835,7 +835,7 @@ static void CsrVoicePromptsPluginStopPhraseMixable ( void )
         SinkClose(lSink);
     }
     
-    PRINT(("VP: SinkTask now NULL was %x\n",(uint16)taskdata));
+    PRINT(("VP: SinkTask now NULL was %x\n",(u16)taskdata));
     MessageCancelAll((TaskData*) &csr_voice_prompts_plugin, MESSAGE_STREAM_DISCONNECT);
 }
 
@@ -941,12 +941,12 @@ DESCRIPTION
     takes care of checking which volume control mode has been configured and
     setting either the hardware or digital gain to a fixed level if applicable.
 */
-void CsrVoicePromptsPluginSetVolume(int16 prompt_volume, bool using_tone_port)
+void CsrVoicePromptsPluginSetVolume(i16 prompt_volume, bool using_tone_port)
 {
     AUDIO_PLUGIN_SET_MAIN_VOLUME_MSG_T main_vol_msg;
     AUDIO_PLUGIN_SET_AUX_VOLUME_MSG_T aux_vol_msg;
     
-    int16 master_volume = MAXIMUM_DIGITAL_VOLUME_0DB;
+    i16 master_volume = MAXIMUM_DIGITAL_VOLUME_0DB;
     
     /* Input is in DAC levels, multi-channel library expects dB/60 values */
     prompt_volume = VolumeConvertDACGainToDB(prompt_volume);
@@ -963,8 +963,8 @@ void CsrVoicePromptsPluginSetVolume(int16 prompt_volume, bool using_tone_port)
     CsrMultiChanGainGetDigital(multi_channel_group_main, master_volume, prompt_volume, (multi_channel_gain_t*)&main_vol_msg);
     CsrMultiChanGainGetDigital(multi_channel_group_aux, master_volume, prompt_volume, (multi_channel_gain_t*)&aux_vol_msg);
      
-    KalimbaSendLongMessage(MUSIC_VOLUME_MSG, SIZEOF_AUDIO_PLUGIN_SET_MAIN_VOLUME_MSG, (const uint16*)&main_vol_msg);
-    KalimbaSendLongMessage(MUSIC_VOLUME_AUX_MSG, SIZEOF_AUDIO_PLUGIN_SET_AUX_VOLUME_MSG, (const uint16*)&aux_vol_msg);
+    KalimbaSendLongMessage(MUSIC_VOLUME_MSG, SIZEOF_AUDIO_PLUGIN_SET_MAIN_VOLUME_MSG, (const u16*)&main_vol_msg);
+    KalimbaSendLongMessage(MUSIC_VOLUME_AUX_MSG, SIZEOF_AUDIO_PLUGIN_SET_AUX_VOLUME_MSG, (const u16*)&aux_vol_msg);
     
     /* Set hardware gains */
     CsrMultiChanGainSetHardware(multi_channel_group_main, master_volume, NULL);

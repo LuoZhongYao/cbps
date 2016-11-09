@@ -23,7 +23,7 @@ DESCRIPTION
 /****************************************************************************/
 int swatAddDevice(const bdaddr *addr)
 {
-    uint8 i;
+    u8 i;
     
     if (!BdaddrIsZero(addr))
     {
@@ -66,7 +66,7 @@ int swatAddDevice(const bdaddr *addr)
 
 
 /****************************************************************************/
-bool swatRemoveDevice(uint16 device_id)
+bool swatRemoveDevice(u16 device_id)
 {
     if (BdaddrIsZero(&swat->remote_devs[device_id].bd_addr))
     {
@@ -85,7 +85,7 @@ bool swatRemoveDevice(uint16 device_id)
 /****************************************************************************/
 remoteDevice* swatFindDeviceFromBdaddr(const bdaddr *addr)
 {
-    uint8 i;
+    u8 i;
     
     if (!BdaddrIsZero(addr))
     {
@@ -122,7 +122,7 @@ remoteDevice* swatFindDeviceFromSink(Sink sink)
 /****************************************************************************/
 remoteDevice* swatFindLocalDeviceFromSink(Sink sink)
 {
-    uint8 i;
+    u8 i;
     
     for (i=0; i<swat->max_remote_devs; i++)
     {

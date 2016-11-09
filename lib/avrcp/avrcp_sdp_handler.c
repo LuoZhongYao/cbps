@@ -19,7 +19,7 @@ DESCRIPTION
 #include "avrcp_sdp_records.h"
 
 /* Static Data structures for populating Service Records */
-static const uint8 serviceClassController[] =
+static const u8 serviceClassController[] =
 {
     0x09, 0x00, 0x01,           /* ServiceClassIDList(0x0001) */
         0x35, 0x06,             /* Data Element Sequence - 6 Bytes */
@@ -27,14 +27,14 @@ static const uint8 serviceClassController[] =
             0x19, 0x11, 0x0F    /* UUID - A/V Remote Control Controller */   
 };
 
-static const uint8 serviceClassTarget[] =
+static const u8 serviceClassTarget[] =
 {
     0x09, 0x00, 0x01,           /* ServiceClassIDList(0x0001) */
         0x35, 0x03,             /* Data Element Sequence - 3 Bytes */
             0x19, 0x11, 0x0C    /* UUID -  A/V Remote Control Target */
 };
 
-static const uint8 protocolDescriptorList[] =
+static const u8 protocolDescriptorList[] =
 {
     0x09, 0x00, 0x04,           /* Protocol Descriptor List */
         0x35, 0x10,             /* Data Element Sequence - 16 Bytes */
@@ -46,7 +46,7 @@ static const uint8 protocolDescriptorList[] =
                0x09, 0x01, 0x04 /* AVCTP version 1.4 */
 };
 
-static const uint8 profileDescriptorList[] =
+static const u8 profileDescriptorList[] =
 {
     0x09, 0x00, 0x09,           /* Profile Descriptor List */
         0x035, 0x08,            /* Data Element Sequence of 8 */
@@ -58,7 +58,7 @@ static const uint8 profileDescriptorList[] =
 };
 
 /* Static data structures for SDP Attribute Request */
-static const uint8 AvrcpAttributeRequest [] =
+static const u8 AvrcpAttributeRequest [] =
 {
     0x35,0x06,                  /* Data Element Sequence of 6 */ 
         0x09, 0x00, 0x09,       /* ProfileDescriptorList Attribute ID */
@@ -66,14 +66,14 @@ static const uint8 AvrcpAttributeRequest [] =
 };
 
 /* Static data structures for SDP Search from Controller */
-static const uint8 AvrcpTargetServiceRequest [] =
+static const u8 AvrcpTargetServiceRequest [] =
 {
     0x35, 0x03,                 /* Data Element Sequence of 3 */ 
         0x19, 0x11, 0x0C        /* AVRCP target service class UUID */
 };
 
 /* Request the service handle(s) of the AVRCP service at the CT */
-static const uint8 AvrcpControllerServiceRequest [] =
+static const u8 AvrcpControllerServiceRequest [] =
 {
     0x35, 0x03,                  /* Data Element Sequence of 3 */ 
         0x19, 0x11, 0x0E        /* AVRCP Controller service class UUID */
@@ -114,14 +114,14 @@ static const uint8 AvrcpControllerServiceRequest [] =
  * 
  *PARAMETERS
  *  AVRCP*                  - Task
- *  uint16*                 - Length of the populated Service Record.  
+ *  u16*                 - Length of the populated Service Record.  
  *
  *RETURN
- *  uint8*                  - Pointer to the default Service Record or NULL
+ *  u8*                  - Pointer to the default Service Record or NULL
                               if default record cannot be used. 
  *****************************************************************************/
-static const uint8* avrcpDefaultControllerRecord(AvrcpDeviceTask *avrcp, 
-                                                 uint16 *record_len)
+static const u8* avrcpDefaultControllerRecord(AvrcpDeviceTask *avrcp, 
+                                                 u16 *record_len)
 {
     if(avrcp_controller_default(avrcp))
     {
@@ -140,17 +140,17 @@ static const uint8* avrcpDefaultControllerRecord(AvrcpDeviceTask *avrcp,
  * 
  *PARAMETERS
  *  AVRCP*                  - Task
- *  uint16*                 - Length of the populated Service Record.  
+ *  u16*                 - Length of the populated Service Record.  
  *
  *RETURN
- *  uint8*                  - Pointer to the populated Service Record.
+ *  u8*                  - Pointer to the populated Service Record.
  *****************************************************************************/
-static uint8* avrcpPrepareControllerRecord(AvrcpDeviceTask *avrcp, 
-                                           uint16 *record_len)
+static u8* avrcpPrepareControllerRecord(AvrcpDeviceTask *avrcp, 
+                                           u16 *record_len)
 {
-    uint8* service_record;
-    uint16 size_record;
-    uint8 avrcp_ver = avrcp_get_pdl_version(avrcp);
+    u8* service_record;
+    u16 size_record;
+    u8 avrcp_ver = avrcp_get_pdl_version(avrcp);
 
     size_record  =  sizeof(serviceClassController) + 
                     sizeof(protocolDescriptorList) +
@@ -162,7 +162,7 @@ static uint8* avrcpPrepareControllerRecord(AvrcpDeviceTask *avrcp,
          size_record += sizeof(protocolDescriptorList);
     }
 
-    service_record = (uint8 *)PanicUnlessMalloc(size_record);
+    service_record = (u8 *)PanicUnlessMalloc(size_record);
 
     /* Reset the size record to prepare for copy */
     size_record = 0;
@@ -213,14 +213,14 @@ static uint8* avrcpPrepareControllerRecord(AvrcpDeviceTask *avrcp,
  * 
  *PARAMETERS
  *  AVRCP*                  - Task
- *  uint16*                 - Length of the populated Service Record.  
+ *  u16*                 - Length of the populated Service Record.  
  *
  *RETURN
- *  uint8*                  - Pointer to the default Service Record or NULL
+ *  u8*                  - Pointer to the default Service Record or NULL
                               if default record cannot be used. 
  *****************************************************************************/
-static const uint8* avrcpDefaultTargetRecord(AvrcpDeviceTask *avrcp, 
-                                             uint16 *record_len)
+static const u8* avrcpDefaultTargetRecord(AvrcpDeviceTask *avrcp, 
+                                             u16 *record_len)
 {
     if(avrcp_target_default(avrcp))
     {
@@ -239,17 +239,17 @@ static const uint8* avrcpDefaultTargetRecord(AvrcpDeviceTask *avrcp,
  * 
  *PARAMETERS
  *  AVRCP*                  - Task
- *  uint16*                 - Length of the populated Service Record.  
+ *  u16*                 - Length of the populated Service Record.  
  *
  *RETURN
- *  uint8*                  - Pointer to the populated Service Record.
+ *  u8*                  - Pointer to the populated Service Record.
  *****************************************************************************/
-static uint8* avrcpPrepareTargetRecord(AvrcpDeviceTask *avrcp, 
-                                       uint16 *record_len)
+static u8* avrcpPrepareTargetRecord(AvrcpDeviceTask *avrcp, 
+                                       u16 *record_len)
 {
-    uint8* service_record;
-    uint16 size_record;
-    uint8  version = AVRCP_PDL_VERSION_10; 
+    u8* service_record;
+    u16 size_record;
+    u8  version = AVRCP_PDL_VERSION_10; 
 
     size_record  =  sizeof(serviceClassTarget) + 
                     sizeof(protocolDescriptorList) +
@@ -284,7 +284,7 @@ static uint8* avrcpPrepareTargetRecord(AvrcpDeviceTask *avrcp,
         size_record += sizeof(protocolDescriptorList);
     }
 
-    service_record = (uint8 *)PanicUnlessMalloc(size_record);
+    service_record = (u8 *)PanicUnlessMalloc(size_record);
 
     /* Reset the size record to prepare for copy */
     size_record = 0;
@@ -339,7 +339,7 @@ static uint8* avrcpPrepareTargetRecord(AvrcpDeviceTask *avrcp,
  *****************************************************************************/
 void avrcpSendGetSupportedFeaturesCfm(AVRCP            *avrcp,
                                      avrcp_status_code status,
-                                     uint16            features)
+                                     u16            features)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_GET_SUPPORTED_FEATURES_CFM);
     message->avrcp = avrcp;
@@ -365,7 +365,7 @@ void avrcpSendGetSupportedFeaturesCfm(AVRCP            *avrcp,
  *****************************************************************************/
 void avrcpSendGetExtensionsCfm(AVRCP             *avrcp,
                                avrcp_status_code status,
-                               uint16            extensions)
+                               u16            extensions)
 {
     MAKE_AVRCP_MESSAGE(AVRCP_GET_EXTENSIONS_CFM);
     message->avrcp = avrcp;
@@ -388,8 +388,8 @@ void avrcpSendGetExtensionsCfm(AVRCP             *avrcp,
  *****************************************************************************/
 void avrcpRegisterServiceRecord(AvrcpDeviceTask *avrcp)
 {
-    uint16 size_record = 0;
-    const uint8 *service_record = 0;
+    u16 size_record = 0;
+    const u8 *service_record = 0;
 
    /* If the device_type is set to target and controller, Library registers 
       the Controller record first and set the state as registration is still
@@ -527,9 +527,9 @@ void avrcpSdpStateOnConnect(AVRCP *avrcp)
 void avrcpHandleServiceSearchAttributeCfm(AVRCP *avrcp,
                      const CL_SDP_SERVICE_SEARCH_ATTRIBUTE_CFM_T *cfm)
 {
-    uint16 version = 0;
-    uint16 extensions = 0;
-    uint16 features = 0;
+    u16 version = 0;
+    u16 extensions = 0;
+    u16 features = 0;
     avrcp_status_code status = avrcp_fail;
     avrcp_device_role device_type = avrcpGetDeviceTask()->device_type; 
  
@@ -543,7 +543,7 @@ void avrcpHandleServiceSearchAttributeCfm(AVRCP *avrcp,
            ConnectionSdpServiceSearchAttributeRequest(&avrcp->task,
                              (const bdaddr*) &cfm->bd_addr, 0x32, 
                              sizeof(AvrcpControllerServiceRequest),
-                             (uint8*)AvrcpControllerServiceRequest,
+                             (u8*)AvrcpControllerServiceRequest,
                              sizeof(AvrcpAttributeRequest),
                              AvrcpAttributeRequest);
            return;
@@ -555,12 +555,12 @@ void avrcpHandleServiceSearchAttributeCfm(AVRCP *avrcp,
     {
         /* Extract the Version */
         SdpParseGetProfileVersion(cfm->size_attributes,
-                                  (uint8*)cfm->attributes, 
+                                  (u8*)cfm->attributes, 
                                   0x110e, &version);
 
         /* Extract the supported Features */
         SdpParseGetSupportedFeatures(cfm->size_attributes,
-                                     (uint8*)cfm->attributes, 
+                                     (u8*)cfm->attributes, 
                                      &features);
     
         if(features)
@@ -656,18 +656,18 @@ void avrcpSdpSearchRequest(AVRCP           *avrcp,
                      const bdaddr          *addr, 
                            avrcp_sdp_search mode)
 {
-    uint8* service_request= NULL;
+    u8* service_request= NULL;
 
       /* Set the search mode */
     avrcp->sdp_search_mode = mode;  
 
     if(avrcpGetDeviceTask()->device_type ==  avrcp_tg)
     {
-        service_request = (uint8*)AvrcpControllerServiceRequest;
+        service_request = (u8*)AvrcpControllerServiceRequest;
     }
     else /* Controller or Both */
     {
-        service_request = (uint8*)AvrcpTargetServiceRequest;
+        service_request = (u8*)AvrcpTargetServiceRequest;
     }
     
     ConnectionSdpServiceSearchAttributeRequest(&avrcp->task,

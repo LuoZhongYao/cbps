@@ -57,7 +57,7 @@ typedef enum
 */
 gatt_tps_status GattTransmitPowerServerInitTask(Task appTask ,
                                 GTPSS *const tps,
-                                uint16 start_handle,
-                                uint16 end_handle);
+                                u16 start_handle,
+                                u16 end_handle);
 
 #endif /* GATT_TRANSMIT_POWER_SERVER_H */      

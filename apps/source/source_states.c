@@ -497,7 +497,7 @@ NAME
 */
 static void states_enter_state_idle(SOURCE_STATE_T old_state)
 {
-    uint16 delay = 0; /* default is to have no delay before next connection attempt */
+    u16 delay = 0; /* default is to have no delay before next connection attempt */
 
     switch (old_state)
     {

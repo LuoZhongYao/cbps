@@ -17,7 +17,7 @@ DESCRIPTION
 
 /* Find Arbitrary Attribute */
 
-static bool findArbitrary(const uint8 size_service_record, const uint8* service_record, ServiceAttributeId id, Region* value)
+static bool findArbitrary(const u8 size_service_record, const u8* service_record, ServiceAttributeId id, Region* value)
 {
 	ServiceDataType type;
     Region record;
@@ -38,7 +38,7 @@ static bool findArbitrary(const uint8 size_service_record, const uint8* service_
 
 /* Access Arbitrary Attribute */
 
-bool SdpParseGetArbitrary(const uint8 size_service_record, const uint8* service_record, ServiceAttributeId id, uint32* val)
+bool SdpParseGetArbitrary(const u8 size_service_record, const u8* service_record, ServiceAttributeId id, u32* val)
 {
 	Region value;
 	if(findArbitrary(size_service_record, service_record, id, &value))
@@ -53,7 +53,7 @@ bool SdpParseGetArbitrary(const uint8 size_service_record, const uint8* service_
 
 /* Insert Arbitrary Attribute */
 
-bool SdpParseInsertArbitrary(const uint8 size_service_record, const uint8* service_record, ServiceAttributeId id, uint32 val)
+bool SdpParseInsertArbitrary(const u8 size_service_record, const u8* service_record, ServiceAttributeId id, u32 val)
 {
 	Region value;
 	if(findArbitrary(size_service_record, service_record, id, &value))

@@ -31,7 +31,7 @@ NOTES
 #define HFP_COPS_SHORT_ALPHANUMERIC 1   /* 8 char max  */
 #define HFP_COPS_NUMERIC            2   /* Numeric ID  */
 
-static void handleNetworkOperator(hfp_link_data* link, uint8 mode, uint8 format, uint16 size_name, const uint8 *name)
+static void handleNetworkOperator(hfp_link_data* link, u8 mode, u8 format, u16 size_name, const u8 *name)
 {
     /* size_name should be <= 16 but limit array size incase */
     if(size_name >= HFP_MAX_ARRAY_LEN)

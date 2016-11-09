@@ -15,8 +15,8 @@
 #define MAKE_DEVICE_INFO_CLIENT_MESSAGE(TYPE) MESSAGE_MAKE(message,TYPE##_T);
 
 /* Assumes message struct with
- *    uint16 size_value;
- *    uint8 value[1];
+ *    u16 size_value;
+ *    u8 value[1];
  */
 #define MAKE_DEVICE_INFO_CLIENT_MESSAGE_WITH_LEN(TYPE, LEN)                           \
     TYPE##_T *message = (TYPE##_T*)PanicUnlessMalloc(sizeof(TYPE##_T) + (LEN ? LEN - 1 : 0));	\
@@ -44,18 +44,18 @@ typedef enum
 /* Internal message structure for connect request  */
 typedef struct
 {
-    uint16 cid;           /* Connection Identifier for remote device */
-    uint16 start_handle;  /* Start handle of the service */
-    uint16 end_handle;    /* End handle of the service */
+    u16 cid;           /* Connection Identifier for remote device */
+    u16 start_handle;  /* Start handle of the service */
+    u16 end_handle;    /* End handle of the service */
 } DEVICE_INFO_CLIENT_INTERNAL_MSG_CONNECT_T;
 
 /* Internal message structure for Read characteristic request  */
 typedef struct
 {
     gatt_device_info_type_t device_info_type;   /* Device information type to retrieve*/
-    uint16 device_info_char_handle;             /* Device information characteristic handle to retrieve*/
+    u16 device_info_char_handle;             /* Device information characteristic handle to retrieve*/
 }DEVICE_INFO_CLIENT_INTERNAL_MSG_READ_CHAR_T;
 
-uint16 getDeviceInfoCharHandle(GDISC *const device_info_client, gatt_device_info_type_t device_info_type);
+u16 getDeviceInfoCharHandle(GDISC *const device_info_client, gatt_device_info_type_t device_info_type);
 
 #endif

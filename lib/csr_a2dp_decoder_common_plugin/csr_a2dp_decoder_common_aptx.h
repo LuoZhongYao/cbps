@@ -14,7 +14,7 @@ NOTES
 #ifndef _CSR_A2DP_DECODER_COMMON_APTX_H_
 #define _CSR_A2DP_DECODER_COMMON_APTX_H_
 
-extern void MusicConnectAptxSource(A2dpPluginConnectParams *codecData, uint8 content_protection);
+extern void MusicConnectAptxSource(A2dpPluginConnectParams *codecData, u8 content_protection);
 
 #endif
 

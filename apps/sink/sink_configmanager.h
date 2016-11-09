@@ -35,12 +35,12 @@ DESCRIPTION
 
 
 /* Conversion macros */
-#define MAKEWORD(a, b)      ((uint16)(((uint8)((uint32)(a) & 0xff)) | ((uint16)((uint8)((uint32)(b) & 0xff))) << 8))
-#define MAKELONG(a, b)      ((uint32)(((uint16)((uint32)(a) & 0xffff)) | ((uint32)((uint16)((uint32)(b) & 0xffff))) << 16))
-#define LOWORD(l)           ((uint16)((uint32)(l) & 0xffff))
-#define HIWORD(l)           ((uint16)((uint32)(l) >> 16))
-#define LOBYTE(w)           ((uint8)((uint32)(w) & 0xff))
-#define HIBYTE(w)           ((uint8)((uint32)(w) >> 8))
+#define MAKEWORD(a, b)      ((u16)(((u8)((u32)(a) & 0xff)) | ((u16)((u8)((u32)(b) & 0xff))) << 8))
+#define MAKELONG(a, b)      ((u32)(((u16)((u32)(a) & 0xffff)) | ((u32)((u16)((u32)(b) & 0xffff))) << 16))
+#define LOWORD(l)           ((u16)((u32)(l) & 0xffff))
+#define HIWORD(l)           ((u16)((u32)(l) >> 16))
+#define LOBYTE(w)           ((u8)((u32)(w) & 0xff))
+#define HIBYTE(w)           ((u8)((u32)(w) >> 8))
 
 /* DSP keys */
 #define CONFIG_DSP_BASE  (50)
@@ -153,13 +153,13 @@ typedef enum{
 
 typedef struct{
     user_eq_filter_type_t filter;
-    uint16 freq;
-    uint16 gain;
-    uint16 Q;
+    u16 freq;
+    u16 gain;
+    u16 Q;
 }user_eq_band_t;
 
 typedef struct{
-    uint16 preGain;
+    u16 preGain;
     user_eq_band_t bands[NUM_USER_EQ_BANDS];
 }user_eq_bank_t;
 
@@ -197,7 +197,7 @@ typedef struct
 typedef struct
 {
     pblock_key  key;
-    uint16      cache[CONFIG_DSP_SESSION_SIZE];
+    u16      cache[CONFIG_DSP_SESSION_SIZE];
 } dsp_data_type;
 
 #define MAX_EVENTS ( EVENTS_MAX_EVENTS )
@@ -209,14 +209,14 @@ typedef struct
 /* LED patterns */
 typedef struct
 {
-	uint16   event ;
+	u16   event ;
 	BITFIELD dummy:8 ;
 	BITFIELD tone:8 ;
 }tone_config_type ;
 
 typedef struct
 {
-    uint16   event;
+    u16   event;
 	BITFIELD unused:8 ;
 	BITFIELD prompt_id:8 ;
     BITFIELD cancel_queue_play_immediate:1 ;
@@ -228,8 +228,8 @@ typedef struct
 
 typedef struct
 {
-    uint16 event;
-    uint16 pattern[6];
+    u16 event;
+    u16 pattern[6];
 }button_pattern_config_type ;
 
 typedef struct
@@ -247,35 +247,35 @@ typedef struct
 
 typedef struct
 {
-    uint16              pdl_size;               /* DO NOT re-order this entry; pdl_size MUST be the first entry in this data structure */
-    uint16              num_audio_prompt_events;
-	uint16              num_audio_prompt_languages;
-	uint16              no_led_filter;
-	uint16              no_led_states;
-	uint16              no_led_events;
-	uint16              no_tones;
-    uint16              num_audio_prompts;
-    uint16              userTonesLength;
-    uint16              size_at_commands;
+    u16              pdl_size;               /* DO NOT re-order this entry; pdl_size MUST be the first entry in this data structure */
+    u16              num_audio_prompt_events;
+	u16              num_audio_prompt_languages;
+	u16              no_led_filter;
+	u16              no_led_states;
+	u16              no_led_events;
+	u16              no_tones;
+    u16              num_audio_prompts;
+    u16              userTonesLength;
+    u16              size_at_commands;
     defrag_config       defrag;
     input_config_size   input_manager_size;
 }lengths_config_type ;
 
-#define SINK_DEVICE_ID_STRICT_SIZE     (sizeof(uint16) * 4)
+#define SINK_DEVICE_ID_STRICT_SIZE     (sizeof(u16) * 4)
 #define SINK_DEVICE_ID_SW_VERSION_SIZE 4
 typedef struct
 {
-    uint16 vendor_id_source;
-    uint16 vendor_id;
-    uint16 product_id;
-    uint16 bcd_version;
-    uint16 sw_version[SINK_DEVICE_ID_SW_VERSION_SIZE];   /* Original software version number, which is not part of the Device ID spec */
+    u16 vendor_id_source;
+    u16 vendor_id;
+    u16 product_id;
+    u16 bcd_version;
+    u16 sw_version[SINK_DEVICE_ID_SW_VERSION_SIZE];   /* Original software version number, which is not part of the Device ID spec */
 } sink_device_id;
 
 typedef struct
 {
-    uint16 threshold ;   /* threshold (16 bit fractional value - aligned to MSB in DSP) */
-    uint16 trigger_time; /* trigger time in seconds (16 bit int) */
+    u16 threshold ;   /* threshold (16 bit fractional value - aligned to MSB in DSP) */
+    u16 trigger_time; /* trigger time in seconds (16 bit int) */
 } silence_detect_settings;
 
 /* Pairing timeout action */
@@ -583,7 +583,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void configManagerSetUpgradeTransportType( uint16 transport_type );
+void configManagerSetUpgradeTransportType( u16 transport_type );
 
 /****************************************************************************
 NAME
@@ -595,7 +595,7 @@ DESCRIPTION
 RETURNS
     transport type
 */
-uint16 configManagerGetUpgradeTransportType( void );
+u16 configManagerGetUpgradeTransportType( void );
 
 /****************************************************************************
 NAME

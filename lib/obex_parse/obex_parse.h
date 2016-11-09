@@ -77,13 +77,13 @@ typedef struct
     ObexParseFragment   fragment;/*!< Status of data completeness */
     ObexParseObject     type;    /*!< Type of the parsed element object */
     const char*         object;  /*!< The parsed element object */
-    uint16              len;     /*!< Length of the parsed element object */
+    u16              len;     /*!< Length of the parsed element object */
 } ObexParseData;
 
 /*! @brief The tree representation of a parsed object */
 typedef struct
 {
-    uint8           numElements;  /*!< Number of elements in the objects */
+    u8           numElements;  /*!< Number of elements in the objects */
     ObexParseData   elements[OBEX_PARSE_MAX_ELEMENTS];/*!< List of objects*/
 } ObexParseTree;
 
@@ -143,7 +143,7 @@ typedef enum obex_parse_status
 ObexParseStatus ObexParseCreateTree ( ObexParseTree *objTree,
                                       ObexParseObject objType,
                                       const char *data,
-                                      uint16     dataLen );
+                                      u16     dataLen );
 
 /*
     @brief  Decode a Tag(attribute)/value pair and extract the value.
@@ -171,8 +171,8 @@ ObexParseStatus ObexParseCreateTree ( ObexParseTree *objTree,
 */
 char*   ObexParseDecode( ObexParseData* element, 
                          const char*    tag,
-                         uint16         tagLen,
-                         uint16         *maxValLen );
+                         u16         tagLen,
+                         u16         *maxValLen );
 
 
 #endif /* OBEX_PARSE_H_ */

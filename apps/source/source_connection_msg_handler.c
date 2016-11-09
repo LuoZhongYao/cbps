@@ -279,15 +279,15 @@ NAME
 */
 static void connection_msg_pin_code_ind(const CL_SM_PIN_CODE_IND_T* ind)
 {
-    uint16 pin_length = 0;
-    uint8 pin[16];
-    uint16 count = 0;
+    u16 pin_length = 0;
+    u8 pin[16];
+    u16 count = 0;
     
     if (connection_mgr_can_pair(&ind->taddr.addr))
     {
         /* find the PIN index for this device */
-        uint16 index = connection_mgr_find_pin_index_by_addr(&ind->taddr.addr);
-        uint16 code_index = 0;
+        u16 index = connection_mgr_find_pin_index_by_addr(&ind->taddr.addr);
+        u16 code_index = 0;
               
         if (index == INVALID_VALUE)
         {            

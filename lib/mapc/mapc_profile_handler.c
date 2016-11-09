@@ -127,7 +127,7 @@ static void mapcHandleSessionCfm( Mapc      mapcTask,
  *  recordHandle - The SDP Record Handle 
  *  mnsChannel  - The mns Channel 
  **************************************************************************/ 
-void mapcUnregisterMnsApp( uint32 recordHandle, uint8 mnsChannel )
+void mapcUnregisterMnsApp( u32 recordHandle, u8 mnsChannel )
 {
     /* Unregister the SDP record */
     gMnsState.eSdpState =  mapc_sdp_reg_none;
@@ -151,7 +151,7 @@ void mapcUnregisterMnsApp( uint32 recordHandle, uint8 mnsChannel )
  *  popSdpRec  - Populate SDP Record
  *  mnsChannel - Server Channel
  ************************************************************************/
-bool mapcRegisterMnsApp( Task theAppTask , bool popSdpRec , uint8 mnsChannel )
+bool mapcRegisterMnsApp( Task theAppTask , bool popSdpRec , u8 mnsChannel )
 {
     /* Return failure if MNS has already Registered */
     if(gMnsState.regApp) return FALSE;

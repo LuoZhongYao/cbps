@@ -27,7 +27,7 @@ NAME
 DESCRIPTION
     Sends a battery level response back to the GATT Manager.
 */
-void sendBatteryLevelAccessRsp(const GBASS *battery_server, uint16 cid, uint8 battery_level, uint16 result);
+void sendBatteryLevelAccessRsp(const GBASS *battery_server, u16 cid, u8 battery_level, u16 result);
 
 
 /***************************************************************************
@@ -37,7 +37,7 @@ NAME
 DESCRIPTION
     Sends an client configuration access response back to the GATT Manager library.
 */
-void sendBatteryConfigAccessRsp(const GBASS *battery_server, uint16 cid, uint16 client_config);
+void sendBatteryConfigAccessRsp(const GBASS *battery_server, u16 cid, u16 client_config);
 
 
 /***************************************************************************
@@ -47,7 +47,7 @@ NAME
 DESCRIPTION
     Sends an presentation access response back to the GATT Manager library.
 */
-void sendBatteryPresentationAccessRsp(const GBASS *battery_server, uint16 cid, uint8 name_space, uint16 description);
+void sendBatteryPresentationAccessRsp(const GBASS *battery_server, u16 cid, u8 name_space, u16 description);
 
 
 #endif

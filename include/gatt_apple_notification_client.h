@@ -30,15 +30,15 @@ typedef struct __GANCS
 {
     TaskData   lib_task;
     Task       app_task;
-    uint16     notification_source;
-    uint16     ns_ccd;                    /*!< Handle to store the client characteristic descriptor for NS */
-    uint16     control_point;
-    uint16     data_source;
-    uint16     ds_ccd;                    /*!< Handle to store the client characteristic descriptor for DS */
-    uint16     pending_cmd;
-    uint16     ns_notification_mask;      /*!< This mask holds the notification which the application is interested in */
-    uint8      char_report_mask;          /*!< Mask to report the order of characteristic recieved */
-    uint8      char_report_mask_index;    /*!< Index to extract the order of characteristic recieved */ 
+    u16     notification_source;
+    u16     ns_ccd;                    /*!< Handle to store the client characteristic descriptor for NS */
+    u16     control_point;
+    u16     data_source;
+    u16     ds_ccd;                    /*!< Handle to store the client characteristic descriptor for DS */
+    u16     pending_cmd;
+    u16     ns_notification_mask;      /*!< This mask holds the notification which the application is interested in */
+    u8      char_report_mask;          /*!< Mask to report the order of characteristic recieved */
+    u8      char_report_mask_index;    /*!< Index to extract the order of characteristic recieved */ 
 } GANCS;
 
 /*!
@@ -127,11 +127,11 @@ typedef enum
 typedef struct PACK_STRUCT __GATT_ANCS_NS_IND
 {
     const GANCS *ancs;
-    uint8        event_id;                   /*! This field informs the accessory whether the given iOS notification was added, modified, or removed. */
-    uint8        event_flag;                 /*! Flag to determine the specificities with the iOS notification */
-    uint8        category_id;                /*! Field to identify the category of iOS notification */
-    uint8        category_count;             /*! The current number of active iOS notifications in the given category */
-    uint32       notification_uid;           /*! Uniquely identifies the iOS notification */
+    u8        event_id;                   /*! This field informs the accessory whether the given iOS notification was added, modified, or removed. */
+    u8        event_flag;                 /*! Flag to determine the specificities with the iOS notification */
+    u8        category_id;                /*! Field to identify the category of iOS notification */
+    u8        category_count;             /*! The current number of active iOS notifications in the given category */
+    u32       notification_uid;           /*! Uniquely identifies the iOS notification */
 } GATT_ANCS_NS_IND_T;
 
 /*! @brief Enumeration of messages a client task may receive from the apple notification client library.
@@ -176,7 +176,7 @@ typedef struct PACK_STRUCT __GATT_ANCS_INIT_CFM
 
 */
 gatt_ancs_status_t GattAncsInit(GANCS *ancs, 
-                                Task app_task, uint16 cid, uint16 start_handle, uint16 end_handle);
+                                Task app_task, u16 cid, u16 start_handle, u16 end_handle);
 
 /*!
 * macro definitions for the apple notification categories
@@ -226,7 +226,7 @@ gatt_ancs_status_t GattAncsInit(GANCS *ancs,
 */
 void GattAncsSetNSNotificationEnableRequest(const GANCS *ancs,
                                                                                         bool notifications_enable,
-                                                                                        uint16 notification_mask);
+                                                                                        u16 notification_mask);
 
 /*! @brief Contents of the GATT_ANCS_SET_NS_NOTIFICATION_CFM message that is sent by the library,
     as a result of setting notifications on the server.
@@ -276,16 +276,16 @@ typedef struct PACK_STRUCT __GATT_ANCS_SET_DS_NOTIFICATION_CFM
         In case of error/success application can expect GATT_ANCS_WRITE_CP_CFM
 */
 void GattAncsGetNotificationAttributes(const GANCS *const ancs, 
-                                                                       uint32 notification_uid, 
-                                                                       uint16 size_attribute_list, 
-                                                                       uint8 *attribute_list);
+                                                                       u32 notification_uid, 
+                                                                       u16 size_attribute_list, 
+                                                                       u8 *attribute_list);
 
 typedef struct PACK_STRUCT __GATT_ANCS_DS_ATTR_IND
 {
     const GANCS *ancs;
-    uint32      notification_uid;      /*! Uniquely identifies the iOS notification */
-    uint16      size_value;
-    uint8       value[1];/* This will contain Attribute Id followed by Attr Value length followed by actual value
+    u32      notification_uid;      /*! Uniquely identifies the iOS notification */
+    u16      size_value;
+    u8       value[1];/* This will contain Attribute Id followed by Attr Value length followed by actual value
                             Exp: Byte1: Attr ID | Byte 2-3: Attr Value Length | Byte 4 -n: Attr Value and so on*/
 } GATT_ANCS_DS_ATTR_IND_T;
 
@@ -318,16 +318,16 @@ typedef struct PACK_STRUCT __GATT_ANCS_WRITE_CP_CFM
             In case of error/succes application can expect GATT_ANCS_WRITE_CP_CFM
 */
 void GattAncsGetAppAttributes(const GANCS *const ancs, 
-                                                   uint16 size_app_id, 
-                                                   uint8 * app_id, 
-                                                   uint16 size_attribute_list, 
-                                                   uint8 *attribute_list);
+                                                   u16 size_app_id, 
+                                                   u8 * app_id, 
+                                                   u16 size_attribute_list, 
+                                                   u8 *attribute_list);
 
 typedef struct PACK_STRUCT __GATT_ANCS_DS_APP_ATTR_IND
 {
     const GANCS *ancs;
-    uint16      size_value;
-    uint8       value[1]; /* This will contain App ID (NULL terminated string), followed attr values 
+    u16      size_value;
+    u8       value[1]; /* This will contain App ID (NULL terminated string), followed attr values 
                              Exp: Byte1-n: App ID (till NULL) | Byte n+1: App Id | Byte n+2 -n+3: App value length | 
                              Byte n+4 - m: App value  and so on*/
 } GATT_ANCS_DS_APP_ATTR_IND_T;
@@ -349,7 +349,7 @@ typedef struct PACK_STRUCT __GATT_ANCS_DS_APP_ATTR_IND
     @return void
 */
 void GattAncsPerformNotificationAction(const GANCS *const ancs, 
-                                                                          uint32 notification_uid, 
+                                                                          u32 notification_uid, 
                                                                           gatt_ancs_action_id action_id);
 
 

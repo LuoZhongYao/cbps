@@ -14,8 +14,8 @@ DESCRIPTION
 #include <region.h>
 
 /************************************ Private *****************************/
-static bool findGoepL2CapPsm( const uint8 length, 
-                              const uint8* begin, 
+static bool findGoepL2CapPsm( const u8 length, 
+                              const u8* begin, 
                               Region* value )
 {
 	ServiceDataType type;
@@ -36,14 +36,14 @@ static bool findGoepL2CapPsm( const uint8 length,
 
 /************************************ Public ******************************/
 /* Get GoepL2CapPsm */
-bool SdpParseGetGoepL2CapPsm( const uint8 size_service_record, 
-                              const uint8* service_record,
-                              uint16* psm )
+bool SdpParseGetGoepL2CapPsm( const u8 size_service_record, 
+                              const u8* service_record,
+                              u16* psm )
 {
 	Region value;
     if(findGoepL2CapPsm(size_service_record, service_record, &value))
     {
-		*psm = (uint16) RegionReadUnsigned(&value);
+		*psm = (u16) RegionReadUnsigned(&value);
 		/* Accessed Successfully */
 		return TRUE;
     }

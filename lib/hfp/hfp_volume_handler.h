@@ -23,7 +23,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void hfpHandleVgsRequest(hfp_link_data* link, uint8 gain);
+void hfpHandleVgsRequest(hfp_link_data* link, u8 gain);
 
 
 /****************************************************************************
@@ -36,7 +36,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void hfpHandleVgmRequest(hfp_link_data* link, uint8 gain);
+void hfpHandleVgmRequest(hfp_link_data* link, u8 gain);
 
 
 #endif /* HFP_SOUND_HANDLER_H_ */

@@ -27,11 +27,11 @@ NOTES
 
 /*****************************************************************************/
 void ConnectionSmPutAttributeReq(
-        uint16 ps_base, 
-        uint8 addr_type,
+        u16 ps_base, 
+        u8 addr_type,
         const bdaddr* bd_addr, 
-        uint16 size_psdata, 
-        const uint8* psdata
+        u16 size_psdata, 
+        const u8* psdata
         )
 {
     connectionAuthPutAttribute(
@@ -46,10 +46,10 @@ void ConnectionSmPutAttributeReq(
 
 /*****************************************************************************/
 void ConnectionSmGetAttributeReq(
-        uint16 ps_base,
-        uint8 addr_type,
+        u16 ps_base,
+        u8 addr_type,
         const bdaddr* bd_addr,
-        uint16 size_psdata
+        u16 size_psdata
         )
 {
     {
@@ -68,9 +68,9 @@ void ConnectionSmGetAttributeReq(
 
 /*****************************************************************************/
 void ConnectionSmGetIndexedAttribute(
-        uint16 ps_base,
-        uint16 index,
-        uint16 size_psdata
+        u16 ps_base,
+        u16 index,
+        u16 size_psdata
         )
 {
     {
@@ -89,11 +89,11 @@ void ConnectionSmGetIndexedAttribute(
 
 /*****************************************************************************/
 bool ConnectionSmGetAttributeNowReq(
-        uint16 ps_base,
-        uint8 addr_type,
+        u16 ps_base,
+        u8 addr_type,
         const bdaddr* bd_addr, 
-        uint16 size_psdata, 
-        uint8 *psdata
+        u16 size_psdata, 
+        u8 *psdata
         )
 {
 	return connectionAuthGetAttributeNow(
@@ -108,10 +108,10 @@ bool ConnectionSmGetAttributeNowReq(
 
 /*****************************************************************************/
 bool ConnectionSmGetIndexedAttributeNowReq(
-        uint16 ps_base, 
-        uint16 index,
-        uint16 size_psdata,
-        uint8 *psdata,
+        u16 ps_base, 
+        u16 index,
+        u16 size_psdata,
+        u8 *psdata,
         typed_bdaddr *taddr
         )
 {

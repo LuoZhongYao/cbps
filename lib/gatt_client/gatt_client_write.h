@@ -17,7 +17,7 @@ NAME
 DESCRIPTION
     Write Client Configuration descriptor value by handle.
 */
-void writeGattClientConfigValue(GGATTC *gatt_client, uint16 handle);
+void writeGattClientConfigValue(GGATTC *gatt_client, u16 handle);
 
 
 /***************************************************************************

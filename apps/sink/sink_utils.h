@@ -20,9 +20,9 @@ NAME
     bitCounter16
 
 DESCRIPTION
-    Function to count the number of set bits in a uint16 bitmask
+    Function to count the number of set bits in a u16 bitmask
 */
-uint16 bitCounter16(uint16 to_count);
+u16 bitCounter16(u16 to_count);
 
 
 /*******************************************************************************
@@ -32,7 +32,7 @@ NAME
 DESCRIPTION
     Function to count the number of set bits in a 32bit mask
 */
-uint16 bitCounter32(uint32 to_count);
+u16 bitCounter32(u32 to_count);
 
 
 #endif /* _SINK_UTILS_H_ */

@@ -45,7 +45,7 @@ NAME
 DESCRIPTION
     Handle List App Values command PDU received from CT.
 */
-void avrcpHandleListAppValuesCommand(AVRCP *avrcp, uint16 attribute_id);
+void avrcpHandleListAppValuesCommand(AVRCP *avrcp, u16 attribute_id);
 
 
 
@@ -68,8 +68,8 @@ DESCRIPTION
     Handle Get App Values command PDU received from CT.
 */
 void avrcpHandleGetAppValuesCommand(AVRCP *avrcp,
-                                    const uint8* ptr, 
-                                    uint16 packet_size);
+                                    const u8* ptr, 
+                                    u16 packet_size);
 
 
 
@@ -93,8 +93,8 @@ DESCRIPTION
     Handle Set App Values command PDU received from CT.
 */
 void avrcpHandleSetAppValuesCommand(AVRCP *avrcp,
-                                    const uint8* ptr, 
-                                    uint16 packet_size);
+                                    const u8* ptr, 
+                                    u16 packet_size);
 
 
 /****************************************************************************
@@ -116,8 +116,8 @@ DESCRIPTION
     Handle Get App Attribute Text command PDU received from CT.
 */
 void avrcpHandleGetAppAttributeTextCommand(AVRCP *avrcp,  
-                                  const uint8* ptr, 
-                                  uint16 packet_size);
+                                  const u8* ptr, 
+                                  u16 packet_size);
 
 
 
@@ -140,8 +140,8 @@ DESCRIPTION
     Handle Get App Value Text command PDU received from CT.
 */
 void avrcpHandleGetAppValueTextCommand(AVRCP *avrcp,
-                                      const uint8* ptr, 
-                                      uint16 packet_size);
+                                      const u8* ptr, 
+                                      u16 packet_size);
 
 
 /****************************************************************************
@@ -162,7 +162,7 @@ NAME
 DESCRIPTION
     Handle a InformBatteryStatusOfCT PDU command received from the CT.
 */
-void avrcpHandleInformBatteryStatusCommand(AVRCP *avrcp, uint16 battery_status);
+void avrcpHandleInformBatteryStatusCommand(AVRCP *avrcp, u16 battery_status);
 
 
 /****************************************************************************
@@ -173,8 +173,8 @@ DESCRIPTION
     Process the command PDU that has arrrived from the CT.
 */
 void avrcpHandleInformCharSetCommand(AVRCP *avrcp,  
-                                     const uint8* ptr, 
-                                     uint16 packet_size);
+                                     const u8* ptr, 
+                                     u16 packet_size);
 
 #endif /* !AVRCP_CT_ONLY_LIB*/
 

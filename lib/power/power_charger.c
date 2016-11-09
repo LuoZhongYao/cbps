@@ -141,10 +141,10 @@ DESCRIPTION
 RETURNS
     void
 */
-static uint16 powerChargerReadingMgr(void)
+static u16 powerChargerReadingMgr(void)
 {
-    uint8   new_charger_current;
-    uint16  monitor_period = D_SEC(1);
+    u8   new_charger_current;
+    u16  monitor_period = D_SEC(1);
         /* Load the present value of the charger current setting */
         new_charger_current = power->charger_i_setting;
 
@@ -176,7 +176,7 @@ static uint16 powerChargerReadingMgr(void)
             }
             default:
             {
-                int16   temperature;
+                i16   temperature;
                 PRINT(("PWR: ChgMonitor: default\n"));
 
                 monitor_period = power->pmu_mon_config.monitor_period_active;
@@ -255,7 +255,7 @@ RETURNS
 */
 void powerChargerHandleMonitorReq(void)
 {
-    uint16  monitor_period = D_SEC(1);
+    u16  monitor_period = D_SEC(1);
     power_charger_state new_state,old_state;
     old_state = power->chg_state;
     new_state = powerChargerGetState();
@@ -296,7 +296,6 @@ void powerChargerHandleMonitorReq(void)
                 PRINT(("power_charger_boost_external\n"));
                 new_state=power_charger_boost_external;
                 break;
-            case power_charger_complete:
             default:
                 powerChargerDisableBoost();
                 PRINT(("power_charger_fast\n"));
@@ -352,7 +351,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void powerChargerHandleVoltageReading(uint16 reading)
+void powerChargerHandleVoltageReading(u16 reading)
 {
     bool old_level = powerChargerGetVoltageLevel();
     PRINT(("POWER: VCHG old - %u(mV) new - %u(mV)\n", power->vchg, reading));
@@ -388,7 +387,7 @@ RETURNS
 */
 void powerChargerGetTrim(void)
 {
-    if(!PsFullRetrieve(PSKEY_CHARGER_TRIM, &power->ps_chg_trim, sizeof(uint8)))
+    if(!PsFullRetrieve(PSKEY_CHARGER_TRIM, &power->ps_chg_trim, sizeof(u8)))
         power->ps_chg_trim = PSKEY_CHARGER_TRIM_INVALID;
 }
 
@@ -483,7 +482,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void PowerChargerSetCurrent(uint8 current)
+void PowerChargerSetCurrent(u8 current)
 {
     if (power->pmu_mon_enabled){
         power->charger_i_target = current;
@@ -531,7 +530,7 @@ DESCRIPTION
 RETURNS
     bool
 */
-bool PowerChargerReduceTrim(uint8 trim)
+bool PowerChargerReduceTrim(u8 trim)
 {
     /* If we have a valid PS charger trim and requested trim can be subtracted */
     if(power->ps_chg_trim != PSKEY_CHARGER_TRIM_INVALID && trim < power->ps_chg_trim)
@@ -556,7 +555,7 @@ DESCRIPTION
 RETURNS
     bool
 */
-bool PowerChargerSetVterm(uint8 vterm)
+bool PowerChargerSetVterm(u8 vterm)
 {
     /* Attempt to reduce termination voltage */
     return ChargerConfigure(CHARGER_TERM_VOLTAGE, (vterm * POWER_VSCALE));

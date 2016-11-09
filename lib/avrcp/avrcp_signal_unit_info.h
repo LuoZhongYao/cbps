@@ -25,7 +25,7 @@ DESCRIPTION
     the client task.
 */
 void avrcpSendUnitInfoCfmToClient(AVRCP *avrcp, avrcp_status_code status,
-                                 uint16 unit_type, uint16 unit, uint32 company);
+                                 u16 unit_type, u16 unit, u32 company);
 
 
 /****************************************************************************
@@ -46,8 +46,8 @@ DESCRIPTION
     a remote device.
 */
 void avrcpHandleUnitInfoResponse(AVRCP *avrcp, 
-                           const uint8 *ptr, 
-                                 uint16 packet_size);
+                           const u8 *ptr, 
+                                 u16 packet_size);
 
 /****************************************************************************
 NAME    
@@ -59,8 +59,8 @@ DESCRIPTION
 */
 void avrcpSendSubunitInfoCfmToClient(AVRCP            *avrcp, 
                                      avrcp_status_code status, 
-                                     uint8             page, 
-                               const uint8             *page_data);
+                                     u8             page, 
+                               const u8             *page_data);
 
 /****************************************************************************
 NAME    
@@ -82,8 +82,8 @@ DESCRIPTION
     from a remote device.
 */
 void avrcpHandleSubUnitInfoResponse(AVRCP *avrcp, 
-                              const uint8 *ptr, 
-                                    uint16 packet_size);
+                              const u8 *ptr, 
+                                    u16 packet_size);
 #endif /* !AVRCP_TG_ONLY_LIB */
 
 #ifndef AVRCP_CT_ONLY_LIB /* Disable TG for CT only lib */
@@ -107,8 +107,8 @@ DESCRIPTION
     a remote device.
 */
 void avrcpHandleUnitInfoCommand(AVRCP *avrcp, 
-                          const uint8 *ptr, 
-                                uint16 packet_size);
+                          const u8 *ptr, 
+                                u16 packet_size);
 
 
 /****************************************************************************
@@ -131,8 +131,8 @@ DESCRIPTION
      from a remote device.
 */
 void avrcpHandleSubUnitInfoCommand(AVRCP *avrcp, 
-                             const uint8 *ptr, 
-                                   uint16 packet_size);
+                             const u8 *ptr, 
+                                   u16 packet_size);
 
 
 

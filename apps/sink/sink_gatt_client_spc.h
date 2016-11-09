@@ -54,7 +54,7 @@ RETURNS
     TRUE if the Scan Parameters Service was successfully added, FALSE otherwise.
 */
 #ifdef GATT_SPC_CLIENT
-bool sinkGattSpClientAddService(uint16 cid, uint16 start, uint16 end);
+bool sinkGattSpClientAddService(u16 cid, u16 start, u16 end);
 #else
 #define sinkGattSpClientAddService(cid, start, end) (FALSE)
 #endif

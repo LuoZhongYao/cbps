@@ -5,7 +5,7 @@ FILE NAME
     sink_scan.c
 
 DESCRIPTION
-    
+
 
 NOTES
 
@@ -29,10 +29,8 @@ NOTES
 
 
 #ifdef DEBUG_MAIN
-#define MAIN_DEBUG(x) DEBUG(x)
-    #define TRUE_OR_FALSE(x)  ((x) ? 'T':'F')   
+    #define TRUE_OR_FALSE(x)  ((x) ? 'T':'F')
 #else
-    #define MAIN_DEBUG(x) 
 #endif
 
 
@@ -81,7 +79,7 @@ NOTES
 #define EIR_BLOCK_SIZE(size)      (EIR_NULL_SIZE + (size))
 
 /* UUIDs to list */
-static const uint8 a2dp_uuids[] = {EIR_UUID16(BT_UUID_SERVICE_CLASS_A2DP),
+static const u8 a2dp_uuids[] = {EIR_UUID16(BT_UUID_SERVICE_CLASS_A2DP),
                                    EIR_UUID16(BT_UUID_SERVICE_CLASS_AUDIO_SINK)
 #ifdef ENABLE_PEER
                                    ,EIR_UUID16(BT_UUID_SERVICE_CLASS_AUDIO_SOURCE)
@@ -89,19 +87,19 @@ static const uint8 a2dp_uuids[] = {EIR_UUID16(BT_UUID_SERVICE_CLASS_A2DP),
                                   };
 
 #ifdef ENABLE_AVRCP
-static const uint8 avrcp_uuids[] = {EIR_UUID16(BT_UUID_SERVICE_CLASS_AVRCP),
+static const u8 avrcp_uuids[] = {EIR_UUID16(BT_UUID_SERVICE_CLASS_AVRCP),
                                    EIR_UUID16(BT_UUID_SERVICE_CLASS_AVRCP_CONTROLLER)
                                   };
 #endif
 
 #ifdef ENABLE_PBAP
-static const uint8 pbap_uuids[] = {EIR_UUID16(BT_UUID_SERVICE_CLASS_PBAP),
+static const u8 pbap_uuids[] = {EIR_UUID16(BT_UUID_SERVICE_CLASS_PBAP),
                                    EIR_UUID16(BT_UUID_SERVICE_CLASS_PBAP_CLIENT)
                                   };
 #endif
 
-static const uint8 hfp_uuids[]  = {EIR_UUID16(BT_UUID_SERVICE_CLASS_HFP)};
-static const uint8 hsp_uuids[]  = {EIR_UUID16(BT_UUID_SERVICE_CLASS_HSP),
+static const u8 hfp_uuids[]  = {EIR_UUID16(BT_UUID_SERVICE_CLASS_HFP)};
+static const u8 hsp_uuids[]  = {EIR_UUID16(BT_UUID_SERVICE_CLASS_HSP),
                                    EIR_UUID16(BT_UUID_SERVICE_CLASS_HSP_HS)
                                   };
 #define SIZE_A2DP_UUIDS  ((theSink.features.EnableA2dpStreaming) ? sizeof(a2dp_uuids) : 0)
@@ -122,11 +120,11 @@ static const uint8 hsp_uuids[]  = {EIR_UUID16(BT_UUID_SERVICE_CLASS_HSP),
 #define SIZE_HSP_UUIDS   ((theSink.hfp_profiles & hfp_headset_all)   ? sizeof(hsp_uuids) : 0)
 
 /****************************************************************************
-NAME    
+NAME
     sinkWriteEirData
-    
+
 DESCRIPTION
-    Writes the local name, inquiry tx power and device UUIDs into device 
+    Writes the local name, inquiry tx power and device UUIDs into device
     EIR data
 
 RETURNS
@@ -134,29 +132,29 @@ RETURNS
 */
 void sinkWriteEirData( CL_DM_LOCAL_NAME_COMPLETE_T *message )
 {
-    uint16 size_uuids = 0;
-    uint16 size = 0;
-    
-    uint8 *eir = NULL;
-    uint8 *p = NULL;
-    
+    u16 size_uuids = 0;
+    u16 size = 0;
+
+    u8 *eir = NULL;
+    u8 *p = NULL;
+
     /* Determine length of EIR data */
     size_uuids = SIZE_A2DP_UUIDS + SIZE_AVRCP_UUIDS + SIZE_PBAP_UUIDS + SIZE_HFP_UUIDS + SIZE_HSP_UUIDS;
-    
-    size = GetDeviceIdEirDataSize() + EIR_BLOCK_SIZE(EIR_DATA_SIZE_FULL(size_uuids) + EIR_DATA_SIZE_FULL(message->size_local_name) + EIR_DATA_SIZE_FULL(sizeof(uint8)));    
-    
+
+    size = GetDeviceIdEirDataSize() + EIR_BLOCK_SIZE(EIR_DATA_SIZE_FULL(size_uuids) + EIR_DATA_SIZE_FULL(message->size_local_name) + EIR_DATA_SIZE_FULL(sizeof(u8)));
+
     /* Allocate space for EIR data */
-    eir = (uint8 *)mallocPanic(size * sizeof(uint8));
-    p = eir;    
-    
+    eir = (u8 *)mallocPanic(size * sizeof(u8));
+    p = eir;
+
     /* Device Id Record */
     p += WriteDeviceIdEirData( p );
-    
+
     /* Inquiry Tx Field */
-    *p++ = EIR_DATA_SIZE(sizeof(int8));
+    *p++ = EIR_DATA_SIZE(sizeof(i8));
     *p++ = EIR_TYPE_INQUIRY_TX;
     *p++ = theSink.inquiry_tx;
-    
+
     /* UUID16 field */
     *p++ = EIR_DATA_SIZE(size_uuids);
     *p++ = EIR_TYPE_UUID16_PARTIAL;
@@ -165,15 +163,15 @@ void sinkWriteEirData( CL_DM_LOCAL_NAME_COMPLETE_T *message )
     {
         memmove(p, a2dp_uuids, sizeof(a2dp_uuids));
         p += sizeof(a2dp_uuids);
-    }  
-    
-#ifdef ENABLE_AVRCP 
+    }
+
+#ifdef ENABLE_AVRCP
     if (theSink.features.avrcp_enabled)
     {
         memmove(p, avrcp_uuids, sizeof(avrcp_uuids));
         p += sizeof(avrcp_uuids);
     }
-#endif      
+#endif
 
 #ifdef ENABLE_PBAP
     if (theSink.features.pbap_enabled)
@@ -193,16 +191,16 @@ void sinkWriteEirData( CL_DM_LOCAL_NAME_COMPLETE_T *message )
         memmove(p, hsp_uuids, sizeof(hsp_uuids));
         p += sizeof(hsp_uuids);
     }
-    
+
     /* Device Name Field */
-    *p++ = EIR_DATA_SIZE(message->size_local_name);  
+    *p++ = EIR_DATA_SIZE(message->size_local_name);
     *p++ = EIR_TYPE_LOCAL_NAME_COMPLETE;
     memmove(p, message->local_name, message->size_local_name);
     p += message->size_local_name;
-    
+
     /* NULL Termination */
-    *p++ = 0x00; 
-    
+    *p++ = 0x00;
+
     /* Register and free EIR data */
     ConnectionWriteEirData(FALSE, size, eir);
     freePanic(eir);
@@ -210,11 +208,11 @@ void sinkWriteEirData( CL_DM_LOCAL_NAME_COMPLETE_T *message )
 
 
 /****************************************************************************
-NAME    
+NAME
     sinkEnableConnectable
-    
+
 DESCRIPTION
-    Make the device connectable 
+    Make the device connectable
 
 RETURNS
     void
@@ -222,9 +220,9 @@ RETURNS
 void sinkEnableConnectable( void )
 {
     hci_scan_enable scan = hci_scan_enable_off;
-    
-    MAIN_DEBUG(("MP Enable Connectable %ci\n", theSink.inquiry_scan_enabled ? '+' : '-'));
-    
+
+    LOGD("MP Enable Connectable %ci\n", theSink.inquiry_scan_enabled ? '+' : '-');
+
     /* Set the page scan params */
     ConnectionWritePagescanActivity(theSink.conf2->radio.page_scan_interval, theSink.conf2->radio.page_scan_window);
 
@@ -243,9 +241,9 @@ void sinkEnableConnectable( void )
 
 
 /****************************************************************************
-NAME    
+NAME
     sinkDisableConnectable
-    
+
 DESCRIPTION
     Take device out of connectable mode.
 
@@ -256,7 +254,7 @@ void sinkDisableConnectable( void )
 {
     hci_scan_enable scan;
 
-    MAIN_DEBUG(("MP Disable Connectable %ci\n", theSink.inquiry_scan_enabled ? '+' : '-'));
+    LOGD("MP Disable Connectable %ci\n", theSink.inquiry_scan_enabled ? '+' : '-');
 
     /* Make sure that if we're inquiry scanning we don't disable it */
     if (theSink.inquiry_scan_enabled)
@@ -276,23 +274,23 @@ void sinkDisableConnectable( void )
 
 
 /****************************************************************************
-NAME    
+NAME
     sinkEnableDiscoverable
-    
+
 DESCRIPTION
-    Make the device discoverable. 
+    Make the device discoverable.
 
 RETURNS
     void
 */
 void sinkEnableDiscoverable( void )
 {
-    const uint32 giac = 0x9E8B33;
-    const uint32 liac = 0x9E8B00;
+    const u32 giac = 0x9E8B33;
+    const u32 liac = 0x9E8B00;
     hci_scan_enable scan = hci_scan_enable_off;
 
-    MAIN_DEBUG(("MP Enable Discoverable %cp\n", theSink.page_scan_enabled ? '+' : '-'));
-    
+    LOGD("MP Enable Discoverable %cp\n", theSink.page_scan_enabled ? '+' : '-');
+
     /* Set inquiry access code to respond to */
     if ((theSink.inquiry.session == inquiry_session_normal) || (!theSink.features.PeerUseLiac))
     {
@@ -302,7 +300,7 @@ void sinkEnableDiscoverable( void )
     {
         ConnectionWriteInquiryAccessCode(&theSink.task, &liac, 1);
     }
-    
+
     /* Set the inquiry scan params */
     ConnectionWriteInquiryscanActivity(theSink.conf2->radio.inquiry_scan_interval, theSink.conf2->radio.inquiry_scan_window);
 
@@ -311,7 +309,7 @@ void sinkEnableDiscoverable( void )
         scan = hci_scan_enable_inq_and_page;
     else
         scan = hci_scan_enable_inq;
-        
+
     /* Enable scan mode */
     ConnectionWriteScanEnable(scan);
 
@@ -321,11 +319,11 @@ void sinkEnableDiscoverable( void )
 
 
 /****************************************************************************
-NAME    
+NAME
     sinkDisableDiscoverable
-    
+
 DESCRIPTION
-    Make the device non-discoverable. 
+    Make the device non-discoverable.
 
 RETURNS
     void
@@ -333,9 +331,9 @@ RETURNS
 void sinkDisableDiscoverable( void )
 {
     hci_scan_enable scan;
-           
-    MAIN_DEBUG(("MP Disable Discoverable %cp\n", theSink.page_scan_enabled ? '+' : '-'));
-    
+
+    LOGD("MP Disable Discoverable %cp\n", theSink.page_scan_enabled ? '+' : '-');
+
     /* Make sure that if we're page scanning we don't disable it */
     if (theSink.page_scan_enabled)
         scan = hci_scan_enable_page;
@@ -344,27 +342,27 @@ void sinkDisableDiscoverable( void )
 
     /* Enable scan mode */
     ConnectionWriteScanEnable(scan);
-    
+
     /* Set the flag to indicate we're page scanning */
     theSink.inquiry_scan_enabled = FALSE;
 }
 
 
 /****************************************************************************
-NAME    
+NAME
     sinkEnableMultipointConnectable
-    
+
 DESCRIPTION
     when in multi point mode check to see if device can be made connectable,
     this will be when only one AG is currently connected. this function will
     be called upon certain button presses which will reset the 60 second timer
     and allow a second AG to connect should the device have become non discoverable
-    
+
 RETURNS
     none
 */
 void sinkEnableMultipointConnectable( void )
-{    
+{
     /* only applicable to multipoint devices and don't go connectable when taking or making
        an active call, allow connectable in streaming music state */
     if((theSink.MultipointEnable)&&(stateManagerGetState() != deviceLimbo))
@@ -372,15 +370,15 @@ void sinkEnableMultipointConnectable( void )
        /* if only one hfp instance is connected then set connectable to active */
        if(deviceManagerNumConnectedDevs() < 2)
        {
-            MAIN_DEBUG(("MP Go Conn \n" ));
-            
+            LOGD("MP Go Conn \n" );
+
             /* make device connectable */
             sinkEnableConnectable();
-         
+
             /* cancel any currently running timers that would disable connectable mode */
             MessageCancelAll( &theSink.task, EventSysConnectableTimeout );
-            
-            /* remain connectable for a further 'x' seconds to allow a second 
+
+            /* remain connectable for a further 'x' seconds to allow a second
                AG to be connected if non-zero, otherwise stay connecatable forever */
             if(theSink.conf1->timeouts.ConnectableTimeout_s)
             {

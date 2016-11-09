@@ -49,10 +49,10 @@
  */
 typedef struct
 {
-    uint16 report_handle;           /*! Handle of LE HID Report Reference characteristic at remote device */
-    uint16 report_id;               /*! Report id  in the LE HID Report Reference characteristic */
-    uint16 type;                    /*! Report type in the LE HID Report Reference characteristic */
-    uint16 report_reference_handle; /*! Report handle of the LE HID Report characteristic  */
+    u16 report_handle;           /*! Handle of LE HID Report Reference characteristic at remote device */
+    u16 report_id;               /*! Report id  in the LE HID Report Reference characteristic */
+    u16 type;                    /*! Report type in the LE HID Report Reference characteristic */
+    u16 report_reference_handle; /*! Report handle of the LE HID Report characteristic  */
     bool notify;                    /*! Flag set when notifications should be recieved from this report */
 }gatt_hid_client_report_id_map_t;
 
@@ -71,17 +71,17 @@ typedef enum
 */
 typedef struct 
 {
-    uint16 ccd; /*! Stores the client characteristic configuration descriptor handle */
-    uint16 ccd_type; /*! Stores the client characteristic configuration decriptor type */
-    uint16 characterisitc_handle; /*! Stores the characterisitc report handle for which the ccd is available */
+    u16 ccd; /*! Stores the client characteristic configuration descriptor handle */
+    u16 ccd_type; /*! Stores the client characteristic configuration decriptor type */
+    u16 characterisitc_handle; /*! Stores the characterisitc report handle for which the ccd is available */
 }gatt_hid_ccd_handle_mem_t;
 
 /* Structure to hold HID boot mode handles */
 typedef struct
 {
-    uint16 boot_kb_input_report_handle; /*! Boot mode keyboard input report */
-    uint16 boot_mouse_input_report_handle; /*! Boot mode keyboard output report */
-    uint16 boot_output_report_handle; /* Boot mode output report */
+    u16 boot_kb_input_report_handle; /*! Boot mode keyboard input report */
+    u16 boot_mouse_input_report_handle; /*! Boot mode keyboard output report */
+    u16 boot_output_report_handle; /* Boot mode output report */
 }gatt_hid_boot_mode_handles_t;
 
 /* This structure is made public to application as application is responsible for managing resources 
@@ -93,12 +93,12 @@ typedef struct _gatt_hid_client_t
 {
     TaskData lib_task; /*! Lib Task*/
     Task app_task; /*!Application Registered Task */
-    uint16 protocol_handle; /*! Discovered Protocol handle */
-    uint16 info_handle; /*! Discovered HID info handle */
-    uint16 control_handle; /*! Discovered HID control handle */
-    uint16 external_report_reference_handle; /*! Discovered HID external reference handle */
-    uint16 report_map_handle; /*! Discovered report map handle */
-    uint16 pending_request; /*! Any read/write pending? */
+    u16 protocol_handle; /*! Discovered Protocol handle */
+    u16 info_handle; /*! Discovered HID info handle */
+    u16 control_handle; /*! Discovered HID control handle */
+    u16 external_report_reference_handle; /*! Discovered HID external reference handle */
+    u16 report_map_handle; /*! Discovered report map handle */
+    u16 pending_request; /*! Any read/write pending? */
     gatt_hid_ccd_handle_mem_t *ccd_handles; /*! This memory is managed by lib , allocation will happen in Init and Free will happen in Deinit */
     gatt_hid_boot_mode_handles_t boot_handles; /*! Handles for boot mode */
     gatt_hid_client_report_id_map_t *report_id_map; /*! Stores HID report-id report-handle mapping */
@@ -164,10 +164,10 @@ typedef enum
 typedef struct PACK_STRUCT __GATT_HID_CLIENT_NOTIFICATION_IND
 {
     const GHIDC_T *hid_client;/*! Reference structure for the instance */
-    uint16 cid; /*! Connection ID for the instance */
-    uint16 report_id; /*! Report ID */
-    uint16 size_value; /*! Size of value element */
-    uint8 value[1]; /*! Value in notification */
+    u16 cid; /*! Connection ID for the instance */
+    u16 report_id; /*! Report ID */
+    u16 size_value; /*! Size of value element */
+    u8 value[1]; /*! Value in notification */
 } GATT_HID_CLIENT_NOTIFICATION_IND_T;
 
 /*!
@@ -175,9 +175,9 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_NOTIFICATION_IND
 */
 typedef struct
 {
-     uint16 cid; /*! Connection ID of the GATT connection on which the server side HID service need to be accessed*/
-     uint16 start_handle; /*! The first handle of HID service need to be accessed*/
-     uint16 end_handle; /*! The last handle of HID service need to be accessed */
+     u16 cid; /*! Connection ID of the GATT connection on which the server side HID service need to be accessed*/
+     u16 start_handle; /*! The first handle of HID service need to be accessed*/
+     u16 end_handle; /*! The last handle of HID service need to be accessed */
 } GATT_HID_CLIENT_INIT_PARAMS_T;
 
 /*!
@@ -187,25 +187,25 @@ typedef struct
 typedef struct
 {
      /*! Maximum Number Of reports supported by this instance of HID Client 
-     * This structure element allocate lib memory of (sizeof(uint16)*sizeof(gatt_hid_client_report_id_map_t))
+     * This structure element allocate lib memory of (sizeof(u16)*sizeof(gatt_hid_client_report_id_map_t))
      */
-     uint16 max_num_report;
+     u16 max_num_report;
      /*! Maximum number of report mode client characteristic descriptors supported by this  instance of HID client 
-     * This structure element allocate lib memory of  (sizeof(uint16)*max_num_reportmode_ccd)
+     * This structure element allocate lib memory of  (sizeof(u16)*max_num_reportmode_ccd)
      */
-     uint16 max_num_reportmode_ccd;
+     u16 max_num_reportmode_ccd;
       /*! Maximum number of boot mode client characteristic descriptors supported by this  instance of HID client 
-      * This structure element allocate lib memory of  (sizeof(uint16)*max_num_bootmode_ccd) 
+      * This structure element allocate lib memory of  (sizeof(u16)*max_num_bootmode_ccd) 
      */
-     uint16 max_num_bootmode_ccd;
+     u16 max_num_bootmode_ccd;
      /*! Maximum number of characteristic handles supported by this instance of HID client 
-     * This structure element allocate lib memory of  (sizeof(uint16)*max_num_char_handles)
+     * This structure element allocate lib memory of  (sizeof(u16)*max_num_char_handles)
      */
-     uint16 max_num_char_handles; 
+     u16 max_num_char_handles; 
      /*! To Indicate LIB that this instance of HID client required to support boot mode or not
        If TRUE, then max_num_bootmode_ccd is valid 
      */
-     uint16 is_boot_mode_supported; 
+     u16 is_boot_mode_supported; 
 }GATT_HID_CLIENT_CONFIG_PARAMS_T;
 
 
@@ -249,8 +249,8 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_INIT_CFM
 {
     const GHIDC_T *hid_client; /*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 cid; /*! Connection ID */
-    uint16 num_report_id; /*! Number of report ID's supported */
+    u16 cid; /*! Connection ID */
+    u16 num_report_id; /*! Number of report ID's supported */
 }GATT_HID_CLIENT_INIT_CFM_T;
 
 
@@ -310,7 +310,7 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_GET_PROTOCOL_CFM
 {
     const GHIDC_T *hid_client; /*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 cid; /*! Connection ID */
+    u16 cid; /*! Connection ID */
     gatt_hid_client_protocol protocol; /*! Protocol on remote HID service as defined in gatt_hid_client_protocol */
 }GATT_HID_CLIENT_GET_PROTOCOL_CFM_T;
 
@@ -342,7 +342,7 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_SET_PROTOCOL_CFM
 {
     const GHIDC_T *hid_client; /*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 cid; /*! Connection ID */
+    u16 cid; /*! Connection ID */
 } GATT_HID_CLIENT_SET_PROTOCOL_CFM_T;
 
 
@@ -372,9 +372,9 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_READ_INFO_CFM
 {
     const GHIDC_T *hid_client; /*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 cid; /*! Connection ID */
-    uint16 size_value; /*! Size of data in buffer 'value' */
-    uint8 value[1]; /*! Data buffer containing HID informtaion */
+    u16 cid; /*! Connection ID */
+    u16 size_value; /*! Size of data in buffer 'value' */
+    u8 value[1]; /*! Data buffer containing HID informtaion */
 }GATT_HID_CLIENT_READ_INFO_CFM_T;
 
 
@@ -404,9 +404,9 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_READ_EXT_REF_CFM
 {
     const GHIDC_T *hid_client; /*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 cid; /*! Connection ID */
-    uint16 size_value; /*! Size of data in buffer 'value' */
-    uint8 value[1]; /*! Data buffer containing ext ref UUID  */
+    u16 cid; /*! Connection ID */
+    u16 size_value; /*! Size of data in buffer 'value' */
+    u8 value[1]; /*! Data buffer containing ext ref UUID  */
 }GATT_HID_CLIENT_READ_EXT_REF_CFM_T;
 
 /*!
@@ -437,10 +437,10 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_READ_CCD_CFM
 {
     const GHIDC_T *hid_client; /*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 cid; /*! Connection ID */
-    uint16 report_id; /*! Report ID */
-    uint16 size_value; /*! Size of data in buffer 'value' */
-    uint8 value[1]; /*! Data buffer containing ext ref UUID  */
+    u16 cid; /*! Connection ID */
+    u16 report_id; /*! Report ID */
+    u16 size_value; /*! Size of data in buffer 'value' */
+    u8 value[1]; /*! Data buffer containing ext ref UUID  */
 }GATT_HID_CLIENT_READ_CCD_CFM_T;
 
 
@@ -475,8 +475,8 @@ typedef enum
 /*!
     @brief HID ibrary read report ID map confirmation
              This confirmation will be recived with report ID's , The 'value' buffer contains data in format
-             value[sizeof(uint16)] : report ID
-             value[sizeof(uint16)+sizeof(uint16)]: report type
+             value[sizeof(u16)] : report ID
+             value[sizeof(u16)+sizeof(u16)]: report type
              This formatting will continue depend in num_reports.
              ie, if only one report available then
              value[0] :report ID
@@ -486,8 +486,8 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_REPORT_ID_MAP_CFM
 {
     const GHIDC_T *hid_client;/*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 num_reports; /*! Number of reports available  */
-    uint8 value[1]; /*! Data buffer containing report ID and report Type  */
+    u16 num_reports; /*! Number of reports available  */
+    u8 value[1]; /*! Data buffer containing report ID and report Type  */
 }GATT_HID_CLIENT_REPORT_ID_MAP_CFM_T;
 
 
@@ -510,7 +510,7 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_REPORT_ID_MAP_CFM
 */
 gatt_hid_client_status GattHidGetReport(
                                GHIDC_T *const hid_client,
-                               uint16 report_id);
+                               u16 report_id);
 
 /*!
     @brief HID library GET report confirmation
@@ -519,10 +519,10 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_GET_REPORT_CFM
 {
     const GHIDC_T *hid_client; /*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 cid; /*! Connection ID */
-    uint16 report_id; /*! Report ID */
-    uint16 size_value; /*! Size of data in buffer 'value' */
-    uint8 value[1]; /*! Data Buffer */
+    u16 cid; /*! Connection ID */
+    u16 report_id; /*! Report ID */
+    u16 size_value; /*! Size of data in buffer 'value' */
+    u8 value[1]; /*! Data Buffer */
 }GATT_HID_CLIENT_GET_REPORT_CFM_T;
 
 
@@ -531,9 +531,9 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_GET_REPORT_CFM
 */
 typedef struct
 {
-    uint16 report_id; /*! Report id, this can be obtained from GattHidGetReportIDMap() API */
-    uint16 report_len; /*! Report length */
-    uint16 data[1]; /*! Reference data to the report which need to be written*/
+    u16 report_id; /*! Report id, this can be obtained from GattHidGetReportIDMap() API */
+    u16 report_len; /*! Report length */
+    u16 data[1]; /*! Reference data to the report which need to be written*/
 }GATT_HID_CLIENT_SET_REPORT_T;
 
 /*!
@@ -564,8 +564,8 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_SET_REPORT_CFM
 {
     const GHIDC_T *hid_client; /*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 cid; /*! Connection ID */
-    uint16 report_id; /*! Report ID of which confirmation is received */
+    u16 cid; /*! Connection ID */
+    u16 report_id; /*! Report ID of which confirmation is received */
 }GATT_HID_CLIENT_SET_REPORT_CFM_T;
 
 
@@ -595,11 +595,11 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_READ_REPORT_MAP_CFM
 {
     const GHIDC_T *hid_client; /*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 cid; /*! Connection ID */
-    uint16 more_to_come; /*! Mode data to be recived if TRUE,else end of data */
-    uint16 offset; /*! Offset to the characteristic value in this message */
-    uint16 size_value; /*! Size of data in buffer 'value' */
-    uint8 value[1]; /*! Data Buffer */
+    u16 cid; /*! Connection ID */
+    u16 more_to_come; /*! Mode data to be recived if TRUE,else end of data */
+    u16 offset; /*! Offset to the characteristic value in this message */
+    u16 size_value; /*! Size of data in buffer 'value' */
+    u8 value[1]; /*! Data Buffer */
 }GATT_HID_CLIENT_READ_REPORT_MAP_CFM_T;
 
 
@@ -639,7 +639,7 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_CONTROL_REQ_CFM
 {
     const GHIDC_T *hid_client; /*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 cid; /*! Connection ID */
+    u16 cid; /*! Connection ID */
 }GATT_HID_CLIENT_CONTROL_REQ_CFM_T;
 
 
@@ -682,7 +682,7 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_NOTIFICATION_REG_CFM
 {
     const GHIDC_T *hid_client; /*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 cid; /*! Connection ID */
+    u16 cid; /*! Connection ID */
 } GATT_HID_CLIENT_NOTIFICATION_REG_CFM_T;
 
 /*!
@@ -708,7 +708,7 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_NOTIFICATION_REG_CFM
 gatt_hid_client_status GattHidRegisterNotificationForReportID(
                                GHIDC_T *const hid_client,
                                bool enable,
-                               uint16 report_id,
+                               u16 report_id,
                                gatt_hid_notification_mode mode);
 
 /*!
@@ -719,7 +719,7 @@ typedef struct
 {
     const GHIDC_T *hid_client; /*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 cid; /*! Connection ID */
+    u16 cid; /*! Connection ID */
 } GATT_HID_CLIENT_NOTIFICATION_REPROTID_REG_CFM_T;
 
 /*!@brief Enumeration for HID boot mode report types
@@ -737,8 +737,8 @@ typedef enum
 typedef struct PACK_STRUCT __GATT_HID_CLIENT_WRITE_BOOT_REPORT
 {
   gatt_hid_client_boot_mode_report_type report_type;/*! Report type as defined in gatt_hid_client_boot_mode_report_type */
-  uint16 report_len; /*! Report length */
-  uint16 data[1]; /*! Reference data to the report */
+  u16 report_len; /*! Report length */
+  u16 data[1]; /*! Reference data to the report */
 }GATT_HID_CLIENT_WRITE_BOOT_REPORT_T;
 
 /*!
@@ -768,7 +768,7 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_WRITE_BOOT_REPORT_CFM
 {
     const GHIDC_T *hid_client; /*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 cid; /*! Connection ID */
+    u16 cid; /*! Connection ID */
 }GATT_HID_CLIENT_WRITE_BOOT_REPORT_CFM_T;
 
 
@@ -798,11 +798,11 @@ typedef struct PACK_STRUCT __GATT_HID_CLIENT_READ_BOOT_REPORT_CFM
 {
     const GHIDC_T *hid_client; /*! Reference structure for the instance */
     gatt_hid_client_status status; /*! status as per gatt_hid_client_status */
-    uint16 cid; /*! Connection ID */
-    uint16 more_to_come; /*! Mode data to be recived if TRUE,else end of data */
-    uint16 offset; /*! Offset to the characteristic value in this message */
-    uint16 size_value; /*! Size of data in buffer 'value' */
-    uint8 value[1]; /*! Data Buffer */
+    u16 cid; /*! Connection ID */
+    u16 more_to_come; /*! Mode data to be recived if TRUE,else end of data */
+    u16 offset; /*! Offset to the characteristic value in this message */
+    u16 size_value; /*! Size of data in buffer 'value' */
+    u8 value[1]; /*! Data Buffer */
 
 }GATT_HID_CLIENT_READ_BOOT_REPORT_CFM_T;
 

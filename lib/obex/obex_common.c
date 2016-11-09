@@ -28,14 +28,14 @@ DESCRIPTION
  *  Refer obex.h
  ************************************************************************/
 void ObexAuthReqResponse( Obex session,
-                          const uint8* nonce,
+                          const u8* nonce,
                           ObexAuthOptions options,
-                          uint16 realmLen,
-                          const uint8* realm )
+                          u16 realmLen,
+                          const u8* realm )
 {
     Source src = 0;
-    uint8* digest;
-    uint16 len = OBEX_TOTAL_DIGEST_SIZE;
+    u8* digest;
+    u16 len = OBEX_TOTAL_DIGEST_SIZE;
     OBEX_ASSERT( session );
   
     if( !IsObexConnecting( session ) ) return;
@@ -58,7 +58,7 @@ void ObexAuthReqResponse( Obex session,
     if(options)
     {
         len += obexFrameTLVHeader( digest+len, OBEX_REQ_OPTIONS_TAG,
-                                     1, (const uint8*)&options); 
+                                     1, (const u8*)&options); 
     }
 
     if(realm)
@@ -92,13 +92,13 @@ void ObexAuthReqResponse( Obex session,
  *  Refer obex.h
  ************************************************************************/
 void ObexAuthClgResponse( Obex session,
-                          const uint8* reqDigest, 
-                          uint8 userIdLen,
-                          const uint8* userId )
+                          const u8* reqDigest, 
+                          u8 userIdLen,
+                          const u8* userId )
 {
     Source src = 0;
-    uint8* digest;
-    uint16 len = OBEX_TOTAL_DIGEST_SIZE;
+    u8* digest;
+    u16 len = OBEX_TOTAL_DIGEST_SIZE;
     OBEX_ASSERT( session );
     OBEX_ASSERT( reqDigest );
 
@@ -174,7 +174,7 @@ Sink ObexGetSink( Obex session )
  * PARAMETERS
  *  Refer obex.h
  ************************************************************************/
-uint8 ObexGetChannel( Obex session )
+u8 ObexGetChannel( Obex session )
 {
     if(!session) return OBEX_INVALID_CHANNEL;
     return (IsObexL2cap(session))? OBEX_INVALID_CHANNEL:session->channel;
@@ -190,7 +190,7 @@ uint8 ObexGetChannel( Obex session )
  * PARAMETERS
  *  Refer obex.h
  ************************************************************************/
-uint16 ObexGetPsm( Obex session )
+u16 ObexGetPsm( Obex session )
 {
     if(!session) return OBEX_INVALID_CHANNEL;
     return (IsObexL2cap(session))? session->channel:OBEX_INVALID_CHANNEL;
@@ -211,7 +211,7 @@ uint16 ObexGetPsm( Obex session )
  * PARAMETERS
  *  Refer obex.h
  *************************************************************************/
-uint16 ObexObjNew( Obex session )
+u16 ObexObjNew( Obex session )
 {
     if (!session ) return OBEX_INVALID_LEN;
 
@@ -249,7 +249,7 @@ void  ObexObjDelete( Obex session)
  *************************************************************************/
 bool ObexObjAddVariableHdr( Obex session,  
                             ObexSeqHeaderId hdrId,
-                            uint16  hdrLen,
+                            u16  hdrLen,
                             Source  src )
 {
     if( !session ) return FALSE;
@@ -277,7 +277,7 @@ bool ObexObjAddVariableHdr( Obex session,
  * PARAMETERS
  *  Refer obex.h 
  *************************************************************************/
-bool ObexObjAddByteHdr( Obex session, ObexByteHeaderId hdrId, uint32 hdrVal)
+bool ObexObjAddByteHdr( Obex session, ObexByteHeaderId hdrId, u32 hdrVal)
 {
     if( !session ) return FALSE;
     return obexAddUint32Header( session, hdrId, hdrVal );
@@ -293,11 +293,11 @@ bool ObexObjAddByteHdr( Obex session, ObexByteHeaderId hdrId, uint32 hdrVal)
  * PARAMETERS
  *  Refer obex.h 
  *************************************************************************/
-uint32 ObexObjExtractByteHdrValue( ObexByteHeaderId hdrId,
-                                   uint16  srcLen,
+u32 ObexObjExtractByteHdrValue( ObexByteHeaderId hdrId,
+                                   u16  srcLen,
                                    Source  src )
 {
-    const uint8* pkt = SourceMap( src );
+    const u8* pkt = SourceMap( src );
 
     if(pkt == NULL ) return OBEX_INVALID_UINT32;
     return obexGetUint32Header( pkt, srcLen, hdrId );
@@ -313,12 +313,12 @@ uint32 ObexObjExtractByteHdrValue( ObexByteHeaderId hdrId,
  * PARAMETERS
  *  Refer obex.h 
  *************************************************************************/
-const uint8* ObexObjMapHdrValue( ObexSeqHeaderId hdrId,
-                                 uint16  srcLen,
+const u8* ObexObjMapHdrValue( ObexSeqHeaderId hdrId,
+                                 u16  srcLen,
                                  Source  src,
-                                 uint16 *hdrLen )
+                                 u16 *hdrLen )
 {
-    const uint8* pkt = SourceMap( src );
+    const u8* pkt = SourceMap( src );
     if( !pkt) return NULL;
     *hdrLen = srcLen;
 
@@ -337,11 +337,11 @@ const uint8* ObexObjMapHdrValue( ObexSeqHeaderId hdrId,
  *************************************************************************/
 Source ObexObjFilterHdrValue( Obex session,
                               ObexSeqHeaderId  hdrId,
-                              uint16 *hdrLen )
+                              u16 *hdrLen )
 {
     Source src =  StreamSourceFromSink( session->sink );
-    const uint8* pkt = SourceMap ( src );
-    uint16 offset;
+    const u8* pkt = SourceMap ( src );
+    u16 offset;
     *hdrLen =  session->srcUsed;
 
     offset = obexFetchHeader( pkt, *hdrLen , hdrId );
@@ -385,7 +385,7 @@ void ObexSourceDrop( Obex session )
  * PARAMETERS
  *  Refer obex.h 
  *************************************************************************/
-uint16 ObexObjSrmNew( Obex session, bool obexPut, bool srmpWait )
+u16 ObexObjSrmNew( Obex session, bool obexPut, bool srmpWait )
 {
     if (!session ) return OBEX_INVALID_LEN;
 

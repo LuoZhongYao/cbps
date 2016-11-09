@@ -12,8 +12,8 @@
 #define HANDLE_LINK_LOSS_SERVICE_END    (0xffff)
 #define HANDLE_LINK_LOSS_ALERT_LEVEL    (0x0003)
 
-uint16 *GattGetDatabase(uint16 *len);
-uint16 GattGetDatabaseSize(void);
+u16 *GattGetDatabase(u16 *len);
+u16 GattGetDatabaseSize(void);
 
 #endif
 

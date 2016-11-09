@@ -35,10 +35,10 @@ NOTES
 ********************************************************************************/
 void avrcpSendGetCapsCfm(   AVRCP               *avrcp, 
                             avrcp_status_code   status, 
-                            uint16              metadata_packet_type, 
+                            u16              metadata_packet_type, 
                             avrcp_capability_id caps_id, 
-                            uint16              number_of_caps, 
-                            uint16              data_length, 
+                            u16              number_of_caps, 
+                            u16              data_length, 
                             Source              source)
 {
     /* Send successful confirmation message up to app. */
@@ -80,14 +80,14 @@ void avrcpSendGetCapsCfm(   AVRCP               *avrcp,
 ********************************************************************************/
 void avrcpHandleGetCapsResponse(AVRCP               *avrcp, 
                                 avrcp_response_type response, 
-                                uint16              meta_packet_type, 
-                                const uint8*        ptr,
-                                uint16              packet_size)
+                                u16              meta_packet_type, 
+                                const u8*        ptr,
+                                u16              packet_size)
 {
     Source source=0;
     avrcp_status_code status= convertResponseToStatus(response);
     avrcp_capability_id caps_id=0; 
-    uint16  number_of_caps=0; 
+    u16  number_of_caps=0; 
 
     /*    
         Process the response PDU. Just ignore this response if it was not
@@ -151,8 +151,8 @@ void avrcpHandleGetCapsResponse(AVRCP               *avrcp,
 void avrcpHandleInternalGetCapsResponse(AVRCP                         *avrcp, 
                                         AVRCP_INTERNAL_GET_CAPS_RES_T *res)
 {
-    uint16 size_mandatory_data = 1;  /* Just error code for failure */
-    uint8 mandatory_data[5];
+    u16 size_mandatory_data = 1;  /* Just error code for failure */
+    u8 mandatory_data[5];
     AvrcpDeviceTask * avrcp_task = avrcpGetDeviceTask();
     
     /* Get the error status code */
@@ -161,7 +161,7 @@ void avrcpHandleInternalGetCapsResponse(AVRCP                         *avrcp,
 
     if (res->response == avctp_response_stable)
     {
-        uint16 size_mandatory_caps = 0; /* mandatory caps size */
+        u16 size_mandatory_caps = 0; /* mandatory caps size */
 
         if (res->caps_id == avrcp_capability_event_supported)
         {

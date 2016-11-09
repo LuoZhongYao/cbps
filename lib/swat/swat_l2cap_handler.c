@@ -38,7 +38,7 @@ DESCRIPTION
 /****************************************************************************
     Data Structures
 */
-static const uint16 swat_media_conftab[] =
+static const u16 swat_media_conftab[] =
 {
     L2CAP_AUTOPT_SEPARATOR,                             /* START */
     L2CAP_AUTOPT_MTU_IN,            0x037F,             /* Maximum inbound MTU - 895 bytes */
@@ -49,7 +49,7 @@ static const uint16 swat_media_conftab[] =
     L2CAP_AUTOPT_TERMINATOR                             /* END */   
 };
 
-static const uint16 swat_signalling_conftab[] =
+static const u16 swat_signalling_conftab[] =
 {
     L2CAP_AUTOPT_SEPARATOR,                             /* START */
     L2CAP_AUTOPT_MTU_IN,            0x037F,             /* Maximum inbound MTU - 895 bytes */
@@ -62,7 +62,7 @@ static const uint16 swat_signalling_conftab[] =
 };
 
 /* SWAT service search request */
-static const uint8 swat_service_request[] =
+static const u8 swat_service_request[] =
 {
     0x35, 0x11,         /* "Data element sequence" (Sequence length = 0x11) */
     0x1c,               /* (0x1c) Translates to: "UUID" of length 16 bytes */
@@ -74,7 +74,7 @@ static const uint8 swat_service_request[] =
 };
 
 /* SWAT signalling PSM request */
-static const uint8 swat_sig_protocol_attribute_request[]=
+static const u8 swat_sig_protocol_attribute_request[]=
 {
     /* Protocol Descriptor List */
     0x35, 0x03,         /* "Data element sequence" (Sequence length 0x03) */
@@ -82,7 +82,7 @@ static const uint8 swat_sig_protocol_attribute_request[]=
 };
 
 /* SWAT media PSM request */
-static const uint8 swat_media_protocol_attribute_request[]=
+static const u8 swat_media_protocol_attribute_request[]=
 {
     /* Protocol Descriptor List */
     0x35, 0x03,         /* "Data element sequence" (Sequence length 0x03) */
@@ -215,9 +215,9 @@ PARAMETERS
 DESCRIPTION
     Handle an incoming L2CAP connection request for a SWAT signalling channel
 */
-static void swatL2capHandleIncomingSignallingRequest(bdaddr bd_addr, uint16 connection_id, uint8 identifier)
+static void swatL2capHandleIncomingSignallingRequest(bdaddr bd_addr, u16 connection_id, u8 identifier)
 {
-    uint8 device_id = swatAddDevice((const bdaddr *)&bd_addr);
+    u8 device_id = swatAddDevice((const bdaddr *)&bd_addr);
     
     /* Check the device is allowed to connect (max devices not reached) */
     if (device_id != ERROR_MAX_DEVICES)
@@ -290,7 +290,7 @@ PARAMETERS
 DESCRIPTION
     Handle an incoming L2CAP connection request for a SWAT media channel
 */
-static void swatL2capHandleIncomingMediaRequest(bdaddr bd_addr, uint16 connection_id, uint8 identifier)
+static void swatL2capHandleIncomingMediaRequest(bdaddr bd_addr, u16 connection_id, u8 identifier)
 {
     remoteDevice * device = swatFindDeviceFromBdaddr((const bdaddr *) &bd_addr);
     
@@ -304,18 +304,18 @@ static void swatL2capHandleIncomingMediaRequest(bdaddr bd_addr, uint16 connectio
             {
                 SWAT_DEBUG(("[SWAT] Accept incoming media request from device ID[%x]\n", device->id));
                 device->transport_state = swat_transport_incoming;
-                ConnectionL2capConnectResponse(&swat->l2cap_task, TRUE, SWAT_MEDIA_PSM, connection_id, identifier, sizeof(swat_media_conftab), (uint16 *)swat_media_conftab);
+                ConnectionL2capConnectResponse(&swat->l2cap_task, TRUE, SWAT_MEDIA_PSM, connection_id, identifier, sizeof(swat_media_conftab), (u16 *)swat_media_conftab);
             }
             else
             {
                 SWAT_DEBUG(("[SWAT] Reject incoming media request from device ID[%x] Transport in wrong STATE[%x]\n", device->id, device->transport_state));
-                ConnectionL2capConnectResponse(&swat->l2cap_task, FALSE, SWAT_MEDIA_PSM, connection_id, identifier, sizeof(swat_media_conftab), (uint16 *)swat_media_conftab);
+                ConnectionL2capConnectResponse(&swat->l2cap_task, FALSE, SWAT_MEDIA_PSM, connection_id, identifier, sizeof(swat_media_conftab), (u16 *)swat_media_conftab);
             }
         }
         else
         {
             SWAT_DEBUG(("[SWAT] Reject incoming media request from device ID[%x] Media channel in wrong STATE[%x] should be STATE[%x]\n", device->id, device->media_state, swat_media_opening));
-            ConnectionL2capConnectResponse(&swat->l2cap_task, FALSE, SWAT_MEDIA_PSM, connection_id, identifier, sizeof(swat_media_conftab), (uint16 *)swat_media_conftab);
+            ConnectionL2capConnectResponse(&swat->l2cap_task, FALSE, SWAT_MEDIA_PSM, connection_id, identifier, sizeof(swat_media_conftab), (u16 *)swat_media_conftab);
         }
     }
     else
@@ -656,7 +656,7 @@ FUNCTION:
 DESCRIPTION:
     Find L2CAP PSM in the SDP record.
 */
-static bool swatGetL2capPSM(const uint8 *begin, const uint8 *end, uint16 *psm, uint16 id)
+static bool swatGetL2capPSM(const u8 *begin, const u8 *end, u16 *psm, u16 id)
 {
     ServiceDataType type;
     Region record, protocols, protocol, value;
@@ -669,11 +669,11 @@ static bool swatGetL2capPSM(const uint8 *begin, const uint8 *end, uint16 *psm, u
             if(type == sdtSequence
                && ServiceGetValue(&protocol, &type, &value)
                && type == sdtUUID
-               && RegionMatchesUUID32(&value, (uint32) 0x0100)
+               && RegionMatchesUUID32(&value, (u32) 0x0100)
                && ServiceGetValue(&protocol, &type, &value)
                && type == sdtUnsignedInteger)
             {
-                *psm = (uint16) RegionReadUnsigned(&value);
+                *psm = (u16) RegionReadUnsigned(&value);
                 return TRUE;
             }
 
@@ -694,7 +694,7 @@ DESCRIPTION:
 static void swatHandleClSdpServiceSearchAttributeCfm(CL_SDP_SERVICE_SEARCH_ATTRIBUTE_CFM_T *cfm)
 {
     remoteDevice *device = swatFindDeviceFromBdaddr(&cfm->bd_addr);
-    uint16 psm = 0;
+    u16 psm = 0;
     bool success = FALSE;
 
     /* if we haven't got a valid device, there's nothing to do, regardless of the SDP
@@ -724,7 +724,7 @@ static void swatHandleClSdpServiceSearchAttributeCfm(CL_SDP_SERVICE_SEARCH_ATTRI
                     SWAT_DEBUG(("[SWAT] SIG remote PSM[%x] ConnectReq\n", psm));
 
                     /* request connection on PSM */
-                    ConnectionL2capConnectRequest(&swat->l2cap_task, &cfm->bd_addr, SWAT_SIGNALLING_PSM, psm, sizeof(swat_signalling_conftab), (uint16*)swat_signalling_conftab);
+                    ConnectionL2capConnectRequest(&swat->l2cap_task, &cfm->bd_addr, SWAT_SIGNALLING_PSM, psm, sizeof(swat_signalling_conftab), (u16*)swat_signalling_conftab);
                     
                     /* send a L2CAP connect request, make sure we don't generate an error below */
                     success = TRUE;
@@ -744,7 +744,7 @@ static void swatHandleClSdpServiceSearchAttributeCfm(CL_SDP_SERVICE_SEARCH_ATTRI
 
                     /* Send request to connect the L2CAP media channel */
                     device->transport_state = swat_transport_outgoing;
-                    ConnectionL2capConnectRequest(&swat->l2cap_task, &device->bd_addr, SWAT_MEDIA_PSM, psm, sizeof(swat_media_conftab), (uint16*)swat_media_conftab);
+                    ConnectionL2capConnectRequest(&swat->l2cap_task, &device->bd_addr, SWAT_MEDIA_PSM, psm, sizeof(swat_media_conftab), (u16*)swat_media_conftab);
                     
                     /* send a L2CAP connect request, make sure we don't generate an error below */
                     success = TRUE;
@@ -787,7 +787,7 @@ static void swatSendL2capSignallingConnectRequest(bdaddr addr)
         device->psm_search_type = swat_psm_search_sig;
 
         /* find out what the remote signalling channel PSM is */
-        ConnectionSdpServiceSearchAttributeRequest(&swat->l2cap_task, &addr, 32, sizeof(swat_service_request), (uint8*)swat_service_request, sizeof(swat_sig_protocol_attribute_request), swat_sig_protocol_attribute_request);
+        ConnectionSdpServiceSearchAttributeRequest(&swat->l2cap_task, &addr, 32, sizeof(swat_service_request), (u8*)swat_service_request, sizeof(swat_sig_protocol_attribute_request), swat_sig_protocol_attribute_request);
     }
 }
 
@@ -837,7 +837,7 @@ void swatHandleL2capSignallingConnectReq(const SWAT_INTERNAL_SIGNALLING_CONNECT_
     /* Make an outgoing request to a new device */
     else
     {
-        uint16 d_id = swatAddDevice(&req->addr);
+        u16 d_id = swatAddDevice(&req->addr);
         
         if (d_id != ERROR_MAX_DEVICES)
         {
@@ -856,7 +856,7 @@ void swatHandleL2capSignallingConnectReq(const SWAT_INTERNAL_SIGNALLING_CONNECT_
 
 
 /****************************************************************************/
-void swatL2capSignallingConnectResponse(uint16 device_id, uint16 connection_id, uint8 identifier, bool accept)
+void swatL2capSignallingConnectResponse(u16 device_id, u16 connection_id, u8 identifier, bool accept)
 {
     /* If rejecting the signalling connection, also remove the device */
     /* Don't remove the device if we are in local_connecting state as means it's the crossover connection from the SINK device that's being rejected */
@@ -866,12 +866,12 @@ void swatL2capSignallingConnectResponse(uint16 device_id, uint16 connection_id, 
         swatRemoveDevice(device_id);
     }
     
-    ConnectionL2capConnectResponse(&swat->l2cap_task, accept, SWAT_SIGNALLING_PSM, connection_id, identifier, sizeof(swat_signalling_conftab), (uint16 *)swat_signalling_conftab);
+    ConnectionL2capConnectResponse(&swat->l2cap_task, accept, SWAT_SIGNALLING_PSM, connection_id, identifier, sizeof(swat_signalling_conftab), (u16 *)swat_signalling_conftab);
 }
 
 
 /*****************************************************************************/
-void swatHandleL2capSignallingDisconnectReq(uint16 device_id)
+void swatHandleL2capSignallingDisconnectReq(u16 device_id)
 {
     remoteDevice * device = &swat->remote_devs[device_id];
     
@@ -944,7 +944,7 @@ void swatL2capMediaConnectReq(remoteDevice * device)
         device->psm_search_type = swat_psm_search_media;
 
         /* find out what the remote media channel PSM is */
-        ConnectionSdpServiceSearchAttributeRequest(&swat->l2cap_task, &device->bd_addr, 32, sizeof(swat_service_request), (uint8*)swat_service_request, sizeof(swat_media_protocol_attribute_request), swat_media_protocol_attribute_request);
+        ConnectionSdpServiceSearchAttributeRequest(&swat->l2cap_task, &device->bd_addr, 32, sizeof(swat_service_request), (u8*)swat_service_request, sizeof(swat_media_protocol_attribute_request), swat_media_protocol_attribute_request);
     }
 }
 
@@ -988,7 +988,7 @@ bool swatL2capMediaCloseReq(remoteDevice * device)
 
 
 /*****************************************************************************/
-void swatHandleUnresponsiveMediaStd(uint16 device_id)
+void swatHandleUnresponsiveMediaStd(u16 device_id)
 {
     SWAT_DEBUG(("[SWAT] Device ID[%x] did not respond to the last SWAT command [%x]\n", device_id, swat->remote_devs[device_id].media_state));
     

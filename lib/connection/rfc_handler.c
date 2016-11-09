@@ -73,7 +73,7 @@ static void convertPortParToRfcPortnegValues(RFC_PORTNEG_VALUES_T *out, const po
 ******************************************************************************/
 #define BREAK_SIGNAL_RANGE_MASK 0x0F
 
-static uint8 encode_break_signal(uint8 break_signal)
+static u8 encode_break_signal(u8 break_signal)
 {
     if (break_signal & BREAK_SIGNAL_RANGE_MASK)
         return (break_signal & BREAK_SIGNAL_RANGE_MASK) << 3 | 0x01;
@@ -104,7 +104,7 @@ void connectionHandleRfcommRegisterReq(const CL_INTERNAL_RFCOMM_REGISTER_REQ_T *
             */
     MAKE_PRIM_T(RFC_REGISTER_REQ);
     prim->phandle           = 0;
-    prim->context           = (uint16) req->theAppTask;      
+    prim->context           = req->theAppTask;      
     prim->flags             = 0;
     prim->loc_serv_chan_req = req->suggested_server_channel;
     VmSendRfcommPrim(prim);
@@ -198,7 +198,7 @@ void connectionHandleRfcommUnregisterCfm(const RFC_UNREGISTER_CFM_T *cfm)
         CL_RFCOMM_CONNECT_CFM
 
 ******************************************************************************/
-static void sendRfcommConnectionCfm(Task task, rfcomm_connect_status status, uint8 channel, uint16 payload, Sink sink, uint16 conn_id, bdaddr *addr)
+static void sendRfcommConnectionCfm(Task task, rfcomm_connect_status status, u8 channel, u16 payload, Sink sink, u16 conn_id, bdaddr *addr)
 {
     MAKE_CL_MESSAGE(CL_RFCOMM_CLIENT_CONNECT_CFM);
     message->status = status;
@@ -220,7 +220,7 @@ void connectionHandleRfcommConnectReq(const CL_INTERNAL_RFCOMM_CONNECT_REQ_T* re
             MAKE_PRIM_T(RFC_CLIENT_CONNECT_REQ);
             BdaddrConvertVmToBluestack(&(prim->bd_addr), &(req->bd_addr));
             prim->rem_serv_chan         = req->remote_server_channel;
-            prim->context               = (uint16) req->theAppTask;
+            prim->context               = req->theAppTask;
             prim->client_security_chan  = req->security_channel;
             prim->max_payload_size      = req->config.max_payload_size;
 
@@ -490,7 +490,7 @@ static void sendRfcommDisconnectCfm(Task appTask, Sink sink, rfcomm_disconnect_s
 /*****************************************************************************/
 void connectionHandleRfcommDisconnectReq(const CL_INTERNAL_RFCOMM_DISCONNECT_REQ_T* req)
 {
-    uint16 conn_id = SinkGetRfcommConnId(req->sink);
+    u16 conn_id = SinkGetRfcommConnId(req->sink);
     
     if (req->sink && conn_id)
     {
@@ -578,7 +578,7 @@ void connectionHandleRfcommDisconnectInd(const RFC_DISCONNECT_IND_T *ind)
 /*****************************************************************************/
 void connectionHandleRfcommDisconnectRsp(const CL_INTERNAL_RFCOMM_DISCONNECT_RSP_T *rsp)
 {
-    uint16 conn_id = SinkGetRfcommConnId(rsp->sink);
+    u16 conn_id = SinkGetRfcommConnId(rsp->sink);
     /* The conn_id could be 0 if there is an RFCOMM disconnect cross-over, in
      * which case sending the response is redundant.
      */
@@ -606,7 +606,7 @@ void connectionHandleRfcommDisconnectRsp(const CL_INTERNAL_RFCOMM_DISCONNECT_RSP
 ******************************************************************************/
 void connectionHandleRfcommPortNegReq(const CL_INTERNAL_RFCOMM_PORTNEG_REQ_T* req)
 {
-    int16 conn_id = (uint16) PanicZero( SinkGetRfcommConnId(req->sink) );
+    i16 conn_id = (u16) PanicZero( SinkGetRfcommConnId(req->sink) );
 
     MAKE_PRIM_T(RFC_PORTNEG_REQ);
     prim->conn_id = conn_id;
@@ -683,7 +683,7 @@ void connectionHandleRfcommPortNegInd(const RFC_PORTNEG_IND_T* ind)
 /*****************************************************************************/
 void connectionHandleRfcommPortNegRsp(const CL_INTERNAL_RFCOMM_PORTNEG_RSP_T* rsp)
 {
-    int16 conn_id = (uint16) PanicZero( SinkGetRfcommConnId(rsp->sink) );
+    i16 conn_id = (u16) PanicZero( SinkGetRfcommConnId(rsp->sink) );
     MAKE_PRIM_T(RFC_PORTNEG_RSP);
     prim->conn_id = conn_id;
     convertPortParToRfcPortnegValues(&prim->port_pars, &rsp->port_params);
@@ -706,7 +706,7 @@ void connectionHandleRfcommPortNegRsp(const CL_INTERNAL_RFCOMM_PORTNEG_RSP_T* rs
 ******************************************************************************/
 void connectionHandleRfcommControlReq(const CL_INTERNAL_RFCOMM_CONTROL_REQ_T* req)
 {
-    uint16 conn_id = (uint16) PanicZero( SinkGetRfcommConnId(req->sink) );
+    u16 conn_id = (u16) PanicZero( SinkGetRfcommConnId(req->sink) );
 
     MAKE_PRIM_T(RFC_MODEM_STATUS_REQ);
     prim->conn_id      = conn_id;
@@ -806,11 +806,11 @@ void connectionHandleRfcommControlInd(const RFC_MODEM_STATUS_IND_T* ind)
 ******************************************************************************/
 void connectionHandleRfcommLineStatusReq(const CL_INTERNAL_RFCOMM_LINE_STATUS_REQ_T* req)
 {
-    uint16 conn_id = (uint16) PanicZero( SinkGetRfcommConnId(req->sink) );
+    u16 conn_id = (u16) PanicZero( SinkGetRfcommConnId(req->sink) );
     MAKE_PRIM_T(RFC_LINESTATUS_REQ);
     prim->conn_id      = conn_id;
-    prim->error_flag   = (uint8) req->error;
-    prim->line_status  = (uint8) req->lines_status;
+    prim->error_flag   = (u8) req->error;
+    prim->line_status  = (u8) req->lines_status;
     VmSendRfcommPrim(prim);
 }
 

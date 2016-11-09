@@ -50,7 +50,7 @@ Examples include
    Note that the auxiliary DAC level drops to 0V when BlueCore enters
    deep sleep for power-saving.
 */
-bool PioSetAuxDac(bool enabled, uint8 level);
+bool PioSetAuxDac(bool enabled, u8 level);
 
 /*!
   @brief Configure PIO monitoring.
@@ -105,7 +105,7 @@ bool PioSetAuxDac(bool enabled, uint8 level);
   PioDebounce32(1u<<5, 1, 0);
   \endcode
 */
-uint32 PioDebounce32(uint32 mask, uint16 count, uint16 period);
+u32 PioDebounce32(u32 mask, u16 count, u16 period);
 
 /*!
   @brief Returns the contents of the PIO data input register.
@@ -113,7 +113,7 @@ uint32 PioDebounce32(uint32 mask, uint16 count, uint16 period);
   For PIOs set as outputs, this function will return the value last written 
   using PioSet32(). 
 */
-uint32 PioGet32(void);
+u32 PioGet32(void);
 
 /*!
   @brief Modifies the contents of the PIO data output register.  
@@ -151,7 +151,7 @@ uint32 PioGet32(void);
 
   \endcode
 */
-uint32 PioSet32(uint32 mask, uint32 bits);
+u32 PioSet32(u32 mask, u32 bits);
 
 /*!
   @brief Read whether PIOs are set as inputs or outputs.
@@ -159,7 +159,7 @@ uint32 PioSet32(uint32 mask, uint32 bits);
   to 1 mean that PIO line is configured as an output. Bits set to 0 mean it is 
   configured as an input.
 */
-uint32 PioGetDir32(void);
+u32 PioGetDir32(void);
 
 /*!
   @brief Set PIOs as inputs or outputs.
@@ -181,12 +181,12 @@ uint32 PioGetDir32(void);
   See the PioSetMapPins32() documentation for information on valid PIO directions
   and PIO mapping.
 */
-uint32 PioSetDir32(uint32 mask, uint32 dir);
+u32 PioSetDir32(u32 mask, u32 dir);
 
 /*!
   @brief Read whether PIOs are set to use strong or weak pull.
 */
-uint32 PioGetStrongBias32(void);
+u32 PioGetStrongBias32(void);
 
 /*!
   @brief Set PIOs to use strong or weak pull when used as inputs.
@@ -219,13 +219,13 @@ uint32 PioGetStrongBias32(void);
   \endcode
 
 */
-uint32 PioSetStrongBias32(uint32 mask, uint32 bits);
+u32 PioSetStrongBias32(u32 mask, u32 bits);
 
 /*!
   @brief Returns a 32 bit value showing which PIO lines have been mapped to
   chip pins (see documentation for PioSetMapPins32() for more detail).
 */
-uint32 PioGetMapPins32(void);
+u32 PioGetMapPins32(void);
 
 /*!
   @brief Cause the usual function of chip pins to be suppressed, and instead 
@@ -327,7 +327,7 @@ uint32 PioGetMapPins32(void);
 
   PIO lines above 28 map to nothing and cannot be mapped or written.
 */
-uint32 PioSetMapPins32(uint32 mask, uint32 bits);
+u32 PioSetMapPins32(u32 mask, u32 bits);
 
 /*!
    @brief Controls the settings of the RTS line
@@ -363,7 +363,7 @@ bool PioGetCts(void);
   
   Note: Only some BlueCore variants have access to more than 16 PIO lines.
 */
-uint32 PioGetKalimbaControl32(void);
+u32 PioGetKalimbaControl32(void);
 
 /*!
   @brief Modify which pins are under control of the Kalimba DSP.
@@ -378,7 +378,7 @@ uint32 PioGetKalimbaControl32(void);
   
   Note: Only some BlueCore variants have access to more than 16 PIO lines.
 */
-uint32 PioSetKalimbaControl32(uint32 mask, uint32 value);
+u32 PioSetKalimbaControl32(u32 mask, u32 value);
 
 /*!
   @brief  Sets a supported function for particular pio pin
@@ -427,7 +427,7 @@ uint32 PioSetKalimbaControl32(uint32 mask, uint32 value);
   PioSetMapPins32(1<<3, 1<<3);
 
 */
-bool PioSetFunction(uint16 pin, pin_function_id function);
+bool PioSetFunction(u16 pin, pin_function_id function);
 
 /*!
     @brief Determine which physically existing PIOs are currently not
@@ -436,7 +436,7 @@ bool PioSetFunction(uint16 pin, pin_function_id function);
     @return Those PIOs which are available for use.
      b31 = PIO31 thru b0 = PIO0. A '1' indicates available.
 */
-uint32 PioGetUnusedPins32(void);
+u32 PioGetUnusedPins32(void);
 
 /*!
     @brief Grabs PIOs for use by the LCD block.
@@ -445,6 +445,6 @@ uint32 PioGetUnusedPins32(void);
     @param common_pin The PIO that will be connected to the LCD common.
     @return zero if successful, otherwise bad bits returned and nothing done.
 */
-uint32 PioSetLcdPins( uint32 mask, uint32 pins, uint16 common_pin );
+u32 PioSetLcdPins( u32 mask, u32 pins, u16 common_pin );
 
 #endif

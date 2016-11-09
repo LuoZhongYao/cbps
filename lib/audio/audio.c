@@ -23,7 +23,7 @@ typedef struct audio_lib_Tag
 {
     Task plugin;                            /* main plugin in use */
     Task relay_plugin;                      /* plugin used for managing stream relay operation */
-    uint16 AUDIO_BUSY;                      /* audio routing currently in progress */
+    Task AUDIO_BUSY;                      /* audio routing currently in progress */
     AUDIO_PLUGIN_CONNECT_MSG_T message;     /* store of current connection params */
     DSP_STATUS_INFO_T dsp_status;           /* current dsp status */
     Sink forwarding_sink;
@@ -75,8 +75,8 @@ bool AudioConnect (  Task audio_plugin,
                      Sink audio_sink , 
                      AUDIO_SINK_T sink_type , 
                      Task codec_task , 
-                     uint16 volume , 
-                     uint32 rate ,  
+                     u16 volume , 
+                     u32 rate ,  
                      AudioPluginFeatures features , 
                      AUDIO_MODE_T mode, 
                      AUDIO_ROUTE_T route , 
@@ -105,8 +105,8 @@ bool AudioConnect (  Task audio_plugin,
     AUDIO->plugin = audio_plugin ;
     AUDIO->message = *message;
 
-    PRINT(("AUD: AudioConnect pl[%x] sk[%x] bsy[%x]\n", (uint16)audio_plugin, (int)audio_sink, (uint16)AUDIO->AUDIO_BUSY )) ;
-    MessageSendConditionally ( audio_plugin, AUDIO_PLUGIN_CONNECT_MSG , message , (const uint16 *)AudioBusyPtr() ) ;
+    PRINT(("AUD: AudioConnect pl[%x] sk[%x] bsy[%x]\n", (u16)audio_plugin, (int)audio_sink, AUDIO->AUDIO_BUSY )) ;
+    MessageSendConditionally ( audio_plugin, AUDIO_PLUGIN_CONNECT_MSG , message , (const u16 *)AudioBusyPtr() ) ;
     return TRUE ;
 }
 
@@ -135,7 +135,7 @@ void AudioDisconnect( void )
         MessageCancelAll(AUDIO->plugin, AUDIO_PLUGIN_SET_SOFT_MUTE_MSG);
         MessageCancelAll(AUDIO->plugin, AUDIO_PLUGIN_ALLOW_VOLUME_CHANGES_MSG);
         
-        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_DISCONNECT_MSG , 0 , (const uint16 *)AudioBusyPtr() ) ;
+        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_DISCONNECT_MSG , 0 , (const u16 *)AudioBusyPtr() ) ;
     }
     else
     {
@@ -156,7 +156,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void AudioSetVolume( uint16 volume , uint16 tone_volume, Task codec_task )
+void AudioSetVolume( u16 volume , u16 tone_volume, Task codec_task )
 {
     if ( AUDIO->plugin )   
     {
@@ -166,7 +166,7 @@ void AudioSetVolume( uint16 volume , uint16 tone_volume, Task codec_task )
         message->volume     = volume ;
         message->tone_volume = tone_volume;
         
-        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_VOLUME_MSG, message , (const uint16 *)AudioBusyPtr() ) ;
+        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_VOLUME_MSG, message , (const u16 *)AudioBusyPtr() ) ;
         
         AUDIO->message.volume = volume;
     }
@@ -193,7 +193,7 @@ bool AudioSetMode ( AUDIO_MODE_T mode , const void * params )
         message->mode = mode ;
         message->params = params ;
         
-        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_MODE_MSG, message , (const uint16 *)AudioBusyPtr() ) ;
+        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_MODE_MSG, message , (const u16 *)AudioBusyPtr() ) ;
         
         lResult = TRUE ;
         AUDIO->message.mode   = mode;
@@ -220,7 +220,7 @@ void AudioSetInputAudioMute (bool enable)
     
         message->input_audio_port_mute_active = enable ;
         
-        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_INPUT_AUDIO_MUTE_MSG, message , (const uint16 *)AudioBusyPtr() );
+        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_INPUT_AUDIO_MUTE_MSG, message , (const u16 *)AudioBusyPtr() );
     } 
 }
 
@@ -246,7 +246,7 @@ bool AudioConfigureSubWoofer(AUDIO_SUB_TYPE_T  sub_woofer_type, Sink sub_sink )
         message->sub_woofer_type = sub_woofer_type ;
         message->sub_sink = sub_sink ;
         
-        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_SUB_WOOFER_MSG, message , (const uint16 *)AudioBusyPtr() ) ;
+        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_SUB_WOOFER_MSG, message , (const u16 *)AudioBusyPtr() ) ;
         
         lResult = TRUE ;
     }
@@ -274,7 +274,7 @@ bool AudioSetSoftMute(AUDIO_PLUGIN_SET_SOFT_MUTE_MSG_T* mute_message)
     
         memcpy(message, mute_message, sizeof(AUDIO_PLUGIN_SET_SOFT_MUTE_MSG_T));
         
-        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_SOFT_MUTE_MSG, message, (const uint16 *)AudioBusyPtr() );
+        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_SOFT_MUTE_MSG, message, (const u16 *)AudioBusyPtr() );
         
         lResult = TRUE ;
     }
@@ -303,7 +303,7 @@ bool AudioSetRoute(AUDIO_ROUTE_T route, const void * params)
         message->route = route ;
         message->params = params ;
         
-        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_ROUTE_MSG, message , (const uint16 *)AudioBusyPtr()) ;
+        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_ROUTE_MSG, message , (const u16 *)AudioBusyPtr()) ;
         
         lResult = TRUE ;
         AUDIO->message.route  = route;
@@ -338,7 +338,7 @@ bool AudioStartForwarding(Task relay_plugin, Sink forwarding_sink, bool content_
         AUDIO->forwarding_sink = forwarding_sink;
         AUDIO->content_protection = content_protection;
 
-        MessageSendConditionally ( AUDIO->relay_plugin, AUDIO_PLUGIN_START_FORWARDING_MSG, message , (const uint16 *)AudioBusyPtr()) ;
+        MessageSendConditionally ( AUDIO->relay_plugin, AUDIO_PLUGIN_START_FORWARDING_MSG, message , (const u16 *)AudioBusyPtr()) ;
         
         lResult = TRUE ;
     }
@@ -379,7 +379,7 @@ void AudioStopForwarding(void)
 {
     if ( AUDIO->plugin && AUDIO->relay_plugin)
     {
-        MessageSendConditionally ( AUDIO->relay_plugin, AUDIO_PLUGIN_STOP_FORWARDING_MSG, NULL , (const uint16 *)AudioBusyPtr()) ;
+        MessageSendConditionally ( AUDIO->relay_plugin, AUDIO_PLUGIN_STOP_FORWARDING_MSG, NULL , (const u16 *)AudioBusyPtr()) ;
         
         AUDIO->relay_plugin = NULL ;
     }
@@ -396,9 +396,9 @@ DESCRIPTION
 RETURNS 
     
 */
-void AudioPlayTone ( const ringtone_note * tone , bool can_queue , Task codec_task, uint16 tone_volume , AudioPluginFeatures features ) 
+void AudioPlayTone ( const ringtone_note * tone , bool can_queue , Task codec_task, u16 tone_volume , AudioPluginFeatures features ) 
 {       
-    if ((uint16*)AUDIO->AUDIO_BUSY == NULL || can_queue) 
+    if (AUDIO->AUDIO_BUSY == NULL || can_queue) 
     {
         MAKE_AUDIO_MESSAGE( AUDIO_PLUGIN_PLAY_TONE_MSG ) ; 
     
@@ -410,14 +410,14 @@ void AudioPlayTone ( const ringtone_note * tone , bool can_queue , Task codec_ta
     
         if(AUDIO->plugin)
         {
-    		PRINT(("AUDIO: play tone, plugin = %x \n",(uint16)AUDIO->plugin));
-		    MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_PLAY_TONE_MSG, message , (const uint16 *)AudioBusyPtr() ) ;
+    		PRINT(("AUDIO: play tone, plugin = %x \n",(u16)AUDIO->plugin));
+		    MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_PLAY_TONE_MSG, message , (const u16 *)AudioBusyPtr() ) ;
 	    }
         else
 	    {    
     		PRINT(("AUDIO: play tone, no plugin \n"));
             /* Forward message to the Voice Prompts plugin as the DSP is required for multi-channel tones */
-            MessageSendConditionally( (TaskData*)&csr_voice_prompts_plugin, AUDIO_PLUGIN_PLAY_TONE_MSG, message , (const uint16 *)AudioBusyPtr() ) ;
+            MessageSendConditionally( (TaskData*)&csr_voice_prompts_plugin, AUDIO_PLUGIN_PLAY_TONE_MSG, message , (const u16 *)AudioBusyPtr() ) ;
 	    }
 	}
 	else
@@ -438,24 +438,24 @@ RETURNS
 */
 void AudioStopToneAndPrompt (bool prompt_terminate) 
 {
-    PRINT(("AUDIO: STOP tone, busy = %x\n",(uint16)AUDIO->AUDIO_BUSY));
+    PRINT(("AUDIO: STOP tone, busy = %x\n",AUDIO->AUDIO_BUSY));
     if(AUDIO->AUDIO_BUSY)
     {   
         /* Cancel any pending tones */        
-        MessageCancelAll((TaskData*) AUDIO->AUDIO_BUSY ,AUDIO_PLUGIN_PLAY_TONE_MSG);
+        MessageCancelAll(AUDIO->AUDIO_BUSY ,AUDIO_PLUGIN_PLAY_TONE_MSG);
         
         /* Cancel audio prompts if prompt_terminate is true */
         if(prompt_terminate)
         {                   
             /* Make sure we cancel any pending Audio Prompts */
             MessageCancelAll((TaskData*) &csr_voice_prompts_plugin, AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG);
-            MessageCancelAll((TaskData*) AUDIO->AUDIO_BUSY, AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG);
+            MessageCancelAll(AUDIO->AUDIO_BUSY, AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG);
         }
         
         /* Send the stop message unless an audio prompt is playing and prompt_terminate is false */
         if( prompt_terminate || !IsVpPlaying())
         {
-            MessageSend ( (TaskData*)AUDIO->AUDIO_BUSY , AUDIO_PLUGIN_STOP_TONE_AND_PROMPT_MSG, 0 ) ;
+            MessageSend (AUDIO->AUDIO_BUSY , AUDIO_PLUGIN_STOP_TONE_AND_PROMPT_MSG, 0 ) ;
         }
     }
 }
@@ -471,9 +471,9 @@ DESCRIPTION
 RETURNS
     
 */
-void AudioPlayAudioPrompt ( Task plugin , uint16 id , uint16 language , bool can_queue , Task codec_task, uint16 ap_volume , AudioPluginFeatures features, bool override, Task app_task )
+void AudioPlayAudioPrompt ( Task plugin , u16 id , u16 language , bool can_queue , Task codec_task, u16 ap_volume , AudioPluginFeatures features, bool override, Task app_task )
 {   
-    if ((uint16*)AUDIO->AUDIO_BUSY == NULL || can_queue) 
+    if (AUDIO->AUDIO_BUSY == NULL || can_queue) 
     {
         MAKE_AUDIO_MESSAGE( AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG ) ; 
         
@@ -505,7 +505,7 @@ void AudioPlayAudioPrompt ( Task plugin , uint16 id , uint16 language , bool can
 #endif                
             {
                 PRINT(("AUD play Audio Prompt via DSP mixing\n"));              
-                MessageSendConditionally ( plugin , AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG ,message , (const uint16 *)AudioBusyPtr() ) ;        
+                MessageSendConditionally ( plugin , AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG ,message , (const u16 *)AudioBusyPtr() ) ;        
             }
             /* if the audio plugin connect message is in the queue but not yet actioned, queue
                the Audio Prompt message until the audio plugin is loaded, then decide what to do with it */     
@@ -517,7 +517,7 @@ void AudioPlayAudioPrompt ( Task plugin , uint16 id , uint16 language , bool can
 #endif           
             {          
                 PRINT(("AUD play Audio Prompt - plugin loading\n"));    
-                MessageSendConditionally ( plugin , AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG , message , (const uint16 *)AudioBusyPtr() ) ;           
+                MessageSendConditionally ( plugin , AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG , message , (const u16 *)AudioBusyPtr() ) ;           
             }
             /* audio is connected via audio plugin and not using the DSP or not ADPCM voice prompts
                so need to disconnect current plugin prior to playing voice prompts */
@@ -526,14 +526,14 @@ void AudioPlayAudioPrompt ( Task plugin , uint16 id , uint16 language , bool can
             
                 PRINT(("AUD play -Audio Prompt disconnect audio\n"));               
                 /*if we have a plugin connected, then perform the disconnect*/
-                MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_DISCONNECT_MSG , 0 , (const uint16 *)AudioBusyPtr() ) ;
-                MessageSendConditionally ( plugin , AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG , message , (const uint16 *)AudioBusyPtr() ) ;           
+                MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_DISCONNECT_MSG , 0 , (const u16 *)AudioBusyPtr() ) ;
+                MessageSendConditionally ( plugin , AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG , message , (const u16 *)AudioBusyPtr() ) ;           
         
                 /* Queue message to reconnect plugin */
                 {
                     MAKE_AUDIO_MESSAGE( AUDIO_PLUGIN_CONNECT_MSG ) ;
                     *message = AUDIO->message;
-                    MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_CONNECT_MSG , message , (const uint16 *)AudioBusyPtr() ) ;
+                    MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_CONNECT_MSG , message , (const u16 *)AudioBusyPtr() ) ;
                 }    
     
                 /*  Start the reconnected plugin with all audio groups muted.
@@ -545,7 +545,7 @@ void AudioPlayAudioPrompt ( Task plugin , uint16 id , uint16 language , bool can
                 {
                     MAKE_AUDIO_MESSAGE( AUDIO_PLUGIN_SET_SOFT_MUTE_MSG ) ;
                     message->mute_states = AUDIO_MUTE_ENABLE_ALL;
-                    MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_SOFT_MUTE_MSG , message , (const uint16 *)AudioBusyPtr() ) ;
+                    MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_SOFT_MUTE_MSG , message , (const u16 *)AudioBusyPtr() ) ;
                 } 
                 
                 /* Request that the app refreshes the volume and mute status after reconnect */
@@ -553,7 +553,7 @@ void AudioPlayAudioPrompt ( Task plugin , uint16 id , uint16 language , bool can
                     MAKE_AUDIO_MESSAGE(AUDIO_PLUGIN_REFRESH_VOLUME);
                     PRINT(("AUD:Vol refresh\n"));
                     message->audio_plugin = codec_task;
-                    MessageSendConditionally(app_task, AUDIO_PLUGIN_REFRESH_VOLUME, message, (const uint16 *)AudioBusyPtr());
+                    MessageSendConditionally(app_task, AUDIO_PLUGIN_REFRESH_VOLUME, message, (const u16 *)AudioBusyPtr());
                 }
     
                 if ( NULL != AUDIO->relay_plugin)
@@ -574,7 +574,7 @@ void AudioPlayAudioPrompt ( Task plugin , uint16 id , uint16 language , bool can
             if(override)
                 MessageCancelAll( plugin, AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG);
             
-            MessageSendConditionally ( plugin , AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG ,message , (const uint16 *)AudioBusyPtr() ) ;        
+            MessageSendConditionally ( plugin , AUDIO_PLUGIN_PLAY_AUDIO_PROMPT_MSG ,message , (const u16 *)AudioBusyPtr() ) ;        
         }   
     }
     else
@@ -595,7 +595,7 @@ DESCRIPTION
 
 RETURNS
 */
-void AudioVoicePromptsInit( TaskData * plugin, uint16 no_prompts, uint16 no_languages)
+void AudioVoicePromptsInit( TaskData * plugin, u16 no_prompts, u16 no_languages)
 {
     MAKE_AUDIO_MESSAGE( AUDIO_PLUGIN_VOICE_PROMPTS_INIT_MSG ); 
     message->no_prompts   = no_prompts;
@@ -644,7 +644,7 @@ static void sendProductionTestCommand(audio_plugin_interface_message_type_t mess
 {
     if(AUDIO->plugin)
     {
-        MessageSendConditionally ( AUDIO->plugin, message_type, 0 , (const uint16 *)AudioBusyPtr() ) ;
+        MessageSendConditionally ( AUDIO->plugin, message_type, 0 , (const u16 *)AudioBusyPtr() ) ;
     }
 }
 
@@ -684,7 +684,7 @@ bool AudioStartASR ( AUDIO_MODE_T mode )
     
         message->mode = mode ;
 
-        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_START_ASR, message , (const uint16 *)AudioBusyPtr() ) ;
+        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_START_ASR, message , (const u16 *)AudioBusyPtr() ) ;
 
         lResult = TRUE ;
     }
@@ -705,7 +705,7 @@ RETURNS
 TaskData * IsAudioBusy(void)
 {   
     PRINT(("AUD: IsAudioBusy = %s \n",AUDIO->AUDIO_BUSY?"TRUE":"FALSE")) ;
-    return (TaskData *)AUDIO->AUDIO_BUSY;
+    return AUDIO->AUDIO_BUSY;
 }
         
 /****************************************************************************
@@ -717,7 +717,7 @@ DESCRIPTION
 RETURNS
     pointer to current audio_busy task value
 */
-uint16 * AudioBusyPtr(void)
+Task *AudioBusyPtr(void)
 {   
     PRINT(("AUD: AudioBusyPtr = %s \n",AUDIO->AUDIO_BUSY?"TRUE":"FALSE")) ;
     return &AUDIO->AUDIO_BUSY;
@@ -745,14 +745,14 @@ void SetAudioBusy(TaskData* newtask)
     oldtask = (TaskData *)AUDIO->AUDIO_BUSY;
 
     PRINT(("AUD: SetAudioBusy = %x -> %x Plugin = %x\n",
-            (uint16) oldtask, (uint16) newtask, (uint16)AUDIO->plugin)) ;
+            (u16) oldtask, (u16) newtask, (u16)AUDIO->plugin)) ;
 
     if (CallbackCheckRequired(oldtask, newtask))
     {
         MakeBusyCallback(oldtask);
     }
 
-    AUDIO->AUDIO_BUSY = (uint16) newtask;        
+    AUDIO->AUDIO_BUSY = newtask;        
 }
 
 
@@ -997,7 +997,7 @@ void AudioSetGroupVolume(AUDIO_PLUGIN_SET_GROUP_VOLUME_MSG_T *msg)
     {
         MAKE_AUDIO_MESSAGE( AUDIO_PLUGIN_SET_GROUP_VOLUME_MSG ) ;
         memcpy(message, msg, sizeof(AUDIO_PLUGIN_SET_GROUP_VOLUME_MSG_T));
-        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_GROUP_VOLUME_MSG, message , (const uint16 *)AudioBusyPtr() ) ;
+        MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_SET_GROUP_VOLUME_MSG, message , (const u16 *)AudioBusyPtr() ) ;
         
         AUDIO->message.volume = msg->main.master;
     }

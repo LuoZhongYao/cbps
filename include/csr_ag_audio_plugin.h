@@ -35,7 +35,7 @@ typedef struct
 {
     common_mic_params *mic;
     CsrAgAudioPluginUsbParams *usb;
-    uint16 warp[CSR_AG_AUDIO_WARP_NUMBER_VALUES];
+    u16 warp[CSR_AG_AUDIO_WARP_NUMBER_VALUES];
 } CsrAgAudioPluginConnectParams;
 
 typedef struct

@@ -11,12 +11,13 @@ DESCRIPTION
 */
 #include <connection.h>
 #include <sdp_parse.h>
+#include <stdlib.h>
 #include <memory.h>
 
 #include "pbapc_extern.h"
 #include "pbapc_private.h"
 
-static const uint8 serviceRecordPbapc[] =
+static const u8 serviceRecordPbapc[] =
     {            
         0x09,0x00,0x01,        /* Service class ID list */
         0x35,0x03,        
@@ -35,14 +36,14 @@ static const uint8 serviceRecordPbapc[] =
     };
 
 /* OBEX PBAP service */
-static const uint8 servRequestPbapc[] =
+static const u8 servRequestPbapc[] =
 {
     0x35, 0x03, 
     0x19, 0x11, 0x2F /* UUID16, Phone book access Server */
 };
 
 /* Static data structures for SDP Attribute Request to PSE */
-static const uint8 attrRequestPbapc[] =
+static const u8 attrRequestPbapc[] =
 {
     0x35,0x06,                 
         0x09, 0x00, 0x04,       /* Protocol Descriptor List */
@@ -88,11 +89,11 @@ static void handleSDPRegisterCfm( pbapcState *state,
 static void handleSDPServSrchAttrCfm( pbapcState *state, 
                                   CL_SDP_SERVICE_SEARCH_ATTRIBUTE_CFM_T *msg)
 {
-    uint8 chan;
-    uint8 *chans = &chan;
-    uint8 found;
-    uint8 repos;
-    uint16 device_id = state->device_id;
+    u8 chan;
+    u8 *chans = &chan;
+    u8 found;
+    u8 repos;
+    u16 device_id = state->device_id;
     
     if( state->currCom != pbapc_com_connect ) 
     {
@@ -193,7 +194,7 @@ void pbapcInitConnection( pbapcState *state, const bdaddr *bdAddr )
  *DESCRIPTION
  *  Get the supported repositories. reurn 0xFF on error
  ***************************************************************************/
-uint8 pbapcGetSupportedRepositories( pbapcState *state )
+u8 pbapcGetSupportedRepositories( pbapcState *state )
 {
     return (state->handle)?(state->srvRepos): 0;
 }

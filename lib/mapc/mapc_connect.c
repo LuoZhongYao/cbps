@@ -53,7 +53,7 @@ void MapcMasSdpAttrSearchRequest( Task theAppTask, const bdaddr* addr )
  *PARAMETERS
  *  Refer mapc.h for details 
  **************************************************************************/
-void MapcMasConnectRequest( Task theAppTask, const bdaddr* addr, uint8 masChannel )
+void MapcMasConnectRequest( Task theAppTask, const bdaddr* addr, u8 masChannel )
 {
     /* The application must provide valid values, Otherwise Panic on debug */
     MAPC_ASSERT(theAppTask);

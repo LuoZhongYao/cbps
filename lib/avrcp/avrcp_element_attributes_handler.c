@@ -36,12 +36,12 @@ NOTES
 *   packet_size - Packet size
 *******************************************************************************/
 void avrcpHandleGetElementAttributesCommand(AVRCP       *avrcp,
-                                        const uint8     *ptr, 
-                                        uint16          packet_size)
+                                        const u8     *ptr, 
+                                        u16          packet_size)
 {
-    uint16 data_offset=9;
-    uint32 identifier_high = 0, identifier_low = 0;
-    uint8 attribute_count=0;
+    u16 data_offset=9;
+    u32 identifier_high = 0, identifier_low = 0;
+    u8 attribute_count=0;
     Source source=0;
     
    if(packet_size >= AVRCP_GET_ELEMENTS_HDR_SIZE)
@@ -101,9 +101,9 @@ void avrcpHandleGetElementAttributesCommand(AVRCP       *avrcp,
 void avrcpHandleInternalGetElementAttributesResponse(AVRCP      *avrcp, 
                    AVRCP_INTERNAL_GET_ELEMENT_ATTRIBUTES_RES_T  *res)
 {
-    uint16 size_mandatory_data = 1; /* Just error code for failure */
-    uint8 mandatory_data[1];
-    uint16 param_length = 1;
+    u16 size_mandatory_data = 1; /* Just error code for failure */
+    u8 mandatory_data[1];
+    u16 param_length = 1;
 
     /* Get the error status code */
     mandatory_data[0] = avrcpGetErrorStatusCode(&res->response, 

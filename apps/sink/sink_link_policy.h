@@ -24,7 +24,7 @@ DESCRIPTION
 RETURNS
 	void
 */
-void linkPolicyUseA2dpSettings(uint16 DeviceId, uint16 StreamId, Sink sink );
+void linkPolicyUseA2dpSettings(u16 DeviceId, u16 StreamId, Sink sink );
 
 
 /****************************************************************************

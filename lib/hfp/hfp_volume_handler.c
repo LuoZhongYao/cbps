@@ -42,7 +42,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void hfpHandleVgsRequest(hfp_link_data* link, uint8 gain)
+void hfpHandleVgsRequest(hfp_link_data* link, u8 gain)
 {
     /* Don't send anything to AG if gain already set */
     if(link->at_vol_setting != gain)
@@ -81,7 +81,7 @@ DESCRIPTION
 RETURNS
     void
 */
-static void sendSpeakerVolumeIndToApp(hfp_link_data* link, uint16 gain)
+static void sendSpeakerVolumeIndToApp(hfp_link_data* link, u16 gain)
 {
     /* This is generated in response to receiving a volume indication from the AG */
     MAKE_HFP_MESSAGE(HFP_VOLUME_SYNC_SPEAKER_GAIN_IND);
@@ -142,7 +142,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void hfpHandleVgmRequest(hfp_link_data* link, uint8 gain)
+void hfpHandleVgmRequest(hfp_link_data* link, u8 gain)
 {
     char vgm[11];
 
@@ -168,7 +168,7 @@ DESCRIPTION
 RETURNS
     void
 */
-static void sendMicVolumeIndToApp(hfp_link_data* link, uint16 mic_gain)
+static void sendMicVolumeIndToApp(hfp_link_data* link, u16 mic_gain)
 {
     /* This is generated in response to receiving a mic indication from the AG */
     MAKE_HFP_MESSAGE(HFP_VOLUME_SYNC_MICROPHONE_GAIN_IND);

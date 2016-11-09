@@ -41,9 +41,9 @@ typedef enum
 
 typedef struct
 {
-    uint16 number_device_pins;
+    u16 number_device_pins;
     bdaddr addr[CONNECTION_MAX_DEVICE_PIN_CODES];
-    uint16 index[CONNECTION_MAX_DEVICE_PIN_CODES];
+    u16 index[CONNECTION_MAX_DEVICE_PIN_CODES];
 } CONNECTION_DEVICE_PIN_CODES_T;
 
 typedef struct
@@ -61,14 +61,14 @@ typedef struct
     unsigned paired_device_index:8;
     unsigned paired_device_start:8;
     unsigned supported_profiles:8;      
-    uint16 remote_manufacturer;
-    uint16 profile_connected;
+    u16 remote_manufacturer;
+    u16 profile_connected;
     CONNECTION_DEVICE_T device_number:2;  
     unsigned connected_device_ps_slot:2;
     unsigned manual_2nd_connection:1;
     unsigned disconnecting_a2dp_media_before_signalling:1;
     CONNECTION_PIN_CODE_STORE_T *connection_pin;
-    uint16 connection_retries;
+    u16 connection_retries;
 } CONNECTION_DATA_T;
 
 
@@ -121,7 +121,7 @@ DESCRIPTION
         delay - Can specify a delay before the APP_CONNECT_REQ message is sent.
     
 */
-void connection_mgr_start_connection_attempt(const bdaddr *addr, PROFILES_T profile, uint16 delay);
+void connection_mgr_start_connection_attempt(const bdaddr *addr, PROFILES_T profile, u16 delay);
 
 
 /****************************************************************************
@@ -262,7 +262,7 @@ DESCRIPTION
     Find PIN index by the Bluetooth address supplied
     
 */
-uint16 connection_mgr_find_pin_index_by_addr(const bdaddr *addr);
+u16 connection_mgr_find_pin_index_by_addr(const bdaddr *addr);
 
 
 /****************************************************************************

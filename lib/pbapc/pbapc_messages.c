@@ -20,7 +20,7 @@ DESCRIPTION
  *  Send Init Confirmation message to the application. 
  ***************************************************************************/
 void pbapcMsgInitCfm( Task              theAppTask, 
-                      uint32            sdpHandle, 
+                      u32            sdpHandle, 
                       PbapcLibStatus    status )
 {
     MAKE_PBAPC_MESSAGE( PBAPC_INIT_CFM );
@@ -40,8 +40,8 @@ void pbapcMsgSendConnectCfm( Task theAppTask,
                              PBAPC *state, 
                              const bdaddr* addr,
                              PbapcLibStatus status, 
-                             uint8  repository,
-                             uint16 pktSize )
+                             u8  repository,
+                             u16 pktSize )
 {
     if(state)
     {
@@ -68,7 +68,7 @@ void pbapcMsgSendConnectCfm( Task theAppTask,
  *  Handle the authentication response 
  **************************************************************************/
 void pbapcMsgSendAuthRspCfm( PBAPC *state,
-                             const uint8* digest )
+                             const u8* digest )
 {
     MAKE_PBAPC_MESSAGE(PBAPC_AUTH_RESPONSE_CFM);
     message->device_id = state->device_id;
@@ -85,10 +85,10 @@ void pbapcMsgSendAuthRspCfm( PBAPC *state,
  *  Send Request to start local authenticaton
  **************************************************************************/
 void pbapcMsgSendAuthReqInd( PBAPC *state,
-                             const uint8 *nonce,
+                             const u8 *nonce,
                              PbapcObexAuthOptions options,
-                             uint16 sizeRealm, 
-                             const uint8* realm )
+                             u16 sizeRealm, 
+                             const u8* realm )
 {
     MAKE_PBAPC_MESSAGE(PBAPC_AUTH_REQUEST_IND);
 
@@ -111,9 +111,9 @@ void pbapcMsgSendAuthReqInd( PBAPC *state,
 void pbapcMsgSendPullPhoneBookCfm ( PBAPC* state,
                                     MessageId id,
                                     PbapcLibStatus status,
-                                    uint16 pbSize,
-                                    uint8 newMisscall,
-                                    uint16 len,
+                                    u16 pbSize,
+                                    u8 newMisscall,
+                                    u16 len,
                                     Source src )
 {
     MAKE_PBAPC_MESSAGE( PBAPC_PULL_PHONEBOOK_CFM );
@@ -160,7 +160,7 @@ void pbapcMsgSendSetPhonebookCfm( PBAPC *state,
  **************************************************************************/
 void pbapcMsgSendPullVcardCfm ( PBAPC* state,
                                 PbapcLibStatus status,
-                                uint16 len,
+                                u16 len,
                                 Source src )
 {
     MAKE_PBAPC_MESSAGE( PBAPC_PULL_VCARD_ENTRY_CFM );

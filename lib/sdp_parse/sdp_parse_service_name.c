@@ -22,7 +22,7 @@ DESCRIPTION
 
 /* Find Service Name Attribute */
 
-static bool findServiceName(const uint8 size_service_record, const uint8* service_record, ServiceAttributeId id, Region* value)
+static bool findServiceName(const u8 size_service_record, const u8* service_record, ServiceAttributeId id, Region* value)
 {
 	ServiceDataType type;
     Region record;
@@ -43,10 +43,10 @@ static bool findServiceName(const uint8 size_service_record, const uint8* servic
 
 /* Access Service Name Attribute */
 
-bool SdpParseGetServiceName(const uint8 size_service_record, const uint8* service_record, uint8 size_service_name, char** service_name, uint8* length_service_name)
+bool SdpParseGetServiceName(const u8 size_service_record, const u8* service_record, u8 size_service_name, char** service_name, u8* length_service_name)
 {
 	Region value;
-	uint8 k;
+	u8 k;
 	
 	/* if found service name field */
 	if(findServiceName(size_service_record, service_record, saServiceName, &value))
@@ -56,7 +56,7 @@ bool SdpParseGetServiceName(const uint8 size_service_record, const uint8* servic
 		value.begin--;
 		
 		/* Set length_service_name to no. of chars. in service name */
-		*length_service_name = (uint8)RegionReadUnsigned(&value);
+		*length_service_name = (u8)RegionReadUnsigned(&value);
 		
 		/* if array has been allocated and field length is valid */
 		if(*length_service_name && size_service_name)
@@ -95,10 +95,10 @@ bool SdpParseGetServiceName(const uint8 size_service_record, const uint8* servic
 
 /* Insert Service Name Attribute */
 
-bool SdpParseInsertServiceName(const uint8 size_service_record, const uint8* service_record, char* service_name)
+bool SdpParseInsertServiceName(const u8 size_service_record, const u8* service_record, char* service_name)
 {
 	Region value;
-	uint8 size_service_name, size_old_service_name, k;
+	u8 size_service_name, size_old_service_name, k;
 	
 	size_service_name= strlen(service_name);
 	
@@ -123,7 +123,7 @@ bool SdpParseInsertServiceName(const uint8 size_service_record, const uint8* ser
 				/* copy string element into array and move to next */
 				for(k = 0; k < size_service_name; k++)
 				{
-					RegionWriteUnsigned(&value, (uint32)service_name[k]);
+					RegionWriteUnsigned(&value, (u32)service_name[k]);
 					value.begin ++;
 					value.end ++;
 				}
@@ -131,7 +131,7 @@ bool SdpParseInsertServiceName(const uint8 size_service_record, const uint8* ser
 				/* fill the rest with spaces */
 				for(k = size_service_name; k < size_old_service_name; k++)
 				{
-					RegionWriteUnsigned(&value, (uint32)' ');
+					RegionWriteUnsigned(&value, (u32)' ');
 					value.begin++;
 					value.end++;
 				}

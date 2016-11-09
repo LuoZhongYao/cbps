@@ -43,12 +43,12 @@ NOTES
 *  AVRCP_GET_ELEMENT_ATTRIBUTES_CFM 
 *******************************************************************************/
 void AvrcpGetElementAttributesRequest( AVRCP    *avrcp,
-                                       uint32   identifier_high, 
-                                       uint32   identifier_low, 
-                                       uint16   size_attributes, 
+                                       u32   identifier_high, 
+                                       u32   identifier_low, 
+                                       u16   size_attributes, 
                                        Source   attributes )
 {
-    uint8 extra_params[AVRCP_GET_ELEMENTS_HDR_SIZE];
+    u8 extra_params[AVRCP_GET_ELEMENTS_HDR_SIZE];
     avrcp_status_code status;
 
     /* Fill in the extra Header for Get Elements which is Identifier and
@@ -97,8 +97,8 @@ void AvrcpGetElementAttributesRequest( AVRCP    *avrcp,
 
 void AvrcpGetElementAttributesResponse(AVRCP               *avrcp, 
                                        avrcp_response_type response, 
-                                       uint16              number_of_attributes,
-                                       uint16              size_attributes, 
+                                       u16              number_of_attributes,
+                                       u16              size_attributes, 
                                        Source              attributes)
 {
     /* Only allow a response to be sent if the corresponding command arrived. */

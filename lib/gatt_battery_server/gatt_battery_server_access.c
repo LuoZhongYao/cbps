@@ -8,9 +8,9 @@
 #include "gatt_battery_server_db.h"
 
 /* Required octets for values sent to Client Configuration Descriptor */
-#define GATT_CLIENT_CONFIG_OCTET_SIZE sizeof(uint8) * 2
+#define GATT_CLIENT_CONFIG_OCTET_SIZE sizeof(u8) * 2
 /* Required octets for values sent to Presentation Descriptor */
-#define GATT_PRESENTATION_OCTET_SIZE sizeof(uint8) * 7
+#define GATT_PRESENTATION_OCTET_SIZE sizeof(u8) * 7
 
 
 /***************************************************************************
@@ -21,11 +21,11 @@ DESCRIPTION
     Send an access response to the GATT Manager library.
 */
 static void sendBatteryAccessRsp(Task task,
-                                    uint16 cid,
-                                    uint16 handle,
-                                    uint16 result,
-                                    uint16 size_value,
-                                    const uint8 *value)
+                                    u16 cid,
+                                    u16 handle,
+                                    u16 result,
+                                    u16 size_value,
+                                    const u8 *value)
 {
     if (!GattManagerServerAccessResponse(task, cid, handle, result, size_value, value))
     {
@@ -41,7 +41,7 @@ NAME
 DESCRIPTION
     Send an error access response to the GATT Manager library.
 */
-static void sendBatteryAccessErrorRsp(const GBASS *battery_server, const GATT_MANAGER_SERVER_ACCESS_IND_T *access_ind, uint16 error)
+static void sendBatteryAccessErrorRsp(const GBASS *battery_server, const GATT_MANAGER_SERVER_ACCESS_IND_T *access_ind, u16 error)
 {
     sendBatteryAccessRsp((Task)&battery_server->lib_task, access_ind->cid, access_ind->handle, error, 0, NULL);
 }
@@ -219,16 +219,16 @@ void handleBatteryAccess(GBASS *battery_server, const GATT_MANAGER_SERVER_ACCESS
 
 
 /***************************************************************************/
-void sendBatteryLevelAccessRsp(const GBASS *battery_server, uint16 cid, uint8 battery_level, uint16 result)
+void sendBatteryLevelAccessRsp(const GBASS *battery_server, u16 cid, u8 battery_level, u16 result)
 {
     sendBatteryAccessRsp((Task)&battery_server->lib_task, cid, HANDLE_BATTERY_LEVEL, result, 1, &battery_level);
 }
 
 
 /***************************************************************************/
-void sendBatteryConfigAccessRsp(const GBASS *battery_server, uint16 cid, uint16 client_config)
+void sendBatteryConfigAccessRsp(const GBASS *battery_server, u16 cid, u16 client_config)
 {
-    uint8 config_resp[GATT_CLIENT_CONFIG_OCTET_SIZE];
+    u8 config_resp[GATT_CLIENT_CONFIG_OCTET_SIZE];
     
     config_resp[0] = client_config & 0xFF;
     config_resp[1] = (client_config >> 8) & 0xFF;
@@ -238,9 +238,9 @@ void sendBatteryConfigAccessRsp(const GBASS *battery_server, uint16 cid, uint16 
 
 
 /***************************************************************************/
-void sendBatteryPresentationAccessRsp(const GBASS *battery_server, uint16 cid, uint8 name_space, uint16 description)
+void sendBatteryPresentationAccessRsp(const GBASS *battery_server, u16 cid, u8 name_space, u16 description)
 {
-    uint8 presentation[GATT_PRESENTATION_OCTET_SIZE];
+    u8 presentation[GATT_PRESENTATION_OCTET_SIZE];
     
     /* Fill in Presentation Attribute Value */
     /* Format - 1 octet */

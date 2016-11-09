@@ -27,8 +27,8 @@ DESCRIPTION
 * Queue an internal connect response to process. 
 *******************************************************************************/
 static void avrcpSendInternalConnectResp(AVRCP  *avrcp, 
-                                         uint16 connection_id, 
-                                         uint16 signal_id,
+                                         u16 connection_id, 
+                                         u16 signal_id,
                                          bool   accept,
                                          bool   browsing)
 {
@@ -75,7 +75,7 @@ static void avrcpSendInternalConnectReq(AVRCP *avrcp,
         MessageSendConditionally(&avrcp->task, 
                                  AVRCP_INTERNAL_SDP_SEARCH_REQ,
                                  message,
-                                 (uint16*)&avrcp->sdp_search_mode);
+                                 (u16*)&avrcp->sdp_search_mode);
    }
 
     /* Establish the Browsing channel */
@@ -84,7 +84,7 @@ static void avrcpSendInternalConnectReq(AVRCP *avrcp,
         MessageSendConditionally(avrcp->avbp_task, 
                                  AVRCP_INTERNAL_CONNECT_REQ,
                                  message,
-                                 (uint16*)&avrcp->sdp_search_mode);
+                                 (u16*)&avrcp->sdp_search_mode);
     }
     else
     {
@@ -195,8 +195,8 @@ void AvrcpBrowseConnectRequest(AVRCP* avrcp, const bdaddr *bd_addr)
 *RETURN
 ***************************************************************************/
 void AvrcpConnectResponse(Task  theAppTask,
-                          uint16 connection_id, 
-                          uint16 signal_id,
+                          u16 connection_id, 
+                          u16 signal_id,
                           bool accept)
 {
     AVRCP* avrcp =  avrcpCreateTask( theAppTask, avrcpConnecting);
@@ -219,8 +219,8 @@ void AvrcpConnectResponse(Task  theAppTask,
 *RETURN
 *****************************************************************************/
 void AvrcpBrowseConnectResponse( AVRCP *avrcp, 
-                                 uint16 connection_id, 
-                                 uint16 signal_id,
+                                 u16 connection_id, 
+                                 u16 signal_id,
                                  bool accept)
 {
     avrcpSendInternalConnectResp(avrcp, connection_id, signal_id, accept, 1);
@@ -317,7 +317,7 @@ void AvrcpGetSupportedFeatures(AVRCP *avrcp)
         else
         {
             MessageSendConditionally(&avrcp->task, AVRCP_INTERNAL_GET_FEATURES,
-                                     0, (uint16*)&avrcp->sdp_search_mode);
+                                     0, (u16*)&avrcp->sdp_search_mode);
         }
     }
     else
@@ -355,7 +355,7 @@ void AvrcpGetProfileExtensions(AVRCP *avrcp)
         {
             MessageSendConditionally(&avrcp->task, 
                                     AVRCP_INTERNAL_GET_EXTENSIONS,
-                                    0, (uint16*)&avrcp->sdp_search_mode);
+                                    0, (u16*)&avrcp->sdp_search_mode);
         }
     }
     else

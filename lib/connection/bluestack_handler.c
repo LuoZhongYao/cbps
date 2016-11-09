@@ -97,7 +97,7 @@ RETURNS
 */
 static void connectionBluestackHandlerDm(connectionState *theCm, DM_UPRIM_T *message)
 {
-    const uint8 state = theCm->state;
+    const u8 state = theCm->state;
     if (state == connectionReady)
     {
         switch (message->type)

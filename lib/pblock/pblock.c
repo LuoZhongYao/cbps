@@ -25,10 +25,10 @@ Copyright (c) 2007 - 2015 Qualcomm Technologies International, Ltd.
       void PblockStore(void)
          Store the data to persistance. Can be called at will.
   
-      uint16* PblockGet(uint16 entry_id, uint16* entry_len)
+      u16* PblockGet(u16 entry_id, u16* entry_len)
          Retrieve data from a keyed block
   
-      void PblockSet(uint16 entry_id, uint16 entry_len, uint16 *data)
+      void PblockSet(u16 entry_id, u16 entry_len, u16 *data)
          Store data to a keyed block. Entry will be created if not present
 
       Storage format:
@@ -60,7 +60,7 @@ Copyright (c) 2007 - 2015 Qualcomm Technologies International, Ltd.
 
 #define PBLOCK_START    ((pblock_entry*)&pblock->cache)
 #define PBLOCK_END      ((pblock_entry*)(&pblock->cache + pblock->cur_len))
-#define for_all_entries(entry)      for(entry = PBLOCK_START; entry < PBLOCK_END; entry = (pblock_entry*)(((uint16*) entry) + entry->size + 1))
+#define for_all_entries(entry)      for(entry = PBLOCK_START; entry < PBLOCK_END; entry = (pblock_entry*)(((u16*) entry) + entry->size + 1))
 #define for_all_data(entry, data)   for(data = entry->data; data < (entry->data + entry->size); data++)
 
 static pblock_key* pblock;
@@ -71,7 +71,7 @@ static const pblock_entry empty_pblock = {0, 0, {0}};
 static void pblockDebug(void)
 {
     pblock_entry* entry;
-    uint16*       data;
+    u16*       data;
     
     for_all_entries(entry)
     {
@@ -85,7 +85,7 @@ static void pblockDebug(void)
 #define pblockDebug() ((void)(0))
 #endif
 
-static pblock_entry* pblockAddEntry(uint16 id, uint16 len)
+static pblock_entry* pblockAddEntry(u16 id, u16 len)
 {
     pblock_entry* entry = PBLOCK_END;
    
@@ -123,10 +123,10 @@ static pblock_entry* pblockAddEntry(uint16 id, uint16 len)
     return entry;
 }
 
-pblock_key * PblockInit(uint16 key, uint16 len)
+pblock_key * PblockInit(u16 key, u16 len)
 {
     /* determine if pskey exists and what size it is */
-    uint16 buf_len = PsRetrieve(key, NULL, 0);
+    u16 buf_len = PsRetrieve(key, NULL, 0);
     
     /* malloc block for key and cache depending upon whether the pskey currently
        exists and what size it is, will be realloc'd later if required */
@@ -156,7 +156,7 @@ void PblockStore(void)
     pblockDebug();
 }
 
-const pblock_entry* PblockGet(uint16 id)
+const pblock_entry* PblockGet(u16 id)
 {
     pblock_entry* entry;
     
@@ -168,7 +168,7 @@ const pblock_entry* PblockGet(uint16 id)
     return &empty_pblock;
 }
 
-void PblockSet(uint16 id, uint16 len, uint16 *data)
+void PblockSet(u16 id, u16 len, u16 *data)
 {
     pblock_entry* entry = (pblock_entry*)PblockGet(id);
     

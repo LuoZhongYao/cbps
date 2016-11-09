@@ -41,7 +41,7 @@ void aghfpSendSlcConnectCfmToApp(aghfp_connect_status status, AGHFP *aghfp);
 	Record the supported features that the HF has just reported and send our
     supported features in response.
 */
-void aghfpHandleBrsfRequest(AGHFP *aghfp, uint16 supported_features);
+void aghfpHandleBrsfRequest(AGHFP *aghfp, u16 supported_features);
 
 
 /****************************************************************************
@@ -59,7 +59,7 @@ void aghfpHandleCindStatusRequest(AGHFP *aghfp);
 /****************************************************************************
 	Respond to AT+CMER command.
 */
-void aghfpHandleCmerRequest(AGHFP *aghfp, uint16 mode, uint16 ind);
+void aghfpHandleCmerRequest(AGHFP *aghfp, u16 mode, u16 ind);
 
 
 /****************************************************************************

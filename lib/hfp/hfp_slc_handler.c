@@ -166,13 +166,13 @@ void hfpHandleBacRequest(hfp_link_data* link)
     if(agFeatureEnabled(link, AG_CODEC_NEGOTIATION) && hfFeatureEnabled(HFP_CODEC_NEGOTIATION))
     {
         char   bac_req[20];
-        uint16 check_bit;
+        u16 check_bit;
         
         /* Create a local copy of HF supported codecs */
         hfp_wbs_codec_mask supported_codecs = theHfp->wbs_codec_mask;
         
         /* Start the AT+BAC command */
-        uint8  char_idx = sprintf(bac_req, "AT+BAC=");
+        u8  char_idx = sprintf(bac_req, "AT+BAC=");
         
         /* Run through all bits of supported codec mask until no more set */
         for(check_bit=1; supported_codecs > 0; check_bit <<= 1)
@@ -315,7 +315,7 @@ DESCRIPTION
 RETURNS
     void
 */
-void hfpHandleSupportedFeaturesNotification(hfp_link_data* link, uint16 features)
+void hfpHandleSupportedFeaturesNotification(hfp_link_data* link, u16 features)
 {
     /* Store the AG's supported features */
     link->ag_supported_features = features;
@@ -549,7 +549,7 @@ void hfpHandleDisconnectRequest(hfp_link_data* link)
         /* If we have a SCO/eSCO active need to tear that down first */
         hfpHandleAudioDisconnectReq(link);
         /* Queue up the SLC disconnect message */
-        MessageSendConditionally(&theHfp->task, HFP_INTERNAL_SLC_DISCONNECT_REQ, message, (uint16 *) &link->audio_sink);    /*lint !e740 */
+        MessageSendConditionally(&theHfp->task, HFP_INTERNAL_SLC_DISCONNECT_REQ, message, (u16 *) &link->audio_sink);    /*lint !e740 */
     }
     else 
     {

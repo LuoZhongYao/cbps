@@ -48,7 +48,7 @@ sync_pkt_type aghfpGetWbsPacketType(AGHFP *aghfp);
 /*
 	Send WB-Speech SCO Handle
 */
-void aghfpWbsStartScoHandleSend(AGHFP *aghfp, uint8 handle);
+void aghfpWbsStartScoHandleSend(AGHFP *aghfp, u8 handle);
 
 /*
 	Handle Codec Negotiation

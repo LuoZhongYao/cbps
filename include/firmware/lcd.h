@@ -18,7 +18,7 @@
     @return TRUE if sucessful, otherwise FALSE
     More detailed information on the keys and values can be found in lcd_if.h
 */
-bool LcdConfigure( uint16 key, uint16 value );
+bool LcdConfigure( u16 key, u16 value );
 
 /*!
     @brief Controls the activation of lcd segments.
@@ -28,6 +28,6 @@ bool LcdConfigure( uint16 key, uint16 value );
     @param value Each bit specifies a PIO's LCD activation: 1=on, 0=off.
     @return All zeros if sucessful, otherwise incorrect bits
 */
-uint32 LcdSet(uint32 mask, uint32 value);
+u32 LcdSet(u32 mask, u32 value);
 
 #endif

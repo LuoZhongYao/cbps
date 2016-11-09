@@ -11,29 +11,29 @@ Part of ADK 4.0
 
 typedef struct __gatt_manager_server_lookup
 {
-    uint16                            count;
+    u16                            count;
     gatt_manager_server_lookup_data_t *table;
 
 } gatt_manager_server_lookup_t;
 
 typedef struct __gatt_manager_client_lookup
 {
-    uint16                            count;
+    u16                            count;
     gatt_manager_client_lookup_data_t *table;
 
 } gatt_manager_client_lookup_t;
 
 typedef struct __gatt_manager_db
 {
-    uint16       size;
-    const uint16 *ptr;    /* Const GATT database */
+    u16       size;
+    const u16 *ptr;    /* Const GATT database */
 
 } gatt_manager_db_t;
 
 typedef struct __gatt_manager_connecting_client
 {
     Task    task;
-    uint16  cid;
+    u16  cid;
 
 } gatt_manager_connecting_client_t;
 
@@ -43,13 +43,13 @@ struct __gatt_manager_data
     Task                                application_task;
     gatt_manager_initialisation_state_t initialisation_state:gatt_manager_initialisation_state_max;
     gatt_manager_advertising_state_t    advertising_state:gatt_manager_advertising_state_max;
-    uint16                              advertising_requested_flag;
+    u16                              advertising_requested_flag;
     gatt_manager_db_t                   db;
     gatt_manager_server_lookup_t        server_lookup;
     gatt_manager_client_lookup_t        client_lookup;
     gatt_manager_connecting_client_t    remote_client_connect;              /* When waiting for a client device to connect, this data keeps track of the connection */
     Task                                remote_server_connect_handler_task; /* When waiting for a server device connection, this data keeps track of the connection */
-    uint16                              execute_write_result;
+    u16                              execute_write_result;
     BITFIELD                            cancel_pending_connection:1;
     BITFIELD                            application_pending_write:1;
 };
@@ -229,7 +229,7 @@ gatt_manager_advertising_state_t gattManagerDataGetAdvertisingState(void)
     return gatt_manager_advertising_state_idle;
 }
 
-uint16 * gattManagerDataGetAdvertisingRequestedFlag(void)
+u16 * gattManagerDataGetAdvertisingRequestedFlag(void)
 {
     if (gattManagerDataIsInit())
     {
@@ -274,7 +274,7 @@ bool gattManagerDataIsCancelPending(void)
  * GATT Manager GATT DB functions
  * *****************************************************************************/
 
-void gattManagerDataSetConstDB(const uint16* db_ptr, uint16 size)
+void gattManagerDataSetConstDB(const u16* db_ptr, u16 size)
 {
     if (gattManagerDataIsInit())
     {
@@ -293,7 +293,7 @@ const void * gattManagerDataGetDB(void)
     return NULL;
 }
 
-uint16 gattManagerDataGetDBSize(void)
+u16 gattManagerDataGetDBSize(void)
 {
     if (gattManagerDataIsInit())
     {
@@ -336,7 +336,7 @@ const gatt_manager_server_lookup_data_t * gattManagerDataServerIteratorNext(gatt
 
 static bool gattManagerDataServerHandlesValid(const gatt_manager_server_registration_params_t *server)
 {
-    uint16 index;
+    u16 index;
     if (0 == gatt_manager_data->server_lookup.count)
     {
         return TRUE;
@@ -361,7 +361,7 @@ bool gattManagerDataAddServer(const gatt_manager_server_registration_params_t *s
 {
     void * ptr;
     size_t realloc_size;
-    uint16 idx;
+    u16 idx;
 
     if (!gattManagerDataIsInit() ||
         NULL == server)
@@ -393,14 +393,14 @@ bool gattManagerDataAddServer(const gatt_manager_server_registration_params_t *s
     return TRUE;
 }
 
-uint16 gattManagerDataServerCount(void)
+u16 gattManagerDataServerCount(void)
 {
     return gatt_manager_data->server_lookup.count;
 }
 
-uint16 gattManagerDataGetServerDatabaseHandle(Task task, uint16 handle)
+u16 gattManagerDataGetServerDatabaseHandle(Task task, u16 handle)
 {
-    uint16 index;
+    u16 index;
 
     if (NULL == gatt_manager_data ||
         NULL == gatt_manager_data->server_lookup.table ||
@@ -414,7 +414,7 @@ uint16 gattManagerDataGetServerDatabaseHandle(Task task, uint16 handle)
         if (gatt_manager_data->server_lookup.table[index].task == task)
         {
             /* Convert the handle value passed in to the real value of the handle in the registered DB */
-            uint16 adjusted_handle = (gatt_manager_data->server_lookup.table[index].start_handle - 1) + handle;
+            u16 adjusted_handle = (gatt_manager_data->server_lookup.table[index].start_handle - 1) + handle;
 
             /* Ensure the handle requested is not out of range for the service */
             if ( (adjusted_handle >= gatt_manager_data->server_lookup.table[index].start_handle) &&
@@ -429,9 +429,9 @@ uint16 gattManagerDataGetServerDatabaseHandle(Task task, uint16 handle)
 }
 
 
-gatt_manager_server_lookup_data_t * gattManagerDataFindServerTask(uint16 handle)
+gatt_manager_server_lookup_data_t * gattManagerDataFindServerTask(u16 handle)
 {
-    uint16 index;
+    u16 index;
 
     if (NULL == gatt_manager_data ||
         NULL == gatt_manager_data->server_lookup.table)
@@ -453,7 +453,7 @@ gatt_manager_server_lookup_data_t * gattManagerDataFindServerTask(uint16 handle)
 
 bool gattManagerDataResolveServerHandle(gatt_manager_resolve_server_handle_t * data)
 {
-    uint16 index;
+    u16 index;
 
     if (NULL == gatt_manager_data ||
         NULL == gatt_manager_data->server_lookup.table ||
@@ -476,9 +476,9 @@ bool gattManagerDataResolveServerHandle(gatt_manager_resolve_server_handle_t * d
     return FALSE;
 }
 
-void gattManagerDataSetServerPendingWriteFlag(uint16 handle)
+void gattManagerDataSetServerPendingWriteFlag(u16 handle)
 {
-    uint16 index;
+    u16 index;
 
     if (NULL == gatt_manager_data ||
         NULL == gatt_manager_data->server_lookup.table)
@@ -547,7 +547,7 @@ bool gattManagerDataServerIteratorPrepareWriteFlagsNext(gatt_manager_server_look
 
 bool gattManagerDataServerGetPrepareWriteFlag(Task task)
 {
-    uint16 index;
+    u16 index;
 
     if (NULL == gatt_manager_data ||
         NULL == gatt_manager_data->server_lookup.table)
@@ -573,7 +573,7 @@ bool gattManagerDataServerGetPrepareWriteFlag(Task task)
     return FALSE;
 }
 
-void gattManagerDataServerSetExecuteWriteResult(uint16 result)
+void gattManagerDataServerSetExecuteWriteResult(u16 result)
 {
     /* Sets the overall Execute Write response code */
     
@@ -583,7 +583,7 @@ void gattManagerDataServerSetExecuteWriteResult(uint16 result)
     }
 }
 
-uint16 gattManagerDataServerGetExecuteWriteResult(void)
+u16 gattManagerDataServerGetExecuteWriteResult(void)
 {
     /* Gets the overall Execute Write response code */
     
@@ -596,7 +596,7 @@ uint16 gattManagerDataServerGetExecuteWriteResult(void)
 
 bool gattManagerDataServerClearPrepareWriteFlag(Task task)
 {
-    uint16 index;
+    u16 index;
     bool pending_write_flags_clear = TRUE;
 
     if (NULL == gatt_manager_data ||
@@ -642,7 +642,7 @@ bool gattManagerDataServerClearPrepareWriteFlag(Task task)
 static void allocateNewClientEntry(void)
 {
     void * ptr;
-    uint16 size_db = sizeof(gatt_manager_client_lookup_data_t) *
+    u16 size_db = sizeof(gatt_manager_client_lookup_data_t) *
                      (gatt_manager_data->client_lookup.count + 1);
 
     ptr = realloc(gatt_manager_data->client_lookup.table, size_db );
@@ -651,9 +651,9 @@ static void allocateNewClientEntry(void)
     gatt_manager_data->client_lookup.table = ptr;
 }
 
-static bool removeClientLookupElement(uint16 delete_index)
+static bool removeClientLookupElement(u16 delete_index)
 {
-    uint16 loop_index = 0;
+    u16 loop_index = 0;
     void * reallocated = NULL;
 
     /* Shift elements down one position to fill gap left by deleted element */
@@ -710,7 +710,7 @@ bool gattManagerDataAddClient(const gatt_manager_client_registration_params_t *c
 
 bool gattManagerDataRemoveClient(const Task client)
 {
-    uint16 index = 0;
+    u16 index = 0;
     bool rt = FALSE;
     if (!gattManagerDataIsInit() ||
         NULL == gatt_manager_data->client_lookup.table ||
@@ -736,7 +736,7 @@ bool gattManagerDataRemoveClient(const Task client)
 
 const gatt_manager_client_lookup_data_t * gattManagerDataGetClientByTask(const Task client)
 {
-    uint16 index;
+    u16 index;
 
     if (!gattManagerDataIsInit() ||
         NULL == client)
@@ -756,9 +756,9 @@ const gatt_manager_client_lookup_data_t * gattManagerDataGetClientByTask(const T
 }
 
 
-Task gattManagerDataGetClientByCid(uint16 handle, uint16 cid)
+Task gattManagerDataGetClientByCid(u16 handle, u16 cid)
 {
-    uint16 index;
+    u16 index;
 
     if (NULL == gatt_manager_data ||
         NULL == gatt_manager_data->client_lookup.table)
@@ -832,7 +832,7 @@ void gattManagerDataSetRemoteClientConnectTask(Task task)
     }
 }
 
-uint16 gattManagerDataGetRemoteClientConnectCid(void)
+u16 gattManagerDataGetRemoteClientConnectCid(void)
 {
     if (gattManagerDataIsInit())
     {
@@ -842,7 +842,7 @@ uint16 gattManagerDataGetRemoteClientConnectCid(void)
     return 0;
 }
 
-void gattManagerDataSetRemoteClientConnectCid(uint16 cid)
+void gattManagerDataSetRemoteClientConnectCid(u16 cid)
 {
     if (gattManagerDataIsInit())
     {

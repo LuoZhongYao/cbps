@@ -31,7 +31,7 @@ DESCRIPTION
 RETURNS
    void
 */
-void ConnectionDmBleSetAdvertisingDataReq(uint8 size_ad_data, const uint8 *ad_data)
+void ConnectionDmBleSetAdvertisingDataReq(u8 size_ad_data, const u8 *ad_data)
 {
     
 #ifdef CONNECTION_DEBUG_LIB
@@ -98,7 +98,7 @@ RETURNS
 void ConnectionDmBleSetAdvertisingParamsReq( 
         ble_adv_type adv_type,
         bool random_own_address,
-        uint8  channel_map,
+        u8  channel_map,
         const ble_adv_params_t *adv_params 
         )
 {

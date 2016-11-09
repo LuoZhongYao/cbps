@@ -44,10 +44,10 @@ DESCRIPTION
  * This function returns a confirmation message for 
  *  AvrcpBrowseSearch() request.
  ***************************************************************************/
-uint16  avrcpSearchCfm(AVBP*              avbp,
+u16  avrcpSearchCfm(AVBP*              avbp,
                        avrcp_status_code  status, 
-                       const uint8*       ptr,
-                       uint16             data_len);
+                       const u8*       ptr,
+                       u16             data_len);
 
 /****************************************************************************
  *NAME    
@@ -57,10 +57,10 @@ uint16  avrcpSearchCfm(AVBP*              avbp,
  * This function returns a confirmation message for 
  *  AvrcpBrowseGetFolderItems() request.
  ***************************************************************************/
-uint16  avrcpGetFolderItemsCfm(AVBP*              avbp,
+u16  avrcpGetFolderItemsCfm(AVBP*              avbp,
                                avrcp_status_code  status, 
-                               const uint8*       ptr,
-                               uint16             data_len);
+                               const u8*       ptr,
+                               u16             data_len);
 
 /****************************************************************************
  *NAME    
@@ -70,10 +70,10 @@ uint16  avrcpGetFolderItemsCfm(AVBP*              avbp,
  * This function returns a confirmation message for 
  *  AvrcpBrowseGetNumberOfItems() request.
  ***************************************************************************/
-uint16  avrcpGetNumberOfItemsCfm(AVBP*              avbp,
+u16  avrcpGetNumberOfItemsCfm(AVBP*              avbp,
                                avrcp_status_code  status, 
-                               const uint8*       ptr,
-                               uint16             data_len);
+                               const u8*       ptr,
+                               u16             data_len);
                                
 /****************************************************************************
  *NAME    
@@ -83,10 +83,10 @@ uint16  avrcpGetNumberOfItemsCfm(AVBP*              avbp,
  * This function returns a confirmation message for 
  *  AvrcpBrowseGetItemAttributes() request.
  ***************************************************************************/
-uint16  avrcpGetItemAttributesCfm(AVBP*              avbp,
+u16  avrcpGetItemAttributesCfm(AVBP*              avbp,
                                   avrcp_status_code  status, 
-                                  const uint8*       ptr,
-                                  uint16             data_len);
+                                  const u8*       ptr,
+                                  u16             data_len);
 
 /****************************************************************************
  *NAME    
@@ -95,10 +95,10 @@ uint16  avrcpGetItemAttributesCfm(AVBP*              avbp,
  *DESCRIPTION
  * This function returns a confirmation message for AvrcpBrowseChangePath
  ***************************************************************************/
-uint16  avrcpChangePathCfm(AVBP*              avbp,
+u16  avrcpChangePathCfm(AVBP*              avbp,
                            avrcp_status_code  status, 
-                           const uint8*       ptr,
-                           uint16             data_len);
+                           const u8*       ptr,
+                           u16             data_len);
 
 /****************************************************************************
  *NAME    
@@ -108,10 +108,10 @@ uint16  avrcpChangePathCfm(AVBP*              avbp,
  * This function returns a confirmation message for AvrcpBrowseSetPlayer()
  *
  ***************************************************************************/
-uint16 avrcpBrowseSetPlayerCfm(AVBP*              avbp,
+u16 avrcpBrowseSetPlayerCfm(AVBP*              avbp,
                                avrcp_status_code  status, 
-                              const uint8*       ptr,
-                              uint16             data_len);
+                              const u8*       ptr,
+                              u16             data_len);
 
 /****************************************************************************
  *NAME    
@@ -200,9 +200,9 @@ void avbpHandleInternalWatchdogTimeout(AVBP *avbp);
  *
  ***************************************************************************/
 void avbpHandleResponse(    AVBP            *avbp,
-                           uint16           pdu_id,
-                           const uint8*     data, 
-                           uint16           param_len);
+                           u16           pdu_id,
+                           const u8*     data, 
+                           u16           param_len);
 
 #endif /* !AVRCP_TG_ONLY_LIB */
 
@@ -216,8 +216,8 @@ void avbpHandleResponse(    AVBP            *avbp,
  *   Handle the incoming Search Request
  ***************************************************************************/
 avrcp_response_type avrcpHandleSearchReq(AVBP        *avbp, 
-                                   const uint8*      data,
-                                         uint16      param_len);
+                                   const u8*      data,
+                                         u16      param_len);
 
 /****************************************************************************
  *NAME    
@@ -227,8 +227,8 @@ avrcp_response_type avrcpHandleSearchReq(AVBP        *avbp,
  *   Handle the incoming Get Folder Items Request
  ***************************************************************************/
 avrcp_response_type avrcpHandleGetFolderItemsReq(AVBP        *avbp, 
-                                           const uint8*      data,
-                                                 uint16      param_len);
+                                           const u8*      data,
+                                                 u16      param_len);
 
 
 /****************************************************************************
@@ -239,8 +239,8 @@ avrcp_response_type avrcpHandleGetFolderItemsReq(AVBP        *avbp,
  *   Handle the incoming Get Number Items Request
  ***************************************************************************/
 avrcp_response_type avrcpHandleGetNumberItemsReq(AVBP        *avbp, 
-                                           const uint8*      data,
-                                                 uint16      param_len);
+                                           const u8*      data,
+                                                 u16      param_len);
                                                  
 /****************************************************************************
  *NAME    
@@ -250,8 +250,8 @@ avrcp_response_type avrcpHandleGetNumberItemsReq(AVBP        *avbp,
  *   Handle the incoming Get Item attributes Request
  ***************************************************************************/
 avrcp_response_type avrcpHandleGetItemAttributesReq(AVBP        *avbp, 
-                                              const uint8*      data,
-                                                    uint16      param_len);
+                                              const u8*      data,
+                                                    u16      param_len);
 
 
 /****************************************************************************
@@ -262,8 +262,8 @@ avrcp_response_type avrcpHandleGetItemAttributesReq(AVBP        *avbp,
  *   Handle the incoming change path request
  ***************************************************************************/
 avrcp_response_type avrcpHandleChangePathReq(AVBP         *avbp, 
-                                             const uint8*  data,
-                                             uint16        param_len);
+                                             const u8*  data,
+                                             u16        param_len);
 
 /****************************************************************************
  *NAME    
@@ -273,8 +273,8 @@ avrcp_response_type avrcpHandleChangePathReq(AVBP         *avbp,
  *   Handle the incoming Browsed Set Player Request
  ***************************************************************************/
 avrcp_response_type avrcpHandleSetBrowsedPlayerReq(AVBP         *avbp, 
-                                                   const uint8*  data,
-                                                   uint16        param_len);
+                                                   const u8*  data,
+                                                   u16        param_len);
 
 
 /****************************************************************************
@@ -287,9 +287,9 @@ avrcp_response_type avrcpHandleSetBrowsedPlayerReq(AVBP         *avbp,
  *
  ***************************************************************************/
 void avrcpHandleNowPlayingCommand(AVRCP*  avrcp,
-                            const uint8*  ptr,
-                                  uint16  packet_size,
-                                  uint16  pdu_id);
+                            const u8*  ptr,
+                                  u16  packet_size,
+                                  u16  pdu_id);
 
 /****************************************************************************
  *NAME    
@@ -301,8 +301,8 @@ void avrcpHandleNowPlayingCommand(AVRCP*  avrcp,
  *
  ***************************************************************************/
 void avrcpHandleAddressedPlayerCommand(AVRCP*       avrcp,
-                                       const uint8* data,
-                                       uint16       len);
+                                       const u8* data,
+                                       u16       len);
 
 /****************************************************************************
  *NAME    
@@ -390,9 +390,9 @@ void avbpHandleInternalSendResponseTimeout(AVBP *avbp);
  *
  ***************************************************************************/
 void avbpHandleCommand(AVBP     *avbp,
-                       uint16   pdu_id,
-                 const uint8*   data,
-                       uint16   param_len);
+                       u16   pdu_id,
+                 const u8*   data,
+                       u16   param_len);
 
 #endif /* !AVRCP_CT_ONLY_LIB*/
 
@@ -406,11 +406,11 @@ void avbpHandleCommand(AVBP     *avbp,
  *
  ***************************************************************************/
 void avrcpSendBrowsePdu(AVBP    *avbp,
-                        uint16  pdu_id,
-                        uint8*  packet,
-                        uint16  param_size,
+                        u16  pdu_id,
+                        u8*  packet,
+                        u16  param_size,
                         Source  src,
-                        uint16  src_len,   
+                        u16  src_len,   
                         bool    response);
 /****************************************************************************
  *NAME    
@@ -420,7 +420,7 @@ void avrcpSendBrowsePdu(AVBP    *avbp,
  *   Frame the AVCTP Header for Browsing packet
  *
  ***************************************************************************/
-void avbpFrameAvctpHeader(AVBP *avbp, uint8 *ptr , bool response);
+void avbpFrameAvctpHeader(AVBP *avbp, u8 *ptr , bool response);
 
 
 /****************************************************************************
@@ -434,7 +434,7 @@ void avbpFrameAvctpHeader(AVBP *avbp, uint8 *ptr , bool response);
  ***************************************************************************/
 
 void avbpSetChannelOutgoingData(AVBP   *avbp,
-                                uint16  pdu_id,
+                                u16  pdu_id,
                                 bool    response);
 
 /****************************************************************************
@@ -446,8 +446,8 @@ void avbpSetChannelOutgoingData(AVBP   *avbp,
  *  incoming browsing PDU
  ***************************************************************************/
 void avbpSetChannelOnIncomingData(AVBP      *avbp, 
-                                  uint16    pdu_id,
-                                  uint16    sink_data_len);
+                                  u16    pdu_id,
+                                  u16    sink_data_len);
 
  /****************************************************************************
  *NAME    

@@ -30,7 +30,7 @@ NOTES
 #ifndef CL_EXCLUDE_INQUIRY
 
 /*****************************************************************************/
-void ConnectionWriteInquiryTx(int8 tx_power)
+void ConnectionWriteInquiryTx(i8 tx_power)
 {
 #ifdef CONNECTION_DEBUG_LIB
     if ((tx_power < MIN_TX_POWER) || (tx_power > MAX_TX_POWER))

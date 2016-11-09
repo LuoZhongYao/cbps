@@ -29,8 +29,8 @@ void SppsHandleComplexMessage(Task task, MessageId id, Message message)
 			/* Move data from source into message */
 			Source src = ((SPP_MESSAGE_MORE_DATA_T*)message)->source;
 			SPPS_MESSAGE_MORE_DATA_TEST_EXTRA_T *pdu;
-			const uint8 *s = SourceMap(src);
-			uint16 len = SourceBoundary(src);
+			const u8 *s = SourceMap(src);
+			u16 len = SourceBoundary(src);
 				
 			pdu = malloc(sizeof(SPPS_MESSAGE_MORE_DATA_TEST_EXTRA_T)+len);
 			memset(pdu, 0, sizeof(SPPS_MESSAGE_MORE_DATA_TEST_EXTRA_T));
@@ -115,7 +115,7 @@ void SppsStopServiceTestExtra(Task theAppTask)
     SppStopService(theAppTask);
 }
 
-void SppsConnectResponseTestExtra(Task theAppTask, const bdaddr *bd_addr, const bool response, const Sink sink, const uint8 local_server_channel, const uint16 max_payload_size)
+void SppsConnectResponseTestExtra(Task theAppTask, const bdaddr *bd_addr, const bool response, const Sink sink, const u8 local_server_channel, const u16 max_payload_size)
 {
     SppConnectResponse(theAppTask,bd_addr,response,sink,local_server_channel,max_payload_size);
 }

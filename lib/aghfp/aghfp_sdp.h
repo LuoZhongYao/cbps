@@ -11,7 +11,7 @@ Part of ADK 4.0
 /****************************************************************************
 	Register the service record corresponding to the specified profile 
 */
-void aghfpRegisterServiceRecord(AGHFP *aghfp, aghfp_profile profile, uint8 chan);
+void aghfpRegisterServiceRecord(AGHFP *aghfp, aghfp_profile profile, u8 chan);
 
 
 /****************************************************************************

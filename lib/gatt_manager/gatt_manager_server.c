@@ -14,15 +14,15 @@ Part of ADK 4.0
 
 static __inline__ size_t gattAccessIndSize(GATT_ACCESS_IND_T * ind)
 {
-    return ((ind->size_value) * sizeof(uint8));
+    return ((ind->size_value) * sizeof(u8));
 }
 
 static __inline__ size_t gattManagerServerAccessIndWithLenSize(GATT_ACCESS_IND_T * ind)
 {
-    return ((sizeof(GATT_MANAGER_SERVER_ACCESS_IND_T) - sizeof(uint8)) + gattAccessIndSize(ind));
+    return ((sizeof(GATT_MANAGER_SERVER_ACCESS_IND_T) - sizeof(u8)) + gattAccessIndSize(ind));
 }
 
-static void serverAccessInd(GATT_ACCESS_IND_T * ind, Task task, uint16 handle)
+static void serverAccessInd(GATT_ACCESS_IND_T * ind, Task task, u16 handle)
 {
     MAKE_GATT_MANAGER_MESSAGE_WITH_LEN(GATT_MANAGER_SERVER_ACCESS_IND, gattAccessIndSize(ind));
     memmove(message, ind, gattManagerServerAccessIndWithLenSize(ind));
@@ -57,7 +57,7 @@ static bool serverConnectionParamsValid(Task task, const typed_bdaddr *taddr,
     return FALSE;
 }
 
-static bool remoteClientValid(Task task, uint16 cid, uint16 handle)
+static bool remoteClientValid(Task task, u16 cid, u16 handle)
 {
     if(NULL != task ||
        0 != cid ||
@@ -95,7 +95,7 @@ static void cancelRemoteClientConnectCfm(Task task, gatt_manager_status_t status
 }
 
 static void remoteClientNotificationCfm(GATT_NOTIFICATION_CFM_T * cfm, Task task,
-                                        uint16 handle)
+                                        u16 handle)
 {
     MAKE_GATT_MANAGER_MESSAGE(GATT_MANAGER_REMOTE_CLIENT_NOTIFICATION_CFM);
     memmove(message, cfm, sizeof(GATT_MANAGER_REMOTE_CLIENT_NOTIFICATION_CFM_T));
@@ -104,7 +104,7 @@ static void remoteClientNotificationCfm(GATT_NOTIFICATION_CFM_T * cfm, Task task
 }
 
 static void remoteClientIndicationCfm(GATT_INDICATION_CFM_T * cfm, Task task,
-                                      uint16 handle)
+                                      u16 handle)
 {
     MAKE_GATT_MANAGER_MESSAGE(GATT_INDICATION_CFM);
     memmove(message, cfm, sizeof(GATT_INDICATION_CFM_T));
@@ -324,13 +324,13 @@ void GattManagerCancelWaitForRemoteClient(void)
 }
 
 bool GattManagerServerAccessResponse(Task task,
-                                     uint16 cid,
-                                     uint16 handle,
-                                     uint16 result,
-                                     uint16 size_value,
-                                     const uint8 *value)
+                                     u16 cid,
+                                     u16 handle,
+                                     u16 result,
+                                     u16 size_value,
+                                     const u8 *value)
 {
-    uint16 adjusted_handle;
+    u16 adjusted_handle;
 
     if (!gattManagerDataIsInit())
     {
@@ -396,12 +396,12 @@ bool GattManagerServerAccessResponse(Task task,
 }
 
 void GattManagerRemoteClientNotify(Task   task,
-                                   uint16 cid,
-                                   uint16 handle,
-                                   uint16 size_value,
-                                   const uint8 *value)
+                                   u16 cid,
+                                   u16 handle,
+                                   u16 size_value,
+                                   const u8 *value)
 {
-    uint16 adjusted_handle;
+    u16 adjusted_handle;
 
     if (!gattManagerDataIsInit())
     {
@@ -428,12 +428,12 @@ void GattManagerRemoteClientNotify(Task   task,
 }
 
 void GattManagerRemoteClientIndicate(Task   task,
-                                     uint16 cid,
-                                     uint16 handle,
-                                     uint16 size_value,
-                                     const uint8 *value)
+                                     u16 cid,
+                                     u16 handle,
+                                     u16 size_value,
+                                     const u8 *value)
 {
-    uint16 adjusted_handle;
+    u16 adjusted_handle;
 
     if (!gattManagerDataIsInit())
     {
@@ -573,7 +573,7 @@ void gattManagerServerAccessInd(GATT_ACCESS_IND_T * ind)
     }
 }
 
-void gattManagerServerAdvertising(uint16 cid)
+void gattManagerServerAdvertising(u16 cid)
 {
     gattManagerDataSetRemoteClientConnectCid(cid);
     gattManagerDataAdvertisingState_Advertising();

@@ -20,7 +20,7 @@ Internal functions
 ****************************************************************************/
 
 /****************************************************************************/
-void makeAncsSetNotificationCfmMsg(GANCS *ancs, gatt_ancs_status_t status, uint8 characteristic)
+void makeAncsSetNotificationCfmMsg(GANCS *ancs, gatt_ancs_status_t status, u8 characteristic)
 {
     switch(characteristic)
     {
@@ -65,7 +65,7 @@ void handleAncsNotification(GANCS *ancs, const GATT_MANAGER_REMOTE_SERVER_NOTIFI
             /* Check if application has set interest in this category */
             if(CHECK_CATEGORY(ancs->ns_notification_mask, ind->value[2]))
             {
-                uint32 notUID = 0;
+                u32 notUID = 0;
                 /* Send the Apple notification to the application */
                 MAKE_APPLE_NOTIFICATION_MESSAGE(GATT_ANCS_NS_IND);
                 message->ancs = ancs;
@@ -74,9 +74,9 @@ void handleAncsNotification(GANCS *ancs, const GATT_MANAGER_REMOTE_SERVER_NOTIFI
                 message->event_flag = ind->value[1];
                 message->category_id = ind->value[2];
                 message->category_count = ind->value[3];
-                notUID = (uint32)ind->value[4] << 24;
-                notUID |= ((uint32)ind->value[5] << 16);
-                notUID |= ((uint32)ind->value[6] << 8);
+                notUID = (u32)ind->value[4] << 24;
+                notUID |= ((u32)ind->value[5] << 16);
+                notUID |= ((u32)ind->value[6] << 8);
                 notUID |= ind->value[7];
 
                 message->notification_uid = notUID;
@@ -107,13 +107,13 @@ void handleAncsNotification(GANCS *ancs, const GATT_MANAGER_REMOTE_SERVER_NOTIFI
             {
                 case gatt_ancs_notification_attr:
                 {
-                     uint32 notUID = 0;
+                     u32 notUID = 0;
                     /* Send the Apple notification to the application */
                     MAKE_APPLE_NOTIFICATION_MESSAGE_WITH_LEN(GATT_ANCS_DS_ATTR_IND, (ind->size_value - 5));
                     message->ancs = ancs;
-                    notUID = (uint32)ind->value[1] << 24;
-                    notUID |= ((uint32)ind->value[2] << 16);
-                    notUID |= ((uint32)ind->value[3] << 8);
+                    notUID = (u32)ind->value[1] << 24;
+                    notUID |= ((u32)ind->value[2] << 16);
+                    notUID |= ((u32)ind->value[3] << 8);
                     notUID |= ind->value[4];
                     message->notification_uid = notUID;
                     /* First 5 bytes consist of command_id and Notification UID */
@@ -125,7 +125,7 @@ void handleAncsNotification(GANCS *ancs, const GATT_MANAGER_REMOTE_SERVER_NOTIFI
 
                 case gatt_ancs_notification_app_attr:
                 {
-                    uint16 appIdLen = 0;
+                    u16 appIdLen = 0;
                     /* Send the Apple notification to the application */
                     MAKE_APPLE_NOTIFICATION_MESSAGE_WITH_LEN(GATT_ANCS_DS_APP_ATTR_IND, (ind->size_value - 1));
                     message->ancs = ancs;
@@ -157,11 +157,11 @@ void handleAncsNotification(GANCS *ancs, const GATT_MANAGER_REMOTE_SERVER_NOTIFI
 }
 
 /****************************************************************************/
-void ancsSetNotificationRequest(GANCS *ancs, bool notifications_enable, uint8 characteristic)
+void ancsSetNotificationRequest(GANCS *ancs, bool notifications_enable, u8 characteristic)
 {
     bool success = FALSE;
-    uint16 endHandle = 0;
-    uint16 startHandle = 0;
+    u16 endHandle = 0;
+    u16 startHandle = 0;
     gatt_ancs_status_t status = gatt_ancs_status_failed;
     gatt_manager_client_service_data_t client_data;
 
@@ -267,7 +267,7 @@ Public API
 /****************************************************************************/
 void GattAncsSetNSNotificationEnableRequest(const GANCS *ancs,
                                                                                     bool notifications_enable,
-                                                                                    uint16 notification_mask)
+                                                                                    u16 notification_mask)
 {
     MAKE_APPLE_NOTIFICATION_MESSAGE(ANCS_INTERNAL_MSG_SET_NS_NOTIFICATION);
     memset(message, 0, sizeof(ANCS_INTERNAL_MSG_SET_NS_NOTIFICATION_T));

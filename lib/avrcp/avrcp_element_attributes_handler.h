@@ -25,8 +25,8 @@ DESCRIPTION
     Handle Get Element attributes command PDU received from CT.
 */
 void avrcpHandleGetElementAttributesCommand(AVRCP           *avrcp, 
-                                            const uint8*    data, 
-                                            uint16          packet_size);
+                                            const u8*    data, 
+                                            u16          packet_size);
 
 
 

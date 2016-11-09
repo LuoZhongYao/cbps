@@ -51,7 +51,7 @@ PARAMETERS:
 DESCRIPTION:
     Function to send SWAT_OPEN_CMD to the remote device
 */
-void swatSendMediaOpenRequest(uint16 device_id, swatMediaType media_type);
+void swatSendMediaOpenRequest(u16 device_id, swatMediaType media_type);
 
 
 /****************************************************************************
@@ -132,7 +132,7 @@ PARAMETERS
 DESCRIPTION
     Send a MEDIA_CLOSE_REQ to the remote device *device_id*
 */
-void swatSendMediaCloseReq(uint16 device_id, swatMediaType media_type);
+void swatSendMediaCloseReq(u16 device_id, swatMediaType media_type);
 
 
 /****************************************************************************
@@ -198,7 +198,7 @@ PARAMETERS
 DESCRIPTION
     Send a START_REQ command to device *device_id*
 */
-void swatSendMediaStartReq(uint16 device_id, swatMediaType media_type);
+void swatSendMediaStartReq(u16 device_id, swatMediaType media_type);
 
 
 /****************************************************************************
@@ -278,7 +278,7 @@ PARAMETERS
 DESCRIPTION
     Send a SUSPEND_REQ to the specified remote device
 */
-void swatSendMediaSuspendReq(uint16 device_id, swatMediaType media_type);
+void swatSendMediaSuspendReq(u16 device_id, swatMediaType media_type);
 
 
 /****************************************************************************
@@ -345,7 +345,7 @@ PARAMETERS
 DESCRIPTION
     Send a SET_VOLUME_REQ to the remote device *device_id*
 */
-void swatSendSetVolumeReq(uint16 device_id, uint8 volume, uint8 sub_trim);
+void swatSendSetVolumeReq(u16 device_id, u8 volume, u8 sub_trim);
 
 
 /****************************************************************************
@@ -360,7 +360,7 @@ PARAMETERS
 DESCRIPTION
     Handle an incoming SET_VOLUME_REQ from the remote device *device_id*
 */
-void swatHandleVolumeRequestFromRemoteDevice(remoteDevice * device, uint8 volume, uint8 sub_trim);
+void swatHandleVolumeRequestFromRemoteDevice(remoteDevice * device, u8 volume, u8 sub_trim);
 
 
 /****************************************************************************
@@ -375,7 +375,7 @@ PARAMETERS
 DESCRIPTION
     Handle an incoming SET_VOLUME_RES from the remote device *device_id*
 */
-void swatHandleVolumeResponseFromRemoteDevice(remoteDevice * device, uint8 volume, uint8 sub_trim);
+void swatHandleVolumeResponseFromRemoteDevice(remoteDevice * device, u8 volume, u8 sub_trim);
 
 
 
@@ -396,7 +396,7 @@ PARAMETERS
 DESCRIPTION
     Function to send SWAT_SEND_SAMPLE_RATE_CMD to the remote device
 */
-void swatSendSampleRateCommand(uint16 device_id, uint16 rate);
+void swatSendSampleRateCommand(u16 device_id, u16 rate);
 
 
 /****************************************************************************
@@ -410,7 +410,7 @@ PARAMETERS
 DESCRIPTION
     Function to handle when a remote device sent a SWAT_SAMPLE_RATE_CMD message
 */
-void swatHandleSampleRateCommandFromRemoteDevice(remoteDevice * device, uint16 rate);
+void swatHandleSampleRateCommandFromRemoteDevice(remoteDevice * device, u16 rate);
 
 
 
@@ -426,7 +426,7 @@ PARAMETERS
 DESCRIPTION
     Allows the Client task to respond to a SWAT_SAMPLE_RATE_IND message
 */
-void swatHandleSampleRateResponseFromClient(remoteDevice * device, uint16 rate);
+void swatHandleSampleRateResponseFromClient(remoteDevice * device, u16 rate);
 
 
 
@@ -445,7 +445,7 @@ RETURNS
 DESCRIPTION
     Function to send the SWAT_SAMPLE_RATE_RSP packet to the remote device 
 */
-void swatSendSampleRateResponse(remoteDevice * device, swatMediaResponse response, uint16 rate);
+void swatSendSampleRateResponse(remoteDevice * device, swatMediaResponse response, u16 rate);
 
 
 
@@ -461,7 +461,7 @@ PARAMETERS
 DESCRIPTION
     Function to handle when a remote device has responded to a SWAT_SAMPLE_RATE_CMD message
 */
-void swatHandleSampleRateResponseFromRemoteDevice(remoteDevice * device, swatMediaResponse media_rsp, uint16 rate);
+void swatHandleSampleRateResponseFromRemoteDevice(remoteDevice * device, swatMediaResponse media_rsp, u16 rate);
 
 
 
@@ -496,7 +496,7 @@ PARAMETERS:
 DESCRIPTION:
     Function to handle when we got a SWAT_GENERAL_REJECT from the remote device
 */
-void swatHandleGeneralRejectFromRemoteDevice(uint16 device_id, uint16 cmd_id);
+void swatHandleGeneralRejectFromRemoteDevice(u16 device_id, u16 cmd_id);
 
 /*****************************************************************************
 FUNCTION:
@@ -508,7 +508,7 @@ PARAMETERS:
 DESCRIPTION:
     Function to get the version number from the subwoofer device
 */
-void swatSendGetVersionNoReq(uint16 device_id);
+void swatSendGetVersionNoReq(u16 device_id);
 
 /*****************************************************************************
 FUNCTION:
@@ -534,7 +534,7 @@ PARAMETERS:
 DESCRIPTION:
     Function to handle the version number response from the subwoofer
 */
-void swatHandleVersionNoResponseFromRemoteDevice(remoteDevice *device, uint16 major, uint16 minor);
+void swatHandleVersionNoResponseFromRemoteDevice(remoteDevice *device, u16 major, u16 minor);
 
 
 #endif /* _SWAT_COMMAND_HANDLER_H_ */

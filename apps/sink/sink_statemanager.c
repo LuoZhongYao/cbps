@@ -3,9 +3,9 @@ Copyright (c) 2004 - 2015 Qualcomm Technologies International, Ltd.
 
 FILE NAME
     sink_statemanager.h
-    
+
 DESCRIPTION
-    state machine helper functions used for state changes etc - provide single 
+    state machine helper functions used for state changes etc - provide single
     state change points etc for the sink device application
 */
 
@@ -20,7 +20,7 @@ DESCRIPTION
 #include "sink_inquiry.h"
 #include "sink_devicemanager.h"
 #include "sink_powermanager.h"
-#include "sink_speech_recognition.h" 
+#include "sink_speech_recognition.h"
 #include "psu.h"
 #include "sink_audio_routing.h"
 #include "sink_auth.h"
@@ -31,7 +31,7 @@ DESCRIPTION
 #endif
 
 #ifdef ENABLE_AVRCP
-#include "sink_avrcp.h"    
+#include "sink_avrcp.h"
 #endif
 
 #ifdef ENABLE_SUBWOOFER
@@ -47,7 +47,6 @@ DESCRIPTION
 #include <boot.h>
 
 #ifdef DEBUG_STATES
-#define SM_DEBUG(x) DEBUG(x)
 
 const char * const gHSStateStrings [ SINK_NUM_STATES ] = {
                                "Limbo",
@@ -65,9 +64,8 @@ const char * const gHSStateStrings [ SINK_NUM_STATES ] = {
                                "ActiveNoSCO",
                                "deviceA2DPStreaming",
                                "deviceLowBattery"} ;
-                               
+
 #else
-#define SM_DEBUG(x) 
 #endif
 
 #define SM_LIMBO_TIMEOUT_SECS 5
@@ -91,22 +89,22 @@ static void stateManagerResetPIOs ( void ) ;
 #define isMutePioConfigured()       PioIsPioConfigured(PIO_AMP_MUTE)
 
 /****************************************************************************
-NAME	
+NAME
 	stateManagerSetState
 
 DESCRIPTION
 	helper function to Set the current device state
     provides a single state change point and passes the information
     on to the managers requiring state based responses
-    
+
 RETURNS
-	
-    
+
+
 */
 static void stateManagerSetState ( sinkState pNewState )
 {
-	SM_DEBUG(("SM:[%s]->[%s][%d]\n",gHSStateStrings[stateManagerGetState()] , gHSStateStrings[pNewState] , pNewState ));
-    
+	LOGD("[%s]->[%s][%d]\n",gHSStateStrings[stateManagerGetState()] , gHSStateStrings[pNewState] , pNewState );
+
     if ( pNewState < SINK_NUM_STATES )
     {
 
@@ -115,37 +113,37 @@ static void stateManagerSetState ( sinkState pNewState )
             /* send message to initiate LED state indication to reduce stack usage */
             MAKE_LEDS_MESSAGE(LED_INDICATE_STATE);
             /* LED state to indicate */
-            message->state = pNewState;        
-            /* send message to reduce stack usage */          
-            MessageSend(&theSink.task, EventSysLEDIndicateState, message); 
- 
+            message->state = pNewState;
+            /* send message to reduce stack usage */
+            MessageSend(&theSink.task, EventSysLEDIndicateState, message);
+
 #ifdef TEST_HARNESS
             vm2host_send_state(pNewState);
 #endif
-            
+
 #ifdef ENABLE_DISPLAY
             /* this should be called before the state is updated below */
             displayUpdateAppState(pNewState);
-#endif                                  
+#endif
         }
         else
         {
             /*we are already indicating this state no need to re*/
         }
-   
+
         gTheSinkState = pNewState ;
 
     }
     else
     {
-        SM_DEBUG(("SM: ? [%s] [%x]\n",gHSStateStrings[ pNewState] , pNewState)) ;
+        LOGD("? [%s] [%x]\n",gHSStateStrings[ pNewState] , pNewState);
     }
 
 }
 
 
 /****************************************************************************
-NAME	
+NAME
 	stateManagerGetState
 
 DESCRIPTION
@@ -153,7 +151,7 @@ DESCRIPTION
 
 RETURNS
 	the Devie State information
-    
+
 */
 sinkState stateManagerGetState ( void )
 {
@@ -162,21 +160,21 @@ sinkState stateManagerGetState ( void )
 
 
 /****************************************************************************
-NAME	
+NAME
 	stateManagerEnterConnectableState
 
 DESCRIPTION
-	single point of entry for the connectable state - enters discoverable state 
+	single point of entry for the connectable state - enters discoverable state
     if configured to do so
 
 RETURNS
 	void
-    
+
 */
 void stateManagerEnterConnectableState ( bool req_disc )
 {
     sinkState lOldState = stateManagerGetState() ;
-    
+
     /* Don't go connectable if we're still pairing */
     if(!req_disc && theSink.inquiry.action == rssi_pairing)
         return;
@@ -191,14 +189,14 @@ void stateManagerEnterConnectableState ( bool req_disc )
     sinkEnableConnectable();
     stateManagerSetState ( deviceConnectable ) ;
 
-        /* if remain discoverable at all times feature is enabled then make the device 
+        /* if remain discoverable at all times feature is enabled then make the device
            discoverable in the first place */
     if (theSink.features.RemainDiscoverableAtAllTimes)
     {
-        /* Make the device discoverable */  
-        sinkEnableDiscoverable();    
+        /* Make the device discoverable */
+        sinkEnableDiscoverable();
     }
-    
+
         /*determine if we have got here after a DiscoverableTimeoutEvent*/
     if ( lOldState == deviceConnDiscoverable )
     {
@@ -207,14 +205,14 @@ void stateManagerEnterConnectableState ( bool req_disc )
         {
             sinkDisableDiscoverable();
         }
-        MessageCancelAll ( &theSink.task , EventSysPairingFail ) ;        
+        MessageCancelAll ( &theSink.task , EventSysPairingFail ) ;
     }
     else
     {
-        uint16 lNumDevices = ConnectionTrustedDeviceListSize();
-        
+        u16 lNumDevices = ConnectionTrustedDeviceListSize();
+
 #ifdef ENABLE_SUBWOOFER
-        /* deteremine if there is a subwoofer present in the PDL, this will need to be 
+        /* deteremine if there is a subwoofer present in the PDL, this will need to be
            discounted from the number of paired AG's */
         if (!BdaddrIsZero(&theSink.rundata->subwoofer.bd_addr))
         {
@@ -222,34 +220,34 @@ void stateManagerEnterConnectableState ( bool req_disc )
             if(lNumDevices)
                 lNumDevices --;
         }
-#endif        
-        
+#endif
+
         /*if we want to auto enter pairing mode*/
         if ( theSink.features.pair_mode_en )
-        {    
+        {
             stateManagerEnterConnDiscoverableState( req_disc );
-        }  
-        SM_DEBUG(("SM: Disco %X RSSI %X\n", theSink.features.DiscoIfPDLLessThan, theSink.features.PairIfPDLLessThan));
+        }
+        LOGD("Disco %X RSSI %X\n", theSink.features.DiscoIfPDLLessThan, theSink.features.PairIfPDLLessThan);
 
-        
+
         /* check whether the RSSI pairing if PDL < feature is set and there are less paired devices than the
            level configured, if so start rssi pairing */
         if((theSink.features.PairIfPDLLessThan)&&( lNumDevices < theSink.features.PairIfPDLLessThan ))
         {
-            SM_DEBUG(("SM: NumD [%d] <= PairD [%d]\n" , lNumDevices , theSink.features.PairIfPDLLessThan))
+            LOGD("NumD [%d] <= PairD [%d]\n" , lNumDevices , theSink.features.PairIfPDLLessThan);
 
             /* send event to enter pairing mode, that event can be used to play a tone if required */
             MessageSend(&theSink.task, EventSysEnterPairingEmptyPDL, 0);
             MessageSend(&theSink.task, EventUsrRssiPair, 0);
-        }           
+        }
         /* otherwise if any of the other action on power on features are enabled... */
         else if (theSink.features.DiscoIfPDLLessThan)
         {
-    		SM_DEBUG(("SM: Num Devs %d\n",lNumDevices));
+    		LOGD("Num Devs %d\n",lNumDevices);
             /* Check if we want to go discoverable */
     		if ( lNumDevices < theSink.features.DiscoIfPDLLessThan )
     		{
-    			SM_DEBUG(("SM: NumD [%d] <= DiscoD [%d]\n" , lNumDevices , theSink.features.DiscoIfPDLLessThan))
+    			LOGD("NumD [%d] <= DiscoD [%d]\n" , lNumDevices , theSink.features.DiscoIfPDLLessThan);
                 /* send event to enter pairing mode, that event can be used to play a tone if required */
                 MessageSend(&theSink.task, EventSysEnterPairingEmptyPDL, 0);
     		}
@@ -267,15 +265,15 @@ void stateManagerEnterConnectableState ( bool req_disc )
 }
 
 /****************************************************************************
-NAME	
+NAME
 	stateManagerEnterConnDiscoverableState
 
 DESCRIPTION
-	single point of entry for the connectable / discoverable state 
+	single point of entry for the connectable / discoverable state
     uses timeout if configured
 RETURNS
 	void
-    
+
 */
 void stateManagerEnterConnDiscoverableState ( bool req_disc )
 {
@@ -284,16 +282,16 @@ void stateManagerEnterConnDiscoverableState ( bool req_disc )
 
     if(theSink.features.DoNotDiscoDuringLinkLoss && HfpLinkLoss())
     {
-        /*if we are in link loss and do not want to go discoverable during link loss then ignore*/                    
+        /*if we are in link loss and do not want to go discoverable during link loss then ignore*/
     }
     else
-    {    
+    {
         /* if in connected state disconnect any still attached devices */
         if ( stateManagerIsConnected() && req_disc )
         {
             /* do we have an SLC active? */
             sinkDisconnectAllSlc();
-            
+
             /* or an a2dp connection active? */
             if (theSink.inquiry.session == inquiry_session_peer)
             {   /* Entering Peer session initiation, ensure any Peer is also disconnected */
@@ -303,47 +301,47 @@ void stateManagerEnterConnDiscoverableState ( bool req_disc )
             {   /* Non Peer discoverable mode - leave any Peer connected */
                 disconnectAllA2dpAvrcp(FALSE);
             }
-        }  
-     
+        }
+
         /* Make the device connectable */
         sinkEnableConnectable();
-    
-        /* Make the device discoverable */  
-        sinkEnableDiscoverable();    
-        
+
+        /* Make the device discoverable */
+        sinkEnableDiscoverable();
+
         /* If there is a timeout - send a user message*/
 		if ( theSink.conf1->timeouts.PairModeTimeoutIfPDL_s != 0 )
 		{
 			/* if there are no entries in the PDL, then use the second
 			   pairing timer */
-			uint16 lNumDevices = ConnectionTrustedDeviceListSize();
+			u16 lNumDevices = ConnectionTrustedDeviceListSize();
 			if( lNumDevices != 0)
 			{	/* paired devices in list, use original timer if it exists */
 				if( theSink.conf1->timeouts.PairModeTimeout_s != 0 )
 				{
-					SM_DEBUG(("SM : Pair [%x]\n" , theSink.conf1->timeouts.PairModeTimeout_s )) ;
+					LOGD("Pair [%x]\n" , theSink.conf1->timeouts.PairModeTimeout_s );
 					MessageSendLater ( &theSink.task , EventSysPairingFail , 0 , D_SEC(theSink.conf1->timeouts.PairModeTimeout_s) ) ;
 				}
 			}
 			else
 			{	/* no paired devices in list, use secondary timer */
-	            SM_DEBUG(("SM : Pair (no PDL) [%x]\n" , theSink.conf1->timeouts.PairModeTimeoutIfPDL_s )) ;
+	            LOGD("Pair (no PDL) [%x]\n" , theSink.conf1->timeouts.PairModeTimeoutIfPDL_s );
 				MessageSendLater ( &theSink.task , EventSysPairingFail , 0 , D_SEC(theSink.conf1->timeouts.PairModeTimeoutIfPDL_s) ) ;
-			}			            			
+			}
 		}
         else if ( theSink.conf1->timeouts.PairModeTimeout_s != 0 )
         {
-            SM_DEBUG(("SM : Pair [%x]\n" , theSink.conf1->timeouts.PairModeTimeout_s )) ;
-            
+            LOGD("Pair [%x]\n" , theSink.conf1->timeouts.PairModeTimeout_s );
+
             MessageSendLater ( &theSink.task , EventSysPairingFail , 0 , D_SEC(theSink.conf1->timeouts.PairModeTimeout_s) ) ;
         }
         else
         {
-            SM_DEBUG(("SM : Pair Indefinetely\n")) ;
+            LOGD("Pair Indefinetely\n");
         }
         /* Disable the ring PIOs if enabled*/
         stateManagerResetPIOs();
-       
+
     	/* The device is now in the connectable/discoverable state */
         stateManagerSetState(deviceConnDiscoverable);
     }
@@ -351,45 +349,45 @@ void stateManagerEnterConnDiscoverableState ( bool req_disc )
 
 
 /****************************************************************************
-NAME	
+NAME
 	stateManagerEnterConnectedState
 
 DESCRIPTION
 	single point of entry for the connected state - disables disco / connectable modes
 RETURNS
 	void
-    
+
 */
 void stateManagerEnterConnectedState ( void )
 {
     if((stateManagerGetState () != deviceConnected) && (theSink.inquiry.action != rssi_pairing))
     {
             /*make sure we are now neither connectable or discoverable*/
-        SM_DEBUG(("SM:Remain in Disco Mode [%c]\n", (theSink.features.RemainDiscoverableAtAllTimes?'T':'F') )) ;
-        
+        LOGD("Remain in Disco Mode [%c]\n", (theSink.features.RemainDiscoverableAtAllTimes?'T':'F') );
+
         if (!theSink.features.RemainDiscoverableAtAllTimes)
         {
-#ifdef ENABLE_SUBWOOFER     
+#ifdef ENABLE_SUBWOOFER
             if(SwatGetSignallingSink(theSink.rundata->subwoofer.dev_id))
             {
-               sinkDisableDiscoverable();            
-            }        
+               sinkDisableDiscoverable();
+            }
 #else
-            sinkDisableDiscoverable();            
-#endif        
+            sinkDisableDiscoverable();
+#endif
         }
-        
+
         /* for multipoint connections need to remain connectable after 1 device connected */
         if(!theSink.MultipointEnable)
         {
-#ifdef ENABLE_SUBWOOFER     
+#ifdef ENABLE_SUBWOOFER
             if(SwatGetSignallingSink(theSink.rundata->subwoofer.dev_id))
             {
-               sinkDisableConnectable();            
-            }        
+               sinkDisableConnectable();
+            }
 #else
-            sinkDisableConnectable();            
-#endif        
+            sinkDisableConnectable();
+#endif
         }
         else
         {
@@ -397,40 +395,40 @@ void stateManagerEnterConnectedState ( void )
             if(deviceManagerNumConnectedDevs() == MAX_MULTIPOINT_CONNECTIONS)
             {
                 /* two devices connected */
-                sinkDisableConnectable();                    
+                sinkDisableConnectable();
             }
             else
             {
                 /* still able to connect another devices */
-                sinkEnableConnectable();                    
-                /* remain connectable for a further 'x' seconds to allow a second 
+                sinkEnableConnectable();
+                /* remain connectable for a further 'x' seconds to allow a second
                    AG to be connected if non-zero, otherwise stay connecatable forever */
 
                 /* cancel any currently running timers that would disable connectable mode */
                 MessageCancelAll( &theSink.task, EventSysConnectableTimeout );
-                
+
                 if(theSink.conf1->timeouts.ConnectableTimeout_s)
                 {
                     MessageSendLater(&theSink.task, EventSysConnectableTimeout, 0, D_SEC(theSink.conf1->timeouts.ConnectableTimeout_s));
                 }
             }
         }
-    
+
         switch ( stateManagerGetState() )
-        {    
+        {
             case deviceIncomingCallEstablish:
-                if (theSink.conf1->timeouts.MissedCallIndicateTime_s != 0 && 
+                if (theSink.conf1->timeouts.MissedCallIndicateTime_s != 0 &&
                     theSink.conf1->timeouts.MissedCallIndicateAttemps != 0)
                 {
                     theSink.MissedCallIndicated = theSink.conf1->timeouts.MissedCallIndicateAttemps;
-                    
-                    MessageSend   (&theSink.task , EventSysMissedCall , 0 ) ; 
-                    
+
+                    MessageSend   (&theSink.task , EventSysMissedCall , 0 ) ;
+
             		MessageSend ( &theSink.task , EventSysSpeechRecognitionStop , 0 ) ;
-            
+
                 }
-            case deviceActiveCallSCO:            
-            case deviceActiveCallNoSCO:       
+            case deviceActiveCallSCO:
+            case deviceActiveCallNoSCO:
             case deviceThreeWayCallWaiting:
             case deviceThreeWayCallOnHold:
             case deviceThreeWayMulticall:
@@ -441,88 +439,88 @@ void stateManagerEnterConnectedState ( void )
             default:
             break ;
         }
-    
-	
+
+
         MessageCancelAll ( &theSink.task , EventSysPairingFail ) ;
-        
+
             /*disable the ring PIOs if enabled*/
         stateManagerResetPIOs();
-    
+
         /* when returning to connected state, check for the prescence of any A2DP instances
            if found enter the appropriate state */
         if((theSink.a2dp_link_data->connected[a2dp_primary])||(theSink.a2dp_link_data->connected[a2dp_secondary]))
         {
-            SM_DEBUG(("SM:A2dp connected\n")) ;
+            LOGD("A2dp connected\n");
             /* are there any A2DP instances streaming audio? */
             if((A2dpMediaGetState(theSink.a2dp_link_data->device_id[a2dp_primary], theSink.a2dp_link_data->stream_id[a2dp_primary]) == a2dp_stream_streaming)||
                (A2dpMediaGetState(theSink.a2dp_link_data->device_id[a2dp_secondary], theSink.a2dp_link_data->stream_id[a2dp_secondary]) == a2dp_stream_streaming))
             {
-                SM_DEBUG(("SM:A2dp connected - still streaming\n")) ;
+                LOGD("A2dp connected - still streaming\n");
                 stateManagerSetState( deviceA2DPStreaming );
             }
             else
-                stateManagerSetState( deviceConnected );               
+                stateManagerSetState( deviceConnected );
         }
         /* no A2DP connections, go to connected state */
-        else 
+        else
             stateManagerSetState( deviceConnected );
-   }     
+   }
 }
 /****************************************************************************
-NAME	
+NAME
 	stateManagerEnterIncomingCallEstablishState
 
 DESCRIPTION
 	single point of entry for the incoming call establish state
 RETURNS
 	void
-    
+
 */
 void stateManagerEnterIncomingCallEstablishState ( void )
 {
-   
+
     stateManagerSetState( deviceIncomingCallEstablish );
-        
+
     	/*if we enter this state directly*/
     MessageCancelAll ( &theSink.task , EventSysPairingFail ) ;
     PioDrivePio(theSink.conf6->PIOIO.pio_outputs.IncomingRingPIO, TRUE) ;
 #ifdef ENABLE_SPEECH_RECOGNITION
     /* speech recognition not support on HSP profile AG's */
-    if ((speechRecognitionIsEnabled()) && (!HfpPriorityIsHsp(HfpLinkPriorityFromCallState(hfp_call_state_incoming)))) 
-        MessageSend ( &theSink.task , EventSysSpeechRecognitionStart , 0 ) ;    
-#endif    
+    if ((speechRecognitionIsEnabled()) && (!HfpPriorityIsHsp(HfpLinkPriorityFromCallState(hfp_call_state_incoming))))
+        MessageSend ( &theSink.task , EventSysSpeechRecognitionStart , 0 ) ;
+#endif
 }
 
 /****************************************************************************
-NAME	
+NAME
 	stateManagerEnterOutgoingCallEstablishState
 
 DESCRIPTION
 	single point of entry for the outgoing call establish state
 RETURNS
 	void
-    
+
 */
 void stateManagerEnterOutgoingCallEstablishState ( void )
 {
     stateManagerSetState( deviceOutgoingCallEstablish );
-    
+
     	/*if we enter this state directly*/
     MessageCancelAll ( &theSink.task , EventSysPairingFail ) ;
-	
+
     PioDrivePio(theSink.conf6->PIOIO.pio_outputs.OutgoingRingPIO, TRUE) ;
 }
 /****************************************************************************
-NAME	
+NAME
 	stateManagerEnterActiveCallState
 
 DESCRIPTION
 	single point of entry for the active call state
 RETURNS
 	void
-    
+
 */
-void stateManagerEnterActiveCallState ( void )   
+void stateManagerEnterActiveCallState ( void )
 {
     Sink sinkAG1,sinkAG2 = NULL;
 
@@ -530,29 +528,29 @@ void stateManagerEnterActiveCallState ( void )
 	   (stateManagerGetState() == deviceIncomingCallEstablish))
 	{
 		/* If a call is being answered then send call answered event */
-		MessageSend ( &theSink.task , EventSysCallAnswered , 0 ) ;		
+		MessageSend ( &theSink.task , EventSysCallAnswered , 0 ) ;
         MessageSend ( &theSink.task , EventSysSpeechRecognitionStop , 0 ) ;
 	}
-	
+
     /* get any SCO sinks */
     HfpLinkGetAudioSink(hfp_primary_link, &sinkAG1);
     HfpLinkGetAudioSink(hfp_secondary_link, &sinkAG2);
-    
+
     /* Check current SCO audio status */
     if(sinkAG1 || sinkAG2)
-    {	
+    {
         stateManagerSetState( deviceActiveCallSCO );
     }
     else
     {
         stateManagerSetState( deviceActiveCallNoSCO );
     }
-	
+
         /*disable the ring PIOs if enabled*/
     PioDrivePio(theSink.conf6->PIOIO.pio_outputs.IncomingRingPIO, FALSE) ;
     PioDrivePio(theSink.conf6->PIOIO.pio_outputs.OutgoingRingPIO, FALSE) ;
     PioDrivePio(theSink.conf6->PIOIO.pio_outputs.CallActivePIO, TRUE) ;
-	
+
     /*if we enter this state directly*/
     MessageCancelAll ( &theSink.task , EventSysPairingFail ) ;
 
@@ -560,20 +558,20 @@ void stateManagerEnterActiveCallState ( void )
 
 
 /****************************************************************************
-NAME	
+NAME
 	stateManagerEnterA2dpStreamingState
 
 DESCRIPTION
     enter A2DP streaming state if not showing any active call states
 RETURNS
 	void
-    
+
 */
 void stateManagerEnterA2dpStreamingState(void)
 {
-    /* only allow change to A2DP connected state if not currently showing 
+    /* only allow change to A2DP connected state if not currently showing
        any active call states */
-    if(stateManagerGetState() == deviceConnected) 
+    if(stateManagerGetState() == deviceConnected)
 	{
         stateManagerSetState(  deviceA2DPStreaming );
 	}
@@ -581,18 +579,18 @@ void stateManagerEnterA2dpStreamingState(void)
 
 
 /****************************************************************************
-NAME	
+NAME
 	stateManagerPowerOn
 
 DESCRIPTION
 	Power on the deviece by latching on the power regs
 RETURNS
 	void
-    
+
 */
-void stateManagerPowerOn( void ) 
+void stateManagerPowerOn( void )
 {
-    SM_DEBUG(("--hello--\nSM : PowerOn\n"));
+    LOGD("--hello--\nSM : PowerOn\n");
 
 	/* Check for DUT mode enable */
 	if(!checkForDUTModeEntry())
@@ -605,20 +603,20 @@ void stateManagerPowerOn( void )
         MessageCancelAll(&theSink.task, EventSysContinueSlcConnectRequest);
 
     	PioSetPowerPin ( TRUE ) ;
-		
+
         /* Turn on AMP pio drive */
         stateManagerAmpPowerControl(POWER_UP);
-        
+
         stateManagerEnterConnectableState( TRUE );
-        
+
         if(theSink.features.PairIfPDLLessThan || theSink.features.AutoReconnectPowerOn || theSink.panic_reconnect)
         {
-            uint16 lNumDevices = ConnectionTrustedDeviceListSize();
-        
+            u16 lNumDevices = ConnectionTrustedDeviceListSize();
+
             /* Check if we want to start RSSI pairing */
             if( lNumDevices < theSink.features.PairIfPDLLessThan )
             {
-                SM_DEBUG(("SM: NumD [%d] <= PairD [%d]\n" , lNumDevices , theSink.features.PairIfPDLLessThan))
+                LOGD("NumD [%d] <= PairD [%d]\n" , lNumDevices , theSink.features.PairIfPDLLessThan);
 
                 /* send event to enter pairing mode, that event can be used to play a tone if required */
                 MessageSend(&theSink.task, EventSysEnterPairingEmptyPDL, 0);
@@ -632,8 +630,8 @@ void stateManagerPowerOn( void )
                 {
                     sinkAvrcpCheckManualConnectReset(NULL);
                 }
-#endif                
-                SM_DEBUG(("SM: Auto Reconnect\n")) ;
+#endif
+                LOGD("Auto Reconnect\n");
                 if(theSink.panic_reconnect)
                 {
 					event = EventSysEstablishSLCOnPanic;
@@ -646,25 +644,25 @@ void stateManagerPowerOn( void )
 }
 
 /****************************************************************************
-NAME	
+NAME
 	stateManagerIsConnected
 
 DESCRIPTION
-    Helper method to see if we are connected or not   
+    Helper method to see if we are connected or not
 */
 bool stateManagerIsConnected ( void )
 {
     bool lIsConnected = FALSE ;
-    
+
     switch (stateManagerGetState() )
     {
         case deviceLimbo:
         case deviceConnectable:
         case deviceConnDiscoverable:
         case deviceTestMode:
-            lIsConnected = FALSE ;    
+            lIsConnected = FALSE ;
         break ;
-        
+
         default:
             lIsConnected = TRUE ;
         break ;
@@ -673,19 +671,19 @@ bool stateManagerIsConnected ( void )
 }
 
 /****************************************************************************
-NAME	
+NAME
 	stateManagerEnterLimboState
 
 DESCRIPTION
     method to provide a single point of entry to the limbo /poweringOn state
-RETURNS	
-    
+RETURNS
+
 */
 void stateManagerEnterLimboState ( void )
 {
-    
-    SM_DEBUG(("SM: Enter Limbo State[%d]\n" , theSink.conf1->timeouts.LimboTimeout_s)); 
-    
+
+    LOGD("Enter Limbo State[%d]\n" , theSink.conf1->timeouts.LimboTimeout_s);
+
     /*set a timeout so that we will turn off eventually anyway*/
     MessageCancelAll ( &theSink.task , EventSysLimboTimeout ) ;
     MessageSendLater ( &theSink.task , EventSysLimboTimeout , 0 , D_SEC(theSink.conf1->timeouts.LimboTimeout_s) ) ;
@@ -694,7 +692,7 @@ void stateManagerEnterLimboState ( void )
 
 	/*Make sure panic reconnect flag is reset*/
     theSink.panic_reconnect = FALSE;
-	
+
     if((isPowerDownPioConfigured() || isMutePioConfigured()) && !theSink.features.PlayUsbAndWiredInLimbo)
     {
     	/* Invoke the system event based on a timeout value to turn off AMP eventually once the timer expires,
@@ -709,23 +707,23 @@ void stateManagerEnterLimboState ( void )
     MessageCancelAll(&theSink.task, EventSysStreamEstablish);
     MessageCancelAll(&theSink.task, EventSysContinueSlcConnectRequest);
     MessageCancelAll(&theSink.task, EventSysLinkLoss);
-    sinkDisconnectAllSlc();     
-    
+    sinkDisconnectAllSlc();
+
     /* disconnect any a2dp signalling channels */
     disconnectAllA2dpAvrcp(TRUE);
 
     /* reset the pdl list indexes in preparation for next boot */
     slcReset();
-    
+
     /*in limbo, the internal regs must be latched on (smps and LDO)*/
     PioSetPowerPin ( TRUE ) ;
-    
+
     /*make sure we are neither connectable or discoverable*/
     sinkDisableDiscoverable();
 #ifdef ENABLE_SUBWOOFER
     /* allow subwoofer to connect */
-    sinkEnableConnectable();    
-#else 
+    sinkEnableConnectable();
+#else
     sinkDisableConnectable();
 #endif
 
@@ -736,10 +734,10 @@ void stateManagerEnterLimboState ( void )
 
     /* reconnect usb if applicable */
     audioHandleRouting(audio_source_none);
-    
-#ifdef ENABLE_SUBWOOFER   
-    MessageSend(&theSink.task, EventSysSubwooferCloseMedia, 0);                               
-#endif    
+
+#ifdef ENABLE_SUBWOOFER
+    MessageSend(&theSink.task, EventSysSubwooferCloseMedia, 0);
+#endif
 }
 
 bool stateManagerIsReadyForAudio(void)
@@ -755,25 +753,25 @@ bool stateManagerIsReadyForAudio(void)
 }
 
 /****************************************************************************
-NAME	
+NAME
 	stateManagerAmpPowerControl
 
 DESCRIPTION
     Control the power supply for audio amplifier stage
-    
+
 RETURNS
     void
-    
+
 */
 void stateManagerAmpPowerControl(power_control_dir control)
 {
     MessageCancelAll(&theSink.task, EventSysAmpPowerDown);
     MessageCancelAll(&theSink.task, EventSysAmpPowerUp);
-    
-    SM_DEBUG(("SM: amp: audioAmpReady=%u control=%u\n",
+
+    LOGD("amp: audioAmpReady=%u control=%u\n",
               theSink.audioAmpReady,
-              control));
-    
+              control);
+
     if(isMutePioConfigured())
     {
         if (control == POWER_DOWN)
@@ -788,7 +786,7 @@ void stateManagerAmpPowerControl(power_control_dir control)
             else
             {
             /*  Power down the amplifier  */
-                PioDrivePio(PIO_POWER_ON, FALSE);            
+                PioDrivePio(PIO_POWER_ON, FALSE);
             }
         }
         else
@@ -801,7 +799,7 @@ void stateManagerAmpPowerControl(power_control_dir control)
             else
             {
             /*  Power up the amplifier and queue an event to unmute it  */
-                PioDrivePio(PIO_POWER_ON, TRUE);            
+                PioDrivePio(PIO_POWER_ON, TRUE);
                 sinkSendLater(EventSysAmpPowerUp, theSink.conf1->timeouts.AudioAmpUnmuteTime_ms);
                 theSink.audioAmpReady = TRUE;
             }
@@ -824,23 +822,23 @@ void stateManagerAmpPowerControl(power_control_dir control)
 }
 
 /****************************************************************************
-NAME	
+NAME
 	stateManagerUpdateLimboState
 
 DESCRIPTION
     method to update the limbo state and power off when necessary
-RETURNS	
-    
+RETURNS
+
 */
-void stateManagerUpdateLimboState ( void ) 
+void stateManagerUpdateLimboState ( void )
 {
     /* determine if charger is still connected */
     bool power_off_request = FALSE;
     bool chg_connected = powerManagerIsChargerConnected();
-    
-    SM_DEBUG(("SM: Limbo Update\n"));
-  
-    /* determine if device can be turned off, hs can power off with VregEn High unless 
+
+    LOGD("Limbo Update\n");
+
+    /* determine if device can be turned off, hs can power off with VregEn High unless
        feature is set specifying it should be low to allow power down, critical battery
        and over temperature alerts can also power down the device */
     if (!chg_connected)
@@ -850,15 +848,15 @@ void stateManagerUpdateLimboState ( void )
         {
             /* turn off power as outside of safe operating limits */
             power_off_request = TRUE;
-        } 
+        }
         /* Do not physically power-off, if DisableCompletePowerOff is enabled */
         else if(!theSink.features.DisableCompletePowerOff)
 
         {
-            
 
-            /* When battery is used (headset & speaker applications) this is needed in order to 
-               power off and not draining the battery. Unless the specific feature is enabled.*/ 
+
+            /* When battery is used (headset & speaker applications) this is needed in order to
+               power off and not draining the battery. Unless the specific feature is enabled.*/
             if((!sinkFmIsFmRxOn()) && (((!analogAudioConnected()) && (!spdifAudioConnected())) ||
                (theSink.features.PowerOffOnWiredAudioConnected && (analogAudioConnected() || spdifAudioConnected()))
 #ifdef ENABLE_BATTERY_OPERATION
@@ -868,18 +866,18 @@ void stateManagerUpdateLimboState ( void )
 
             {
                 /* check power off only if vreg is low feature bit */
-                if((!theSink.features.PowerOffOnlyIfVRegEnLow)||(theSink.features.PowerOffOnlyIfVRegEnLow && !PsuGetVregEn()))                    
+                if((!theSink.features.PowerOffOnlyIfVRegEnLow)||(theSink.features.PowerOffOnlyIfVRegEnLow && !PsuGetVregEn()))
                 {
-                    /* safe to power off */                    
+                    /* safe to power off */
                     power_off_request = TRUE;
                 }
-            }     
+            }
         }
     }
-    /* check if need to power off unit */    
-    if(power_off_request)    
+    /* check if need to power off unit */
+    if(power_off_request)
     {
-        SM_DEBUG(("SM : Power Off\n--goodbye--\n")) ;
+        LOGD("Power Off\n--goodbye--\n");
         configManagerDefragIfRequired();
         /* Used as a power on indication if required */
         PioDrivePio(PIO_POWER_ON, FALSE) ;
@@ -889,20 +887,20 @@ void stateManagerUpdateLimboState ( void )
     else
     {
         /* Device was not able to power down at this point, schedule another check.
-           For soundbar application (where battery is not used) power_off_request 
+           For soundbar application (where battery is not used) power_off_request
            will never be set to TRUE and the following timer will always restart. */
         sinkSendLater(EventSysLimboTimeout, D_SEC(theSink.conf1->timeouts.LimboTimeout_s));
-    }           
+    }
 }
 
 /****************************************************************************
-NAME	
+NAME
 	stateManagerEnterTestModeState
 
 DESCRIPTION
     method to provide a single point of entry to the test mode state
-RETURNS	
-    
+RETURNS
+
 */
 void stateManagerEnterTestModeState ( void )
 {
@@ -910,35 +908,35 @@ void stateManagerEnterTestModeState ( void )
 }
 
 /****************************************************************************
-NAME	
+NAME
 	stateManagerEnterCallWaitingState
 
 DESCRIPTION
     method to provide a single point of entry to the 3 way call waiting state
-RETURNS	
-    
+RETURNS
+
 */
-void stateManagerEnterThreeWayCallWaitingState ( void ) 
+void stateManagerEnterThreeWayCallWaitingState ( void )
 {
     stateManagerSetState( deviceThreeWayCallWaiting );
-	
+
     	/*if we enter this state directly*/
     MessageCancelAll ( &theSink.task , EventSysPairingFail ) ;
 }
 
 
-void stateManagerEnterThreeWayCallOnHoldState ( void ) 
-{   
+void stateManagerEnterThreeWayCallOnHoldState ( void )
+{
     stateManagerSetState( deviceThreeWayCallOnHold );
-	
+
     	/*if we enter this state directly*/
     MessageCancelAll ( &theSink.task , EventSysPairingFail ) ;
 }
 
-void stateManagerEnterThreeWayMulticallState ( void ) 
+void stateManagerEnterThreeWayMulticallState ( void )
 {
     stateManagerSetState( deviceThreeWayMulticall );
-	
+
     	/*if we enter this state directly*/
     MessageCancelAll ( &theSink.task , EventSysPairingFail ) ;
 }
@@ -947,16 +945,16 @@ void stateManagerEnterThreeWayMulticallState ( void )
 void stateManagerEnterIncomingCallOnHoldState ( void )
 {
     switch ( stateManagerGetState() )
-    {    
+    {
         case deviceIncomingCallEstablish:
         	MessageSend ( &theSink.task , EventSysSpeechRecognitionStop , 0 ) ;
         break ;
         default:
         break ;
-    }    
-     
+    }
+
     stateManagerSetState( deviceIncomingCallOnHold );
-	
+
     	/*if we enter this state directly*/
     MessageCancelAll ( &theSink.task , EventSysPairingFail ) ;
 }
@@ -968,6 +966,6 @@ static void stateManagerResetPIOs ( void )
     PioDrivePio(theSink.conf6->PIOIO.pio_outputs.OutgoingRingPIO, FALSE) ;
     /*diaable the active call PIO if there is one*/
     PioDrivePio(theSink.conf6->PIOIO.pio_outputs.CallActivePIO, FALSE) ;
-     
+
 }
 

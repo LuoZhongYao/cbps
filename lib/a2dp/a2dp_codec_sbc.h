@@ -26,7 +26,7 @@ DESCRIPTION
     Get the sampling rate and channel mode from the codec config settings.
 
 */
-void getSbcConfigSettings(const uint8 *service_caps, a2dp_codec_settings *codec_settings);
+void getSbcConfigSettings(const u8 *service_caps, a2dp_codec_settings *codec_settings);
 
 
 /*************************************************************************
@@ -41,7 +41,7 @@ DESCRIPTION
     design decision and not specified by the AV profiles.
 
 */
-void selectOptimalSbcCapsSink(const uint8 *local_caps, uint8 *caps);
+void selectOptimalSbcCapsSink(const u8 *local_caps, u8 *caps);
 
 
 /*************************************************************************
@@ -56,7 +56,7 @@ DESCRIPTION
     design decision and not specified by the AV profiles.
 
 */
-void selectOptimalSbcCapsSource(const uint8 *local_caps, uint8 *caps);
+void selectOptimalSbcCapsSource(const u8 *local_caps, u8 *caps);
 
 
 /****************************************************************************
@@ -68,7 +68,7 @@ DESCRIPTION
     It assumes a valid configuration request with one bit in each field.
 
 */
-uint8 a2dpSbcFormatFromConfig(const uint8 *config);
+u8 a2dpSbcFormatFromConfig(const u8 *config);
 
 
 /****************************************************************************
@@ -84,7 +84,7 @@ DESCRIPTION
     - Calculate bitpool required for this frame size (round down).
 
 */
-uint8 a2dpSbcSelectBitpool(uint8 sbc_header, uint32 rate, uint16 pdu);
+u8 a2dpSbcSelectBitpool(u8 sbc_header, u32 rate, u16 pdu);
 
 
 #endif /* A2DP_CODEC_SBC_H_ */

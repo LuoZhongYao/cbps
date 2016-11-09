@@ -32,8 +32,8 @@ NOTES
 
 typedef struct
 {
-    uint16 id;
-    uint16 size;
+    u16 id;
+    u16 size;
     char   buf[1];
 } DSP_LONG_REGISTER_T;
 
@@ -67,12 +67,12 @@ typedef struct sync_Tag
     unsigned packet_size:10;                /* Used to configure RTP transform when forwarding undecoded audio frames */
 
     /* Additional mode parameters */
-    uint16 mode_params;
+    const void * mode_params;
     /* digital volume structure including trim gains */    
     AUDIO_PLUGIN_SET_GROUP_VOLUME_MSG_T volume;
-    uint16 params;
-    uint32 rate;                /* Codec sample rate (input rate to DSP) */
-    uint16 dsp_resample_rate;   /* Output sample rate (required output rate from DSP, divided by DSP_RESAMPLING_RATE_COEFFICIENT ready to send in Kalimba message) */
+    const void *params;
+    u32 rate;                /* Codec sample rate (input rate to DSP) */
+    u16 dsp_resample_rate;   /* Output sample rate (required output rate from DSP, divided by DSP_RESAMPLING_RATE_COEFFICIENT ready to send in Kalimba message) */
     Task app_task;
     AUDIO_MUTE_STATE_T mute_state[audio_mute_group_max];
 }DECODER_t ;
@@ -80,16 +80,16 @@ typedef struct sync_Tag
 
 /*plugin functions*/
 void csrA2dpDecoderEnableExternalVolume (bool enabled);
-void csrA2dpDecoderSetTwsRoutingMode (uint16 master_routing, uint16 slave_routing);
-void csrA2dpDecoderSetSbcEncoderParams (uint8 bitpool, uint8 format);
-void csrA2dpDecoderSetTWSDeviceTrims (int16 device_trim_master, int16 device_trim_slave);
-void csrA2dpDecoderSetStreamRelayMode (uint16 mode);
+void csrA2dpDecoderSetTwsRoutingMode (u16 master_routing, u16 slave_routing);
+void csrA2dpDecoderSetSbcEncoderParams (u8 bitpool, u8 format);
+void csrA2dpDecoderSetTWSDeviceTrims (i16 device_trim_master, i16 device_trim_slave);
+void csrA2dpDecoderSetStreamRelayMode (u16 mode);
 void CsrA2dpDecoderPluginConnect( A2dpPluginTaskdata *task, 
                                   Sink audio_sink , 
                                   AUDIO_SINK_T sink_type,
                                   Task codec_task , 
-                                  uint16 volume , 
-                                  uint32 rate , 
+                                  u16 volume , 
+                                  u32 rate , 
                                   AudioPluginFeatures features,
                                   AUDIO_MODE_T mode , 
                                   const void * params, 
@@ -100,16 +100,16 @@ void CsrA2dpDecoderPluginResetVolume(void);
 void CsrA2dpDecoderPluginSetSoftMute(AUDIO_PLUGIN_SET_SOFT_MUTE_MSG_T* message);
 void csrA2dpDecoderPluginOutputMute(audio_plugin_mch_group_t group, AUDIO_MUTE_STATE_T state);
 void CsrA2dpDecoderPluginSetMode( AUDIO_MODE_T mode , A2dpPluginTaskdata *task , const void * params ) ;
-void CsrA2dpDecoderPluginPlayTone ( A2dpPluginTaskdata *task, ringtone_note * tone , Task codec_task , uint16 tone_volume);
+void CsrA2dpDecoderPluginPlayTone ( A2dpPluginTaskdata *task, ringtone_note * tone , Task codec_task , u16 tone_volume);
 void CsrA2dpDecoderPluginStopTone ( void ) ;
 void CsrA2dpDecoderPluginToneComplete ( void ) ;
-void CsrA2dpDecoderPluginInternalMessage( A2dpPluginTaskdata *task ,uint16 id , Message message ) ;
-bool CsrA2dpDecoderPluginGetLatency (A2dpPluginTaskdata *audio_plugin, bool *estimated, uint16 *latency);
+void CsrA2dpDecoderPluginInternalMessage( A2dpPluginTaskdata *task ,u16 id , Message message ) ;
+bool CsrA2dpDecoderPluginGetLatency (A2dpPluginTaskdata *audio_plugin, bool *estimated, u16 *latency);
 DECODER_t * CsrA2dpDecoderGetDecoderData(void);
-void CsrA2dpDecoderPluginSetEqMode(uint16 operating_mode, A2DP_MUSIC_PROCESSING_T music_processing, A2dpPluginModeParams *mode_params);
+void CsrA2dpDecoderPluginSetEqMode(u16 operating_mode, A2DP_MUSIC_PROCESSING_T music_processing, A2dpPluginModeParams *mode_params);
 void CsrA2dpDecoderPluginUpdateEnhancements(A2dpPluginModeParams *mode_params);
 void csrA2dpDecoderPluginMicMute(AUDIO_MUTE_STATE_T mute);
-void csrA2dpDecoderStartTransformCheckScms(Transform rtp_transform, uint8 content_protection);
+void csrA2dpDecoderStartTransformCheckScms(Transform rtp_transform, u8 content_protection);
 void MusicConnectAudio (A2dpPluginTaskdata *task);
 void MusicConnectOutputSinks(void);
 void CsrA2dpDecoderPluginSetHardwareLevels(AUDIO_PLUGIN_DELAY_VOLUME_SET_MSG_T * message);
@@ -117,9 +117,9 @@ void CsrA2dpDecoderPluginStartDisconnect(TaskData * task);
 void CsrA2dpDecoderPluginSetLevels(AUDIO_PLUGIN_SET_GROUP_VOLUME_MSG_T * VolumeMsg, bool ForceSetVolume);
 void CsrA2dpDecoderPluginAllowVolChanges(void);
 void CsrA2dpDecoderPluginSubCheckForConnectionFailure(void);
-void CsrA2dpDecoderPluginSetAudioLatency (A2dpPluginTaskdata *audio_plugin, uint16 latency);
-uint32 CsrA2DPGetDecoderSampleRate(void);
-uint32 CsrA2DPGetDecoderSubwooferSampleRate(void);
+void CsrA2dpDecoderPluginSetAudioLatency (A2dpPluginTaskdata *audio_plugin, u16 latency);
+u32 CsrA2DPGetDecoderSampleRate(void);
+u32 CsrA2DPGetDecoderSubwooferSampleRate(void);
 void CsrA2dpDecoderPluginSetInputAudioMute(const AUDIO_PLUGIN_SET_INPUT_AUDIO_MUTE_MSG_T *mute_message);
 void csrA2dpDecoderSetTwsCompatibilityMode(peer_buffer_level buffer_level_required);
 

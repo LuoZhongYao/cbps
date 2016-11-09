@@ -187,16 +187,16 @@ typedef struct
     TaskData a2dpTask;
     A2DP_STATE_T a2dp_state;
     bdaddr addr;
-    uint16 a2dp_device_id;
-    uint16 a2dp_stream_id;  
+    u16 a2dp_device_id;
+    u16 a2dp_stream_id;  
     Sink media_sink;
     A2DP_SUPPORT_T a2dp_support;
-    uint16 a2dp_connection_retries;
+    u16 a2dp_connection_retries;
     unsigned a2dp_reconfiguring:1;
     unsigned a2dp_reconfigure_codec:3;
     unsigned a2dp_role:3;
     unsigned unused:9;
-    uint16 a2dp_suspending;
+    u16 a2dp_suspending;
     A2DP_AUDIO_QUALITY_T a2dp_quality;
 } a2dpInstance;
 
@@ -204,15 +204,15 @@ typedef struct
 typedef struct
 {
     a2dpInstance *inst; 
-    uint8 *codec_config;
+    u8 *codec_config;
     sep_config_type sbc_caps;
-    uint8 *sbc_codec_config;
+    u8 *sbc_codec_config;
     sep_config_type faststream_caps;
-    uint8 *faststream_codec_config;
+    u8 *faststream_codec_config;
     sep_config_type aptx_caps;
-    uint8 *aptx_codec_config;
+    u8 *aptx_codec_config;
     sep_config_type aptxLowLatency_caps;
-    uint8 *aptxLowLatency_codec_config;
+    u8 *aptxLowLatency_codec_config;
 } A2DP_DATA_T;
 
 
@@ -280,7 +280,7 @@ RETURNS
     Otherwise NULL.
 
 */
-a2dpInstance *a2dp_get_instance_from_device_id(uint16 device_id);
+a2dpInstance *a2dp_get_instance_from_device_id(u16 device_id);
 
 
 /****************************************************************************
@@ -335,7 +335,7 @@ RETURNS
     The number of currently active A2DP connections.
 
 */
-uint16 a2dp_get_number_connections(void);
+u16 a2dp_get_number_connections(void);
 
 
 /****************************************************************************
@@ -409,7 +409,7 @@ DESCRIPTION
     Gets the size of the SBC Stream-End Point configuration parameters.
 
 */
-uint16 a2dp_get_sbc_caps_size(void);
+u16 a2dp_get_sbc_caps_size(void);
 
 
 /****************************************************************************
@@ -420,7 +420,7 @@ DESCRIPTION
     Gets the size of the Faststream Stream-End Point configuration parameters.
 
 */
-uint16 a2dp_get_faststream_caps_size(void);
+u16 a2dp_get_faststream_caps_size(void);
 
 
 /****************************************************************************
@@ -431,7 +431,7 @@ DESCRIPTION
     Gets the size of the APT-X Stream-End Point configuration parameters.
 
 */
-uint16 a2dp_get_aptx_caps_size(void);
+u16 a2dp_get_aptx_caps_size(void);
 
 
 /****************************************************************************
@@ -442,7 +442,7 @@ DESCRIPTION
     Gets the size of the APT-X Low Latency Stream-End Point configuration parameters.
 
 */
-uint16 a2dp_get_aptxLowLatency_caps_size(void);
+u16 a2dp_get_aptxLowLatency_caps_size(void);
 
 
 /****************************************************************************
@@ -566,7 +566,7 @@ DESCRIPTION
 RETURNS
     The bitpool value to use.
 */
-bool a2dp_get_sbc_bitpool(uint8 *bitpool, uint8 *bad_link_bitpool, bool *multiple_streams);
+bool a2dp_get_sbc_bitpool(u8 *bitpool, u8 *bad_link_bitpool, bool *multiple_streams);
 
 
 /****************************************************************************

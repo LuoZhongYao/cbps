@@ -218,8 +218,8 @@ typedef enum
 
 typedef struct
 {
-    uint16 prop;
-    uint16 value;
+    u16 prop;
+    u16 value;
 } FMRX_SET_PROPERTY_MSG_T;
 
 /*!

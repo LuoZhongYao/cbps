@@ -41,7 +41,7 @@ RETURNS
     Pointer to the corresponding hfp_service_data if successful. 
     Otherwise NULL.
 */
-hfp_service_data* hfpGetServiceFromChannel(uint8 channel);
+hfp_service_data* hfpGetServiceFromChannel(u8 channel);
 
 
 /****************************************************************************
@@ -55,7 +55,7 @@ RETURNS
     Pointer to the corresponding hfp_service_data if successful. 
     Otherwise NULL.
 */
-hfp_service_data* hfpGetServiceFromHandle(uint32 service_handle);
+hfp_service_data* hfpGetServiceFromHandle(u32 service_handle);
 
 
 /****************************************************************************

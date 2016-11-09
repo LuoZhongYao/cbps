@@ -20,7 +20,7 @@
 #define GATT_HID_REPORT_REFERENCE_SUPPORT_MASK          (0x8)
 
 /* Macro for getting size of hid_discovery_instance */
-#define SIZE_CHAR_HANDLE(num_handles) (sizeof(uint16) * num_handles - 1)
+#define SIZE_CHAR_HANDLE(num_handles) (sizeof(u16) * num_handles - 1)
 #define SIZE_HID_DISCOVERY_INSTANCE(num_handles) (sizeof(gatt_hid_current_discovery_instance_t) + SIZE_CHAR_HANDLE(num_handles))
 
 /* Temporary GATT HID instance used for discovery purpose */
@@ -39,7 +39,7 @@ DESCRIPTION
 */
 static void hid_client_send_discovery_cfm(GHIDC_T *const hid_client,
     gatt_hid_current_discovery_instance_t *hid_instance,
-    uint16 cid,
+    u16 cid,
     gatt_hid_client_status status)
 {
     /* Make Init confirmation message */   
@@ -79,12 +79,12 @@ DESCRIPTION
 */
 static void hid_client_get_char_handles(GHIDC_T *const hid_client,
                gatt_hid_current_discovery_instance_t *hid_instance,
-               uint16 *start_handle)
+               u16 *start_handle)
 {
     /* Temporary instance of report map, used to navigate through available reports */
     gatt_hid_client_report_id_map_t *report_map = NULL;
 
-    uint16 clear_bit_mask = 0;
+    u16 clear_bit_mask = 0;
     /* Set start handle to zero */
      *start_handle = 0;
     /* Set Boot Handle as FALSE */
@@ -152,12 +152,12 @@ DESCRIPTION
    Find out the end handles for characteristic descriptors 
 */
 static void hid_client_get_char_end_handles(gatt_hid_current_discovery_instance_t *hid_instance,
-            uint16 start_handle,
-            uint16* end_handle)
+            u16 start_handle,
+            u16* end_handle)
 {
-    uint16 count;
+    u16 count;
     bool status = FALSE;
-    uint16 current = INVALID_GATT_END_HANDLE;
+    u16 current = INVALID_GATT_END_HANDLE;
     GATT_HID_CLIENT_DEBUG_INFO(("Func:hid_client_get_char_end_handles(), Exit:CharCount = %d\n",hid_instance->char_uuid_count));
 
     /* Charactristics are stored in the order we get from the remote peripheral.
@@ -192,10 +192,10 @@ DESCRIPTION
 */
 static bool  hid_discover_next_char_descriptor(GHIDC_T *const hid_client,
                 gatt_hid_current_discovery_instance_t *hid_instance,
-                uint16 cid)
+                u16 cid)
 {
-    uint16 start_handle = 0;
-    uint16 end_handle = 0;
+    u16 start_handle = 0;
+    u16 end_handle = 0;
     /* Get the Start handle of characteritic decleration */
     hid_client_get_char_handles(hid_client,hid_instance,&start_handle);
     /* Store the end handle of service end handle as for last decleration the handle will be service endhandle */
@@ -229,10 +229,10 @@ DESCRIPTION
 */
 static void store_hid_client_ccd_handles(GHIDC_T *const hid_client,
             gatt_hid_current_discovery_instance_t  *hid_instance,
-            uint16 handle)
+            u16 handle)
 {
-    uint16 index = 0;
-    uint16 max_ccd_num = hid_instance->max_bootmode_ccd+hid_instance->max_reportmode_ccd;
+    u16 index = 0;
+    u16 max_ccd_num = hid_instance->max_bootmode_ccd+hid_instance->max_reportmode_ccd;
     GATT_HID_CLIENT_DEBUG_INFO(("Func:store_hid_client_ccd_handles() Entry \n"));
     /* Check what type of handle is requested */
     if(hid_instance->is_boot_handle)
@@ -284,8 +284,8 @@ DESCRIPTION
 */
 static void store_hid_client_characteristic_handles(GHIDC_T *const hid_client,
                  gatt_hid_current_discovery_instance_t *hid_instance,
-                 uint16 uuid,
-                 uint16 handle)
+                 u16 uuid,
+                 u16 handle)
 {
      /* Create a report map instance for handling HID report   */
     gatt_hid_client_report_id_map_t *report_id_map;
@@ -388,8 +388,8 @@ DESCRIPTION
 */
 static void store_hid_client_char_descriptors(GHIDC_T *const hid_client,
                 gatt_hid_current_discovery_instance_t *hid_instance,
-                uint16 uuid,
-                uint16 handle)
+                u16 uuid,
+                u16 handle)
 {
     /* Temporary instance of report map, used to navigate through available reports */
     gatt_hid_client_report_id_map_t *report_id_map = NULL;
@@ -451,7 +451,7 @@ static void store_hid_client_char_descriptors(GHIDC_T *const hid_client,
 void handle_hid_client_discover_read_char_value_cfm(GHIDC_T *const hid_client,
              const GATT_MANAGER_READ_CHARACTERISTIC_VALUE_CFM_T *const cfm )
 {
-    uint16 count = 0;
+    u16 count = 0;
     gatt_hid_client_report_id_map_t *report_id_map = NULL;
     /* get the discovery instance */
     gatt_hid_current_discovery_instance_t *hid_instance = hid_discovery_instance;
@@ -492,7 +492,7 @@ void handle_hid_client_discover_all_char_descriptors_cfm(GHIDC_T *const hid_clie
 {
 
     bool discovery_pending = TRUE;
-    uint16 count = 0;
+    u16 count = 0;
     /* Temporary instance of report map, used to navigate through available reports */
     gatt_hid_client_report_id_map_t *report_id_map = NULL;
     /* Get Hid Discovery Instance */
@@ -503,11 +503,11 @@ void handle_hid_client_discover_all_char_descriptors_cfm(GHIDC_T *const hid_clie
    /* Check the status of characteristic descriptor discovery, if it is failed, then check the descriptor is not mandatory.
     * In case failure happened for a non-mandatory characteristic descriptor, proceed to next descriptor discovery
     */
-    if((CHECK_GATT_SUCCESS(cfm->status) || CHECK_DESCRIPTOR_NOT_MANDATORY((uint16)cfm->uuid[0])) && (hid_instance))
+    if((CHECK_GATT_SUCCESS(cfm->status) || CHECK_DESCRIPTOR_NOT_MANDATORY((u16)cfm->uuid[0])) && (hid_instance))
     {
         /* Store the handle for future use only if the status is success */
         if(CHECK_GATT_SUCCESS(cfm->status))
-            store_hid_client_char_descriptors(hid_client,hid_instance,(uint16)cfm->uuid[0],cfm->handle);
+            store_hid_client_char_descriptors(hid_client,hid_instance,(u16)cfm->uuid[0],cfm->handle);
         
         if(!cfm->more_to_come)
         {
@@ -555,7 +555,7 @@ void handle_hid_client_discover_all_char_cfm(GHIDC_T *const hid_client,
                const GATT_MANAGER_DISCOVER_ALL_CHARACTERISTICS_CFM_T *const cfm)
 {
     /* UUID returned from characteristic handle discovery */
-    uint16 uuid = 0;
+    u16 uuid = 0;
     /* Still Characterisitc handle descovery is on  */
     bool discovery_pending = TRUE;
     /* Get the Discovery instance */
@@ -622,7 +622,7 @@ void  hid_client_start_discovery(GHIDC_T *const hid_client,
 }
 
 /****************************************************************************/
-void hid_client_complete_discovery(GHIDC_T *const hid_client, uint16 cid)
+void hid_client_complete_discovery(GHIDC_T *const hid_client, u16 cid)
 {
     hid_client->discovery_in_progress = TRUE;
     hid_client_send_discovery_cfm(hid_client,NULL,cid,gatt_hid_client_status_success);
@@ -641,9 +641,9 @@ bool hid_client_discovery_in_progress(void)
 
 /****************************************************************************/
 bool hid_client_init_discovery_instance(const GATT_HID_CLIENT_CONFIG_PARAMS_T *const cfg,
-        uint16 end_handle)
+        u16 end_handle)
 {
-    uint16 hid_instance_size = 0;
+    u16 hid_instance_size = 0;
     GATT_HID_CLIENT_DEBUG_INFO(("Func:hid_client_init_discovery_instance(), Entry\n"));
 
     /* Reset Discoevery Instance ,This is a temporary instance used only for discovery, 

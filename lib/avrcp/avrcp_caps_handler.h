@@ -25,10 +25,10 @@ DESCRIPTION
 */
 void avrcpSendGetCapsCfm(   AVRCP               *avrcp, 
                             avrcp_status_code   status, 
-                            uint16              metadata_packet_type, 
+                            u16              metadata_packet_type, 
                             avrcp_capability_id caps_id, 
-                            uint16              number_of_caps, 
-                            uint16              data_length, 
+                            u16              number_of_caps, 
+                            u16              data_length, 
                             Source              source);
 
 /****************************************************************************
@@ -40,9 +40,9 @@ DESCRIPTION
 */
 void  avrcpHandleGetCapsResponse(AVRCP               *avrcp, 
                                 avrcp_response_type response, 
-                                uint16              meta_packet_type, 
-                                const uint8*        data,
-                                uint16              packet_size);
+                                u16              meta_packet_type, 
+                                const u8*        data,
+                                u16              packet_size);
 
 #endif /* !AVRCP_TG_ONLY_LIB */
 

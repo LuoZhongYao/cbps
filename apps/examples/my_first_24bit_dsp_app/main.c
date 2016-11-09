@@ -87,7 +87,7 @@ void connect_streams(void)
     I2S_OUT_0 = StreamAudioSink(AUDIO_HARDWARE_I2S, AUDIO_INSTANCE_0, AUDIO_CHANNEL_SLOT_0);
     I2S_OUT_1 = StreamAudioSink(AUDIO_HARDWARE_I2S, AUDIO_INSTANCE_0, AUDIO_CHANNEL_SLOT_1);
 
-    /* SinkConfigure (Sink sink, stream_config_key key, uint32 value) */
+    /* SinkConfigure (Sink sink, stream_config_key key, u32 value) */
     PanicFalse(SinkConfigure(I2S_OUT_0, STREAM_I2S_MASTER_MODE, I2S_MASTER));
     PanicFalse(SinkConfigure(I2S_OUT_1, STREAM_I2S_MASTER_MODE, I2S_MASTER));    
     PanicFalse(SinkConfigure(I2S_OUT_0, STREAM_I2S_SYNC_RATE, I2S_RATE));
@@ -106,7 +106,7 @@ void connect_streams(void)
     PanicFalse(SinkConfigure(I2S_OUT_0, STREAM_I2S_BITS_PER_SAMPLE, 24));
     PanicFalse(SinkConfigure(I2S_OUT_1, STREAM_I2S_BITS_PER_SAMPLE, 24));
     
-    /* SourceConfigure (Source source, stream_config_key key, uint32 value) */
+    /* SourceConfigure (Source source, stream_config_key key, u32 value) */
     PanicFalse(SourceConfigure(I2S_IN_0, STREAM_I2S_SYNC_RATE, I2S_RATE));
     PanicFalse(SourceConfigure(I2S_IN_1, STREAM_I2S_SYNC_RATE, I2S_RATE));
 	

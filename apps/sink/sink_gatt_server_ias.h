@@ -58,7 +58,7 @@ RETURNS
     TRUE if the Immediate Alert server task was initialised, FALSE otherwise.
 */
 #ifdef GATT_IAS_SERVER
-bool sinkGattImmAlertServerInitialise(uint16 **ptr);
+bool sinkGattImmAlertServerInitialise(u16 **ptr);
 #else
 #define sinkGattImmAlertServerInitialise(ptr) (TRUE)
 #endif

@@ -33,8 +33,8 @@ DESCRIPTION
 #define MAKE_ATT_PRIM(TYPE) MESSAGE_MAKE(prim,TYPE##_T); prim->type = TYPE;
 
 /* Assumes message struct with
- *    uint16 size_value;
- *    uint8 value[1];
+ *    u16 size_value;
+ *    u8 value[1];
  */
 #define MAKE_GATT_MESSAGE_WITH_LEN(TYPE, LEN)                           \
     TYPE##_T *message = (TYPE##_T*)PanicUnlessMalloc(sizeof(TYPE##_T) + \
@@ -139,8 +139,8 @@ typedef struct
 
 typedef struct
 {
-    uint16                  size;
-    uint16                  *ptr;
+    u16                  size;
+    u16                  *ptr;
 } database_t;
 
 /*
@@ -164,46 +164,46 @@ typedef struct
 
 typedef struct 
 {
-    uint16 start;
-    uint16 end;
+    u16 start;
+    u16 end;
 } gatt_find_includes_t;
 
 typedef struct 
 {
-    uint16 start;
-    uint16 end;
+    u16 start;
+    u16 end;
 } gatt_discover_all_characteristics_t;
 
 typedef struct 
 {
-    uint16 start;
-    uint16 end;
+    u16 start;
+    u16 end;
 } gatt_discover_all_descriptors_t;
 
 typedef struct 
 {
-    uint16 handle;
+    u16 handle;
 } gatt_read_t;
 
 typedef struct 
 {
-    uint16 end;
+    u16 end;
     gatt_uuid_type_t uuid_type;
     gatt_uuid_t uuid[4];
 } gatt_read_by_uuid_t;
 
 typedef struct 
 {
-    uint16 handle;
-    uint16 offs;
+    u16 handle;
+    u16 offs;
 } gatt_read_long_t;
 
 typedef struct 
 {
-    uint16 handle;
-    uint16 offs;
-    uint16 size_value;
-    uint8 *value;
+    u16 handle;
+    u16 offs;
+    u16 size_value;
+    u8 *value;
 } gatt_write_reliable_t;
 
 /* Data associated with GATT each connection - gets initialised to 0 
@@ -212,7 +212,7 @@ typedef struct
 typedef struct
 {
     Task                        app;    /* Application lock task */
-    uint16                      scenario;
+    u16                      scenario;
     void                        *stash; /* pending message for the app */
     union 
     {
@@ -230,16 +230,16 @@ typedef struct
 #endif
         gatt_read_long_t read_long;
         gatt_write_reliable_t write_reliable;
-        uint16 notif_ind_flags;         
+        u16 notif_ind_flags;         
     } req;
 } conn_data_t;
 
 typedef struct
 {
-    uint16                  cid;
+    u16                  cid;
     Task                    task;
 
-    /* Flags must always be the 3rd uint16 of the cid_map_t structure or things
+    /* Flags must always be the 3rd u16 of the cid_map_t structure or things
      * will break
      */
     unsigned                closing:1;
@@ -267,7 +267,7 @@ typedef struct
     gatt_states_t                   state:3;
     unsigned                        connect_count:5;
     gatt_state_u                    u;
-    uint16                          flags;
+    u16                          flags;
 } gattState;
 
 /*
@@ -291,8 +291,8 @@ typedef struct
 #define MAX_PREPARE_SIZE(mtu)   ((mtu) - 5)
 
 /* Internal storage sizes for UUIDs */
-#define GATT_UUID16_SIZE        (1 * sizeof(uint32))
-#define GATT_UUID128_SIZE       (4 * sizeof(uint32))
+#define GATT_UUID16_SIZE        (1 * sizeof(u32))
+#define GATT_UUID128_SIZE       (4 * sizeof(u32))
 #define GATT_UUID_SIZE          GATT_UUID128_SIZE
 
 /* Structure to access common values in internal messages.
@@ -300,7 +300,7 @@ typedef struct
 typedef struct
 {
     Task task;          /* Client task */
-    uint16 cid;         /* Remote cid */
+    u16 cid;         /* Remote cid */
 } gatt_internal_t;
 
 typedef struct
@@ -313,20 +313,20 @@ typedef struct
 
 typedef struct
 {
-    uint16                          cid;
+    u16                          cid;
 } GATT_INTERNAL_DISCONNECT_REQ_T;
 
 
 typedef struct
 {
     gatt_internal_t                 common;
-    uint16                          mtu;
+    u16                          mtu;
 } GATT_INTERNAL_EXCHANGE_MTU_REQ_T;
 
 typedef struct
 {
-    uint16                          cid;
-    uint16                          mtu;
+    u16                          cid;
+    u16                          mtu;
 } GATT_INTERNAL_EXCHANGE_MTU_RES_T;
 
 typedef struct 
@@ -344,35 +344,35 @@ typedef struct
 typedef struct
 {
     gatt_internal_t                 common;
-    uint16                          start;
-    uint16                          end;
+    u16                          start;
+    u16                          end;
 } GATT_INTERNAL_FIND_INCLUDES_REQ_T;
 
 typedef struct
 {
     gatt_internal_t                 common;
-    uint16                          start;
-    uint16                          end;
+    u16                          start;
+    u16                          end;
 } GATT_INTERNAL_DISCOVER_ALL_CHARACTERISTICS_REQ_T;
 
 typedef struct
 {
     gatt_internal_t                 common;
-    uint16                          start;
-    uint16                          end;
+    u16                          start;
+    u16                          end;
 } GATT_INTERNAL_DISCOVER_ALL_DESCRIPTORS_REQ_T;
 
 typedef struct
 {
     gatt_internal_t                 common;
-    uint16                          handle;
+    u16                          handle;
 } GATT_INTERNAL_READ_REQ_T;
 
 typedef struct
 {
     gatt_internal_t                 common;
-    uint16                          start;
-    uint16                          end;
+    u16                          start;
+    u16                          end;
     gatt_uuid_type_t                uuid_type;
     gatt_uuid_t                     uuid[4];
 } GATT_INTERNAL_READ_BY_UUID_REQ_T;
@@ -380,55 +380,55 @@ typedef struct
 typedef struct
 {
     gatt_internal_t                 common;
-    uint16                          handle;
+    u16                          handle;
 } GATT_INTERNAL_READ_LONG_REQ_T;
 
 typedef struct
 {
     gatt_internal_t                 common;
-    uint16                          num_handles;
-    uint16                          handles[1];
+    u16                          num_handles;
+    u16                          handles[1];
 } GATT_INTERNAL_READ_MULTIPLE_REQ_T;
 
 typedef struct
 {
     gatt_internal_t                 common;
-    uint16                          id;
-    uint16                          handle;
-    uint16                          offs;
-    uint16                          size_value;
-    uint8                           value[1];
+    u16                          id;
+    u16                          handle;
+    u16                          offs;
+    u16                          size_value;
+    u8                           value[1];
 } GATT_INTERNAL_WRITE_REQ_T;
 
 typedef struct
 {
     gatt_internal_t                 common;
-    uint8                           flags;
+    u8                           flags;
 } GATT_INTERNAL_EXECUTE_WRITE_REQ_T;
 
 typedef struct
 {
-    uint16                          cid;
-    uint16                          handle;
-    uint16                          result;
-    uint16                          size_value;
-    uint8                           value[1];
+    u16                          cid;
+    u16                          handle;
+    u16                          result;
+    u16                          size_value;
+    u8                           value[1];
 } GATT_INTERNAL_ACCESS_RES_T;
 
 typedef struct
 {
     Task                            theAppTask;
-    uint16                          cid;
-    uint16                          handle;
-    uint16                          flags;
-    uint16                          size_value;
-    uint8                           value[1];
+    u16                          cid;
+    u16                          handle;
+    u16                          flags;
+    u16                          size_value;
+    u8                           value[1];
 } GATT_INTERNAL_HANDLE_VALUE_REQ_T;
 
 typedef struct
 {
     Task                            theAppTask;
-    uint16                          cid;
+    u16                          cid;
     gatt_status_t                   status;
 } GATT_INTERNAL_DELETE_CONN_T;
 
@@ -440,17 +440,17 @@ Task gattGetTask(void);
 Task gattGetAppTask(void);
 void gattInitCidTaskMap(void);
 bool gattMaxConnections(void);
-cid_map_t *gattFindConn(uint16 cid);
+cid_map_t *gattFindConn(u16 cid);
 cid_map_t *gattFindConnAddr(const bdaddr *addr);
-bool gattCidIsValid(uint16 cid);
-cid_map_t *gattAddCid(uint16 cid, Task task);
-void gattDeleteCid(uint16 cid);
-conn_data_t *gattGetCidData(uint16 cid);
-bool gattLockCid(uint16 cid, gatt_msg_scen_t scenario);
-void gattUnlockCid(uint16 cid);
-Task gattGetCidMappedTask(uint16 cid);
-bool gattMtuExchanged(uint16 cid);
-void gattSetMtuExchanged(uint16 cid);
+bool gattCidIsValid(u16 cid);
+cid_map_t *gattAddCid(u16 cid, Task task);
+void gattDeleteCid(u16 cid);
+conn_data_t *gattGetCidData(u16 cid);
+bool gattLockCid(u16 cid, gatt_msg_scen_t scenario);
+void gattUnlockCid(u16 cid);
+Task gattGetCidMappedTask(u16 cid);
+bool gattMtuExchanged(u16 cid);
+void gattSetMtuExchanged(u16 cid);
 void gattHandleAttRegisterCfm(gattState *theGatt, ATT_REGISTER_CFM_T  *cfm);
 void gattHandleAttAddDbCfm(gattState *theGatt, ATT_ADD_DB_CFM_T *cfm);
 
@@ -480,88 +480,88 @@ void gattHandleAttHandleValueInd(ATT_HANDLE_VALUE_IND_T *ind);
 void gatt_get_att_uuid(
     gatt_uuid_t *uuid,
     gatt_uuid_type_t *uuid_type,
-    uint16 size_value,
-    const uint8 *value);
+    u16 size_value,
+    const u8 *value);
 void gatt_get_sdp_uuid(
     gatt_uuid_t *uuid,
     gatt_uuid_type_t *uuid_type,
     Region *val);
-uint8 gatt_read8(uint8 **data);
-uint16 gatt_read16(uint8 **data);
+u8 gatt_read8(u8 **data);
+u16 gatt_read16(u8 **data);
 
 /* gatt_downstream.c */
 void gatt_exchange_mtu_req(
-    uint16 cid,
-    uint16 mtu);
+    u16 cid,
+    u16 mtu);
 void gatt_exchange_mtu_rsp(
-    uint16 cid,
-    uint16 mtu);
+    u16 cid,
+    u16 mtu);
 void gatt_read_by_group_type_req(
-    uint16 cid,
-    uint16 start,
-    uint16 end,
+    u16 cid,
+    u16 start,
+    u16 end,
     gatt_uuid_type_t uuid_type,
     const gatt_uuid_t *uuid);
 void gatt_find_by_type_value_req(
-    uint16 cid,
-    uint16 start,
-    uint16 end,
-    uint16 type,
+    u16 cid,
+    u16 start,
+    u16 end,
+    u16 type,
     gatt_uuid_type_t uuid_type,
     const gatt_uuid_t *uuid);
 void gatt_read_by_type_req(
-    uint16 cid,
-    uint16 start,
-    uint16 end,
+    u16 cid,
+    u16 start,
+    u16 end,
     gatt_uuid_type_t uuid_type,
     const gatt_uuid_t *uuid);
 void gatt_read_req(
-    uint16 cid,
-    uint16 handle);
+    u16 cid,
+    u16 handle);
 void gatt_write_req(
-    uint16 cid,
-    uint16 handle,
-    uint16 flags,
-    uint16 size_value,
-    uint8 *value);
+    u16 cid,
+    u16 handle,
+    u16 flags,
+    u16 size_value,
+    u8 *value);
 void gatt_prepare_write_req(
-    uint16 cid,
-    uint16 handle,
-    uint16 offs,
-    uint16 size_value,
-    uint8 *value);
+    u16 cid,
+    u16 handle,
+    u16 offs,
+    u16 size_value,
+    u8 *value);
 void gatt_execute_write_req(
-    uint16 cid,
-    uint16 flags);
+    u16 cid,
+    u16 flags);
 void gatt_find_info_req(
-    uint16 cid,
-    uint16 start,
-    uint16 end);
+    u16 cid,
+    u16 start,
+    u16 end);
 void gatt_read_blob_req(
-    uint16 cid,
-    uint16 offs,
-    uint16 handle);
+    u16 cid,
+    u16 offs,
+    u16 handle);
 void gatt_read_multi_req(
-    uint16 cid,
-    uint16 size_handles,
-    uint16 *handles);
+    u16 cid,
+    u16 size_handles,
+    u16 *handles);
 
 /* gatt_message.c */
 void gatt_message_internal(
     Task task,
     cid_map_t *conn,
     void *prim,
-    uint16 id);
+    u16 id);
 bool gatt_message_prepare(
     cid_map_t *conn,
     bool *more, bool *send,
     att_result_t result,
     bool final,
     bool *more_to_come,
-    uint16 id);
+    u16 id);
 void gatt_message_send(
     cid_map_t *conn,
-    uint16 id);
+    u16 id);
 gatt_status_t gatt_message_status(
     att_result_t result);
 void gattSetConnState(

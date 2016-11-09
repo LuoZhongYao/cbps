@@ -45,30 +45,30 @@ typedef struct __CsrInternalCodecTaskData CsrInternalCodecTaskData;
 
 typedef struct
 {
-    int16 dsp_db_scaled;
-    uint8 dac_gain;
+    i16 dsp_db_scaled;
+    u8 dac_gain;
 }hybrid_gains_t;
 
 typedef struct __volume_group_config_t
 {
-	int16 no_of_steps;         /* number of steps of volume change permitted */
-	int16 volume_knee_value_1;  /* volume point at which curve of dB conversion changes */  
-	int16 volume_knee_value_2;  /* volume point at which curve of dB conversion changes */
-	int16 dB_knee_value_1;      /* dB value for point at which curve of dB conversion changes */
-	int16 dB_knee_value_2;      /* dB value for point at which curve of dB conversion changes */
-	int16 dB_max;               /* dB value at maximum volume level */
-	int16 dB_min;               /* dB value at minimum volume level */
+	i16 no_of_steps;         /* number of steps of volume change permitted */
+	i16 volume_knee_value_1;  /* volume point at which curve of dB conversion changes */  
+	i16 volume_knee_value_2;  /* volume point at which curve of dB conversion changes */
+	i16 dB_knee_value_1;      /* dB value for point at which curve of dB conversion changes */
+	i16 dB_knee_value_2;      /* dB value for point at which curve of dB conversion changes */
+	i16 dB_max;               /* dB value at maximum volume level */
+	i16 dB_min;               /* dB value at minimum volume level */
 } volume_group_config_t;
 
 typedef struct
 {
 	volume_group_config_t group_config[multi_channel_group_all];
 
-    int16 device_trim_master;   /* TWS master device trim gain */
-    int16 device_trim_slave;    /* TWS slave device trim gain */
-    int16 device_trim_change;   /* TWS device trim step change */
-    int16 device_trim_min;      /* TWS device trim minimum gain */
-    int16 device_trim_max;      /* TWS device trim maximum gain */
+    i16 device_trim_master;   /* TWS master device trim gain */
+    i16 device_trim_slave;    /* TWS slave device trim gain */
+    i16 device_trim_change;   /* TWS device trim step change */
+    i16 device_trim_min;      /* TWS device trim minimum gain */
+    i16 device_trim_max;      /* TWS device trim maximum gain */
 
 } dsp_volume_user_config;
 
@@ -189,7 +189,7 @@ typedef struct
 	/*! Type of input to use with ADCs. */
 	input_type inputs;				
 	/*! Can output one or more of DACS (0x1), mic in (0x2), line in (0x4). */
-	uint16 outputs;					
+	u16 outputs;					
 	/*! The sample rate to use for the ADC. */
 	sample_freq adc_sample_rate;	
 	/*! The sample rate to use for the DAC. */
@@ -205,8 +205,8 @@ typedef struct
 typedef struct
 {
 	codec_status_code status;      /*!< The current codec status. */
-	uint16 inputGainRange;         /*!< The max input gain for the codec. */
-	uint16 outputGainRange;        /*!< The max output gain for the codec. */
+	u16 inputGainRange;         /*!< The max input gain for the codec. */
+	u16 outputGainRange;        /*!< The max output gain for the codec. */
 	Task codecTask;                /*!< The codec task. */
 } CODEC_INIT_CFM_T;
 
@@ -258,7 +258,7 @@ void CodecConfigure(Task codecTask, const codec_config_params *config);
 
     @param channel The channel to use.
 */
-void CodecSetInputGain(Task codecTask, uint16 volume, codec_channel channel);
+void CodecSetInputGain(Task codecTask, u16 volume, codec_channel channel);
 
 
 /*!
@@ -271,7 +271,7 @@ void CodecSetInputGain(Task codecTask, uint16 volume, codec_channel channel);
 
     @param channel The channel to use.
 */
-void CodecSetInputGainNow(Task codecTask, uint16 volume, codec_channel channel);
+void CodecSetInputGainNow(Task codecTask, u16 volume, codec_channel channel);
 
 
 /*!
@@ -284,7 +284,7 @@ void CodecSetInputGainNow(Task codecTask, uint16 volume, codec_channel channel);
 
     @param channel The channel to use.
 */
-void CodecSetOutputGain(Task codecTask, uint16 volume, codec_channel channel);
+void CodecSetOutputGain(Task codecTask, u16 volume, codec_channel channel);
 
 
 /*!
@@ -297,7 +297,7 @@ void CodecSetOutputGain(Task codecTask, uint16 volume, codec_channel channel);
 
     @param channel The channel to use.
 */
-void CodecSetOutputGainNow(Task codecTask, uint16 volume, codec_channel channel);
+void CodecSetOutputGainNow(Task codecTask, u16 volume, codec_channel channel);
 
 
 /*!
@@ -335,7 +335,7 @@ RETURNS
  dB value
 
 */
-int16 VolumeConvertDACGainToDB(uint16 DAC_Gain);
+i16 VolumeConvertDACGainToDB(u16 DAC_Gain);
 
 /****************************************************************************
 NAME
@@ -348,7 +348,7 @@ RETURNS
  dB value
 
 */
-int16 VolumeConvertStepsToDB(int16 Volume, volume_group_config_t * volMappingConfig);
+i16 VolumeConvertStepsToDB(i16 Volume, volume_group_config_t * volMappingConfig);
 
 /****************************************************************************
 NAME
@@ -361,7 +361,7 @@ RETURNS
  dB value
 
 */
-void CodecCalcHybridValues(hybrid_gains_t * gains, int16 volume);
+void CodecCalcHybridValues(hybrid_gains_t * gains, i16 volume);
 
 /****************************************************************************
 NAME
@@ -374,7 +374,7 @@ RETURNS
  none
 
 */
-void CodecSetOutputGainLater(Task codecTask, uint16 volume, codec_channel channel, uint16 delay);
+void CodecSetOutputGainLater(Task codecTask, u16 volume, codec_channel channel, u16 delay);
 
 #endif /* CODEC_H_ */
 

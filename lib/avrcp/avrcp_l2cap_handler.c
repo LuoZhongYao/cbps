@@ -255,7 +255,7 @@ void avrcpHandleL2capDisconnectInd(AVRCP            *avrcp,
     {
         MessageSendConditionally(&avrcp->task, 
                              AVRCP_INTERNAL_TASK_DELETE_REQ, 0,
-                             (uint16*)&avrcp->sdp_search_mode);
+                             (u16*)&avrcp->sdp_search_mode);
     }
     else
     {
@@ -294,7 +294,7 @@ void avrcpHandleL2capDisconnectCfm(AVRCP            *avrcp,
     {
         MessageSendConditionally(&avrcp->task, 
                              AVRCP_INTERNAL_TASK_DELETE_REQ, 0,
-                             (uint16*)&avrcp->sdp_search_mode);
+                             (u16*)&avrcp->sdp_search_mode);
     }
     else
     {

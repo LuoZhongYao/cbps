@@ -17,8 +17,8 @@ DESCRIPTION
 
 /* Find MAP MAS instance id */
 
-static bool findMapMasInstance(const uint8 size_service_record, 
-                               uint8* service_record, Region* value)
+static bool findMapMasInstance(const u8 size_service_record, 
+                               u8* service_record, Region* value)
 {
 	ServiceDataType type;
     Region record;
@@ -35,8 +35,8 @@ static bool findMapMasInstance(const uint8 size_service_record,
 	return FALSE;
 }
 
-static bool findMapMasMsgFeature(const uint8 size_service_record,
-                                 uint8* service_record, Region* value)
+static bool findMapMasMsgFeature(const u8 size_service_record,
+                                 u8* service_record, Region* value)
 {
 	ServiceDataType type;
     Region record;
@@ -68,9 +68,9 @@ static bool findMapMasMsgFeature(const uint8 size_service_record,
  * RETURNS
  *  TRUE on success with instanceId contains the MASInstanceID.
  **************************************************************************/
-bool SdpParseGetMapMasInstance( const uint8 size_service_record,
-                                uint8* service_record, 
-                                uint8* instance_id )
+bool SdpParseGetMapMasInstance( const u8 size_service_record,
+                                u8* service_record, 
+                                u8* instance_id )
 {
 	Region value;
 	if(findMapMasInstance(size_service_record, service_record, &value))
@@ -96,9 +96,9 @@ bool SdpParseGetMapMasInstance( const uint8 size_service_record,
  * RETURNS
  *  TRUE on success with MsgFeature contains the MASInstanceID.
  **************************************************************************/
-bool SdpParseGetMapMasMsgFeature( const uint8 size_service_record,
-                                  uint8* service_record, 
-                                  uint8* msg_feature )
+bool SdpParseGetMapMasMsgFeature( const u8 size_service_record,
+                                  u8* service_record, 
+                                  u8* msg_feature )
 {
 	Region value;
 	if(findMapMasMsgFeature(size_service_record, service_record, &value))

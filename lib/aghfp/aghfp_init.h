@@ -21,7 +21,7 @@ void aghfpHandleInternalInitReq(AGHFP *aghfp);
 /****************************************************************************
 	Send an internal init cfm message.
 */
-void aghfpSendInternalInitCfm(Task task, aghfp_init_status s, uint8 c);
+void aghfpSendInternalInitCfm(Task task, aghfp_init_status s, u8 c);
 
 
 /****************************************************************************

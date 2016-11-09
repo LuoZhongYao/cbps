@@ -34,12 +34,12 @@ static const char suffix[] = {';','\r'};
     The code for creating the dial cmd for dialing a number and a memory location 
     is almost the same so pull out common code into this function.
 */
-static void createDialCmd(hfp_link_data* link, bool memory, uint16 size_number, const uint8 *number)
+static void createDialCmd(hfp_link_data* link, bool memory, u16 size_number, const u8 *number)
 {
     /* Only copy the '>' if doing memory dial */
-    uint8 size_prefix = sizeof(prefix) - (memory ? 0 : 1);
-    uint8 size_suffix = sizeof(suffix);
-    uint8 size_dial_command = size_prefix + size_number + size_suffix;
+    u8 size_prefix = sizeof(prefix) - (memory ? 0 : 1);
+    u8 size_suffix = sizeof(suffix);
+    u8 size_dial_command = size_prefix + size_number + size_suffix;
     
     /* Create the dial request message */
     char *dial_command = (char *) PanicUnlessMalloc(size_dial_command);

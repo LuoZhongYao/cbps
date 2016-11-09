@@ -36,7 +36,7 @@ DESCRIPTION
 
 
 /****************************************************************************/
-swatMediaState SwatGetMediaState(uint16 device_id)
+swatMediaState SwatGetMediaState(u16 device_id)
 {
     /* obtain pointer to requested sub device */
     remoteDevice * device = &swat->remote_devs[device_id];
@@ -51,7 +51,7 @@ swatMediaState SwatGetMediaState(uint16 device_id)
 
 
 /****************************************************************************/
-swatMediaState SwatGetMediaLLState(uint16 device_id)
+swatMediaState SwatGetMediaLLState(u16 device_id)
 {
     /* obtain pointer to requested sub device */
     remoteDevice * device = &swat->remote_devs[device_id];
@@ -67,7 +67,7 @@ swatMediaState SwatGetMediaLLState(uint16 device_id)
 
 
 /****************************************************************************/
-Sink SwatGetMediaSink(uint16 device_id)
+Sink SwatGetMediaSink(u16 device_id)
 {
     /* obtain pointer to requested sub device */
     remoteDevice * device = &swat->remote_devs[device_id];
@@ -89,7 +89,7 @@ Sink SwatGetMediaSink(uint16 device_id)
 
 
 /****************************************************************************/
-swatMediaType SwatGetMediaType(uint16 device_id)
+swatMediaType SwatGetMediaType(u16 device_id)
 {
     /* obtain pointer to requested sub device */
     remoteDevice * device = &swat->remote_devs[device_id];
@@ -111,7 +111,7 @@ swatMediaType SwatGetMediaType(uint16 device_id)
 
 
 /****************************************************************************/
-Sink SwatGetSignallingSink(uint16 device_id)
+Sink SwatGetSignallingSink(u16 device_id)
 {
     if(swat)
     {
@@ -126,7 +126,7 @@ Sink SwatGetSignallingSink(uint16 device_id)
 
 
 /****************************************************************************/
-bdaddr * SwatGetBdaddr(uint16 device_id)
+bdaddr * SwatGetBdaddr(u16 device_id)
 {
     if(swat)
     {
@@ -162,7 +162,7 @@ bool SwatSignallingConnectRequest(bdaddr *addr)
 
 
 /****************************************************************************/
-bool SwatSignallingConnectResponse(uint16 device_id, uint16 connection_id, uint8 identifier, bool accept)
+bool SwatSignallingConnectResponse(u16 device_id, u16 connection_id, u8 identifier, bool accept)
 {
     if (swat == NULL)
     {
@@ -177,7 +177,7 @@ bool SwatSignallingConnectResponse(uint16 device_id, uint16 connection_id, uint8
 
 
 /****************************************************************************/
-bool SwatSignallingDisconnectRequest(uint16 device_id)
+bool SwatSignallingDisconnectRequest(u16 device_id)
 {
     if (swat == NULL)
     {
@@ -198,7 +198,7 @@ bool SwatSignallingDisconnectRequest(uint16 device_id)
 
 
 /****************************************************************************/
-bool SwatMediaOpenRequest(uint16 device_id, swatMediaType media_type)
+bool SwatMediaOpenRequest(u16 device_id, swatMediaType media_type)
 {
     if (swat == NULL)
     {
@@ -216,7 +216,7 @@ bool SwatMediaOpenRequest(uint16 device_id, swatMediaType media_type)
 
 
 /****************************************************************************/
-bool SwatMediaOpenResponse(uint16 device_id, swatMediaType media_type, bool accept)
+bool SwatMediaOpenResponse(u16 device_id, swatMediaType media_type, bool accept)
 {
     if (swat == NULL)
     {
@@ -235,7 +235,7 @@ bool SwatMediaOpenResponse(uint16 device_id, swatMediaType media_type, bool acce
 
 
 /****************************************************************************/
-bool SwatMediaCloseRequest(uint16 device_id, swatMediaType media_type)
+bool SwatMediaCloseRequest(u16 device_id, swatMediaType media_type)
 {
     if (swat == NULL)
     {
@@ -257,7 +257,7 @@ bool SwatMediaCloseRequest(uint16 device_id, swatMediaType media_type)
 
 
 /****************************************************************************/
-bool SwatMediaStartRequest(uint16 device_id, swatMediaType media_type)
+bool SwatMediaStartRequest(u16 device_id, swatMediaType media_type)
 {
     if (swat == NULL)
     {
@@ -275,7 +275,7 @@ bool SwatMediaStartRequest(uint16 device_id, swatMediaType media_type)
 
 
 /****************************************************************************/
-bool SwatMediaStartResponse(uint16 device_id, swatMediaType media_type, bool accept)
+bool SwatMediaStartResponse(u16 device_id, swatMediaType media_type, bool accept)
 {
     if (swat == NULL)
     {
@@ -294,7 +294,7 @@ bool SwatMediaStartResponse(uint16 device_id, swatMediaType media_type, bool acc
 
 
 /****************************************************************************/
-bool SwatMediaSuspendRequest(uint16 device_id, swatMediaType media_type)
+bool SwatMediaSuspendRequest(u16 device_id, swatMediaType media_type)
 {
     if (swat == NULL)
     {
@@ -315,7 +315,7 @@ bool SwatMediaSuspendRequest(uint16 device_id, swatMediaType media_type)
 
 
 /****************************************************************************/
-bool SwatSetVolume(uint16 device_id, uint8 volume, uint8 sub_trim)
+bool SwatSetVolume(u16 device_id, u8 volume, u8 sub_trim)
 {
     if (swat == NULL)
     {
@@ -334,7 +334,7 @@ bool SwatSetVolume(uint16 device_id, uint8 volume, uint8 sub_trim)
 
 
 /****************************************************************************/
-bool SwatSendSampleRateCommand(uint16 device_id, uint16 rate)
+bool SwatSendSampleRateCommand(u16 device_id, u16 rate)
 {
     if ( (swat == NULL) || (swat->role != swat_role_source) )
     {
@@ -349,7 +349,7 @@ bool SwatSendSampleRateCommand(uint16 device_id, uint16 rate)
 
 
 /****************************************************************************/
-bool SwatSampleRateResponse(uint16 device_id, uint16 rate)
+bool SwatSampleRateResponse(u16 device_id, u16 rate)
 {
     if (swat == NULL)
     {
@@ -365,7 +365,7 @@ bool SwatSampleRateResponse(uint16 device_id, uint16 rate)
 /****************************************************************************/
 /* function to get Subwoofer version number */
 /****************************************************************************/
-bool SwatSendGetVersionNoCommand(uint16 device_id)
+bool SwatSendGetVersionNoCommand(u16 device_id)
 {
     if ( (swat == NULL) || (swat->role != swat_role_source) )
     {
@@ -408,7 +408,7 @@ void swatSendInitCfmToClient(swat_status_code status)
 
 
 /****************************************************************************/
-void swatSendSignallingConnectIndToClient(uint16 device_id, uint16 connection_id, uint8 identifier, bdaddr bd_addr)
+void swatSendSignallingConnectIndToClient(u16 device_id, u16 connection_id, u8 identifier, bdaddr bd_addr)
 {
     MAKE_SWAT_MESSAGE(SWAT_SIGNALLING_CONNECT_IND);
     message->device_id = device_id;
@@ -421,7 +421,7 @@ void swatSendSignallingConnectIndToClient(uint16 device_id, uint16 connection_id
 
 
 /****************************************************************************/
-void swatSendSignallingConnectCfmToClient(swat_status_code status, uint16 device_id, Sink sink)
+void swatSendSignallingConnectCfmToClient(swat_status_code status, u16 device_id, Sink sink)
 {
     MAKE_SWAT_MESSAGE(SWAT_SIGNALLING_CONNECT_CFM);
     message->status = status;
@@ -435,7 +435,7 @@ void swatSendSignallingConnectCfmToClient(swat_status_code status, uint16 device
 
 
 /****************************************************************************/
-void swatSendSignallingDisconnectIndToClient(swat_status_code status, uint16 device_id)
+void swatSendSignallingDisconnectIndToClient(swat_status_code status, u16 device_id)
 {
     MAKE_SWAT_MESSAGE(SWAT_SIGNALLING_DISCONNECT_IND);
     message->device_id = device_id;
@@ -444,7 +444,7 @@ void swatSendSignallingDisconnectIndToClient(swat_status_code status, uint16 dev
 
 
 /****************************************************************************/
-void swatSendSignallingDisconnectCfmToClient(swat_status_code status, uint16 device_id)
+void swatSendSignallingDisconnectCfmToClient(swat_status_code status, u16 device_id)
 {
     MAKE_SWAT_MESSAGE(SWAT_SIGNALLING_DISCONNECT_CFM);
     message->status = status;
@@ -456,7 +456,7 @@ void swatSendSignallingDisconnectCfmToClient(swat_status_code status, uint16 dev
 
 
 /****************************************************************************/
-void swatSendMediaOpenIndToClient(uint16 device_id, swatMediaType media_type)
+void swatSendMediaOpenIndToClient(u16 device_id, swatMediaType media_type)
 {
     MAKE_SWAT_MESSAGE(SWAT_MEDIA_OPEN_IND);
     message->device_id = device_id;
@@ -466,7 +466,7 @@ void swatSendMediaOpenIndToClient(uint16 device_id, swatMediaType media_type)
 
 
 /****************************************************************************/
-void swatSendMediaOpenCfmToClient(swat_status_code status, uint16 id, swatMediaType type, Sink sink)
+void swatSendMediaOpenCfmToClient(swat_status_code status, u16 id, swatMediaType type, Sink sink)
 {
     MAKE_SWAT_MESSAGE(SWAT_MEDIA_OPEN_CFM);
     message->status = status;
@@ -480,7 +480,7 @@ void swatSendMediaOpenCfmToClient(swat_status_code status, uint16 id, swatMediaT
 
 
 /****************************************************************************/
-void swatSendMediaCloseIndToClient(uint16 id, swatMediaType type)
+void swatSendMediaCloseIndToClient(u16 id, swatMediaType type)
 {
     MAKE_SWAT_MESSAGE(SWAT_MEDIA_CLOSE_IND);
     message->device_id = id;
@@ -490,7 +490,7 @@ void swatSendMediaCloseIndToClient(uint16 id, swatMediaType type)
 
 
 /****************************************************************************/
-void swatSendMediaCloseCfmToClient(swat_status_code status, uint16 id, swatMediaType type)
+void swatSendMediaCloseCfmToClient(swat_status_code status, u16 id, swatMediaType type)
 {
     MAKE_SWAT_MESSAGE(SWAT_MEDIA_CLOSE_CFM);
     message->status = status;
@@ -503,7 +503,7 @@ void swatSendMediaCloseCfmToClient(swat_status_code status, uint16 id, swatMedia
 
 
 /****************************************************************************/
-void swatSendMediaStartIndToClient(uint16 id, swatMediaType type)
+void swatSendMediaStartIndToClient(u16 id, swatMediaType type)
 {
     MAKE_SWAT_MESSAGE(SWAT_MEDIA_START_IND);
     message->device_id = id;
@@ -513,7 +513,7 @@ void swatSendMediaStartIndToClient(uint16 id, swatMediaType type)
 
 
 /****************************************************************************/
-void swatSendMediaStartCfmToClient(swat_status_code status, uint16 id, swatMediaType type)
+void swatSendMediaStartCfmToClient(swat_status_code status, u16 id, swatMediaType type)
 {
     MAKE_SWAT_MESSAGE(SWAT_MEDIA_START_CFM);
     message->status = status;
@@ -526,7 +526,7 @@ void swatSendMediaStartCfmToClient(swat_status_code status, uint16 id, swatMedia
 
 
 /****************************************************************************/
-void swatSendMediaSuspendIndToClient(uint16 id, swatMediaType type)
+void swatSendMediaSuspendIndToClient(u16 id, swatMediaType type)
 {
     MAKE_SWAT_MESSAGE(SWAT_MEDIA_SUSPEND_IND);
     message->device_id = id;
@@ -536,7 +536,7 @@ void swatSendMediaSuspendIndToClient(uint16 id, swatMediaType type)
 
 
 /****************************************************************************/
-void swatSendMediaSuspendCfmToClient(swat_status_code status, uint16 id, swatMediaType type)
+void swatSendMediaSuspendCfmToClient(swat_status_code status, u16 id, swatMediaType type)
 {
     MAKE_SWAT_MESSAGE(SWAT_MEDIA_SUSPEND_CFM);
     message->status = status;
@@ -549,7 +549,7 @@ void swatSendMediaSuspendCfmToClient(swat_status_code status, uint16 id, swatMed
 
 
 /****************************************************************************/
-void swatSendVolumeIndToClient(uint16 id, uint8 volume, uint8 sub_trim)
+void swatSendVolumeIndToClient(u16 id, u8 volume, u8 sub_trim)
 {
     MAKE_SWAT_MESSAGE(SWAT_SET_VOLUME_IND);
     message->device_id = id;
@@ -560,7 +560,7 @@ void swatSendVolumeIndToClient(uint16 id, uint8 volume, uint8 sub_trim)
 
 
 /****************************************************************************/
-void swatSendVolumeCfmToClient(swat_status_code status, uint16 id, uint8 volume, uint8 sub_trim)
+void swatSendVolumeCfmToClient(swat_status_code status, u16 id, u8 volume, u8 sub_trim)
 {
     MAKE_SWAT_MESSAGE(SWAT_SET_VOLUME_CFM);
     message->status = status;
@@ -574,7 +574,7 @@ void swatSendVolumeCfmToClient(swat_status_code status, uint16 id, uint8 volume,
 
 
 /****************************************************************************/
-void swatSendSampleRateIndToClient(uint16 id, uint16 rate)
+void swatSendSampleRateIndToClient(u16 id, u16 rate)
 {
     MAKE_SWAT_MESSAGE(SWAT_SAMPLE_RATE_IND);
     message->device_id = id;
@@ -584,7 +584,7 @@ void swatSendSampleRateIndToClient(uint16 id, uint16 rate)
 
 
 /****************************************************************************/
-void swatSendSampleRateCfmToClient(swat_status_code status, uint16 id, uint16 rate)
+void swatSendSampleRateCfmToClient(swat_status_code status, u16 id, u16 rate)
 {
     MAKE_SWAT_MESSAGE(SWAT_SAMPLE_RATE_CFM);
     message->device_id = id;
@@ -594,7 +594,7 @@ void swatSendSampleRateCfmToClient(swat_status_code status, uint16 id, uint16 ra
 }
 
 /****************************************************************************/
-void swatSendVersionNoIndToClient(uint16 id)
+void swatSendVersionNoIndToClient(u16 id)
 {
     /* request version number from Subwoofer */
     MAKE_SWAT_MESSAGE(SWAT_GET_VERSION_IND);
@@ -603,7 +603,7 @@ void swatSendVersionNoIndToClient(uint16 id)
 }
 
 /****************************************************************************/
-void swatSendVersionNoCfmToClient(swat_status_code status, uint16 id, uint16 major, uint16 minor)
+void swatSendVersionNoCfmToClient(swat_status_code status, u16 id, u16 major, u16 minor)
 {
     /* version number repsonse from the Subwoofer */
     MAKE_SWAT_MESSAGE(SWAT_GET_VERSION_CFM);

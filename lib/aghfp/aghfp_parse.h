@@ -12,32 +12,32 @@
 #include <source.h>
 #endif
 
-const uint8 *parseData(const uint8 *s, const uint8 *e, Task task);
-void handleUnrecognised(const uint8 *data, uint16 length, Task task);
+const u8 *parseData(const u8 *s, const u8 *e, Task task);
+void handleUnrecognised(const u8 *data, u16 length, Task task);
 
 #ifdef __XAP__
-uint16 parseSource(Source rfcDataIncoming, Task task);
+u16 parseSource(Source rfcDataIncoming, Task task);
 #endif
 
 struct sequence
 {
-  const uint8 *data;
-  uint16 length;
+  const u8 *data;
+  u16 length;
 };
 
 struct value_aghfpHandleAvailableCodecs_codecs
 {
-  uint16 codec;
+  u16 codec;
 };
 struct region_aghfpHandleAvailableCodecs_codecs
 {
-  uint16 count;
-  const uint8 *s;
-  const uint8 *e;
-  uint16 next;
-  const uint8 *next_s;
+  u16 count;
+  const u8 *s;
+  const u8 *e;
+  u16 next;
+  const u8 *next_s;
 };
-struct value_aghfpHandleAvailableCodecs_codecs get_aghfpHandleAvailableCodecs_codecs(const struct region_aghfpHandleAvailableCodecs_codecs*, uint16);
+struct value_aghfpHandleAvailableCodecs_codecs get_aghfpHandleAvailableCodecs_codecs(const struct region_aghfpHandleAvailableCodecs_codecs*, u16);
 
 struct aghfpHandleDialParse
 {
@@ -53,7 +53,7 @@ struct aghfpHandleAvailableCodecs
 };
 struct aghfpHandleWbsCodecNegotiation
 {
-  uint16 codec;
+  u16 codec;
 };
 struct aghfpHandleBiaParse
 {
@@ -61,11 +61,11 @@ struct aghfpHandleBiaParse
 };
 struct aghfpHandleVgmParse
 {
-  uint16 gain;
+  u16 gain;
 };
 struct aghfpHandleVgsParse
 {
-  uint16 volume;
+  u16 volume;
 };
 struct aghfpHandleVtsParse
 {
@@ -73,19 +73,19 @@ struct aghfpHandleVtsParse
 };
 struct aghfpHandleBrsfReqParse
 {
-  uint16 supportedFeatures;
+  u16 supportedFeatures;
 };
 struct aghfpHandleBtrhSetStatusParse
 {
-  uint16 cmd;
+  u16 cmd;
 };
 struct aghfpHandleBvraParse
 {
-  uint16 state;
+  u16 state;
 };
 struct aghfpHandleCcwaParse
 {
-  uint16 state;
+  u16 state;
 };
 struct aghfpHandleChldParse
 {
@@ -93,60 +93,60 @@ struct aghfpHandleChldParse
 };
 struct aghfpHandleCkpdParse
 {
-  uint16 keycode;
+  u16 keycode;
 };
 struct aghfpHandleClipParse
 {
-  uint16 state;
+  u16 state;
 };
 struct aghfpHandleCmerReqParse
 {
-  uint16 disp;
-  uint16 ind;
-  uint16 keyp;
-  uint16 mode;
+  u16 disp;
+  u16 ind;
+  u16 keyp;
+  u16 mode;
 };
 struct aghfpHandleCopsFormatParse
 {
-  uint16 format;
-  uint16 mode;
+  u16 format;
+  u16 mode;
 };
 struct aghfpHandleNrecParse
 {
-  uint16 state;
+  u16 state;
 };
 struct aghfpHandleFeatureNegotiation
 {
-  uint16 ind;
-  uint16 val;
+  u16 ind;
+  u16 val;
 };
 struct aghfpHandleFeatureNegotiationWithBandwidth
 {
-  uint16 ind0;
-  uint16 ind1;
-  uint16 val0;
-  uint16 val1;
+  u16 ind0;
+  u16 ind1;
+  u16 val0;
+  u16 val1;
 };
 struct aghfpHandleReponseCSRSupportedFeaturesCodecsBw
 {
-  uint16 battLevel;
-  uint16 callerName;
-  uint16 codecBandwidths;
-  uint16 codecs;
+  u16 battLevel;
+  u16 callerName;
+  u16 codecBandwidths;
+  u16 codecs;
   struct sequence ignore;
-  uint16 pwrSource;
-  uint16 rawText;
-  uint16 smsInd;
+  u16 pwrSource;
+  u16 rawText;
+  u16 smsInd;
 };
 struct aghfpHandleReponseCSRSupportedFeatures
 {
-  uint16 battLevel;
-  uint16 callerName;
-  uint16 codecs;
+  u16 battLevel;
+  u16 callerName;
+  u16 codecs;
   struct sequence ignore;
-  uint16 pwrSource;
-  uint16 rawText;
-  uint16 smsInd;
+  u16 pwrSource;
+  u16 rawText;
+  u16 smsInd;
 };
 void aghfpHandleDialParse(Task , const struct aghfpHandleDialParse *);
 void aghfpHandleMemoryDialParse(Task , const struct aghfpHandleMemoryDialParse *);

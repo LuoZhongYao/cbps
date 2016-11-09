@@ -16,7 +16,7 @@
 #include <stdio.h>
 #endif
 
-typedef const uint8 *ptr;
+typedef const u8 *ptr;
 
 static __inline__ char my_toupper(char c)
 { return 'a' <= c && c <= 'z' ? c +'A'-'a' : c; }
@@ -32,7 +32,7 @@ static ptr skip1(ptr s, ptr e)
 #ifdef TEST_HARNESS
 static void printString(const char *name, const struct sequence *s)
 {
-  uint16 i;
+  u16 i;
   printf(" %s='", name);
   for(i = 0; i < s->length; ++i) putchar(s->data[i]);
   printf("'");
@@ -101,10 +101,10 @@ static ptr skipOnce1(ptr s, ptr e)
 static ptr match1(ptr s, ptr e)
 { return s && s != e && (*s == '\r' || *s == '\n') ? s+1 : 0; }
 
-static ptr matchChar(ptr s, ptr e, uint8 c)
+static ptr matchChar(ptr s, ptr e, u8 c)
 { return s && s != e && my_toupper((char) *s) == (char) c ? s+1 : 0; }
 
-struct value_aghfpHandleAvailableCodecs_codecs get_aghfpHandleAvailableCodecs_codecs(const struct region_aghfpHandleAvailableCodecs_codecs *r0, uint16 i)
+struct value_aghfpHandleAvailableCodecs_codecs get_aghfpHandleAvailableCodecs_codecs(const struct region_aghfpHandleAvailableCodecs_codecs *r0, u16 i)
 {
   struct region_aghfpHandleAvailableCodecs_codecs * r = (struct region_aghfpHandleAvailableCodecs_codecs *) r0;
   if(i < r->next)
@@ -113,7 +113,7 @@ struct value_aghfpHandleAvailableCodecs_codecs get_aghfpHandleAvailableCodecs_co
     r->next_s = r->s;
   }
   {
-    uint16 n = r->next;
+    u16 n = r->next;
     ptr p = r->next_s;
     ptr e = r->e;
     struct value_aghfpHandleAvailableCodecs_codecs res;
@@ -152,8 +152,8 @@ static ptr getWildString(ptr p, ptr e, struct sequence *res)
   if(p)
   {
     ptr s = p;
-    p = (uint8*)UtilFind(0xFFFF, '\r', (const uint16*)p, 0, 1, (uint16) (e - p));
-    if (!p) p = (uint8*)UtilFind(0xFFFF, '\n', (const uint16*)p, 0, 1, e - p);
+    p = (u8*)UtilFind(0xFFFF, '\r', (const u16*)p, 0, 1, (u16) (e - p));
+    if (!p) p = (u8*)UtilFind(0xFFFF, '\n', (const u16*)p, 0, 1, e - p);
     if (!p) p = e;
     res->data = s;
     res->length = p - s;
@@ -201,7 +201,7 @@ static ptr findEndOfPacket(ptr s, ptr e)
         if(*p != '\r')
         {
 #ifndef TEST_HARNESS
-        p = (const uint8*)UtilFind(0xFFFF, '\r', (const uint16*)p, 0, 1, (uint16)(e-p));
+        p = (const u8*)UtilFind(0xFFFF, '\r', (const u16*)p, 0, 1, (u16)(e-p));
 #endif
 #ifdef TEST_HARNESS
 		   while(p != e && *p != '\r') p++;
@@ -237,14 +237,14 @@ static ptr findEndOfPacket(ptr s, ptr e)
 
 #ifndef TEST_HARNESS
 #ifdef __XAP__
-uint16 parseSource(Source rfcDataIn, Task task)
+u16 parseSource(Source rfcDataIn, Task task)
 {
   ptr s = SourceMap(rfcDataIn);
   ptr e = s + SourceSize(rfcDataIn);
   ptr p = parseData(s, e, task);
   if(p != s)
   {
-    SourceDrop(rfcDataIn, (uint16) (p - s));
+    SourceDrop(rfcDataIn, (u16) (p - s));
     return 1;
   }
   else
@@ -593,7 +593,7 @@ static const Arc *const states[85] = {
   &arcs[242],
 };
 
-static uint16 matchLiteral(ptr s, ptr e, Task task)
+static u16 matchLiteral(ptr s, ptr e, Task task)
 { s=s; e=e; task=task; return 0; }
 
 ptr parseData(ptr s, ptr e, Task task)
@@ -663,7 +663,7 @@ ptr parseData(ptr s, ptr e, Task task)
         const Arc *a = states[state];
         const Arc *const last_a = states[state+1];
 #ifndef TEST_HARNESS
-        a = (const Arc *) (void *) UtilFind(0xFFFF, (uint16) m, (const uint16 *) (void *) &a[0].c, 0, sizeof(Arc), (uint16) (last_a - a));
+        a = (const Arc *) (void *) UtilFind(0xFFFF, (u16) m, (const u16 *) (void *) &a[0].c, 0, sizeof(Arc), (u16) (last_a - a));
 #endif
 #ifdef TEST_HARNESS
         while(a != last_a && a->c != m) a++;
@@ -723,7 +723,7 @@ ptr parseData(ptr s, ptr e, Task task)
 #ifdef TEST_HARNESS
             printf("Called aghfpHandleAvailableCodecs");
             {
-              uint16 i;
+              u16 i;
               struct region_aghfpHandleAvailableCodecs_codecs *r = &uu->aghfpHandleAvailableCodecs.codecs;
               printf(" codecs={");
               for(i = 0; i < r->count; ++i)
@@ -1173,7 +1173,7 @@ ptr parseData(ptr s, ptr e, Task task)
       */
 unrecognised:
 #ifndef TEST_HARNESS
-      handleUnrecognised(s, (uint16) (p-s), task);
+      handleUnrecognised(s, (u16) (p-s), task);
 #endif
 #ifdef TEST_HARNESS
       printf("Called handleUnrecognised\n");

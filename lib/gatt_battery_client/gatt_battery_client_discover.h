@@ -37,7 +37,7 @@ NAME
 DESCRIPTION
     Discover all characteristics descriptors for the characteristic with range of start_handle to end_handle.
 */
-void discoverAllCharacteristicDescriptors(GBASC *battery_client, uint16 start_handle, uint16 end_handle);
+void discoverAllCharacteristicDescriptors(GBASC *battery_client, u16 start_handle, u16 end_handle);
 
 
 /***************************************************************************

@@ -22,6 +22,7 @@ NOTES
 #include <sink.h>
 #include <source.h>
 #include <panic.h>
+#include <stdlib.h>
 #include <memory.h>
 #include "avrcp_common.h"
 #include "avrcp_browsing_handler.h"
@@ -53,9 +54,9 @@ NOTES
 *RETURN
 *******************************************************************************/
 void avrcpAvctpSetCmdHeader(AVRCP *avrcp, 
-                            uint8 *ptr, 
-                            uint8 packet_type, 
-                            uint8 total_packets)
+                            u8 *ptr, 
+                            u8 packet_type, 
+                            u8 total_packets)
 {
     /* AVCTP header */
     ptr[0] = (avrcpGetNextTransactionLabel(avrcp) << AVCTP0_TRANSACTION_SHIFT)
@@ -101,17 +102,17 @@ void avrcpAvctpSetCmdHeader(AVRCP *avrcp,
 *******************************************************************************/
 
 avrcp_status_code avrcpAvctpSendMessage( AVRCP     *avrcp,
-                                         uint8      cr_type,
-                                         uint8     *ptr,
-                                         uint16     hdr_size,
-                                         uint16     data_len,
+                                         u8      cr_type,
+                                         u8     *ptr,
+                                         u16     hdr_size,
+                                         u16     data_len,
                                          Source     data)   
 {
-    uint8  avctp_pkt_type = AVCTP0_PACKET_TYPE_SINGLE;
-    uint8  i, start_head;
-    uint8  no_complete_packets=0;
-    uint16 msg_len=data_len;
-    uint16 pkt_size = hdr_size+data_len+AVCTP_SINGLE_PKT_HEADER_SIZE;
+    u8  avctp_pkt_type = AVCTP0_PACKET_TYPE_SINGLE;
+    u8  i, start_head;
+    u8  no_complete_packets=0;
+    u16 msg_len=data_len;
+    u16 pkt_size = hdr_size+data_len+AVCTP_SINGLE_PKT_HEADER_SIZE;
     avrcp_status_code result = avrcp_success;
     Sink sink=avrcp->sink;
 
@@ -270,14 +271,14 @@ static void removeFragments (AVRCP *avrcp)
 *         FALSE
 ******************************************************************************/
 bool avrcpAvctpReceiveMessage(  AVRCP          *avrcp,
-                                const uint8*    ptr,
-                                uint16          packet_size)
+                                const u8*    ptr,
+                                u16          packet_size)
 {
     bool    result = FALSE;
-    uint16  packet_type = ptr[AVCTP_HEADER_START_OFFSET] & AVCTP0_PACKET_TYPE_MASK;
-    uint8   cr_type = ptr[AVCTP_HEADER_START_OFFSET] & AVCTP0_CR_MASK; 
-    uint8 *new_buffer;
-    uint16 payload_size;
+    u16  packet_type = ptr[AVCTP_HEADER_START_OFFSET] & AVCTP0_PACKET_TYPE_MASK;
+    u8   cr_type = ptr[AVCTP_HEADER_START_OFFSET] & AVCTP0_CR_MASK; 
+    u8 *new_buffer;
+    u16 payload_size;
 
     switch (packet_type)
     {
@@ -297,7 +298,7 @@ bool avrcpAvctpReceiveMessage(  AVRCP          *avrcp,
         #ifndef AVRCP_CT_ONLY_LIB /* Disable TG for CT only lib */
             if(cr_type == AVCTP0_CR_COMMAND)
             {
-                avrcp->av_msg = (uint8*)ptr;
+                avrcp->av_msg = (u8*)ptr;
                 avrcp->av_msg_len = packet_size;
                 /* TODO: AV/C should not be involved with an AVCTP bad PID: */
                 avrcpSendAvcResponse(avrcp,0,avctp_response_bad_profile, 0, NULL);
@@ -310,7 +311,7 @@ bool avrcpAvctpReceiveMessage(  AVRCP          *avrcp,
             break;
         }
 
-        avrcp->av_msg = (uint8 *)ptr;
+        avrcp->av_msg = (u8 *)ptr;
         avrcp->av_msg_len = packet_size;
         avrcp->fragment = avrcp_packet_type_single;
         result = TRUE;
@@ -340,7 +341,7 @@ bool avrcpAvctpReceiveMessage(  AVRCP          *avrcp,
         #ifndef AVRCP_CT_ONLY_LIB /* Disable TG for CT only lib */
             if(cr_type == AVCTP0_CR_COMMAND)
             {
-                avrcp->av_msg = (uint8*)ptr;
+                avrcp->av_msg = (u8*)ptr;
                 avrcp->av_msg_len = packet_size;
                 /* TODO: AV/C should not be involved with an AVCTP bad PID: */
                 avrcpSendAvcResponse(avrcp,0,avctp_response_bad_profile, 0, NULL);
@@ -354,7 +355,7 @@ bool avrcpAvctpReceiveMessage(  AVRCP          *avrcp,
         }
 
         /* Begin reconstruction of fragmented message, off source */
-        avrcp->av_msg = (uint8 *) malloc( packet_size );
+        avrcp->av_msg = (u8 *) malloc( packet_size );
         if (avrcp->av_msg == NULL)
         {
             /* No memory for the message buffer so just drop it.
@@ -394,7 +395,7 @@ bool avrcpAvctpReceiveMessage(  AVRCP          *avrcp,
          * skipping over the AVCTP header
          */
         payload_size = packet_size - AVCTP_CONT_PKT_HEADER_SIZE;
-        new_buffer = (uint8 *) realloc(avrcp->av_msg,
+        new_buffer = (u8 *) realloc(avrcp->av_msg,
                                         avrcp->av_msg_len + payload_size);
         if (!new_buffer)
         {
@@ -456,16 +457,16 @@ bool avrcpAvctpReceiveMessage(  AVRCP          *avrcp,
  *
  * PARAMETES
  * AVBP*        - Browsing Task
- * uint8*       - pointer to AVCTP packet
- * uint16       - packet_size
+ * u8*       - pointer to AVCTP packet
+ * u16       - packet_size
  *
  * RETURN
  * bool - FALSE on Failure and TRUE on Success
  ***************************************************************************/
 
 bool avbpAvctpProcessHeader(    AVBP            *avbp, 
-                                const uint8     *ptr, 
-                                uint16          packet_size)
+                                const u8     *ptr, 
+                                u16          packet_size)
 {
     if(packet_size < AVCTP_SINGLE_PKT_HEADER_SIZE)
     {
@@ -481,7 +482,7 @@ bool avbpAvctpProcessHeader(    AVBP            *avbp,
            (ptr[AVCTP_SINGLE_PKT_PID_OFFSET+1] != 
                                            AVCTP2_PROFILE_AVRCP_REMOTECONTROL)) 
         {
-            uint8 *pid_err=avrcpGrabSink(avbp->avbp_sink,
+            u8 *pid_err=avrcpGrabSink(avbp->avbp_sink,
                                          AVCTP_SINGLE_PKT_HEADER_SIZE);
 
             if(pid_err)
@@ -528,10 +529,10 @@ bool avbpAvctpProcessHeader(    AVBP            *avbp,
  *
  *PARAMETERS
  * AVBP     - Browsing Task 
- * uint8*   - Pointer to the Start of the claimed sink
+ * u8*   - Pointer to the Start of the claimed sink
  * bool     - TRUE if it is response
  ***************************************************************************/
-void avbpAvctpFrameHeader(AVBP *avbp, uint8 *ptr , bool response)
+void avbpAvctpFrameHeader(AVBP *avbp, u8 *ptr , bool response)
 {
 
     if(response)

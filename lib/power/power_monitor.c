@@ -28,7 +28,7 @@ NOTES
 #include <stdlib.h>
 #include <vm.h>
 
-#define PIO_MASK(pio) (((uint32)1) << pio)
+#define PIO_MASK(pio) (((u32)1) << pio)
 
 
 power_type* power;
@@ -78,7 +78,7 @@ NAME
 DESCRIPTION
     Queue an ADC reading
 */
-static void powerMonitorReadAdc(Task task, MessageId id, uint32 period)
+static void powerMonitorReadAdc(Task task, MessageId id, u32 period)
 {
     MessageSendLater(task, id, NULL, period);
 }
@@ -93,7 +93,7 @@ DESCRIPTION
 */
 static bool powerMonitorReadAdcNow(Task task, MessageId id, power_adc* adc, power_init_mask mask)
 {
-    uint32 period = D_SEC(powerChargerDisconnected() ? adc->period_no_chg : adc->period_chg);
+    u32 period = D_SEC(powerChargerDisconnected() ? adc->period_no_chg : adc->period_chg);
     
     /* Make sure init doesn't stall */
     if(!period)
@@ -171,7 +171,7 @@ static void powerMonitorHandler(Task task, MessageId id, Message message)
         case MESSAGE_ADC_RESULT:
         {
             MessageAdcResult* result  = (MessageAdcResult*)message;
-            uint16            reading = result->reading;
+            u16            reading = result->reading;
 
 			PRINT(("POWER: ADC msg source %u reading %u\n", result->adc_source, result->reading));
 
@@ -186,26 +186,26 @@ static void powerMonitorHandler(Task task, MessageId id, Message message)
             {
 #ifdef BC5MM
                 /* voltage(mV) = reading(ADC counts) * (mv_per_count = VREF(mV)/VREF(ADC counts)) */
-                uint16 res = ((uint32)((uint32)(VmReadVrefConstant()) * (uint32)reading)) / power->vref;
+                u16 res = ((u32)((u32)(VmReadVrefConstant()) * (u32)reading)) / power->vref;
                 PRINT(("POWER: BC5MM res %u\n", res));
 #else            
                 /* On BC7 platforms, there is an issue whereby the VREF voltage is unstable and inaccurate and
                    is not read by the same ADC as vbat/vchg, therefore when calculating values for VBAT etc, 
                    substitue a fixed reference value instead to improve accuracy of these readings */
-                uint16 res;
+                u16 res;
                 
                 /* for inputs of vbat,vchg, use a fixed reference voltage to improve accuracy, VREF is on
                    a different ADC to that of the vbat/vchg inputs and hence not accurate to use in calculations */
                 if (result->adc_source>adcsel_vref) 
                 {
                     /* for inputs other than AIOs voltage(mV) = reading(ADC counts) * (1350mV/1024) */
-                    res = (uint32)reading * 1350 / 1024;
+                    res = (u32)reading * 1350 / 1024;
                 } 
                 /* for aio inputs continue to use the VREF reading which comes from the same ADC as the aio inputs */
                 else 
                 {
                     /* for AIOs voltage(mV) = reading(ADC counts) * (mv_per_count = VREF(mV)/VREF(ADC counts)) */
-                    res = ((uint32)((uint32)VmReadVrefConstant() * (uint32)reading)) / power->vref;
+                    res = ((u32)((u32)VmReadVrefConstant() * (u32)reading)) / power->vref;
                 }
                 PRINT(("POWER: BC7 res %u\n", res));
 #endif

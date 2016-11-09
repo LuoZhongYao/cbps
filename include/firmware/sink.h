@@ -23,7 +23,7 @@
 
   @note This call will return zero if the sink stream is connected to another stream.
 */
-uint16 SinkSlack(Sink sink);
+u16 SinkSlack(Sink sink);
 
 /*!
   @brief Attempt to claim the indicated number of extra bytes in a sink.
@@ -39,7 +39,7 @@ uint16 SinkSlack(Sink sink);
 
   @note This call will return zero if the sink stream is connected to another stream.
 */
-uint16 SinkClaim(Sink sink, uint16 extra);
+u16 SinkClaim(Sink sink, u16 extra);
 
 /*!
   @brief Map the sink into the address map, returning a pointer to the first
@@ -55,7 +55,7 @@ uint16 SinkClaim(Sink sink, uint16 extra);
 
   @note This call will return zero if the sink stream is connected to another stream.
 */
-uint8 *SinkMap(Sink sink);
+u8 *SinkMap(Sink sink);
 
 /*!
   @brief Flush the indicated number of bytes out of the sink. 
@@ -73,7 +73,7 @@ uint8 *SinkMap(Sink sink);
 
   @note This call will return FALSE if the sink stream is connected to another stream.
 */
-bool SinkFlush(Sink sink, uint16 amount);
+bool SinkFlush(Sink sink, u16 amount);
 
 /*!
   @brief Flush the indicated number of bytes out of the sink, with a header.
@@ -94,7 +94,7 @@ bool SinkFlush(Sink sink, uint16 amount);
 
   @note This call will return FALSE if the sink stream is connected to another stream.
 */
-bool SinkFlushHeader(Sink sink, uint16 amount, const uint16 *header, uint16 length);
+bool SinkFlushHeader(Sink sink, u16 amount, const u16 *header, u16 length);
 
 /*!
     @brief Configure a particular sink.
@@ -109,7 +109,7 @@ bool SinkFlushHeader(Sink sink, uint16 amount, const uint16 *header, uint16 leng
     be lost once sink is closed and key needs to be reconfigured if sink
     is reopened.
 */
-bool SinkConfigure(Sink sink, stream_config_key key, uint32 value);
+bool SinkConfigure(Sink sink, stream_config_key key, u32 value);
 
 /*!
     @brief Request to close the sink
@@ -157,19 +157,19 @@ bool SinkSynchronise(Sink sink1, Sink sink2);
    @param sink The Sink to get the handle for
    @returns The handle, or 0 is the sink wasn't a SCO sink
 */
-uint16 SinkGetScoHandle(Sink sink);
+u16 SinkGetScoHandle(Sink sink);
 
 /*!
   @brief Find the RFCOMM connection corresponding to a sink.
   @param sink The Sink to get the connection identifier for.
 */
-uint16 SinkGetRfcommConnId(Sink sink);
+u16 SinkGetRfcommConnId(Sink sink);
 
 /*!
   @brief Find the L2CAP channel id corresponding to a sink.
   @param sink The Sink to get the connection identifier for.
 */
-uint16 SinkGetL2capCid(Sink sink);
+u16 SinkGetL2capCid(Sink sink);
 
 /*!
   @brief Get the Bluetooth address from a sink.
@@ -190,7 +190,7 @@ bool SinkGetBdAddr(Sink sink, tp_bdaddr *tpaddr);
 
   @return TRUE if the RSSI was obtained, FALSE otherwise.
 */
-bool SinkGetRssi(Sink sink, int16 *rssi);
+bool SinkGetRssi(Sink sink, i16 *rssi);
 
 /*!
   @brief Read the away time on the underlying ACL.
@@ -205,7 +205,7 @@ bool SinkGetRssi(Sink sink, int16 *rssi);
   be returned (this is unlikely with sensible link supervision
   timeouts.)
 */
-bool SinkPollAwayTime(Sink sink, uint16 *msec);
+bool SinkPollAwayTime(Sink sink, u16 *msec);
 
 /*! 
   @brief Return TRUE if a sink is valid, FALSE otherwise.

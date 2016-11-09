@@ -26,16 +26,16 @@ NOTES
 
 
 /* Returns true if the bit mask passed in only has a single bit set */
-static bool bitMaskOk(uint16 bit_mask)
+static bool bitMaskOk(u16 bit_mask)
 {
     return ((bit_mask != 0) && ((bit_mask & (bit_mask-1)) == 0));
 }
 
 
 /* Locates the start of the specified codec specific information, which may be embedded within the supplied codec caps */
-bool a2dpFindStdEmbeddedCodecCaps(const uint8 **codec_caps, uint8 embedded_codec)
+bool a2dpFindStdEmbeddedCodecCaps(const u8 **codec_caps, u8 embedded_codec)
 {
-    const uint8 *caps = *codec_caps;
+    const u8 *caps = *codec_caps;
     
     /* Expect non-A2DP codec caps */
     if (caps[0]==AVDTP_SERVICE_MEDIA_CODEC)
@@ -61,9 +61,9 @@ bool a2dpFindStdEmbeddedCodecCaps(const uint8 **codec_caps, uint8 embedded_codec
 
 
 /* Locates the start of the specified codec specific information, which may be embedded within the supplied codec caps */
-bool a2dpFindNonStdEmbeddedCodecCaps(const uint8 **codec_caps, uint32 embedded_vendor, uint16 embedded_codec)
+bool a2dpFindNonStdEmbeddedCodecCaps(const u8 **codec_caps, u32 embedded_vendor, u16 embedded_codec)
 {
-    const uint8 *caps = *codec_caps;
+    const u8 *caps = *codec_caps;
     
     /* Expect non-A2DP codec caps */
     if (caps[0]==AVDTP_SERVICE_MEDIA_CODEC)
@@ -101,7 +101,7 @@ bool a2dpFindNonStdEmbeddedCodecCaps(const uint8 **codec_caps, uint32 embedded_v
         Octet 2             Minimum Bitpool Value
         Octet 3             Maximum Bitpool Value
 */
-static bool areSBCCodecsCompatible(const uint8 *local_caps, const uint8 *remote_caps, uint8 local_losc, uint8 remote_losc, bool initiating)
+static bool areSBCCodecsCompatible(const u8 *local_caps, const u8 *remote_caps, u8 local_losc, u8 remote_losc, bool initiating)
 {
     /* check length so we don't read off end of buffer */
     if (local_losc < 6)
@@ -191,10 +191,10 @@ static bool areSBCCodecsCompatible(const uint8 *local_caps, const uint8 *remote_
                 Bits 0-6    Bit Rate
         Octet3              Bit Rate
 */
-static bool areMPEG12AudioCodecsCompatible(const uint8 *local_caps, const uint8 *remote_caps, uint8 local_losc, uint8 remote_losc, bool initiating)
+static bool areMPEG12AudioCodecsCompatible(const u8 *local_caps, const u8 *remote_caps, u8 local_losc, u8 remote_losc, bool initiating)
 {
-    uint16 local_bit_rate;
-    uint16 remote_bit_rate;
+    u16 local_bit_rate;
+    u16 remote_bit_rate;
 
     /* check length so we don't read off end of buffer */
     if (local_losc < 6)
@@ -261,10 +261,10 @@ static bool areMPEG12AudioCodecsCompatible(const uint8 *local_caps, const uint8 
         Octet4              Bit rate
         Octet5              Bit rate
 */
-static bool areMPEG24AACCodecsCompatible(const uint8 *local_caps, const uint8 *remote_caps, uint8 local_losc, uint8 remote_losc, bool initiating)
+static bool areMPEG24AACCodecsCompatible(const u8 *local_caps, const u8 *remote_caps, u8 local_losc, u8 remote_losc, bool initiating)
 {
-    uint16 local_frequency;
-    uint16 remote_frequency;
+    u16 local_frequency;
+    u16 remote_frequency;
 
     /* check length so we don't read off end of buffer */
     if (local_losc < 8)
@@ -325,7 +325,7 @@ static bool areMPEG24AACCodecsCompatible(const uint8 *local_caps, const uint8 *r
         Octet5              Maximum SUL
         Octet6              RFA
 */
-static bool areATRACCodecsCompatible(const uint8 *local_caps, const uint8 *remote_caps, uint8 local_losc, uint8 remote_losc, bool initiating)
+static bool areATRACCodecsCompatible(const u8 *local_caps, const u8 *remote_caps, u8 local_losc, u8 remote_losc, bool initiating)
 {
     bool vbr_available;
 
@@ -404,7 +404,7 @@ static bool areATRACCodecsCompatible(const uint8 *local_caps, const uint8 *remot
         Octet1  Bits 0-3    Music Sample Rate
                 Bits 4-7    Voice Sample Rate
 */
-static bool areCsrFastStreamCodecsCompatible(const uint8 *local_caps, const uint8 *remote_caps, uint8 local_losc, uint8 remote_losc)
+static bool areCsrFastStreamCodecsCompatible(const u8 *local_caps, const u8 *remote_caps, u8 local_losc, u8 remote_losc)
 {
     bool music_ok = FALSE;
 
@@ -448,7 +448,7 @@ static bool areCsrFastStreamCodecsCompatible(const uint8 *local_caps, const uint
         Octet0  Bits 0-3    Channel Mode
                 Bits 4-7    Sample Rate
 */
-static bool areAptxCodecsCompatible(const uint8 *local_caps, const uint8 *remote_caps, uint8 local_losc, uint8 remote_losc)
+static bool areAptxCodecsCompatible(const u8 *local_caps, const u8 *remote_caps, u8 local_losc, u8 remote_losc)
 {
     bool music_ok = FALSE;
     
@@ -488,7 +488,7 @@ static bool areAptxCodecsCompatible(const uint8 *local_caps, const uint8 *remote
         Octet3  Bits 0-7    Reserved
         Octet4  Bits 0-7    Reserved
 */
-static bool areAptxAclSprintCodecsCompatible(const uint8 *local_caps, const uint8 *remote_caps, uint8 local_losc, uint8 remote_losc)
+static bool areAptxAclSprintCodecsCompatible(const u8 *local_caps, const u8 *remote_caps, u8 local_losc, u8 remote_losc)
 {
     bool music_ok = FALSE;
     
@@ -526,12 +526,12 @@ static bool areAptxAclSprintCodecsCompatible(const uint8 *local_caps, const uint
        Octet 4,5 CodecID
        Octet 5-n values.
 */
-static bool areVendorCodecsCompatible(const uint8 *local_caps, const uint8 *remote_caps, uint8 local_losc, uint8 remote_losc)
+static bool areVendorCodecsCompatible(const u8 *local_caps, const u8 *remote_caps, u8 local_losc, u8 remote_losc)
 {
-    uint32 local_vendor_id;
-    uint32 remote_vendor_id;
-    uint16 local_codec_id;
-    uint16 remote_codec_id;
+    u32 local_vendor_id;
+    u32 remote_vendor_id;
+    u16 local_codec_id;
+    u16 remote_codec_id;
 
     /* check length so we don't read off end of buffer */
     if (local_losc < 6)
@@ -591,16 +591,16 @@ static bool areVendorCodecsCompatible(const uint8 *local_caps, const uint8 *remo
 
 
 /****************************************************************************/
-uint32 a2dpConvertUint8ValuesToUint32(const uint8 *ptr)
+u32 a2dpConvertUint8ValuesToUint32(const u8 *ptr)
 {
-    return (((uint32)ptr[0] << 24) | ((uint32)ptr[1] << 16) | ((uint32)ptr[2] << 8) | (uint32)ptr[3]);
+    return (((u32)ptr[0] << 24) | ((u32)ptr[1] << 16) | ((u32)ptr[2] << 8) | (u32)ptr[3]);
 }
 
 
 /****************************************************************************/
-uint16 a2dpConvertUint8ValuesToUint16(const uint8 *ptr)
+u16 a2dpConvertUint8ValuesToUint16(const u8 *ptr)
 {
-    return (((uint16)ptr[0] << 8) | (uint16)ptr[1]);
+    return (((u16)ptr[0] << 8) | (u16)ptr[1]);
 }
 
 
@@ -618,10 +618,10 @@ DESCRIPTION
 RETURNS
     void
 */
-const uint8* a2dpFindMatchingCodecSpecificInformation(const uint8 *local_caps, const uint8 *remote_caps, bool initiating)
+const u8* a2dpFindMatchingCodecSpecificInformation(const u8 *local_caps, const u8 *remote_caps, bool initiating)
 {
-    const uint8 *local_codec = local_caps;
-    const uint8 *remote_codec = remote_caps;
+    const u8 *local_codec = local_caps;
+    const u8 *remote_codec = remote_caps;
 
     /* find the codec specific info in both caps */
     if (!a2dpFindCodecSpecificInformation(&local_codec,NULL))
@@ -718,16 +718,16 @@ DESCRIPTION
 RETURNS
     void
 */
-bool a2dpValidateServiceCaps(const uint8 *caps, uint16 caps_size, bool reconfigure, bool only_check_structure, bool ignore_bad_serv_category,
-                                uint8 *error_category, uint8 *error_code)
+bool a2dpValidateServiceCaps(const u8 *caps, u16 caps_size, bool reconfigure, bool only_check_structure, bool ignore_bad_serv_category,
+                                u8 *error_category, u8 *error_code)
 {
     bool has_media_transport = FALSE;
     bool has_codec = FALSE;
 
     do
     {
-        uint8 service;
-        uint8 losc;
+        u8 service;
+        u8 losc;
 
         /* each entry must contain at least two bytes; Service Category and LOSC. */
         if (caps_size < 2)
@@ -910,7 +910,7 @@ DESCRIPTION
 RETURNS
     void
 */
-bool a2dpFindCodecSpecificInformation(const uint8 **caps, uint16 *caps_size)
+bool a2dpFindCodecSpecificInformation(const u8 **caps, u16 *caps_size)
 {
     if (*caps == 0)
         return FALSE;
@@ -919,8 +919,8 @@ bool a2dpFindCodecSpecificInformation(const uint8 **caps, uint16 *caps_size)
     {
         while (*caps_size != 0)
         {
-            uint8 service = (*caps)[0];
-            uint8 losc = (*caps)[1];
+            u8 service = (*caps)[0];
+            u8 losc = (*caps)[1];
 
             if (service == AVDTP_SERVICE_MEDIA_CODEC)
                 return TRUE;
@@ -957,16 +957,16 @@ DESCRIPTION
 RETURNS
     TRUE if OK, FALSE is Configuration contains entry not in local caps.
 */
-bool a2dpAreServicesCategoriesCompatible(const uint8 *local_caps, uint16 local_caps_size,
-                                        const uint8 *config_caps, uint16 config_caps_size,
-                                        uint8 *unsupported_service)
+bool a2dpAreServicesCategoriesCompatible(const u8 *local_caps, u16 local_caps_size,
+                                        const u8 *config_caps, u16 config_caps_size,
+                                        u8 *unsupported_service)
 {
-    uint16 i,j;
+    u16 i,j;
 
     /* loop through configuration */
     for(i=0;i<config_caps_size;i+=config_caps[i+1]+2)
     {
-        uint8 service = config_caps[i];
+        u8 service = config_caps[i];
         bool match = FALSE;
 
         /* check entry is in local caps */
@@ -991,15 +991,15 @@ bool a2dpAreServicesCategoriesCompatible(const uint8 *local_caps, uint16 local_c
 
 
 /****************************************************************************/
-a2dp_content_protection a2dpGetContentProtection(const uint8 *ptr, const uint16 size_ptr, uint8 **returned_caps)
+a2dp_content_protection a2dpGetContentProtection(const u8 *ptr, const u16 size_ptr, u8 **returned_caps)
 {
-    uint16 size_caps = size_ptr;
-    const uint8 *caps = ptr;
+    u16 size_caps = size_ptr;
+    const u8 *caps = ptr;
 
     while (size_caps != 0)
     {
-        uint8 service = caps[0];
-        uint8 losc = caps[1];
+        u8 service = caps[0];
+        u8 losc = caps[1];
 
         if (service == AVDTP_SERVICE_CONTENT_PROTECTION)
         {
@@ -1008,7 +1008,7 @@ a2dp_content_protection a2dpGetContentProtection(const uint8 *ptr, const uint16 
                 {
                     if (returned_caps)
                     {
-                        *returned_caps = (uint8 *)caps;
+                        *returned_caps = (u8 *)caps;
                     }
                     return avdtp_scms_protection;
                 }
@@ -1028,7 +1028,7 @@ a2dp_content_protection a2dpGetContentProtection(const uint8 *ptr, const uint16 
 
 
 /****************************************************************************/
-bool a2dpIsServiceSupported (uint8 service, const uint8 *caps, uint16 size_caps)
+bool a2dpIsServiceSupported (u8 service, const u8 *caps, u16 size_caps)
 {
     while (size_caps != 0)
     {

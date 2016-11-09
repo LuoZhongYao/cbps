@@ -40,15 +40,15 @@ typedef struct __GDISC
 {
     TaskData lib_task;
     Task app_task;
-    uint16 manufacturer_name_handle;
-    uint16 model_number_handle;
-    uint16 serial_number_handle;
-    uint16 hardware_revision_handle;
-    uint16 firmware_revision_handle;
-    uint16 software_revision_handle;
-    uint16 system_id_handle;
-    uint16 ieee_data_list_handle;
-    uint16 pnp_id_handle;
+    u16 manufacturer_name_handle;
+    u16 model_number_handle;
+    u16 serial_number_handle;
+    u16 hardware_revision_handle;
+    u16 firmware_revision_handle;
+    u16 software_revision_handle;
+    u16 system_id_handle;
+    u16 ieee_data_list_handle;
+    u16 pnp_id_handle;
 } GDISC;
 
 
@@ -102,9 +102,9 @@ typedef enum
 */
 typedef struct
 {
-     uint16 cid;                /*!Connection ID of the GATT connection on which the server side Device Information service need to be accessed*/
-     uint16 start_handle;       /*! The first handle of Device Information service need to be accessed*/
-     uint16 end_handle;         /*!The last handle of Device Information service need to be accessed */
+     u16 cid;                /*!Connection ID of the GATT connection on which the server side Device Information service need to be accessed*/
+     u16 start_handle;       /*! The first handle of Device Information service need to be accessed*/
+     u16 end_handle;         /*!The last handle of Device Information service need to be accessed */
 } GATT_DEVICE_INFO_CLIENT_INIT_PARAMS_T;
 
 /*!
@@ -129,8 +129,8 @@ gatt_device_info_client_status_t GattDeviceInfoClientInit(Task app_task,
 typedef struct PACK_STRUCT  __GATT_DEVICE_INFO_CLIENT_INIT_CFM
 {
     const GDISC *device_info_client;                /*! Reference structure for the instance */
-    uint16 cid;                                     /*! Connection Identifier for remote device */
-    uint16 supported_char_mask;                     /*! Bitmask indicating the supported Device info characteristics */
+    u16 cid;                                     /*! Connection Identifier for remote device */
+    u16 supported_char_mask;                     /*! Bitmask indicating the supported Device info characteristics */
     gatt_device_info_client_status_t status;        /*!status as per gatt_device_info_client_status_t */
 } GATT_DEVICE_INFO_CLIENT_INIT_CFM_T;
 
@@ -154,8 +154,8 @@ typedef struct PACK_STRUCT __GATT_DEVICE_INFO_CLIENT_READ_CHAR_CFM
     const GDISC *device_info_client;            /*! Reference structure for the instance */
     gatt_device_info_type_t device_info_type;   /*! The Device Information Characteristic  to read. */
     gatt_device_info_client_status_t status;    /*!status as per gatt_device_info_client_status_t */
-    uint16 size;                                /*! The size of the characteristic retrieved. */
-    uint8 value[1];                             /*! The value of the characteristic retrieved. */
+    u16 size;                                /*! The size of the characteristic retrieved. */
+    u8 value[1];                             /*! The value of the characteristic retrieved. */
 } GATT_DEVICE_INFO_CLIENT_READ_CHAR_CFM_T;
 
 /*!

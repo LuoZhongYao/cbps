@@ -32,9 +32,9 @@ DESCRIPTION
 RETURNS
     void
 */
-void LedsIndicateError ( const uint16 errId )
+void LedsIndicateError ( const u16 errId )
 {
-    uint8 ledId = LED_0;
+    u8 ledId = LED_0;
 
     /* init leds */
     for (ledId = LED_0; ledId <= LED_2; ledId++)
@@ -50,12 +50,12 @@ void LedsIndicateError ( const uint16 errId )
         /* flash each led in turn */
         for (ledId = LED_0; ledId <= LED_2; ledId++)
         {
-            uint16 flashCount = 0;
-            uint16 waitCounter = 0;
+            u16 flashCount = 0;
+            u16 waitCounter = 0;
             /* Flash the number of times corresponding to the config id error */
             for(flashCount = 0; flashCount < errId; flashCount++)
             {
-                uint16 intensity = 0x0;
+                u16 intensity = 0x0;
 
                 /* Fade in */
                 for (intensity=0x0; intensity <= 0x0FFF; intensity++)

@@ -80,14 +80,14 @@ void HfpInit(Task theAppTask, const hfp_init_params *config, const char* extra_i
     }
     else
     {
-        uint8             size_hfp_data;
+        u8             size_hfp_data;
         hfp_task_data*    lHfp;
         hfp_link_data*    link;
         hfp_profile       profile  = config->supported_profile;
         
         /* Calculate number of links and services */
-        uint8 num_links    = (config->multipoint ? 2 : 1);
-        uint8 num_services = 0;
+        u8 num_links    = (config->multipoint ? 2 : 1);
+        u8 num_services = 0;
         
         if(supportedProfileIsHfp(profile))
             num_services += num_links;
@@ -185,7 +185,7 @@ void hfpInitRfcommRegisterCfm(const CL_RFCOMM_REGISTER_CFM_T *cfm)
 {
     if(cfm->status == success)
     {
-        static uint8 index = 0;
+        static u8 index = 0;
         hfp_service_data* service = &theHfp->services[index];
         
         /* We may not get back the channel we requested, update

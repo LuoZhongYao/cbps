@@ -17,9 +17,9 @@
 
 
 /****************************************************************************/
-void writeGattClientConfigValue(GGATTC *gatt_client, uint16 handle)
+void writeGattClientConfigValue(GGATTC *gatt_client, u16 handle)
 {
-    uint8 value[2];
+    u8 value[2];
     
     value[0] = GATT_CHARACTERISTIC_INDICATION_VALUE;
     value[1] = 0;

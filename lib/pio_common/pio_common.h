@@ -36,7 +36,7 @@ DESCRIPTION
 RETURNS
     TRUE if successful, FALSE otherwise
 */
-bool PioCommonSetPin(uint8 pin, pio_common_dir dir, bool level);
+bool PioCommonSetPin(u8 pin, pio_common_dir dir, bool level);
 
 
 /****************************************************************************
@@ -48,7 +48,7 @@ DESCRIPTION
     will return TRUE if the pin is high, FALSE if the pin is low or could
     not be configured.
 */
-bool PioCommonGetPin(uint8 pin);
+bool PioCommonGetPin(u8 pin);
 
 
 /****************************************************************************
@@ -59,7 +59,7 @@ DESCRIPTION
     This function will configure a pin as input and attempt to debounce it. 
     This will return TRUE if successful, FALSE otherwise.
 */
-bool PioCommonDebounce(uint32 pins, uint16 count, uint16 period);
+bool PioCommonDebounce(u32 pins, u16 count, u16 period);
 
 
 #endif /*PIO_COMMON_H_*/

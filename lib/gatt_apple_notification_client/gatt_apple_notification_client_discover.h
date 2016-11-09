@@ -27,7 +27,7 @@ NAME
 DESCRIPTION
     Discover all characteristics descriptors for the characteristic with range of start_handle to end_handle.
 */
-bool ancsDiscoverAllCharacteristicDescriptors(GANCS *ancs, uint16 start_handle, uint16 end_handle);
+bool ancsDiscoverAllCharacteristicDescriptors(GANCS *ancs, u16 start_handle, u16 end_handle);
 
 
 /***************************************************************************
@@ -39,6 +39,6 @@ DESCRIPTION
 */
 void handleAncsDiscoverAllCharacteristicDescriptorsResp(GANCS *ancs, const GATT_MANAGER_DISCOVER_ALL_CHARACTERISTIC_DESCRIPTORS_CFM_T *cfm);
 
-uint16 findEndHandleForCharDesc(GANCS *ancs, uint16 startHandle, uint16 endHandle, uint8 charesteristic);
+u16 findEndHandleForCharDesc(GANCS *ancs, u16 startHandle, u16 endHandle, u8 charesteristic);
 
 #endif /* GATT_APPLE_NOTIFICATION_CLIENT_DISCOVER_H_ */

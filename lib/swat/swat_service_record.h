@@ -14,7 +14,7 @@ Copyright (c) 2015 Qualcomm Technologies International, Ltd.
 #include "swat.h"
 
 /* Default (example) service record used to register SWAT library with SDP */
-static const uint8 swat_service_record[] =
+static const u8 swat_service_record[] =
 {
     /* Service Class ID List */
     0x09, 0x00, 0x01,   /* AttrID ServiceClassIDList) */

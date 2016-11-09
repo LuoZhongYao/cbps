@@ -41,10 +41,10 @@ typedef struct
 {    
     avc_subunit_type subunit_type;
     avc_subunit_id subunit_id;
-    uint8 ctype;
-    uint32 company_id;
-    uint16 cmd_id;
-    uint16 size_data;
+    u8 ctype;
+    u32 company_id;
+    u16 cmd_id;
+    u16 size_data;
     Source data;
 } AVRCP_INTERNAL_VENDOR_COMMAND_REQ_T;
 
@@ -52,10 +52,10 @@ typedef struct
 
 typedef struct
 {    
-    uint32 company_id;
-    uint16 cmd_id;
-    uint16 size_data;
-    uint8 data[1];
+    u32 company_id;
+    u16 cmd_id;
+    u16 size_data;
+    u8 data[1];
 } AVRCP_SOURCE_VENDOR_COMMAND_REQ_T;
 
 

@@ -68,12 +68,12 @@ DESCRIPTION: CsrInitialiseI2SDevice :
 
 PARAMETERS:
     
-    uint32 sample_rate - sample rate of data coming from dsp
+    u32 sample_rate - sample rate of data coming from dsp
 
 RETURNS:
     none
 */    
-void CsrInitialiseI2SDevice_SSM2518(uint32 sample_rate);
+void CsrInitialiseI2SDevice_SSM2518(u32 sample_rate);
 
 /****************************************************************************
 DESCRIPTION: CsrSetVolumeI2SDevice 
@@ -82,11 +82,11 @@ DESCRIPTION: CsrSetVolumeI2SDevice
 
 PARAMETERS:
     
-    uint16 volume - volume level required
+    u16 volume - volume level required
 
 RETURNS:
     none
 */    
-void CsrSetVolumeI2SDevice_SSM2518(int16 left_vol, int16 right_vol, bool volume_in_dB);
+void CsrSetVolumeI2SDevice_SSM2518(i16 left_vol, i16 right_vol, bool volume_in_dB);
 
 #endif

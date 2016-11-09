@@ -27,7 +27,7 @@
 
   @a start is commonly #FILE_ROOT.
 */
-FILE_INDEX FileFind(FILE_INDEX start, const char *name, uint16 length);
+FILE_INDEX FileFind(FILE_INDEX start, const char *name, u16 length);
 
 /*!
   @brief Find the type of a file specified by its index
