@@ -16,7 +16,6 @@
 *.out
 *.app
 
-*.txt
 *.log
 *.d
 
@@ -36,4 +35,6 @@ GTAGS
 
 # 临时文件夹
 build/
+debug/
+release/
 .ycm_extra_conf.py*

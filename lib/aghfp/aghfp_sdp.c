@@ -66,7 +66,7 @@ static const u8 protocolAttributeRequest [] =
 
 
 /* Request the supported features of the HFP AG */
-static const u8 supportedFeaturesAttributeRequest [] =
+static const u8 supportedFeaturesAttributeRequest [] __unused =
 {
     0x35,               /* 0b00110 101 type=DataElSeq */
     0x03,               /* size = 6 bytes in DataElSeq */
@@ -246,7 +246,7 @@ static void aghfpServiceSearchCheckFailed(AGHFP *aghfp, sdp_search_status status
         aghfp_connect_status return_status = aghfp_connect_sdp_fail;
             
         /* try to get a more detailed reason for why the Service Search failed */
-        if (status == l2cap_connect_failed)
+        if ((l2cap_connect_status)status == l2cap_connect_failed)
             return_status = aghfp_connect_sdp_fail_no_connection;
         if (status == sdp_no_response_data)
             return_status = aghfp_connect_sdp_fail_no_data;            
@@ -339,7 +339,7 @@ void aghfpHandleSdpRegisterCfm(AGHFP *aghfp, const CL_SDP_REGISTER_CFM_T *cfm)
         MAKE_AGHFP_MESSAGE(AGHFP_INTERNAL_SDP_REGISTER_CFM);
 
         /* Check the outcome of the register request */
-        if (cfm->status == success)
+        if (cfm->status == sds_status_success)
         {
             /* Set status to success */
             message->status = aghfp_success;
@@ -367,7 +367,7 @@ void aghfpHandleSdpRegisterCfm(AGHFP *aghfp, const CL_SDP_REGISTER_CFM_T *cfm)
 */
 void aghfpHandleSdpUnregisterCfm(AGHFP *aghfp, const CL_SDP_UNREGISTER_CFM_T *cfm)
 {
-    if (cfm->status == success)
+    if (cfm->status == sds_status_success)
     {
         /* Unregister succeeded reset the service record handle */
         aghfp->sdp_record_handle = 0;

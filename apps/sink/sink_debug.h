@@ -1,32 +1,13 @@
-/***************************************************************************
-Copyright 2004 - 2015 Qualcomm Technologies International, Ltd.
-FILE NAME
-    sink_debug.h
-DESCRIPTION
-*/
-#ifndef _SINK_DEBUG_H_
-#define _SINK_DEBUG_H_
+/*************************************************
+ * Anthor  : LuoZhongYao@gmail.com
+ * Modified: 2016 Nov 12
+ ************************************************/
+#ifndef __SINK_DEBUG_H__
+#define __SINK_DEBUG_H__
 
-#ifndef RELEASE_BUILD /*allows the release build to ensure all of the below are removed*/
-
-/*The individual configs*/
-
-#ifndef DO_NOT_DOCUMENT
-#endif 
-
-/*end of DO_NOT_DOCUMENT*/
-/*The global debug enable*/ 
-
-#ifndef LOG_TAG
-#   define LOG_TAG __func__
-#endif
-
-#define DEBUG_PRINT_ENABLED
+#include <debug.h>
 
 #ifdef DEBUG_PRINT_ENABLED
-
-#   define DEBUG(tag,fmt, ...)  printf("D/%-8.8s : " fmt, tag, ##__VA_ARGS__)
-#   define LOGD(fmt,...)        DEBUG(LOG_TAG, fmt, ##__VA_ARGS__)
 
 #   define DEBUG_MAIN
 #   define DEBUG_INQ
@@ -87,25 +68,7 @@ DESCRIPTION
 #   define DEBUG_INPUT_MANAGER
 #   define DEBUG_IR_RC
 #   define DEBUG_BAT_REP
-#else
-#   define DEBUG(x) 
-#endif /*DEBUG_PRINT_ENABLED*/
-    /* If you want to carry out cVc license key checking in Production test
-   Then this needs to be enabled */
-#   define CVC_PRODTEST
-#else /*RELEASE_BUILD*/    
-/*used by the build script to include the debug but none of the individual debug components*/
-#   ifdef DEBUG_BUILD 
-#       define DEBUG(x) {printf x;}
-#   else
-#       define DEBUG(x) 
-#   endif
-#endif
 
-#ifdef DEBUG_PEER
-#   define PEER_DEBUG(x) DEBUG(x)
-#else
-#   define PEER_DEBUG(x) 
 #endif
 
 #define INSTALL_PANIC_CHECKx
@@ -114,4 +77,6 @@ DESCRIPTION
 #define HAVE_VBAT_SEL
 #define HAVE_FULL_USB_CHARGER_DETECTION
 
-#endif /*_SINK_DEBUG_H_*/
+
+#endif
+

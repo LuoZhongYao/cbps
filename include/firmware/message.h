@@ -55,9 +55,10 @@ passed to free. The space could either be on the stack or the heap.
 @param NAME the name of the variable to be declared and initialised with the pointer
 @param TYPE the type to use to determine how much space to allocate
 */
-#define MESSAGE_MAKE(NAME,TYPE) \
-u16 NAME##_[1+(sizeof(TYPE) < 4 ? 4 : sizeof(TYPE) < 20 ? sizeof(TYPE) : 0)]; \
-TYPE * const NAME = sizeof(NAME##_)>1 ? (TYPE *) ((NAME##_[0]=sizeof(TYPE)),(1+NAME##_)) : PanicUnlessNew(TYPE)
+//#define MESSAGE_MAKE(NAME,TYPE) \
+//u16 NAME##_[1+(sizeof(TYPE) < 4 ? 4 : sizeof(TYPE) < 20 ? sizeof(TYPE) : 0)]; \
+//TYPE * const NAME = sizeof(NAME##_)>1 ? (TYPE *) ((NAME##_[0]=sizeof(TYPE)),(1+NAME##_)) : PanicUnlessNew(TYPE)
+#define MESSAGE_MAKE(NAME,TYPE)  TYPE * const NAME = PanicUnlessNew(TYPE)
 
 
 /*!

@@ -27,3 +27,8 @@ unsigned PanicZero(unsigned number)
         Panic();
     return number;
 }
+
+void *PanicUnlessMalloc(size_t sz)
+{
+    return PanicNull(malloc(sz));
+}

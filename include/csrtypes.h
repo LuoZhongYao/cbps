@@ -29,6 +29,8 @@
 
 /* XAP types */
 
+#define __unused __attribute__((__unused__))
+
 typedef uint32_t u32;
 typedef uint16_t u16;
 typedef uint8_t  u8;

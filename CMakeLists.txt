@@ -2,9 +2,10 @@ cmake_minimum_required (VERSION 2.8)
 
 project (cbps)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
-add_definitions(-D__XAP__)
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Werror")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Werror")
 
+add_definitions(-D__XAP__)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

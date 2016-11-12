@@ -222,7 +222,7 @@ u16 ConfigRetrieve(u16 config_id, void* data, u16 len)
     u16 pskeyId = 0;
 #endif
 
-    LOGD("CONF: key_id[%u]\n",config_id);
+    LOGD("key_id[%u]\n",config_id);
 
 #ifdef ENABLE_FILE_CONFIG
     /* If file config in use then find if this config can be stored in a file */
@@ -235,7 +235,7 @@ u16 ConfigRetrieve(u16 config_id, void* data, u16 len)
 #endif
     {
         /* read from PS */
-        LOGD("CONF:PS config_id[%u]\n", config_id);
+        LOGD("PS config_id[%u]\n", config_id);
         /* Read requested key from PS if it exists */
         ret_len = PsRetrieve(config_id, data, len);
 
@@ -243,7 +243,7 @@ u16 ConfigRetrieve(u16 config_id, void* data, u16 len)
         if(!ret_len)
         {
             /* No PSKEY exists */
-            LOGD("CONF:No PSKEY[%u]\n",config_id);
+            LOGD("No PSKEY[%u]\n",config_id);
         }
     }
 
@@ -264,7 +264,7 @@ u16 ConfigRetrieve(u16 config_id, void* data, u16 len)
             /* get size of config file, note this returns size in Bytes */
             ret_len = SourceSize(confSource);
 
-            LOGD("CONF:File[%s]type[%x]key_id[%u]size[0x%x]\n",pFileName,FileType(index), config_id,ret_len);
+            LOGD("File[%s]type[%x]key_id[%u]size[0x%x]\n",pFileName,FileType(index), config_id,ret_len);
 
             /* Check if config file size OK and copy data */
             if((ret_len) >= len*2)
@@ -290,7 +290,7 @@ u16 ConfigRetrieve(u16 config_id, void* data, u16 len)
         }
         else
         {
-            LOGD("CONF:File[%s] not found\n",pFileName);
+            LOGD("File[%s] not found\n",pFileName);
         }
     }
 #endif
@@ -317,7 +317,7 @@ u16 ConfigRetrieve(u16 config_id, void* data, u16 len)
             default:
             if (ret_len != len)
             {
-                 LOGD("CONF:BADLEN![%u][0x%x][0x%x]\n",config_id, ret_len, len);
+                 LOGD("BADLEN![%u][0x%x][0x%x]\n",config_id, ret_len, len);
                  LedsIndicateError(config_id) ;
             }
             break;
@@ -344,7 +344,7 @@ u16 ConfigStore(u16 config_id, const void* data, u16 len)
 
     /* stored keys */
     storeLen = PsStore(config_id, data, len);
-    LOGD("CONF:Stored[%u]len[0x%x]\n",config_id, storeLen);
+    LOGD("Stored[%u]len[0x%x]\n",config_id, storeLen);
     return storeLen;
 }
 

@@ -3919,8 +3919,9 @@ int sink_main(void)
 int main(void)
 #endif
 {
-    LOGD("Main [%s]\n",__TIME__);
+    LOGD("-------------- %s ------------\n",__TIME__);
 
+    sink_init();
     /* check and update as necessary the software version pskey, this is used
        for ensuring maximum compatibility with the sink configuration tool */
     configManagerSetVersionNo();

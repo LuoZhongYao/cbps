@@ -32,7 +32,7 @@ void aghfpSendAtCmd(AGHFP *aghfp, const char *at_cmd)
 		/* Make sure we aren't already in the middle of a AtCmdBegin section */
 	    if (aghfp->mapped_rfcomm_sink == NULL)
 	    {
-			bool flushSuccess;
+			bool flushSuccess __unused;
 			u8 *dest;
 	        u16 length = strlen(at_cmd);
 	

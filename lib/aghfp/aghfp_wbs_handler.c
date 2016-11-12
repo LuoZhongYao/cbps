@@ -40,7 +40,7 @@ static const aghfp_audio_params wb_speech_esco_audio_params_sbc =
 	FALSE						/* Use WB-Speech if available	*/
 };
 
-static const aghfp_audio_params wb_speech_esco_audio_params_amr =
+static const aghfp_audio_params wb_speech_esco_audio_params_amr __unused =
 {
     3000,                    	/* Bandwidth for both Tx and Rx */
     0x000e,                  	/* Max Latency                  */

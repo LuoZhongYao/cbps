@@ -31,7 +31,7 @@ void a2dpHandleSdpRegisterCfm(const CL_SDP_REGISTER_CFM_T *cfm)
     /* Log received cfm message */
     a2dp->sdp_register_outstanding--;
 
-    if (cfm->status==success)
+    if (cfm->status == sds_status_success)
     {
         /* Register the l2cap psm if all service records have been registered */
         if ( a2dp->sdp_register_outstanding==0 )

@@ -13,6 +13,7 @@ NOTES
 */
 
 
+#include <csrtypes.h>
 #ifdef INCLUDE_ATRAC
 
 /****************************************************************************
@@ -208,5 +209,5 @@ void selectOptimalAtracCapsSink(const u8 *local_codec_caps, u8 *remote_codec_cap
 }
 
 #else
-    static const int dummy;
+    static const int dummy __unused;
 #endif /* INCLUDE_ATRAC */

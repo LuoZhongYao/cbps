@@ -621,7 +621,7 @@ static void InitConfigMemoryAtCommands(u16 atCmdsKeyLength)
     /* ensure that all data is set as string terminator in case of incorrect pskey
        data being read */
     memset(theSink.conf3, 0, (sizeof(config_block3_t) + atCmdsKeyLength + 1));
-    LOGD("INIT: Malloc size conf3: [%d]\n", sizeof(config_block3_t) + atCmdsKeyLength );
+    LOGD("Malloc size conf3: [%d]\n", sizeof(config_block3_t) + atCmdsKeyLength );
 }
 
 /****************************************************************************
@@ -640,14 +640,14 @@ static void InitConfigMemory(lengths_config_type * keyLengths)
 {
     /* Allocate memory for SSR, PIO and radio data */
     theSink.conf2 = mallocPanic( sizeof(config_block2_t));
-    LOGD("INIT: Malloc size conf2: [%d]\n", sizeof(config_block2_t) );
+    LOGD("Malloc size conf2: [%d]\n", sizeof(config_block2_t) );
 
     /* initialise the memory block to 0 */
     memset(theSink.conf2,0,sizeof(config_block2_t));
 
     /* Allocate memory for tones */
     theSink.conf7 = mallocPanic( sizeof(config_block7_t) + (keyLengths->no_tones * sizeof(tone_config_type)) );
-    LOGD("INIT: Malloc size conf7: [%d]\n", sizeof(config_block7_t) + (keyLengths->no_tones * sizeof(tone_config_type)));
+    LOGD("Malloc size conf7: [%d]\n", sizeof(config_block7_t) + (keyLengths->no_tones * sizeof(tone_config_type)));
 
     /* initialise the memory block to 0 */
     memset(theSink.conf7,0,sizeof(config_block7_t) + (keyLengths->no_tones * sizeof(tone_config_type)));
@@ -663,7 +663,7 @@ static void InitConfigMemory(lengths_config_type * keyLengths)
     if(keyLengths->num_audio_prompt_events || keyLengths->num_audio_prompts)
     {
         theSink.conf4 = mallocPanic( sizeof(config_block4_t) + (keyLengths->num_audio_prompt_events * sizeof(audio_prompts_config_type)));
-        LOGD("INIT: Malloc size conf4: [%d]\n", sizeof(config_block4_t) + (keyLengths->num_audio_prompt_events * sizeof(audio_prompts_config_type)));
+        LOGD("Malloc size conf4: [%d]\n", sizeof(config_block4_t) + (keyLengths->num_audio_prompt_events * sizeof(audio_prompts_config_type)));
     }
     else
     {
@@ -673,14 +673,14 @@ static void InitConfigMemory(lengths_config_type * keyLengths)
 #if defined(ENABLE_IR_REMOTE) || (defined(GATT_ENABLED) && defined(GATT_HID_CLIENT))
     /* Allocate enough memory to extract the input manager config (contains timers and the Input Manager lookup table (lookup can be of max size 255 entries) */
     theSink.rundata->inputManager.size_lookup_table = keyLengths->input_manager_size.input_manager_lookup_size;
-    LOGD("INIT: Malloc size input manager: [%d]\n", sizeof(timerConfig_t) + (sizeof(eventLookupTable_t) * theSink.rundata->inputManager.size_lookup_table) );
+    LOGD("Malloc size input manager: [%d]\n", sizeof(timerConfig_t) + (sizeof(eventLookupTable_t) * theSink.rundata->inputManager.size_lookup_table) );
     theSink.rundata->inputManager.config = mallocPanic( sizeof(timerConfig_t) + (sizeof(eventLookupTable_t) * theSink.rundata->inputManager.size_lookup_table) );
 #endif
 
 #ifdef ENABLE_IR_REMOTE
     /* Allocate enough memory to extract the configured IR lookup table (can be of max size 16 entries) */
     theSink.rundata->irInputMonitor.size_lookup_table = keyLengths->input_manager_size.ir_remote_lookup_size;
-    LOGD("INIT: Malloc size IR: [%d]\n", (sizeof(irRcConfig_t)-sizeof(irLookupTableConfig_t)) + (sizeof(irLookupTableConfig_t) * theSink.rundata->irInputMonitor.size_lookup_table) );
+    LOGD("Malloc size IR: [%d]\n", (sizeof(irRcConfig_t)-sizeof(irLookupTableConfig_t)) + (sizeof(irLookupTableConfig_t) * theSink.rundata->irInputMonitor.size_lookup_table) );
     theSink.rundata->irInputMonitor.config = mallocPanic( (sizeof(irRcConfig_t)-sizeof(irLookupTableConfig_t)) + (sizeof(irLookupTableConfig_t) * theSink.rundata->irInputMonitor.size_lookup_table) );
 #endif
 }
@@ -721,11 +721,11 @@ void configManagerPioMap(void)
     /* Allocate memory for Button data, volume mapping */
     theSink.conf1 = mallocPanic( sizeof(config_block1_t) );
     memset(theSink.conf1, 0, sizeof (config_block1_t));
-    LOGD("INIT: Malloc size conf1: [%d]\n",sizeof(config_block1_t));
+    LOGD("Malloc size conf1: [%d]\n",sizeof(config_block1_t));
 
     theSink.conf6 = mallocPanic( sizeof(config_block6_t) );
     memset(theSink.conf6, 0, sizeof (config_block6_t));
-    LOGD("INIT: Malloc size conf6: [%d]\n",sizeof(config_block6_t));
+    LOGD("Malloc size conf6: [%d]\n",sizeof(config_block6_t));
 
     /* Retrieve config */
     pio = &theSink.conf6->PIOIO;
@@ -735,7 +735,7 @@ void configManagerPioMap(void)
     theSink.hfp_plugin_params.digital = &pio->digital;
 
     /* Map in any required pins */
-    LOGD("INIT: Map PIO 0x%08lX\n", pio->pio_map);
+    LOGD("Map PIO 0x%08lX\n", pio->pio_map);
     bad_pins = PioSetMapPins32(pio->pio_map,pio->pio_map);
     if (bad_pins)
     {
@@ -857,7 +857,7 @@ void configManagerReadI2SConfiguration(void)
         /* obtain size of pskey for I2S data */
         size = PsRetrieve(CONFIG_I2S_INIT_DATA, NULL, 0);
         /* now malloc slot to contain both the init config and the data */
-        LOGD("INIT: Malloc size conf5: [%d]\n",(sizeof(config_block5_t)+(size)));
+        LOGD("Malloc size conf5: [%d]\n",(sizeof(config_block5_t)+(size)));
         theSink.conf5 = mallocPanic((sizeof(config_block5_t)+(size)));
         /* zero initialise data */
         memset(theSink.conf5, 0, (sizeof(config_block5_t)+(size)));
@@ -1168,7 +1168,7 @@ void configManagerInitMemory( void )
     theSink.remote_peer_ag_bd_addr = mallocPanic(sizeof (bdaddr));
     BdaddrSetZero(theSink.remote_peer_ag_bd_addr);
 #endif
-    LOGD("INIT: Malloc size runtime1: [%d]\n",sizeof(runtime_block1_t));
+    LOGD("Malloc size runtime1: [%d]\n",sizeof(runtime_block1_t));
 }
 
 
