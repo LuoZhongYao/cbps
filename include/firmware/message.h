@@ -70,7 +70,7 @@ passed to free. The space could either be on the stack or the heap.
   @param message The message data (if any).
   @param delay The delay in ms before the message will be sent.
 */
-void MessageSendLater(Task task, MessageId id, void *message, u32 delay);
+void MessageSendLater(Task task, MessageId id, Message message, Delay delay);
 
 /*!
   @brief Cancel the first queued message with the given task and message id.
@@ -261,7 +261,7 @@ Task MessageInfraredTask(Task task);
   @param id The message type identifier.
   @param message The message data (if any).
 */
-void MessageSend(Task task, MessageId id, void *message);
+void MessageSend(Task task, MessageId id, Message message);
 
 /*!
   @brief Cancel all queued messages with the given task and message id.

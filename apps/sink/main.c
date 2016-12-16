@@ -157,6 +157,128 @@ extern void _init(void);
 static void sinkInitCodecTask( void ) ;
 static void IndicateEvent(MessageId id);
 
+#ifdef DEBUG_MALLOC
+
+#include "vm.h"
+void * MallocPANIC ( const char file[], int line , size_t pSize )
+{
+    static u16 lSize = 0 ;
+    static u16 lCalls = 0 ;
+    void * lResult;
+
+    lCalls++ ;
+    lSize += pSize ;
+    printf("+%s,l[%d]c[%d] t[%d] a[%d] s[%d]",file , line ,lCalls, lSize , (u16)VmGetAvailableAllocations(), pSize );
+
+    lResult = malloc ( pSize ) ;
+
+    printf("@[0x%x]\n", (u16)lResult);
+
+        /*and panic if the malloc fails*/
+    if ( lResult == NULL )
+    {
+        printf("MA : !\n") ;
+        Panic() ;
+    }
+
+    return lResult ;
+
+}
+
+void FreePANIC ( const char file[], int line, void * ptr )
+{
+    static u16 lCalls = 0 ;
+    lCalls++ ;
+    printf("-%s,l[%d]c[%d] a[%d] @[0x%x]\n",file , line ,lCalls, (u16)VmGetAvailableAllocations()-1, (u16)ptr);
+    /* panic if attempting to free a null pointer*/
+    if ( ptr == NULL )
+    {
+        printf("MF : !\n") ;
+        Panic() ;
+    }
+    free( ptr ) ;
+}
+#endif
+
+/*************************************************************************
+NAME
+    sinkInitCodecTask
+
+DESCRIPTION
+    Initialises the codec task
+
+RETURNS
+
+*/
+static void sinkInitCodecTask ( void )
+{
+    /* The Connection Library has been successfully initialised,
+       initialise the HFP library to instantiate an instance of both
+       the HFP and the HSP */
+
+    /*init the codec task*/
+    CodecInitCsrInternal (&theSink.rundata->codec, &theSink.task) ;
+}
+
+
+/*************************************************************************
+NAME
+    handleHFPStatusCFM
+
+DESCRIPTION
+    Handles a status response from the HFP and sends an error message if one was received
+
+RETURNS
+
+*/
+static void handleHFPStatusCFM ( hfp_lib_status pStatus )
+{
+    if (pStatus != hfp_success )
+    {
+        LOGD("HFP CFM Err [%d]\n" , pStatus);
+        MessageSend ( &theSink.task , EventSysError , 0 ) ;
+#ifdef ENABLE_PBAP
+        if(theSink.pbapc_data.pbap_command == pbapc_dialling)
+        {
+            MessageSend ( &theSink.task , EventSysPbapDialFail , 0 ) ;
+        }
+#endif
+    }
+    else
+    {
+         LOGD("HFP CFM Success [%d]\n" , pStatus);
+    }
+
+#ifdef ENABLE_PBAP
+    theSink.pbapc_data.pbap_command = pbapc_action_idle;
+#endif
+}
+
+/*************************************************************************
+NAME
+    IndicateEvent
+
+DESCRIPTION
+    Passes the msg Id to the relevant indication informers.
+
+RETURNS None
+
+*/
+static void IndicateEvent(MessageId id)
+{        
+    if (id != EventSysLEDEventComplete)
+    {
+        LEDManagerIndicateEvent(id);
+    }
+    
+    TonesPlayEvent(id);
+    
+    ATCommandPlayEvent(id) ;
+}
+
+
+
+
 /*************************************************************************
 NAME
     sinkSendLater
@@ -3981,127 +4103,4 @@ int main(void)
     /* Never get here...*/
     return 0;
 }
-
-
-
-#ifdef DEBUG_MALLOC
-
-#include "vm.h"
-void * MallocPANIC ( const char file[], int line , size_t pSize )
-{
-    static u16 lSize = 0 ;
-    static u16 lCalls = 0 ;
-    void * lResult;
-
-    lCalls++ ;
-    lSize += pSize ;
-    printf("+%s,l[%d]c[%d] t[%d] a[%d] s[%d]",file , line ,lCalls, lSize , (u16)VmGetAvailableAllocations(), pSize );
-
-    lResult = malloc ( pSize ) ;
-
-    printf("@[0x%x]\n", (u16)lResult);
-
-        /*and panic if the malloc fails*/
-    if ( lResult == NULL )
-    {
-        printf("MA : !\n") ;
-        Panic() ;
-    }
-
-    return lResult ;
-
-}
-
-void FreePANIC ( const char file[], int line, void * ptr )
-{
-    static u16 lCalls = 0 ;
-    lCalls++ ;
-    printf("-%s,l[%d]c[%d] a[%d] @[0x%x]\n",file , line ,lCalls, (u16)VmGetAvailableAllocations()-1, (u16)ptr);
-    /* panic if attempting to free a null pointer*/
-    if ( ptr == NULL )
-    {
-        printf("MF : !\n") ;
-        Panic() ;
-    }
-    free( ptr ) ;
-}
-#endif
-
-/*************************************************************************
-NAME
-    sinkInitCodecTask
-
-DESCRIPTION
-    Initialises the codec task
-
-RETURNS
-
-*/
-static void sinkInitCodecTask ( void )
-{
-    /* The Connection Library has been successfully initialised,
-       initialise the HFP library to instantiate an instance of both
-       the HFP and the HSP */
-
-    /*init the codec task*/
-    CodecInitCsrInternal (&theSink.rundata->codec, &theSink.task) ;
-}
-
-
-/*************************************************************************
-NAME
-    handleHFPStatusCFM
-
-DESCRIPTION
-    Handles a status response from the HFP and sends an error message if one was received
-
-RETURNS
-
-*/
-static void handleHFPStatusCFM ( hfp_lib_status pStatus )
-{
-    if (pStatus != hfp_success )
-    {
-        LOGD("HFP CFM Err [%d]\n" , pStatus);
-        MessageSend ( &theSink.task , EventSysError , 0 ) ;
-#ifdef ENABLE_PBAP
-        if(theSink.pbapc_data.pbap_command == pbapc_dialling)
-        {
-            MessageSend ( &theSink.task , EventSysPbapDialFail , 0 ) ;
-        }
-#endif
-    }
-    else
-    {
-         LOGD("HFP CFM Success [%d]\n" , pStatus);
-    }
-
-#ifdef ENABLE_PBAP
-    theSink.pbapc_data.pbap_command = pbapc_action_idle;
-#endif
-}
-
-/*************************************************************************
-NAME
-    IndicateEvent
-
-DESCRIPTION
-    Passes the msg Id to the relevant indication informers.
-
-RETURNS None
-
-*/
-static void IndicateEvent(MessageId id)
-{        
-    if (id != EventSysLEDEventComplete)
-    {
-        LEDManagerIndicateEvent(id);
-    }
-    
-    TonesPlayEvent(id);
-    
-    ATCommandPlayEvent(id) ;
-}
-
-
 

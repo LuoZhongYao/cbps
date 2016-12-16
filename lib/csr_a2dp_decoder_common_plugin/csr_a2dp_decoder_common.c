@@ -798,7 +798,7 @@ DESCRIPTION
 */
 bool CsrA2dpDecoderPluginGetLatency (A2dpPluginTaskdata *audio_plugin, bool *estimated, u16 *latency)
 {
-    PRINT(("DECODER: CsrA2dpDecoderPluginGetLatency plugin=%X ", (u16)audio_plugin));
+    PRINT(("DECODER: CsrA2dpDecoderPluginGetLatency plugin=%p ", audio_plugin));
 
     if (audio_plugin != NULL)
     {

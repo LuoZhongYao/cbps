@@ -91,7 +91,7 @@ static a2dp_status_code convertDisconnectStatusCode(l2cap_disconnect_status l2ca
 /*****************************************************************************/
 static void startLinklossTimer (remote_device *device)
 {
-    PRINT(("startLinklossTimer %X",(u16)device));
+    PRINT(("startLinklossTimer %p", device));
     
     MessageCancelAll(&a2dp->task, A2DP_INTERNAL_LINKLOSS_TIMEOUT_BASE + device->device_id);
     MessageSendLater(&a2dp->task, A2DP_INTERNAL_LINKLOSS_TIMEOUT_BASE + device->device_id, NULL, D_SEC(a2dp->linkloss_timeout));
@@ -103,7 +103,7 @@ static void startLinklossTimer (remote_device *device)
 /*****************************************************************************/
 static void stopLinklossTimer (remote_device *device)
 {
-    PRINT(("stopLinklossTimer %X",(u16)device));
+    PRINT(("stopLinklossTimer %p", device));
     
     MessageCancelAll(&a2dp->task, A2DP_INTERNAL_LINKLOSS_TIMEOUT_BASE + device->device_id);
     device->linkloss = FALSE;
@@ -126,11 +126,11 @@ static remote_device* findDeviceFromSink (Sink sink)
             {
                 if ( BdaddrIsSame( &a2dp->remote_conn[i].bd_addr, &tpaddr.taddr.addr ) )
                 {
-                    PRINT(("[%04X %02X %06lX] sink=%X id=%u ",
+                    PRINT(("[%04" PRIx16 "%02" PRIx8 "%06" PRIx32 "] sink=%p id=%u ",
                             tpaddr.taddr.addr.nap,
                             tpaddr.taddr.addr.uap,
                             tpaddr.taddr.addr.lap,
-                            (u16)sink,i));
+                            sink,i));
                     return &a2dp->remote_conn[i];
                 }
             }
@@ -145,7 +145,7 @@ static remote_device* findDeviceFromSink (Sink sink)
                       (device->signal_conn.status.connection_state == avdtp_connection_disconnect_pending)) && 
                      (device->signal_conn.connection.active.sink == sink) )
                 {
-                    PRINT(("sink=%X id=%u ",(u16)sink,i));
+                    PRINT(("sink=%p id=%u ", sink, i));
                     return device;
                 }
                 else
@@ -160,7 +160,7 @@ static remote_device* findDeviceFromSink (Sink sink)
                               (media->status.connection_state == avdtp_connection_disconnect_pending)) && 
                              (media->connection.active.sink == sink) )
                         {
-                            PRINT(("sink=%X id=%u ",(u16)sink,i));
+                            PRINT(("sink=%p id=%u ", sink, i));
                             return device;
                         }
                     }
@@ -169,7 +169,7 @@ static remote_device* findDeviceFromSink (Sink sink)
         }
     }
 
-    PRINT(("Sink=%X id=UNKNOWN ",(u16)sink));
+    PRINT(("Sink=%p id=UNKNOWN ", sink));
     return NULL;
 }
 
@@ -212,7 +212,7 @@ static remote_device* addDevice (const bdaddr *addr)
                 a2dpInitialiseRemoteDevice(device, i);
                 device->bd_addr = *addr;
                 device->instantiated = TRUE;
-                PRINT(("device_id=%u [device=%X]\n",i, (u16)device));
+                PRINT(("device_id=%u [device=%p]\n",i, device));
                 return device;
             }
         }
@@ -226,7 +226,7 @@ static remote_device* addDevice (const bdaddr *addr)
 /*****************************************************************************/
 static bool removeDevice (remote_device *device)
 {
-    PRINT(("removeDevice[%X]\n",(u16)device));    
+    PRINT(("removeDevice[%p]\n", device));    
     if (device != NULL)
     {
         a2dpInitialiseRemoteDevice(device, device->device_id);
@@ -240,7 +240,7 @@ static bool removeDevice (remote_device *device)
 /*****************************************************************************/
 static signalling_channel *initiateSignalling (remote_device *device, u16 connection_id, u8 identifier)
 {
-    PRINT((" initiateSignalling device=%X connection_id=%u identifier=%u",(u16)device, connection_id, identifier));
+    PRINT((" initiateSignalling device=%p connection_id=%u identifier=%u",device, connection_id, identifier));
         
     if (device != NULL)
     {
@@ -261,7 +261,7 @@ static signalling_channel *initiateSignalling (remote_device *device, u16 connec
                 signalling->connection.setup.inbound_id = identifier;
                 signalling->status.connection_state = avdtp_connection_paged;
             }
-            PRINT(("(signalling=%X)\n",(u16)signalling));
+            PRINT(("(signalling=%p)\n", signalling));
             
             return signalling;
         }
@@ -270,7 +270,7 @@ static signalling_channel *initiateSignalling (remote_device *device, u16 connec
             signalling->status.connection_state = avdtp_connection_crossover;
             signalling->connection.setup.inbound_cid = connection_id;
             signalling->connection.setup.inbound_id = identifier;
-            PRINT(("(signalling=%X)\n",(u16)signalling));
+            PRINT(("(signalling=%p)\n",signalling));
             
             return signalling;
         }
@@ -283,7 +283,7 @@ static signalling_channel *initiateSignalling (remote_device *device, u16 connec
 /*****************************************************************************/
 static bool completeSignalling (signalling_channel *signalling, u16 connection_id, Sink sink, u16 mtu)
 {
-    PRINT((" completeSignalling signalling=%X sink=%X mtu=%u\n",(u16)signalling, (u16)sink, mtu));
+    PRINT((" completeSignalling signalling=%p sink=%p mtu=%u\n",signalling, sink, mtu));
     
     if (signalling != NULL)
     {
@@ -317,7 +317,7 @@ static bool completeSignalling (signalling_channel *signalling, u16 connection_i
 /*****************************************************************************/
 static void requestRemoteA2dpVersion (remote_device *device)
 {
-    PRINT(("requestRemoteA2dpVersion from [%X]\n",(u16)device));
+    PRINT(("requestRemoteA2dpVersion from [%X]\n",device));
     
     if (device && device->instantiated && (device->profile_version==avdtp_version_not_requested) && !BdaddrIsZero(&device->bd_addr))
     {
@@ -352,7 +352,7 @@ void a2dpHandleSdpServiceSearchAttributeCfm (CL_SDP_SERVICE_SEARCH_ATTRIBUTE_CFM
 	/* Only use version from first A2DP SDP record. Assume same AVDTP version is supported by a device advertising both Source and Sink roles */
     if (device && (device->profile_version==avdtp_version_not_requested))	
     {
-        PRINT(("device=%X connection_state=%u\n",(u16)device,device->signal_conn.status.connection_state));
+        PRINT(("device=%p connection_state=%u\n",device,device->signal_conn.status.connection_state));
         
         /* Initially assume no valid AVDTP version information has been returned */
         device->profile_version = avdtp_version_unknown;
@@ -407,7 +407,7 @@ static media_channel* initiateMedia (remote_device *device, u16 connection_id, u
 {
     u8 i;
     
-    PRINT((" initiateMedia device=%X connection_id=%u identifier=%u",(u16)device, connection_id, identifier));
+    PRINT((" initiateMedia device=%p connection_id=%u identifier=%u",device, connection_id, identifier));
     
     if (device != NULL)
     {
@@ -433,7 +433,7 @@ static media_channel* initiateMedia (remote_device *device, u16 connection_id, u
                     media->status.connection_state = avdtp_connection_paged;
                 }
 
-                PRINT(("media_id=%u [media=%X]\n",i, (u16)media));
+                PRINT(("media_id=%u [media=%p]\n",i, media));
             
                 return media;
             }
@@ -447,7 +447,7 @@ static media_channel* initiateMedia (remote_device *device, u16 connection_id, u
 /*****************************************************************************/
 static bool completeMedia (media_channel *media, u16 connection_id, Sink sink, u16 mtu)
 {
-    PRINT((" completeMedia cid=%u media=%X sink=%X mtu=%u\n",(u16)media, connection_id, (u16)sink, mtu));
+    PRINT((" completeMedia cid=%u media=%p sink=%p mtu=%u\n", connection_id, media, sink, mtu));
     
     if (media != NULL)
     {
@@ -477,7 +477,7 @@ static bool completeMedia (media_channel *media, u16 connection_id, Sink sink, u
 /*****************************************************************************/
 static bool removeMedia (media_channel *media)
 {
-    PRINT(("removeMedia[%X]\n",(u16)media));    
+    PRINT(("removeMedia[%X]\n",media));    
     if (media != NULL)
     {
         memset( media, 0, sizeof(media_channel) );  /* Assumes enumerated type defaults are zero in value */
@@ -827,7 +827,7 @@ void a2dpHandleSignallingConnectRes(const A2DP_INTERNAL_SIGNALLING_CONNECT_RES_T
 {
     signalling_channel *signalling = &((remote_device *)PanicNull(res->device))->signal_conn;
     
-    PRINT(("a2dpHandleSignallingConnectRes device=%X",(u16)res->device));    
+    PRINT(("a2dpHandleSignallingConnectRes device=%p", res->device));    
     
     if (signalling != NULL)
     {
@@ -871,7 +871,7 @@ void a2dpHandleSignallingDisconnectReq(const A2DP_INTERNAL_SIGNALLING_DISCONNECT
     /* We should already know about the device sending us a message */
     remote_device *device = (remote_device *)PanicNull(req->device);
     
-    PRINT(("a2dpHandleL2capSignallingDisconnectReq device=%X",(u16)req->device));    
+    PRINT(("a2dpHandleL2capSignallingDisconnectReq device=%p", req->device));    
     
     if ( device )
     {
@@ -925,7 +925,7 @@ void a2dpMediaDisconnectReq(Sink sink)
     /* We should already know about the device sending us a message */
     remote_device *device = findDeviceFromSink(sink);
     
-    PRINT(("a2dpMediaDisconnectReq device=%X sink=%X", (u16)device, (u16)sink));  
+    PRINT(("a2dpMediaDisconnectReq device=%p sink=%p", device, sink));  
       
     if ( device )
     {
@@ -1061,7 +1061,7 @@ void a2dpHandleL2capConnectCfm(const CL_L2CAP_CONNECT_CFM_T *cfm)
     /* We should already know about the device sending us a message */
     remote_device *device = findDeviceFromBdaddr(&cfm->addr);
     
-    PRINT(("a2dpHandleL2capConnectCfm for device=%X cid=%u status=%u",(u16)device, cfm->connection_id, cfm->status));
+    PRINT(("a2dpHandleL2capConnectCfm for device=%p cid=%u status=%u",device, cfm->connection_id, cfm->status));
     
     if (device != NULL)
     {
@@ -1279,7 +1279,7 @@ void a2dpHandleL2capDisconnect(u16 cid, Sink sink, l2cap_disconnect_status statu
 {
     remote_device *device = findDeviceFromSink(sink);
     
-    PRINT(("a2dpHandleL2capDisconnect device=%X cid=%x sink=%X status=%u", (u16)device, (u16)cid, (u16)sink, status));    
+    PRINT(("a2dpHandleL2capDisconnect device=%p cid=%x sink=%p status=%u", device, (u16)cid, sink, status));    
         
     if (device != NULL)
     {   /* Device is recognised by A2DP lib */

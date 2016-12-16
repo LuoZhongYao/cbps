@@ -138,9 +138,7 @@ void DisplayExamplePluginScrollText( DisplayExamplePluginTaskdata *task, DispExS
     /* configure scroll and update messages so they're sctive on the correct line number, this example is 2 lines */
     u8   active_line_scroll_msg = (dispscrmsg->line==0)?DISP_EX_SCROLLLN0_TEXT_INT:DISP_EX_SCROLLLN1_TEXT_INT;
 
-    PRINT(("DISP: Scroll line  %u, %u: ", dispscrmsg->line , dispscrmsg->scroll_update));
-    PRINT((dispscrmsg->text));
-    PRINT(("\n"));
+    PRINT(("Scroll line %u, %u: %s\n", dispscrmsg->line, dispscrmsg->scroll_update, dispscrmsg->text));
 
     {
             /* send message to update display for scroll */

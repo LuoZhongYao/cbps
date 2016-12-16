@@ -298,7 +298,7 @@ static void handleHidClassRequest(Source source, usb_device_class_type class_typ
                 /* GET_REPORT */
                 case 0x01:
                 {
-                    PRINT(("USB: HID Get_Report src=0x%X wValue=0x%X wIndex=0x%X wLength=0x%X\n", (u16)source, resp.original_request.wValue, resp.original_request.wIndex, resp.original_request.wLength));
+                    PRINT(("USB: HID Get_Report src=0x%X wValue=0x%X wIndex=0x%X wLength=0x%X\n", source, resp.original_request.wValue, resp.original_request.wIndex, resp.original_request.wLength));
                     break;
                 }
             
@@ -308,7 +308,7 @@ static void handleHidClassRequest(Source source, usb_device_class_type class_typ
                     u8 *out;
                     if ((out = claimSink(sink, 1)) != 0)
                     {
-                        PRINT(("USB: HID Get_Idle src=0x%X wValue=0x%X wIndex=0x%X\n", (u16)source, resp.original_request.wValue, resp.original_request.wIndex));
+                        PRINT(("USB: HID Get_Idle src=0x%X wValue=0x%X wIndex=0x%X\n", source, resp.original_request.wValue, resp.original_request.wIndex));
                         out[0] = idle_rate;
                         resp.success = TRUE;
                         resp.data_length = 1;                
@@ -322,7 +322,7 @@ static void handleHidClassRequest(Source source, usb_device_class_type class_typ
                     const u8 *in = SourceMap(source);                    
                     u16 size_data = resp.original_request.wLength;                
                     u8 report_id = resp.original_request.wValue & 0xff;
-                    PRINT(("USB: HID Set_Report src=0x%X wValue=0x%X wIndex=0x%X wLength=0x%X -> \n", (u16)source, resp.original_request.wValue, resp.original_request.wIndex, resp.original_request.wLength));
+                    PRINT(("USB: HID Set_Report src=0x%X wValue=0x%X wIndex=0x%X wLength=0x%X -> \n", source, resp.original_request.wValue, resp.original_request.wIndex, resp.original_request.wLength));
                   
                     resp.success = TRUE;
                                                             
@@ -346,7 +346,7 @@ static void handleHidClassRequest(Source source, usb_device_class_type class_typ
                             }
                             memmove(message->report, in, message->size_report);
                             MessageSend(device->app_task, USB_DEVICE_CLASS_MSG_REPORT_IND, message);
-                            PRINT(("    sent report ind to Task [0x%x]\n", (u16)device->app_task));
+                            PRINT(("    sent report ind to Task [0x%x]\n", device->app_task));
                         }
                     }                                     
                     break;
@@ -355,7 +355,7 @@ static void handleHidClassRequest(Source source, usb_device_class_type class_typ
                 /* SET_IDLE */
                 case 0x0A:    
                 {
-                    PRINT(("USB: HID Set_Idle src=0x%X wValue=0x%X wIndex=0x%X\n", (u16)source, resp.original_request.wValue, resp.original_request.wIndex));
+                    PRINT(("USB: HID Set_Idle src=0x%X wValue=0x%X wIndex=0x%X\n", source, resp.original_request.wValue, resp.original_request.wIndex));
                     idle_rate = resp.original_request.wValue >> 8;
                     resp.success = TRUE;
                     break;
@@ -363,7 +363,7 @@ static void handleHidClassRequest(Source source, usb_device_class_type class_typ
             
                 default:
                 {
-                    PRINT(("USB: HID req=0x%X src=0x%X wValue=0x%X wIndex=0x%X wLength=0x%X\n", resp.original_request.bRequest, (u16)source, resp.original_request.wValue, resp.original_request.wIndex, resp.original_request.wLength));
+                    PRINT(("USB: HID req=0x%X src=0x%X wValue=0x%X wIndex=0x%X wLength=0x%X\n", resp.original_request.bRequest, source, resp.original_request.wValue, resp.original_request.wIndex, resp.original_request.wLength));
                     break;            
                 }
             }

@@ -201,7 +201,7 @@ static bool buildPreferredList (remote_device *device, const u8 *seid_list, u16 
 {
     u16 i;
     u16 available_seps = 0;
-    PRINT(("buildPreferredList seid_list=%X seid_list_size=%u   ", (u16)seid_list, seid_list_size));
+    PRINT(("buildPreferredList seid_list=%p seid_list_size=%u   ", seid_list, seid_list_size));
     
     blockRemove(device->device_id, data_block_list_preferred_local_seids);
     
@@ -308,8 +308,8 @@ static bool buildPreferredList (remote_device *device, const u8 *seid_list, u16 
 
 static bool doesCodecMatch (sep_info *local_sep, sep_info *remote_sep)
 {
-    PRINT(("doesCodecMatch -  local_sep:0x%X = seid:0x%X role:%u codec:0x%X\n", (u16)local_sep, local_sep->seid, local_sep->role, local_sep->codec));
-    PRINT(("doesCodecMatch - remote_sep:0x%X = seid:0x%X role:%u codec:0x%X\n", (u16)remote_sep, remote_sep->seid, remote_sep->role, remote_sep->codec));
+    PRINT(("doesCodecMatch -  local_sep:0x%p = seid:0x%X role:%u codec:0x%X\n", local_sep, local_sep->seid, local_sep->role, local_sep->codec));
+    PRINT(("doesCodecMatch - remote_sep:0x%p = seid:0x%X role:%u codec:0x%X\n", remote_sep, remote_sep->seid, remote_sep->role, remote_sep->codec));
 
     if ((local_sep->codec == remote_sep->codec) && (local_sep->codec != AVDTP_MEDIA_CODEC_UNDEFINED) && (local_sep->role != remote_sep->role))
     {
@@ -519,7 +519,7 @@ static void issueOpen (remote_device *device)
 
 static bool continueStreamConnect (remote_device *device)
 {
-    PRINT(("continueStreamConnect(%X) stream_state=%u\n", (u16)device, device->signal_conn.status.stream_state));
+    PRINT(("continueStreamConnect(%p) stream_state=%u\n", device, device->signal_conn.status.stream_state));
     
     /* Attempt Stream Connect */
     do

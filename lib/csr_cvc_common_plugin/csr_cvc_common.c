@@ -416,7 +416,7 @@ void CsrCvcPluginConnect( CvcPluginTaskdata *task,
             CVC->ext_params = CSR_CVC_PSTHRU_ENABLE;
     }
     
-    PRINT(("CVC: connect [%x] [%x] [%x]\n", CVC->cvc_running , (int)CVC->audio_sink, (int)CVC->audio_source));
+    PRINT(("CVC: connect [%x] [%p] [%p]\n", CVC->cvc_running , CVC->audio_sink, CVC->audio_source));
     
     /* Calculate the DAC rate based on the over-the-air rate value passed in from VM */
     if(CVC->no_dsp)
@@ -1236,7 +1236,7 @@ static void connectAudio (CvcPluginTaskdata *task)
         if(CVC_PLUGIN_IS_ASR(task))
         {
             KalimbaSendMessage(ASR_START,0,0,0,0);
-            PRINT(("ASR running msg %x busy [%x]\n",ASR_START,(u16)IsAudioBusy()));
+            PRINT(("ASR running msg %x busy [%p]\n",ASR_START, IsAudioBusy()));
             /* update the current audio state */
             SetAsrPlaying(TRUE);
         }
@@ -1547,7 +1547,7 @@ static void toneCompleteNoDsp(CvcPluginTaskdata *task)
         else
         {
             MessageSendLater((TaskData*) task, MESSAGE_FORCE_TONE_COMPLETE, 0, 1500);
-            PRINT(("CVC: Tone Complete SCO not exists [0x%x]\n", (u16)CVC->audio_sink));
+            PRINT(("CVC: Tone Complete SCO not exists [%p]\n", CVC->audio_sink));
         }
     }
     else
@@ -1910,7 +1910,7 @@ void CsrCvcPluginSetAsr ( CvcPluginTaskdata *task, AUDIO_MODE_T mode  )
        (task->cvc_plugin_variant == CVSD_CVC_1_MIC_HANDSFREE_ASR)||(task->cvc_plugin_variant == CVSD_CVC_2_MIC_HANDSFREE_ASR))
     {
         KalimbaSendMessage(ASR_START,0,0,0,0);
-        PRINT(("ASR START MSG %x busy [%x]\n",ASR_START,(u16)IsAudioBusy()));
+        PRINT(("ASR START MSG %x busy [%p]\n",ASR_START, IsAudioBusy()));
         /* update the current audio state */
         SetAsrPlaying(TRUE);
     }    

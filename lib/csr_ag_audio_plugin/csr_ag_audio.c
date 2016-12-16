@@ -205,7 +205,7 @@ void CsrAgAudioPluginConnect( CsrAgAudioPluginTaskData *task, Sink audio_sink , 
        CSR_AG_AUDIO->warp[i]  = audio_params->warp[i];
    }
 	
-   PRINT(("CSR_AG_AUDIO: connect [%x] [%x]\n", CSR_AG_AUDIO->running , (int)CSR_AG_AUDIO->audio_sink));
+   PRINT(("CSR_AG_AUDIO: connect [%x] [%p]\n", CSR_AG_AUDIO->running , CSR_AG_AUDIO->audio_sink));
    
     if (CSR_AG_AUDIO->digital)
     {

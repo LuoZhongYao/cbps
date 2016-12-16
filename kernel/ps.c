@@ -37,6 +37,7 @@ void PsuConfigure()
 {
     NOT_IMPL();
 }
+
 void PsuGetVregEn()
 {
     NOT_IMPL();

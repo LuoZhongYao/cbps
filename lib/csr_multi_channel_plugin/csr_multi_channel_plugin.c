@@ -228,16 +228,16 @@ bool CsrMultiChanConnectStereoSource(Source source_left,
     sources[mch_out_primary_left] = source_left;
     sources[mch_out_primary_right] = source_right;
 
-    PRINT(("MULTICHAN: Connecting %s_%u channel %u direct to Source 0x%04x\n",
+    PRINT(("MULTICHAN: Connecting %s_%u channel %u direct to Source %p\n",
                debugGetStringAudioType(getAudioHardwareType(mch_out_primary_left)),
                getAudioHardwareInstance(mch_out_primary_left),
                getAudioHardwareChannel(mch_out_primary_left),
-               (u16)sources[mch_out_primary_left]));
-    PRINT(("MULTICHAN: Connecting %s_%u channel %u direct to Source 0x%04x\n",
+               sources[mch_out_primary_left]));
+    PRINT(("MULTICHAN: Connecting %s_%u channel %u direct to Source %p\n",
                debugGetStringAudioType(getAudioHardwareType(mch_out_primary_right)),
                getAudioHardwareInstance(mch_out_primary_right),
                getAudioHardwareChannel(mch_out_primary_right),
-               (u16)sources[mch_out_primary_right]));
+               sources[mch_out_primary_right]));
 
     /* Connect the sources to the primary hardware outputs. */
     success = connect(sources, params);
@@ -282,11 +282,11 @@ bool CsrMultiChanConnectSourceToMultiChannelOutput(Source source,
 
     sources[output] = source;
 
-    PRINT(("MULTICHAN: Connecting %s_%u channel %u direct to Source 0x%04x\n",
+    PRINT(("MULTICHAN: Connecting %s_%u channel %u direct to Source %p\n",
                    debugGetStringAudioType(getAudioHardwareType(output)),
                    getAudioHardwareInstance(output),
                    getAudioHardwareChannel(output),
-                   (u16)sources[output]));
+                   sources[output]));
 
     success = connect(sources, params);
     free(sources);

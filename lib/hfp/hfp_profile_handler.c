@@ -501,7 +501,7 @@ void hfpProfileHandler(Task task, MessageId id, Message message)
             {
                 MessageId cfm_id = HFP_NO_CFM;
                 
-                PRINT(("Link %X, SLC state %X\n", (u16)link, link ? link->ag_slc_state : 0));
+                PRINT(("Link %p, SLC state %X\n", link, link ? link->ag_slc_state : 0));
                 
                 /* Either the link is NULL or link state was invalid. */
                 switch (id)

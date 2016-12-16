@@ -762,7 +762,7 @@ bool aghfpCallManagerActiveNotComplete (AGHFP *aghfp)
 */
 void aghfpManageCall (AGHFP *aghfp, aghfp_call_event call_event, u16 event_value)
 {
-	PRINT(("\naghfpManageCall 0x%X - %u[%u,%u]\n", (u16)aghfp, (u16)aghfp->call_progress, (u16)call_event, event_value));
+	PRINT(("\naghfpManageCall %p - %u[%u,%u]\n", aghfp, (u16)aghfp->call_progress, (u16)call_event, event_value));
 	
 	switch ( aghfp->call_progress )
 	{

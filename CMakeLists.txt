@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 2.8)
 
 project (cbps)
 
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Werror")
+set(CMAKE_C_FLAGS_DEBUG "-gstabs+ -Werror" ) #"${CMAKE_CXX_FLAGS_DEBUG} -gstabs -Werror")
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Werror")
 
 add_definitions(-D__XAP__)

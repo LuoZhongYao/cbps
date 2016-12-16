@@ -20,18 +20,6 @@ Copyright (c) 2013 - 2015 Qualcomm Technologies International, Ltd.
   PRINT and CPRINT take the same arguments as printf and cprintf.
 */
 
-#ifdef PRINT
-#undef PRINT
-#endif
-#ifdef CPRINT
-#undef CPRINT
-#endif
+#include <debug.h>
 
-#ifdef DEBUG_PRINT_ENABLED
-#include <stdio.h>
-#define PRINT(x) printf x
-#define CPRINT(x) cprintf x
-#else
-#define PRINT(x)
-#define CPRINT(x)
-#endif
+#define PRINT(x) LOGD x

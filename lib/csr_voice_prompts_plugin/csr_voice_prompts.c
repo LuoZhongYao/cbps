@@ -295,7 +295,7 @@ static Source csrVoicePromptsGetPrompt(voice_prompt* prompt, PHRASE_DATA_T * pDa
     /* determine if this is a tone */
     if(pData->tone)
     {
-        PRINT(("VP: Prompt is a tone 0x%x\n", (u16)pData->tone));    
+        PRINT(("VP: Prompt is a tone %p\n", pData->tone));    
     
         /* update current tone playing status */
         SetTonePlaying(TRUE);
@@ -488,7 +488,7 @@ void CsrVoicePromptPluginPlayDsp(kalimba_state state)
             PanicFalse(StreamConnect(phrase_data->source, lSink));
         
         taskdata = MessageSinkTask( lSink , (TaskData*) &csr_voice_prompts_plugin);
-        PRINT(("VP: sink task now %x was %x.\n",(u16)&csr_voice_prompts_plugin,(u16)taskdata));
+        PRINT(("VP: sink task now %p was %p.\n", &csr_voice_prompts_plugin, taskdata));
         
         using_tone_port = TRUE;
     }
@@ -604,7 +604,7 @@ static void CsrVoicePromptsPluginPlayDigit(void)
                 /* Configure sink */
                 lSink = StreamKalimbaSink(TONE_VP_MIXING_DSP_PORT);
                 
-                PRINT(("VP: play dsp mix lSink = %x lSource = %x\n",(u16)lSink,(u16)lSource));
+                PRINT(("VP: play dsp mix lSink = %p lSource = %p\n", lSink, lSource));
                 
                 /* Get messages when source has finished */
                 taskdata = MessageSinkTask( lSink , (TaskData*) &csr_voice_prompts_plugin);
@@ -681,12 +681,12 @@ static void CsrVoicePromptsPluginPlayDigit(void)
                 
                 /* stream voice prompt data to the DSP tone mixing port */                
                 lSink = StreamKalimbaSink(TONE_VP_MIXING_DSP_PORT);
-                PRINT(("VP: play dsp mix lSink = %x lSource = %x\n",(u16)lSink,(u16)lSource));                               
+                PRINT(("VP: play dsp mix lSink = %p lSource = %p\n", lSink, lSource));                               
                 
                 /* Get messages when source has finished */
                 taskdata = MessageSinkTask( lSink , (TaskData*) &csr_voice_prompts_plugin);
 
-                PRINT(("VP: sink task now %x was %x\n",(u16)&csr_voice_prompts_plugin,(u16)taskdata));
+                PRINT(("VP: sink task now %p was %p\n", &csr_voice_prompts_plugin, taskdata));
                 
                 /* Configure PCM prompt playback */    
                 KalimbaSendMessage(MESSAGE_SET_TONE_RATE_MESSAGE_ID, phrase_data->playback_rate , (phrase_data->stereo?PROMPT_STEREO:0)|PROMPT_ISPROMPT, 0, 0);        
@@ -835,7 +835,7 @@ static void CsrVoicePromptsPluginStopPhraseMixable ( void )
         SinkClose(lSink);
     }
     
-    PRINT(("VP: SinkTask now NULL was %x\n",(u16)taskdata));
+    PRINT(("VP: SinkTask now NULL was %p\n", taskdata));
     MessageCancelAll((TaskData*) &csr_voice_prompts_plugin, MESSAGE_STREAM_DISCONNECT);
 }
 

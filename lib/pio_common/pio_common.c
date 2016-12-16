@@ -79,9 +79,8 @@ DESCRIPTION
 bool PioCommonGetPin(u8 pin)
 {
     u32 pins = pioCommonGetMask(pin, pio_input);
-    PRINT(("PIO: Get %d (0x%lX) ", pin, pins));
     pins &= PioGet32();
-    PRINT(("%s\n", pins ? "High" : "Low"));
+    PRINT(("PIO: Get %d (0x%lX) %s\n", pin, pins, pins ? "High" : "Low"));
     return ((pins != PIO_NONE) ? TRUE : FALSE);
 }
 

@@ -109,10 +109,10 @@ u8 *blockAdd (u8 device_id, data_block_id block_id, u8 element_count, u8 element
                 data_block->current_element = 0;
 
 #ifdef SINGLE_MEM_SLOT
-                PRINT((" [@%X]  size_blocks=%u\n",(u16)DBLK_BASE+offset, DBLK_DATA_SIZE));
+                PRINT((" [@%p]  size_blocks=%u\n", DBLK_BASE+offset, DBLK_DATA_SIZE));
                 return (u8 *)((uintptr_t)DBLK_BASE+offset);
 #else
-                PRINT((" [@%X]  size_blocks(%u)=%u\n",(u16)DBLK_BASE(device_id)+offset, device_id, DBLK_DATA_SIZE(device_id)));
+                PRINT((" [@%p]  size_blocks(%u)=%u\n", DBLK_BASE(device_id)+offset, device_id, DBLK_DATA_SIZE(device_id)));
                 return (u8 *)((uintptr_t)DBLK_BASE(device_id)+offset);
 #endif
             }
@@ -151,7 +151,7 @@ void blockRemove (u8 device_id, data_block_id block_id)
             /* Reduce offsets of all blocks positioned above the block being removed */        
             do
             {
-                PRINT((" [%X]",(u16)block));
+                PRINT((" [%p]", block));
                 
                 if ( offset < block->offset )
                 {

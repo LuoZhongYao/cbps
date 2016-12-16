@@ -105,7 +105,7 @@ bool AudioConnect (  Task audio_plugin,
     AUDIO->plugin = audio_plugin ;
     AUDIO->message = *message;
 
-    PRINT(("AUD: AudioConnect pl[%x] sk[%x] bsy[%x]\n", (u16)audio_plugin, (int)audio_sink, AUDIO->AUDIO_BUSY )) ;
+    PRINT(("AUD: AudioConnect pl[%p] sk[%p] bsy[%p]\n", audio_plugin, audio_sink, AUDIO->AUDIO_BUSY )) ;
     MessageSendConditionally ( audio_plugin, AUDIO_PLUGIN_CONNECT_MSG , message , (const u16 *)AudioBusyPtr() ) ;
     return TRUE ;
 }
@@ -410,7 +410,7 @@ void AudioPlayTone ( const ringtone_note * tone , bool can_queue , Task codec_ta
     
         if(AUDIO->plugin)
         {
-    		PRINT(("AUDIO: play tone, plugin = %x \n",(u16)AUDIO->plugin));
+    		PRINT(("AUDIO: play tone, plugin = %p \n", AUDIO->plugin));
 		    MessageSendConditionally ( AUDIO->plugin, AUDIO_PLUGIN_PLAY_TONE_MSG, message , (const u16 *)AudioBusyPtr() ) ;
 	    }
         else
@@ -744,8 +744,8 @@ void SetAudioBusy(TaskData* newtask)
 
     oldtask = (TaskData *)AUDIO->AUDIO_BUSY;
 
-    PRINT(("AUD: SetAudioBusy = %x -> %x Plugin = %x\n",
-            (u16) oldtask, (u16) newtask, (u16)AUDIO->plugin)) ;
+    PRINT(("AUD: SetAudioBusy = %p -> %p Plugin = %p\n",
+            oldtask, newtask, AUDIO->plugin)) ;
 
     if (CallbackCheckRequired(oldtask, newtask))
     {

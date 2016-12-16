@@ -153,7 +153,7 @@ static void populatePluginFromAudioConnectData(const AUDIO_PLUGIN_CONNECT_MSG_T 
     CSR_COMMON_EXAMPLE->mic_gain_right  = MIC_DEFAULT_GAIN;
     CSR_COMMON_EXAMPLE->digital         = (params ? params->digital : NULL);
 
-    PRINT(("CSR_COMMON_EXAMPLE: connect [%x] [%x]\n", CSR_COMMON_EXAMPLE->running , (int)CSR_COMMON_EXAMPLE->audio_sink));
+    PRINT(("CSR_COMMON_EXAMPLE: connect [%x] [%p]\n", CSR_COMMON_EXAMPLE->running , CSR_COMMON_EXAMPLE->audio_sink));
 }
 
 static void setMicrophoneInstanceGain(const audio_instance instance, const audio_channel channel, const bool digital, const T_mic_gain gain)

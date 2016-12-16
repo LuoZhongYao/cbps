@@ -214,7 +214,7 @@ NAME
 */
 static void csr_encoder_route_outgoinging_data(u16 plugin, u16 instance, u16 dsp_port, Sink sink, u32 rate)
 {
-    PRINT(("ENCODER: route_outgoing plugin[%d] instance[%d] dsp_port[%d] sink[0x%x] rate[0x%x]\n", plugin, instance, dsp_port, (u16)sink, (u16)rate));
+    PRINT(("ENCODER: route_outgoing plugin[%d] instance[%d] dsp_port[%d] sink[%p] rate[%p]\n", plugin, instance, dsp_port, sink, rate));
     
     StreamDisconnect(StreamKalimbaSource(dsp_port), 0);
     
@@ -255,7 +255,7 @@ static void csr_encoder_route_outgoinging_data(u16 plugin, u16 instance, u16 dsp
             /* discard any incoming data */
             StreamConnectDispose(StreamSourceFromSink(sink));
     
-            PRINT(("ENCODER: SBC TransformStart sink:0x%x transform[0x%x] packet_size[0x%x] success[%d]\n",(u16)sink, (u16)ENCODER->t[instance], ENCODER->packet_size, transform_status));
+            PRINT(("ENCODER: SBC TransformStart sink:%p transform[%p] packet_size[0x%x] success[%d]\n", sink, ENCODER->t[instance], ENCODER->packet_size, transform_status));
         }
         break;
         
@@ -278,7 +278,7 @@ static void csr_encoder_route_outgoinging_data(u16 plugin, u16 instance, u16 dsp
             /* check for routing of bi-directional Faststream */            
             csr_encoder_route_incoming_data(sink, instance, dsp_port, ENCODER->bidirectional);
             
-            PRINT(("ENCODER: Faststream Connect sink:0x%x bidirectional:0x%x\n", (u16)sink, ENCODER->bidirectional));
+            PRINT(("ENCODER: Faststream Connect sink:%p bidirectional:0x%x\n", sink, ENCODER->bidirectional));
         }
         break;
         
@@ -320,7 +320,7 @@ static void csr_encoder_route_outgoinging_data(u16 plugin, u16 instance, u16 dsp
             /* discard any incoming data */
             StreamConnectDispose(StreamSourceFromSink(sink));
             
-            PRINT(("ENCODER: APTX connect sink:0x%x\n", (u16)sink));
+            PRINT(("ENCODER: APTX connect sink:%p\n", sink));
         }
         break;
         
@@ -369,7 +369,7 @@ static void csr_encoder_route_outgoinging_data(u16 plugin, u16 instance, u16 dsp
             /* inform APT-X DSP application of the sample rate */
             csr_encoder_aptx_set_sample_rate(rate);
             
-            PRINT(("ENCODER: APTX Low Latency Connect sink:0x%x bidirectional:0x%x\n", (u16)sink, ENCODER->bidirectional));
+            PRINT(("ENCODER: APTX Low Latency Connect sink:0x%p bidirectional:0x%x\n", sink, ENCODER->bidirectional));
         }
         break;
         
@@ -429,7 +429,7 @@ static void csr_encoder_connect_input_device(Source input_source, Sink input_sin
             /* Select the source type */
             PanicFalse(KalimbaSendMessage(KALIMBA_ENCODER_SELECT, KALIMBA_ENCODER_USB, 0, 0, 0));
             
-            PRINT(("    usb connected mic[0x%x] speaker [0x%x]\n", (u16)transform_mic, (u16)transform_speaker));
+            PRINT(("    usb connected mic[%p] speaker [%p]\n", transform_mic, transform_speaker));
         }
 #endif  
 #ifdef SPDIF_AUDIO
@@ -563,7 +563,7 @@ static void csr_encoder_disconnect_bt_stream(u16 index)
     StreamConnectDispose(StreamSourceFromSink(ENCODER->a2dp_sink[index]));
     
             
-    PRINT(("ENCODER: Disconnect media i:%d sink:0x%x\n", index, (u16)ENCODER->a2dp_sink[index]));
+    PRINT(("ENCODER: Disconnect media i:%d sink:%p\n", index, ENCODER->a2dp_sink[index]));
                 
     /* clear the audio sink */    
     ENCODER->a2dp_sink[index] = 0;
@@ -867,7 +867,7 @@ void CsrA2dpEncoderPluginSetMode(A2dpEncoderPluginTaskdata *task, AUDIO_MODE_T m
             {                                    
                 ENCODER->a2dp_sink[i] = connect_sink;
                 csr_encoder_route_outgoinging_data(ENCODER->plugin, i, i == 0 ? DSP_PORT_A2DP_DEV_A : DSP_PORT_A2DP_DEV_B, ENCODER->a2dp_sink[i], ENCODER->rate);                      
-                PRINT(("ENCODER: Connect Sink 0x%x\n", (u16)connect_sink));
+                PRINT(("ENCODER: Connect Sink %p\n", connect_sink));
             }
         }
         mode_params->connect_sink = 0;
@@ -881,7 +881,7 @@ void CsrA2dpEncoderPluginSetMode(A2dpEncoderPluginTaskdata *task, AUDIO_MODE_T m
             {                                        
                 csr_encoder_disconnect_bt_stream(i);  
 
-                PRINT(("ENCODER: Disconnect Sink 0x%x\n", (u16)disconnect_sink));
+                PRINT(("ENCODER: Disconnect Sink %p\n", disconnect_sink));
             }
         }
         mode_params->disconnect_sink = 0;

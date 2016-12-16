@@ -113,7 +113,7 @@ static bool sendPacket(remote_device *device, u8 signalling_header, u8 signal_id
 #ifdef DEBUG_PRINT_ENABLED
     u16 i;
     u8 *sink_data = SinkMap(signalling->connection.active.sink);
-    PRINT(("sendPacket device=%X signalling_header=%X signal_id=%u payload_size=%u  <",(u16)device, signalling_header, signal_id, payload_size));
+    PRINT(("sendPacket device=%p signalling_header=%X signal_id=%u payload_size=%u  <", device, signalling_header, signal_id, payload_size));
     for(i=0; i<payload_size; i++)  PRINT(("%X ",sink_data[i]));
     PRINT((">\n"));
 #endif
@@ -161,7 +161,7 @@ void a2dpSendAccept (remote_device *device, avdtp_signal_id signal_id, u16 paylo
     /* Clear pending transaction flag as we are now sending a response */
     device->signal_conn.status.pending_received_transaction = FALSE;
 
-    PRINT(("a2dpSendAccept device=%X signal_id=%u payload_size=%u\n",(u16)device, signal_id, payload_size));
+    PRINT(("a2dpSendAccept device=%p signal_id=%u payload_size=%u\n", device, signal_id, payload_size));
 
     PanicFalse( sendPacket(device, transaction_label | avdtp_message_type_response_accept, signal_id, payload_size) );
 
@@ -172,7 +172,7 @@ void a2dpSendReject (remote_device *device, avdtp_signal_id signal_id, u16 error
     u8 *payload;
     u8 payload_size;
 
-    PRINT(("a2dpSendReject device=%X signal_id=%u error_code=%u",(u16)device, signal_id, error_code));
+    PRINT(("a2dpSendReject device=%p signal_id=%u error_code=%u",device, signal_id, error_code));
 
     /* TODO: Convert this to a table */
     if ( (signal_id == avdtp_set_configuration) ||
@@ -214,7 +214,7 @@ void a2dpSendGeneralReject (remote_device *device)
     /* Clear pending transaction flag as we are now sending a response */
     device->signal_conn.status.pending_received_transaction = FALSE;
 
-    PRINT(("a2dpSendGeneralReject device=%X\n",(u16)device));
+    PRINT(("a2dpSendGeneralReject device=%p\n",device));
 
     if ((device->profile_version > avdtp_version_unknown) && (device->profile_version < avdtp_version_13))
     {
@@ -233,7 +233,7 @@ bool a2dpSendCommand(remote_device *device, u8 signal_id, const u8* payload_data
     u8* payload;
     Sink sink = device->signal_conn.connection.active.sink;
 
-    PRINT(("a2dpSendCommand device=%X signal_id=%u payload_size=%u\n",(u16)device, signal_id, payload_size));
+    PRINT(("a2dpSendCommand device=%p signal_id=%u payload_size=%u\n",device, signal_id, payload_size));
 
     if (!sink || !SinkIsValid(sink))
     {   /* can't get the sink */

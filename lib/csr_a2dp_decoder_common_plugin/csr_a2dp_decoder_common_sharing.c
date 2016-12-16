@@ -81,7 +81,7 @@ void CsrA2dpDecoderPluginForwardUndecoded(A2dpPluginTaskdata *task , bool enable
         /* check whether forwarding is enabled or not */
         if (enable)
         {
-            PRINT(("DECODER: sink=0x%X forwarding_sink=0x%X sink_type=%u\n" , (u16)sink, (u16)DECODER->forwarding_sink, DECODER->sink_type));
+            PRINT(("DECODER: sink=0x%p forwarding_sink=%p sink_type=%u\n" , sink, DECODER->forwarding_sink, DECODER->sink_type));
             /* ensure sink is valid */            
             if ((sink != NULL) && (DECODER->forwarding_sink == NULL) && 
                 ((DECODER->sink_type == AUDIO_SINK_AV) || (DECODER->sink_type == AUDIO_SINK_USB) || (DECODER->sink_type == AUDIO_SINK_ANALOG) || (DECODER->sink_type == AUDIO_SINK_SPDIF)))
@@ -105,7 +105,7 @@ void CsrA2dpDecoderPluginForwardUndecoded(A2dpPluginTaskdata *task , bool enable
                         (void)TransformStart( rtp_encode ) ;
 #endif
 						csrA2dpDecoderSetStreamRelayMode(RELAY_MODE_SHAREME);
-                        PRINT(("DECODER: SBC forward scms=%u transform=0x%X\n",content_protection,(u16)rtp_encode));
+                        PRINT(("DECODER: SBC forward scms=%u transform=%p\n",content_protection, rtp_encode));
                         break;
                     }
                     case MP3_DECODER:
@@ -122,7 +122,7 @@ void CsrA2dpDecoderPluginForwardUndecoded(A2dpPluginTaskdata *task , bool enable
                         (void)TransformStart( rtp_encode ) ;
 #endif
  						csrA2dpDecoderSetStreamRelayMode(RELAY_MODE_SHAREME);
-                        PRINT(("DECODER: MP3 forward scms=%u transform=0x%X\n",content_protection,(u16)rtp_encode));
+                        PRINT(("DECODER: MP3 forward scms=%u transform=%p\n",content_protection, rtp_encode));
                         break;
                     }
                     case AAC_DECODER:
@@ -157,7 +157,7 @@ void CsrA2dpDecoderPluginForwardUndecoded(A2dpPluginTaskdata *task , bool enable
                             (void)TransformStart( rtp_encode ) ;
 #endif
 							csrA2dpDecoderSetStreamRelayMode(RELAY_MODE_SHAREME);
-                            PRINT(("DECODER: APTX forward scms=%u transform=0x%X\n",content_protection,(u16)rtp_encode));
+                            PRINT(("DECODER: APTX forward scms=%u transform=%p\n",content_protection, rtp_encode));
                         }
                         else
                         {
@@ -209,7 +209,7 @@ void CsrA2dpDecoderPluginForwardUndecoded(A2dpPluginTaskdata *task , bool enable
     
 				StreamDisconnect( 0, DECODER->forwarding_sink);
     
-				PRINT(("DECODER: Disabling forwarding_sink=0x%X transform=0x%X\n", (u16)DECODER->forwarding_sink,(u16)transform));
+				PRINT(("DECODER: Disabling forwarding_sink=%p transform=%p\n", DECODER->forwarding_sink, transform));
 				DECODER->forwarding_sink = NULL;
             }
         }
